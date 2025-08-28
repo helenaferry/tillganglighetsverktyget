@@ -1,3 +1,5 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import {
   isRouteErrorResponse,
   Link,
@@ -20,6 +22,7 @@ import {
 } from "@digi/arbetsformedlingen";
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const queryClient = new QueryClient();
   return (
     <html lang="sv">
       <head>
@@ -32,11 +35,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ClientOnly>
           <DigiHeader
             afSystemName="Tillgänglighetsverktyget">
+            <Link slot="header-logo" aria-label="Tillgänglighetsverktygets startsida" to="/"></Link>
           </DigiHeader>
-          {children}
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
           <DigiFooter afVariation={FooterVariation.LARGE}>
             <div slot="content-bottom-left">
-              <Link to="/">
+              <Link to="https://www.arbetsformedlingen.se">
                 <DigiLogo afVariation={LogoVariation.LARGE} afColor={LogoColor.SECONDARY}></DigiLogo>
               </Link>
             </div>
