@@ -81,7 +81,6 @@ export default function RequirementsList() {
                                                     <option value="fail">Underkänd</option>
                                                     <option value="irrelevant">Irrelevant</option>
                                                 </DigiFormSelect>
-                                                {upsertCheck.isPending ? "Sparar..." : ""}
                                                 {upsertCheck.isError ? "Fel vid sparande" : ""}
                                             </td>
                                         </tr>
