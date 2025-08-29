@@ -27,7 +27,7 @@ export function Welcome() {
                   <th scope="col">
                     Applikation
                   </th>
-                  <th scope="col">Senast uppdaterad</th>
+                  <th scope="col">Skapad</th>
                 </tr>
               </thead>
               <tbody>
@@ -36,8 +36,8 @@ export function Welcome() {
                     <td>
                       <StyledLink to={`/review/${review.id}`} text={review.title || 'Granskning'} />
                     </td>
-                    <td>{review.expand?.application?.name}</td>
-                    <td>{review.updated}</td>
+                    <td>{review.application?.name}</td>
+                    <td>{review.created_at}</td>
                   </tr>
                 )}
               </tbody>
