@@ -25,38 +25,30 @@ export type Requirement = {
     howToTest: HowToTest;
 }
 
-// PocketBase-specifika typer exporteras vidare under egna alias
-import type {
-    ReviewsResponse,
-    ApplicationsResponse,
-    ReviewsRecord,
-    ChecksRecord,
-} from "~/data/pb_types";
+// Supabase types
+import type { Database } from "~/data/supabase-types";
 
-// Aliastyper
-export type Review = ReviewsRecord;
-export type Check = ChecksRecord;
-export type Application = ApplicationsResponse;
+export type Review = Database['public']['Tables']['reviews']['Row'];
+export type Check = Database['public']['Tables']['checks']['Row'];
+export type Application = Database['public']['Tables']['applications']['Row'];
 
-// Utökade aliastyper
-export type ReviewWithApplication = ReviewsResponse & {
-    expand?: { application?: ApplicationsResponse };
+// Extended types
+export type ReviewWithApplication = Review & {
+    application?: Application;
 };
 export type RequirementWithCheck = Requirement & { check?: Check };
 
 export type FullReview = {
-    id: string;
-    created: string;
-    updated: string;
-    title: string;
-    collectionId: string;
-    collectionName: string;
+    id: number;
+    created_at: string;
+    updated?: string;
+    title: string | null;
     application?: Application;
     requirements: RequirementWithCheck[];
 };
 
 export type UpsertCheckInput = {
-    reviewId: string;
+    reviewId: number;
     requirement: string;
     status?: 'pass' | 'fail' | 'irrelevant';
     comment?: string;
