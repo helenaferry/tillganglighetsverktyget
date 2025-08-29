@@ -58,10 +58,10 @@ export default function RequirementsList() {
                                                 {req.topic}
                                             </td>
                                             <td>{req.check?.comment}</td>
-                                            <td className={styleFromStatus(req.check?.status)}>
+                                            <td className={styleFromStatus(req.check?.status ?? undefined)}>
                                                 <DigiFormSelect
                                                     afLabel=" "
-                                                    afValue={req.check?.status}
+                                                    afValue={req.check?.status ?? undefined}
                                                     onAfOnSelect={(value) => {
                                                         const input: UpsertCheckInput = {
                                                             reviewId: review.id,
