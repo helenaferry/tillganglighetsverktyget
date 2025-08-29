@@ -1,6 +1,6 @@
 # Tillgänglighetsverktyget
 
-TODO: Edit and merge READMEs: README.md, README-react-router.md, data/README.md
+TODO: Edit and merge READMEs: README.md, README-react-router.md, data/README.md 
 
 ## Getting started
 
