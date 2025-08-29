@@ -4,7 +4,8 @@ pages:
   script:
     - npm ci
     - npm run build
-    - mv build/client public
+    - mkdir public
+    - cp -r build/client/* public/
   artifacts:
     paths:
       - public
