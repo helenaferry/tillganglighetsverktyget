@@ -20,3 +20,16 @@ secret_detection:
   stage: secret-detection
 include:
 - template: Security/Secret-Detection.gitlab-ci.yml
+
+pages:
+  image: node:22
+  stage: deploy
+  script:
+    - npm ci
+    - npm run build
+    - mv build/client public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
