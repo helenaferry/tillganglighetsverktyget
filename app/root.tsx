@@ -15,7 +15,8 @@ import { ClientOnly } from "./clientOnly";
 import {
   DigiHeader,
   DigiFooter,
-  DigiLogo
+  DigiLogo,
+  DigiLayoutContainer
 } from "@digi/arbetsformedlingen-react";
 import {
   FooterVariation, LogoColor, LogoVariation
@@ -33,10 +34,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ClientOnly>
-          <DigiHeader
-            afSystemName="Tillgänglighetsverktyget">
-            <Link slot="header-logo" aria-label="Tillgänglighetsverktygets startsida" to="/"></Link>
-          </DigiHeader>
+          <DigiLayoutContainer>
+            <DigiHeader
+              afSystemName="Tillgänglighetsverktyget">
+              <Link slot="header-logo" aria-label="Tillgänglighetsverktygets startsida" to="/"></Link>
+            </DigiHeader>
+          </DigiLayoutContainer>
           <QueryClientProvider client={queryClient}>
             {children}
           </QueryClientProvider>
@@ -51,7 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ScrollRestoration />
         <Scripts />
       </body>
-    </html>
+    </html >
   );
 }
 

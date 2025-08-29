@@ -6,6 +6,7 @@ Beslut om slutgiltig datahantering är inte fattat. Under utvecklingsfasen anvä
 
 - Ladda ner PocketBase: https://pocketbase.io/docs/
 - Starta PocketBase med kommandot ./pocketbase serve i mappen med din exekverbara pocketbase-fil.
+    - För Mac-användare: Om du inte tillåts köra filen kan detta hjälpa: xattr -d com.apple.quarantine ./pocketbases
 - Dashboard: http://127.0.0.1:8090/_/
 - Gå till Settings -> Import collections och ladda in filen pb_schema.json.
 

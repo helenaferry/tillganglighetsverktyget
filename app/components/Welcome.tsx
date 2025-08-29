@@ -6,8 +6,6 @@ import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 export function Welcome() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
 
-  if (reviewsError) console.log(reviewsError); // TODO
-
   return (
     <DigiLayoutContainer afVerticalPadding>
       <DigiTypography>
@@ -19,6 +17,8 @@ export function Welcome() {
               afCount={4}
             >
             </DigiLoaderSkeleton>}
+          {reviewsError && <p>Fel vid hämtning av granskningar</p>}
+          {!reviewsLoading && !reviews || reviews?.length === 0 && <p>Inga granskningar hittades.</p>}
           {reviews && <DigiTable>
             <table>
               <thead>

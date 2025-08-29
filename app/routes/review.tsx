@@ -1,8 +1,9 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
-import { useFullReview } from '~/hooks/useReviewData'
-import { DigiLayoutContainer, DigiTypography, DigiTable, DigiLoaderSkeleton } from "@digi/arbetsformedlingen-react";
+import { useFullReview, useUpsertCheck } from '~/hooks/useReviewData'
+import { DigiLayoutContainer, DigiTypography, DigiTable, DigiLoaderSkeleton, DigiFormSelect } from "@digi/arbetsformedlingen-react";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
+import type { UpsertCheckInput } from "~/data/types";
 
 export function meta({ }: Route.MetaArgs) {
     return [,
@@ -14,6 +15,19 @@ export function meta({ }: Route.MetaArgs) {
 export default function RequirementsList() {
     const { id } = useParams<{ id: string }>();
     const { review: review, isLoading: fullReviewLoading } = useFullReview(id ?? '');
+    const upsertCheck = useUpsertCheck();
+    const styleFromStatus = (status: string | undefined) => {
+        switch (status) {
+            case 'pass':
+                return "bg-[var(--digi--leaf-100)]";
+            case 'fail':
+                return "bg-[var(--digi--rose-50)]";
+            case 'irrelevant':
+                return 'bg-[var(--digi--grayscale-200)]';
+            default:
+                return '';
+        }
+    };
     return (
         <DigiLayoutContainer afVerticalPadding>
             <DigiTypography>
@@ -44,7 +58,32 @@ export default function RequirementsList() {
                                                 {req.topic}
                                             </td>
                                             <td>{req.check?.comment}</td>
-                                            <td>{req.check?.status || "Ej granskad"}</td>
+                                            <td className={styleFromStatus(req.check?.status)}>
+                                                <DigiFormSelect
+                                                    afLabel=" "
+                                                    afValue={req.check?.status}
+                                                    onAfOnSelect={(value) => {
+                                                        const input: UpsertCheckInput = {
+                                                            reviewId: review.id,
+                                                            requirement: req.id,
+                                                            status: value.detail.target.value,
+                                                            comment: "",
+                                                        };
+                                                        upsertCheck.mutate(input, {
+                                                            onError: (err) => {
+                                                                console.error("Could not save check:", err);
+                                                            },
+                                                        });
+                                                    }}
+                                                >
+                                                    <option>Ej granskad</option>
+                                                    <option value="pass">Godkänd</option>
+                                                    <option value="fail">Underkänd</option>
+                                                    <option value="irrelevant">Irrelevant</option>
+                                                </DigiFormSelect>
+                                                {upsertCheck.isPending ? "Sparar..." : ""}
+                                                {upsertCheck.isError ? "Fel vid sparande" : ""}
+                                            </td>
                                         </tr>
                                     )}
                                 </tbody>
