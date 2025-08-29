@@ -40,6 +40,7 @@ export default function RequirementsList() {
                         </DigiLoaderSkeleton>}
                     {review && <>
                         <h1>{review?.title}</h1>
+                        <p><b>Applikation:</b> {review?.application?.name}<br></br><b>Granskning startad:</b> {new Date(review?.created_at).toISOString().slice(0, 10)}</p>
                         <DigiTable>
                             <table>
                                 <thead>
@@ -91,6 +92,6 @@ export default function RequirementsList() {
                     </>}
                 </main>
             </DigiTypography>
-        </DigiLayoutContainer>
+        </DigiLayoutContainer >
     );
 }
