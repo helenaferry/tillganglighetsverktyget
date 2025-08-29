@@ -45,12 +45,9 @@ export function useFullReview(reviewId: string): { review?: FullReview; isLoadin
 
         return {
             id: reviewData.id,
-            created: reviewData.created,
-            updated: reviewData.updated,
+            created_at: reviewData.created_at,
             title: reviewData.title,
-            collectionId: reviewData.collectionId,
-            collectionName: reviewData.collectionName,
-            application: reviewData.expand?.application,
+            application: reviewData.application,
             requirements: reqsWithChecks,
         };
     }, [reviewData, requirements, checks]);
@@ -63,10 +60,13 @@ export function useUpsertCheck() {
     const queryClient = useQueryClient();
 
     return useMutation<Check, Error, UpsertCheckInput>({
-        mutationFn: input => ReviewService.upsertCheck(input),
+        mutationFn: input => ReviewService.upsertCheck({
+            ...input,
+            reviewId: String(input.reviewId),
+        }),
         onSuccess: (_newCheck, input) => {
-            queryClient.invalidateQueries({ queryKey: ["checks", input.reviewId] });
-            queryClient.invalidateQueries({ queryKey: ["review", input.reviewId] });
+            queryClient.invalidateQueries({ queryKey: ["checks", String(input.reviewId)] });
+            queryClient.invalidateQueries({ queryKey: ["review", String(input.reviewId)] });
         },
     });
 }

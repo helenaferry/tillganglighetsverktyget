@@ -1,7 +1,9 @@
-import PocketBase from "pocketbase";
 import type { Check, Requirement, ReviewWithApplication } from "./types";
-import type { TypedPocketBase } from "./pb_types";
-const pb: TypedPocketBase = new PocketBase("http://localhost:8090") as TypedPocketBase;
+
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://siouoxdqpgykibzayejt.supabase.co'
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpb3VveGRxcGd5a2liemF5ZWp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY0NzIxODIsImV4cCI6MjA3MjA0ODE4Mn0.sgavqOdB1sjrNpQdvdC4669xTtwPQoRACo53Tn13pZk"// TODO process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 export const ReviewService = {
     async getAllRequirements(path: string = "/tillganglighetslistan.json"): Promise<Requirement[]> {
@@ -16,22 +18,32 @@ export const ReviewService = {
         return json.data;
     },
 
+
     async getAllReviews(): Promise<ReviewWithApplication[]> {
-        return pb.collection("reviews").getFullList<ReviewWithApplication>(200, {
-            expand: "application",
-        });
+        const { data, error } = await supabase
+            .from('reviews')
+            .select('*, application(*)');
+        if (error) throw error;
+        return data as ReviewWithApplication[];
     },
 
     async getReviewById(reviewId: string): Promise<ReviewWithApplication> {
-        return pb.collection("reviews").getOne<ReviewWithApplication>(reviewId, {
-            expand: "application",
-        });
+        const { data, error } = await supabase
+            .from('reviews')
+            .select('*, application(*)')
+            .eq('id', reviewId)
+            .single();
+        if (error) throw error;
+        return data as ReviewWithApplication;
     },
 
     async getChecksForReview(reviewId: string): Promise<Check[]> {
-        return pb.collection("checks").getFullList<Check>(200, {
-            filter: `review="${reviewId}"`,
-        });
+        const { data, error } = await supabase
+            .from('checks')
+            .select('*')
+            .eq('review', reviewId);
+        if (error) throw error;
+        return data as Check[];
     },
 
     async upsertCheck(input: {
@@ -40,37 +52,52 @@ export const ReviewService = {
         status?: "pass" | "fail" | "irrelevant";
         comment?: string;
     }): Promise<Check> {
-        const { reviewId, requirement, ...rest } = input;
-        const existing = await pb.collection("checks").getFullList<Check>(200, {
-            filter: `review="${reviewId}" && requirement="${requirement}"`,
-        });
-
-        if (existing.length > 0) {
-            return pb.collection("checks").update<Check>(existing[0].id, rest);
+        const { reviewId, requirement, status, comment } = input;
+        const { data: existing, error: findError } = await supabase
+            .from('checks')
+            .select('*')
+            .eq('review', reviewId)
+            .eq('requirement', requirement);
+        if (findError) throw findError;
+        if (existing && existing.length > 0) {
+            const { data, error } = await supabase
+                .from('checks')
+                .update({ status, comment })
+                .eq('id', existing[0].id)
+                .select();
+            if (error) throw error;
+            return data[0] as Check;
+        } else {
+            const { data, error } = await supabase
+                .from('checks')
+                .insert({ review: reviewId, requirement, status, comment })
+                .select();
+            if (error) throw error;
+            return data[0] as Check;
         }
-
-        return pb.collection("checks").create<Check>({
-            review: reviewId,
-            requirement,
-            ...rest,
-        });
     },
 
     async deleteCheck(checkId: string): Promise<boolean> {
-        await pb.collection("checks").delete(checkId);
+        const { error } = await supabase
+            .from('checks')
+            .delete()
+            .eq('id', checkId);
+        if (error) throw error;
         return true;
     },
 
     async disableChecks(reviewId: string, requirements: string[]): Promise<Check[]> {
-        return Promise.all(
-            requirements.map((requirement) =>
-                pb.collection("checks").create<Check>({
-                    review: reviewId,
-                    requirement,
-                    status: "irrelevant",
-                    comment: "",
-                })
-            )
-        );
+        const inserts = requirements.map((requirement) => ({
+            review: reviewId,
+            requirement,
+            status: "irrelevant",
+            comment: "",
+        }));
+        const { data, error } = await supabase
+            .from('checks')
+            .insert(inserts)
+            .select();
+        if (error) throw error;
+        return data as Check[];
     },
 };
