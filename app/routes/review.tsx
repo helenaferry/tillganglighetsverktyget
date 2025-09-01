@@ -1,7 +1,7 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
 import { useFullReview, useUpsertCheck } from '~/hooks/useReviewData'
-import { DigiLayoutContainer, DigiTypography, DigiTable, DigiLoaderSkeleton, DigiFormSelect } from "@digi/arbetsformedlingen-react";
+import { DigiLayoutContainer, DigiTypography, DigiTable, DigiLoaderSkeleton, DigiFormSelect, DigiFormInput } from "@digi/arbetsformedlingen-react";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import type { UpsertCheckInput } from "~/data/types";
 import { useMemo } from "react";
@@ -72,9 +72,9 @@ export default function RequirementsList() {
                                 <thead>
                                     <tr>
                                         <th scope="col">Krav</th>
-                                        <th scope="col">Kommentar</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">
-                                            Status
+                                            Kommentar
                                         </th>
                                     </tr>
                                 </thead>
@@ -82,12 +82,13 @@ export default function RequirementsList() {
                                     {review?.requirements?.map(req =>
                                         <tr key={req.id}>
                                             <td>
-                                                {req.topic}
+                                                <b>{req.topic}</b><br />
+                                                {req.criteria} ({req.level})
                                             </td>
-                                            <td>{req.check?.comment}</td>
                                             <td className={styleFromStatus(req.check?.status ?? undefined)}>
                                                 <DigiFormSelect
                                                     afLabel=" "
+                                                    afAriaLabel={`Status för krav: ${req.topic}`}
                                                     afValue={req.check?.status ?? undefined}
                                                     onAfOnSelect={(value) => {
                                                         const input: UpsertCheckInput = {
@@ -109,6 +110,26 @@ export default function RequirementsList() {
                                                     <option value="irrelevant">Irrelevant</option>
                                                 </DigiFormSelect>
                                                 {upsertCheck.isError ? "Fel vid sparande" : ""}
+                                            </td>
+                                            <td>{req.check?.status &&
+                                                <DigiFormInput
+                                                    afValue={req.check?.comment ?? ""}
+                                                    afLabel={`Kommentar för krav: ${req.topic}`}
+                                                    onChange={(event) => {
+                                                        const input: UpsertCheckInput = {
+                                                            reviewId: review.id,
+                                                            requirement: req.id,
+                                                            status: (req.check?.status === 'pass' || req.check?.status === 'fail' || req.check?.status === 'irrelevant')
+                                                                ? req.check?.status
+                                                                : undefined,
+                                                            comment: (event.target as HTMLInputElement).value,
+                                                        };
+                                                        upsertCheck.mutate(input, {
+                                                            onError: (err) => {
+                                                                console.error("Could not save check:", err);
+                                                            },
+                                                        });
+                                                    }} />}
                                             </td>
                                         </tr>
                                     )}
