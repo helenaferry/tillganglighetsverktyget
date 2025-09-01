@@ -1,4 +1,4 @@
-import type { Check, Requirement, Review, ReviewSummary } from "./types";
+import type { Application, Check, Requirement, Review, ReviewSummary } from "./types";
 
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://siouoxdqpgykibzayejt.supabase.co'
@@ -25,7 +25,6 @@ export const ReviewService = {
         if (error) throw error;
         return data as Review[];
     },
-
 
     async getAllReviewSummaries(): Promise<ReviewSummary[]> {
         const { data: reviews, error: reviewError } = await supabase
@@ -123,5 +122,37 @@ export const ReviewService = {
             .select();
         if (error) throw error;
         return data as Check[];
+    },
+
+    async getApplications(): Promise<Application[]> {
+        const { data, error } = await supabase
+            .from('applications')
+            .select('*');
+        if (error) throw error;
+        return data as Application[];
+    },
+
+    async upsertReview(input: {
+        title: string;
+        application: string;
+        id?: string;
+    }): Promise<Review> {
+        const { title, application, id } = input;
+        if (id) {
+            const { data, error } = await supabase
+                .from('reviews')
+                .update({ title, application })
+                .eq('id', id)
+                .select();
+            if (error) throw error;
+            return data[0] as Review;
+        } else {
+            const { data, error } = await supabase
+                .from('reviews')
+                .insert({ title, application })
+                .select();
+            if (error) throw error;
+            return data[0] as Review;
+        }
     },
 };

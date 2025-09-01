@@ -1,5 +1,7 @@
+import { DigiLayoutContainer, DigiTypography } from "@digi/arbetsformedlingen-react";
 import type { Route } from "./+types/home";
 import { ReviewSummary } from "~/components/ReviewSummary";
+import { StyledLink } from "~/components/StyledLink";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -9,5 +11,13 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <ReviewSummary />;
+  return <DigiLayoutContainer afVerticalPadding>
+    <DigiTypography>
+      <main>
+        <h1>Granskningar</h1>
+        <StyledLink to="/add" text="Skapa ny granskning" isButton={true} />
+        <ReviewSummary />
+      </main>
+    </DigiTypography>
+  </DigiLayoutContainer>;
 }

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-import type { Check, FullReview, Requirement, ReviewSummary, UpsertCheckInput } from '~/data/types';
+import type { Application, Check, FullReview, Requirement, ReviewSummary, UpsertCheckInput } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
 // All reviews with summary data
@@ -93,6 +93,29 @@ export function useDisableChecks() {
         onSuccess: (_, { reviewId }) => {
             queryClient.invalidateQueries({ queryKey: ["checks", reviewId] });
             queryClient.invalidateQueries({ queryKey: ["review", reviewId] });
+        },
+    });
+}
+
+// All applications
+export function useApplications(): UseQueryResult<Application[], Error> {
+    return useQuery<Application[], Error>({
+        queryKey: ["applications"],
+        queryFn: () => ReviewService.getApplications(),
+    });
+}
+
+// Update or add review
+export function useUpsertReview() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (input: { title: string; application: string; id?: string }) =>
+            ReviewService.upsertReview(input),
+        onSuccess: (_newReview, input) => {
+            queryClient.invalidateQueries({ queryKey: ["reviews"] });
+            if (input.id) {
+                queryClient.invalidateQueries({ queryKey: ["review", String(input.id)] });
+            }
         },
     });
 }
