@@ -64,7 +64,7 @@ export default function RequirementsList() {
                             <b>Granskning startad:</b> {formatDate(review?.created_at)}
                         </p>
                         <p><b>Relevanta krav:</b> {statusCounts['totalRelevant'] || 0} / 96, {formatPercentage((statusCounts['totalRelevant'] || 0) / 96)}<br />
-                            <b>Klara:</b> {statusCounts['done'] || 0} ({statusCounts['pass'] || 0} godkända, {statusCounts['fail'] || 0} underkända), {formatPercentage(statusCounts['done'] / statusCounts['totalRelevant'])}<br />
+                            <b>Klara:</b> {statusCounts['done'] || 0} ({statusCounts['pass'] || 0} godkända, {statusCounts['fail'] || 0} underkända), {formatPercentage(statusCounts['done'] || 0 / statusCounts['totalRelevant'])}<br />
                             <b>Kvar att granska:</b> {statusCounts['Ej granskad'] || 0}
                         </p>
                         <DigiTable>
@@ -83,7 +83,8 @@ export default function RequirementsList() {
                                         <tr key={req.id}>
                                             <td>
                                                 <b>{req.topic}</b><br />
-                                                {req.criteria} ({req.level})
+                                                {req.criteria} ({req.level})<br />
+                                                {req.category}
                                             </td>
                                             <td className={styleFromStatus(req.check?.status ?? undefined)}>
                                                 <DigiFormSelect

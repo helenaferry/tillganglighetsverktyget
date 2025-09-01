@@ -18,6 +18,19 @@ export const ReviewService = {
         return json.data;
     },
 
+    async getAllRequirementCategories(path: string = "/tillganglighetslistan.json"): Promise<string[]> {
+        const res = await fetch(path);
+        if (!res.ok) {
+            throw new Error(`Failed to load requirement categories from ${path}: ${res.status} ${res.statusText}`);
+        }
+        const json: { data: Requirement[] } = await res.json();
+        if (!Array.isArray(json.data)) {
+            throw new Error("Invalid requirement categories data format");
+        }
+        const categories = Array.from(new Set(json.data.map(req => req.category)));
+        return categories;
+    },
+
     async getAllReviews(): Promise<Review[]> {
         const { data, error } = await supabase
             .from('reviews')
@@ -109,7 +122,7 @@ export const ReviewService = {
         return true;
     },
 
-    async disableChecks(reviewId: string, requirements: string[]): Promise<Check[]> {
+    async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
         const inserts = requirements.map((requirement) => ({
             review: reviewId,
             requirement,
@@ -136,12 +149,13 @@ export const ReviewService = {
         title: string;
         application: string;
         id?: string;
+        excludedContentTypes: string[];
     }): Promise<Review> {
-        const { title, application, id } = input;
+        const { title, application, id, excludedContentTypes } = input;
         if (id) {
             const { data, error } = await supabase
                 .from('reviews')
-                .update({ title, application })
+                .update({ title, application, excludedContentTypes: excludedContentTypes.join(", ") })
                 .eq('id', id)
                 .select();
             if (error) throw error;
@@ -149,10 +163,24 @@ export const ReviewService = {
         } else {
             const { data, error } = await supabase
                 .from('reviews')
-                .insert({ title, application })
+                .insert({ title, application, excludedContentTypes: excludedContentTypes.join(", ") })
                 .select();
             if (error) throw error;
             return data[0] as Review;
         }
+    },
+
+    async deleteChecksForReview(reviewId: number): Promise<void> {
+        await supabase
+            .from('checks')
+            .delete()
+            .eq('review', reviewId);
+    },
+
+    async deleteReview(reviewId: number): Promise<void> {
+        await supabase
+            .from('reviews')
+            .delete()
+            .eq('id', reviewId);
     },
 };

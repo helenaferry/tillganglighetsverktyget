@@ -1,11 +1,12 @@
-import { DigiTable, DigiLoaderSkeleton } from "@digi/arbetsformedlingen-react";
+import { DigiTable, DigiLoaderSkeleton, DigiButton, DigiIconTrash } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from "./StyledLink";
-import { useReviews } from "~/hooks/useReviewData";
+import { useReviews, useDeleteReview } from "~/hooks/useReviewData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import { formatDate, formatPercentage } from "~/formattingHelper";
 
 export function ReviewSummary() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
+  const deleteReview = useDeleteReview();
 
   return (
     <>
@@ -27,7 +28,8 @@ export function ReviewSummary() {
               <th>Godkända</th>
               <th>Underkända</th>
               <th>Relevanta krav</th>
-              <th>Granskningsgrad</th>
+              <th>% klart</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -42,10 +44,25 @@ export function ReviewSummary() {
                 <td>{review.failCount}</td>
                 <td>{96 - review.irrelevantCount}/96 {formatPercentage((96 - review.irrelevantCount) / 96)}</td>
                 <td>{formatPercentage((review.passCount + review.failCount + review.irrelevantCount) / 96)}</td>
+                <td>
+                  <DigiButton
+                    afType="button"
+                    afVariation="function"
+                    afAriaLabel={"Ta bort granskning " + review.title}
+                    onClick={() => {
+                      if (window.confirm('Är du säker på att du vill ta bort denna granskning? Du kan inte ångra dig!')) {
+                        deleteReview.mutate(review.id);
+                      }
+                    }}>
+                    <DigiIconTrash slot="icon" />
+                  </DigiButton>
+                </td>
               </tr>
             )}
           </tbody>
         </table>
+        {deleteReview.isError && <span style={{ color: 'red' }}>Fel vid borttagning</span>}
+        {deleteReview.isSuccess && <span style={{ color: 'green' }}>Borttagen!</span>}
       </DigiTable>}
     </>
   );

@@ -19,6 +19,14 @@ export function useRequirementsData(path: string = "/tillganglighetslistan.json"
     });
 }
 
+// All requirement categories
+export function useRequirementCategories(path: string = "/tillganglighetslistan.json"): UseQueryResult<string[], Error> {
+    return useQuery<string[], Error>({
+        queryKey: ["requirementCategories", path],
+        queryFn: () => ReviewService.getAllRequirementCategories(path),
+    });
+}
+
 // Full review with requirements and checks
 export function useFullReview(reviewId: string): { review?: FullReview; isLoading: boolean } {
     const { data: requirements, isLoading: requirementsLoading } = useRequirementsData();
@@ -88,7 +96,7 @@ export function useDeleteCheck() {
 export function useDisableChecks() {
     const queryClient = useQueryClient();
 
-    return useMutation<Check[], Error, { reviewId: string; requirements: string[] }>({
+    return useMutation<Check[], Error, { reviewId: number; requirements: string[] }>({
         mutationFn: ({ reviewId, requirements }) => ReviewService.disableChecks(reviewId, requirements),
         onSuccess: (_, { reviewId }) => {
             queryClient.invalidateQueries({ queryKey: ["checks", reviewId] });
@@ -109,13 +117,31 @@ export function useApplications(): UseQueryResult<Application[], Error> {
 export function useUpsertReview() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (input: { title: string; application: string; id?: string }) =>
+        mutationFn: (input: { title: string; application: string; id?: string, excludedContentTypes: string[] }) =>
             ReviewService.upsertReview(input),
         onSuccess: (_newReview, input) => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
             if (input.id) {
                 queryClient.invalidateQueries({ queryKey: ["review", String(input.id)] });
             }
+        },
+    });
+}
+
+// Delete review and all associated checks
+export function useDeleteReview() {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (reviewId: number) => {
+            // Delete all checks for this review
+            await ReviewService.deleteChecksForReview(reviewId);
+            // Delete the review itself
+            await ReviewService.deleteReview(reviewId);
+        },
+        onSuccess: (_, reviewId) => {
+            queryClient.invalidateQueries({ queryKey: ["reviews"] });
+            queryClient.invalidateQueries({ queryKey: ["review", String(reviewId)] });
+            queryClient.invalidateQueries({ queryKey: ["checks", String(reviewId)] });
         },
     });
 }

@@ -2,6 +2,7 @@ import { DigiLayoutContainer, DigiTypography } from "@digi/arbetsformedlingen-re
 import type { Route } from "./+types/home";
 import { ReviewSummary } from "~/components/ReviewSummary";
 import { StyledLink } from "~/components/StyledLink";
+import { useRequirementCategories } from "~/hooks/useReviewData";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -11,6 +12,8 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const { data: categories } = useRequirementCategories();
+
   return <DigiLayoutContainer afVerticalPadding>
     <DigiTypography>
       <main>

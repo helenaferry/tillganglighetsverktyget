@@ -74,18 +74,21 @@ export type Database = {
         Row: {
           application: number | null
           created_at: string
+          excludedContentTypes: string | null
           id: number
           title: string | null
         }
         Insert: {
           application?: number | null
           created_at?: string
+          excludedContentTypes?: string | null
           id?: number
           title?: string | null
         }
         Update: {
           application?: number | null
           created_at?: string
+          excludedContentTypes?: string | null
           id?: number
           title?: string | null
         }
