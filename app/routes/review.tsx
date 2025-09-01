@@ -4,6 +4,8 @@ import { useFullReview, useUpsertCheck } from '~/hooks/useReviewData'
 import { DigiLayoutContainer, DigiTypography, DigiTable, DigiLoaderSkeleton, DigiFormSelect } from "@digi/arbetsformedlingen-react";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import type { UpsertCheckInput } from "~/data/types";
+import { useMemo } from "react";
+import { formatDate, formatPercentage } from "~/formattingHelper";
 
 export function meta({ }: Route.MetaArgs) {
     return [,
@@ -28,6 +30,23 @@ export default function RequirementsList() {
                 return '';
         }
     };
+    const statusCounts = useMemo(() => {
+        if (!review?.requirements) return {};
+        return review.requirements.reduce((acc, req) => {
+            const status = req.check?.status || 'Ej granskad';
+            acc[status] = (acc[status] || 0) + 1;
+            // Count relevant requirements (not 'irrelevant')
+            if (status !== 'irrelevant') {
+                acc.totalRelevant = (acc.totalRelevant || 0) + 1;
+            }
+            // Count done requirements (status 'pass' or 'fail')
+            if (status === 'pass' || status === 'fail') {
+                acc.done = (acc.done || 0) + 1;
+            }
+            return acc;
+        }, {} as Record<string, number>);
+    }, [review]);
+
     return (
         <DigiLayoutContainer afVerticalPadding>
             <DigiTypography>
@@ -40,7 +59,14 @@ export default function RequirementsList() {
                         </DigiLoaderSkeleton>}
                     {review && <>
                         <h1>{review?.title}</h1>
-                        <p><b>Applikation:</b> {review?.application?.name}<br></br><b>Granskning startad:</b> {new Date(review?.created_at).toISOString().slice(0, 10)}</p>
+                        <p>
+                            <b>Applikation:</b> {review?.application?.name}<br />
+                            <b>Granskning startad:</b> {formatDate(review?.created_at)}
+                        </p>
+                        <p><b>Relevanta krav:</b> {statusCounts['totalRelevant'] || 0} / 96, {formatPercentage((statusCounts['totalRelevant'] || 0) / 96)}<br />
+                            <b>Klara:</b> {statusCounts['done'] || 0} ({statusCounts['pass'] || 0} godkända, {statusCounts['fail'] || 0} underkända), {formatPercentage(statusCounts['done'] / statusCounts['totalRelevant'])}<br />
+                            <b>Kvar att granska:</b> {statusCounts['Ej granskad'] || 0}
+                        </p>
                         <DigiTable>
                             <table>
                                 <thead>

@@ -25,16 +25,18 @@ export type Requirement = {
     howToTest: HowToTest;
 }
 
-// Supabase types
+// Database types
 import type { Database } from "~/data/supabase-types";
 
 export type Review = Database['public']['Tables']['reviews']['Row'];
 export type Check = Database['public']['Tables']['checks']['Row'];
 export type Application = Database['public']['Tables']['applications']['Row'];
 
-// Extended types
-export type ReviewWithApplication = Review & {
+export type ReviewSummary = Review & {
     application?: Application;
+    passCount: number;
+    failCount: number;
+    irrelevantCount: number;
 };
 export type RequirementWithCheck = Requirement & { check?: Check };
 

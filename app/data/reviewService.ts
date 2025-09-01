@@ -1,4 +1,4 @@
-import type { Check, Requirement, ReviewWithApplication } from "./types";
+import type { Check, Requirement, Review, ReviewSummary } from "./types";
 
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://siouoxdqpgykibzayejt.supabase.co'
@@ -18,23 +18,47 @@ export const ReviewService = {
         return json.data;
     },
 
-
-    async getAllReviews(): Promise<ReviewWithApplication[]> {
+    async getAllReviews(): Promise<Review[]> {
         const { data, error } = await supabase
             .from('reviews')
-            .select('*, application(*)');
+            .select('*');
         if (error) throw error;
-        return data as ReviewWithApplication[];
+        return data as Review[];
     },
 
-    async getReviewById(reviewId: string): Promise<ReviewWithApplication> {
+
+    async getAllReviewSummaries(): Promise<ReviewSummary[]> {
+        const { data: reviews, error: reviewError } = await supabase
+            .from('reviews')
+            .select('*, application(*)');
+        if (reviewError) throw reviewError;
+
+        // Get all checks for all reviews
+        const { data: checks, error: checksError } = await supabase
+            .from('checks')
+            .select('review, status');
+        if (checksError) throw checksError;
+
+        // Aggregate counts per review
+        return (reviews as ReviewSummary[]).map(review => {
+            const reviewChecks = checks.filter((c: any) => c.review === review.id);
+            return {
+                ...review,
+                passCount: reviewChecks.filter((c: any) => c.status === 'pass').length,
+                failCount: reviewChecks.filter((c: any) => c.status === 'fail').length,
+                irrelevantCount: reviewChecks.filter((c: any) => c.status === 'irrelevant').length,
+            };
+        });
+    },
+
+    async getReviewById(reviewId: string): Promise<ReviewSummary> {
         const { data, error } = await supabase
             .from('reviews')
             .select('*, application(*)')
             .eq('id', reviewId)
             .single();
         if (error) throw error;
-        return data as ReviewWithApplication;
+        return data as ReviewSummary;
     },
 
     async getChecksForReview(reviewId: string): Promise<Check[]> {

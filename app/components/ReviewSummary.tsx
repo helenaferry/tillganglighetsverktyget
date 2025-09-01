@@ -2,8 +2,9 @@ import { DigiLayoutContainer, DigiTypography, DigiTable, DigiLoaderSkeleton } fr
 import { StyledLink } from "./StyledLink";
 import { useReviews } from "~/hooks/useReviewData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
+import { formatDate, formatPercentage } from "~/formattingHelper";
 
-export function Welcome() {
+export function ReviewSummary() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
 
   return (
@@ -28,6 +29,10 @@ export function Welcome() {
                     Applikation
                   </th>
                   <th scope="col">Skapad</th>
+                  <th>Godkända</th>
+                  <th>Underkända</th>
+                  <th>Relevanta krav</th>
+                  <th>Granskningsgrad</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,7 +42,11 @@ export function Welcome() {
                       <StyledLink to={`/review/${review.id}`} text={review.title || 'Granskning'} />
                     </td>
                     <td>{review.application?.name}</td>
-                    <td>{review.created_at}</td>
+                    <td>{formatDate(review.created_at)}</td>
+                    <td>{review.passCount}</td>
+                    <td>{review.failCount}</td>
+                    <td>{96 - review.irrelevantCount}/96 {formatPercentage((96 - review.irrelevantCount) / 96)}</td>
+                    <td>{formatPercentage((review.passCount + review.failCount + review.irrelevantCount) / 96)}</td>
                   </tr>
                 )}
               </tbody>

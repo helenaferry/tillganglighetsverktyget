@@ -1,17 +1,17 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-import type { Check, FullReview, Requirement, ReviewWithApplication, UpsertCheckInput } from '~/data/types';
+import type { Check, FullReview, Requirement, ReviewSummary, UpsertCheckInput } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
-// Alla granskningar (grunddata + application)
-export function useReviews(): UseQueryResult<ReviewWithApplication[], Error> {
-    return useQuery<ReviewWithApplication[], Error>({
+// All reviews with summary data
+export function useReviews(): UseQueryResult<ReviewSummary[], Error> {
+    return useQuery<ReviewSummary[], Error>({
         queryKey: ["reviews"],
-        queryFn: () => ReviewService.getAllReviews(),
+        queryFn: () => ReviewService.getAllReviewSummaries(),
     });
 }
 
-// Alla krav
+// All requirements
 export function useRequirementsData(path: string = "/tillganglighetslistan.json"): UseQueryResult<Requirement[], Error> {
     return useQuery<Requirement[], Error>({
         queryKey: ["requirements", path],
@@ -19,11 +19,11 @@ export function useRequirementsData(path: string = "/tillganglighetslistan.json"
     });
 }
 
-// Fullständig granskning med krav och checks
+// Full review with requirements and checks
 export function useFullReview(reviewId: string): { review?: FullReview; isLoading: boolean } {
     const { data: requirements, isLoading: requirementsLoading } = useRequirementsData();
 
-    const { data: reviewData, isLoading: reviewLoading } = useQuery<ReviewWithApplication, Error>({
+    const { data: reviewData, isLoading: reviewLoading } = useQuery<ReviewSummary, Error>({
         queryKey: ["review", reviewId],
         queryFn: () => ReviewService.getReviewById(reviewId),
         enabled: !!reviewId,
@@ -55,7 +55,7 @@ export function useFullReview(reviewId: string): { review?: FullReview; isLoadin
     return { review: fullReview, isLoading: reviewLoading || requirementsLoading || checksLoading };
 }
 
-// Uppdatera eller lägg till check om den inte redan finns
+// Update or add check
 export function useUpsertCheck() {
     const queryClient = useQueryClient();
 
@@ -71,7 +71,7 @@ export function useUpsertCheck() {
     });
 }
 
-// Ta bort en check
+// Delete check
 export function useDeleteCheck() {
     const queryClient = useQueryClient();
 
@@ -84,7 +84,7 @@ export function useDeleteCheck() {
     });
 }
 
-// Sätt flera checks som irrelevanta
+// Disable multiple checks
 export function useDisableChecks() {
     const queryClient = useQueryClient();
 
