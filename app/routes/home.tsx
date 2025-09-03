@@ -1,8 +1,7 @@
 import { DigiLayoutContainer, DigiTypography } from "@digi/arbetsformedlingen-react";
 import type { Route } from "./+types/home";
-import { ReviewSummary } from "~/components/ReviewSummary";
+import { ReviewsList } from "~/components/ReviewsList";
 import { StyledLink } from "~/components/StyledLink";
-import { useRequirementCategories } from "~/hooks/useReviewData";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -12,14 +11,12 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
-  const { data: categories } = useRequirementCategories();
-
   return <DigiLayoutContainer afVerticalPadding>
     <DigiTypography>
       <main>
         <h1>Granskningar</h1>
         <StyledLink to="/add" text="Skapa ny granskning" isButton={true} />
-        <ReviewSummary />
+        <ReviewsList />
       </main>
     </DigiTypography>
   </DigiLayoutContainer>;

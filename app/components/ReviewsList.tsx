@@ -4,7 +4,7 @@ import { useReviews, useDeleteReview } from "~/hooks/useReviewData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import { formatDate, formatPercentage } from "~/formattingHelper";
 
-export function ReviewSummary() {
+export function ReviewsList() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
   const deleteReview = useDeleteReview();
 
