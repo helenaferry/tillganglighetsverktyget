@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import type { FullReview, RequirementWithCheck, Status, UpsertCheckInput } from "~/data/types";
+import type { FullReview, RequirementWithCheck, UpsertCheckInput } from "~/data/types";
 import {
     DigiFormRadiogroup,
     DigiFormRadiobutton,

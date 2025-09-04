@@ -1,7 +1,7 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
 import { useFullReview, useRequirementCategories, useCategoriesWithRequirements } from '~/hooks/useReviewData'
-import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton } from "@digi/arbetsformedlingen-react";
+import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiExpandableAccordion } from "@digi/arbetsformedlingen-react";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import Review from "~/components/Review";
 import { StyledLink } from "~/components/StyledLink";
@@ -85,18 +85,21 @@ export default function ReviewPage() {
                                 return (
                                     <div className="flex gap-4">
                                         <div className="w-1/4">
-                                            {categoriesWithRequirements.map(category => (
-                                                <div key={category.category}>
-                                                    <StyledLink text={category.category} to={`/review/${id}/${category.requirements[0].id}`} />
-                                                    <ul className="ml-4">
-                                                        {category.requirements.map(req => (
-                                                            <li key={req.id}>
-                                                                <StyledLink text={req.topic} to={`/review/${id}/${req.id}`} />
+                                            {categoriesWithRequirements.map(category =>
+                                                <DigiExpandableAccordion
+                                                    afHeading={category.category}
+                                                    afExpanded={requirement.category === category.category}
+                                                >
+                                                    <ul>
+                                                        {category.requirements.map(catReq => (
+                                                            <li key={catReq.id} className="flex gap-2">
+                                                                <div className="w-[1rem]">{reqId == catReq.id && <span>&raquo;</span>}</div>
+                                                                <StyledLink text={catReq.topic} to={`/review/${id}/${catReq.id}`} />
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                </div>
-                                            ))}
+                                                </DigiExpandableAccordion>
+                                            )}
                                         </div>
                                         <div>
                                             {review &&
