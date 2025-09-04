@@ -1,8 +1,9 @@
-import { DigiTable, DigiIconCheck, DigiIconExclamationTriangleFilled, DigiFormSelectFilter, DigiTag, DigiFormInput } from "@digi/arbetsformedlingen-react";
+import { DigiTable, DigiFormSelectFilter, DigiTag, DigiFormInput } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from './StyledLink';
-import type { FullReview } from '~/data/types';
+import { Status, type FullReview } from '~/data/types';
 import { useRequirementCategories } from "~/hooks/useReviewData";
 import { useState } from "react";
+import StatusBadge from "./StatusBadge";
 
 type Props = {
     review: FullReview;
@@ -21,21 +22,9 @@ export default function Review({ review }: Props) {
         ];
         return filters.every(Boolean);
     });
-    const styleFromStatus = (status: string | undefined) => {
-        switch (status) {
-            case 'pass':
-                return "bg-[var(--digi--leaf-100)]";
-            case 'fail':
-                return "bg-[var(--digi--rose-50)]";
-            case 'irrelevant':
-                return 'bg-[var(--digi--grayscale-200)]';
-            default:
-                return '';
-        }
-    };
 
     return (
-        <>
+        <div>
             {review &&
                 <>
                     <div className="md:flex md:gap-4">
@@ -75,36 +64,35 @@ export default function Review({ review }: Props) {
                             />
                         </div>
                     </div>
-                    <DigiTable>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Krav - visar {filteredRequirements.length}</th>
-                                    <th scope="col">Kategori</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredRequirements.map(req =>
-                                    <tr key={req.id} className={styleFromStatus(req.check?.status ?? undefined)}>
-                                        <td>
-                                            <StyledLink to={"/review/" + review.id + "/" + req.id} text={`${req.id}. ${req.topic}`} />
-                                        </td>
-                                        <td>
-                                            <DigiTag afText={req.category} afNoIcon={true} />
-                                        </td>
-                                        <td>
-                                            {req.check?.status === 'pass' && <span className="flex items-center gap-2"><DigiIconCheck style={{ "--digi--icon--color": "var(--digi--leaf-600)" } as React.CSSProperties} /> Godkänd</span>}
-                                            {req.check?.status === 'fail' && <span className="flex items-center gap-2"><span className="block w-[1.5rem]"><DigiIconExclamationTriangleFilled style={{ "--digi--icon--color": "var(--digi--color--text--danger)" } as React.CSSProperties} /></span> Underkänd</span>}
-                                            {req.check?.status === 'irrelevant' && <span className="flex items-center gap-2">Ej relevant</span>}
-                                        </td>
+                    <div className="content-container">
+                        <DigiTable>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Krav - visar {filteredRequirements.length}</th>
+                                        <th scope="col">Kategori</th>
+                                        <th scope="col">Status</th>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </DigiTable>
+                                </thead>
+                                <tbody>
+                                    {filteredRequirements.map(req =>
+                                        <tr key={req.id}>
+                                            <td>
+                                                <StyledLink to={"/review/" + review.id + "/" + req.id} text={`${req.id}. ${req.topic}`} />
+                                            </td>
+                                            <td>
+                                                <DigiTag afText={req.category} afNoIcon={true} />
+                                            </td>
+                                            <td>
+                                                <StatusBadge status={req.check?.status} />
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </DigiTable></div>
                 </>
             }
-        </>
+        </div>
     );
 }

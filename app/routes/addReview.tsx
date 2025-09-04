@@ -12,10 +12,10 @@ export function meta({ }: Route.MetaArgs) {
 export default function AddReview() {
     return <DigiLayoutContainer afVerticalPadding>
         <DigiTypography>
-            <main>
+            <>
                 <h1>Skapa ny granskning</h1>
                 <ReviewForm />
-            </main>
+            </>
         </DigiTypography>
     </DigiLayoutContainer>;
 }

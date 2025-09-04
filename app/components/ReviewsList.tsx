@@ -9,7 +9,7 @@ export function ReviewsList() {
   const deleteReview = useDeleteReview();
 
   return (
-    <>
+    <div>
       {reviewsLoading &&
         <DigiLoaderSkeleton
           afVariation={LoaderSkeletonVariation.SECTION}
@@ -18,7 +18,7 @@ export function ReviewsList() {
         </DigiLoaderSkeleton>}
       {reviewsError && <p>Fel vid hämtning av granskningar</p>}
       {!reviewsLoading && !reviews || reviews?.length === 0 && <p>Inga granskningar hittades.</p>}
-      {reviews && <DigiTable>
+      {reviews && <div className="content-container"><DigiTable>
         <table>
           <thead>
             <tr>
@@ -63,7 +63,7 @@ export function ReviewsList() {
         </table>
         {deleteReview.isError && <span style={{ color: 'red' }}>Fel vid borttagning</span>}
         {deleteReview.isSuccess && <span style={{ color: 'green' }}>Borttagen!</span>}
-      </DigiTable>}
-    </>
+      </DigiTable></div>}
+    </div>
   );
 }

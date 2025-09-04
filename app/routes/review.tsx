@@ -1,6 +1,6 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
-import { useFullReview } from '~/hooks/useReviewData'
+import { useFullReview, useRequirementCategories, useCategoriesWithRequirements } from '~/hooks/useReviewData'
 import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton } from "@digi/arbetsformedlingen-react";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import Review from "~/components/Review";
@@ -19,6 +19,9 @@ export function meta({ }: Route.MetaArgs) {
 export default function ReviewPage() {
     const { id, reqId } = useParams<{ id: string, reqId?: string }>();
     const { review: review, isLoading: fullReviewLoading } = useFullReview(id ?? '');
+
+    const { data: categories } = useRequirementCategories();
+    const categoriesWithRequirements = useCategoriesWithRequirements(categories, review?.requirements);
 
     const statusCounts = useMemo(() => {
         if (!review?.requirements) return {};
@@ -44,7 +47,7 @@ export default function ReviewPage() {
     return (
         <DigiLayoutContainer afVerticalPadding>
             <DigiTypography>
-                <main>
+                <div>
                     {fullReviewLoading &&
                         <DigiLoaderSkeleton
                             afVariation={LoaderSkeletonVariation.SECTION}
@@ -75,26 +78,48 @@ export default function ReviewPage() {
                             </div>
                         </div>
                     </div>}
-                    {reqId && (() => {
-                        const requirement = review?.requirements.find(req => String(req.id) === String(reqId));
-                        return requirement ? (
-                            <>
-                                {review &&
-                                    <ReviewRequirement requirement={requirement} review={review} />
-
-                                }
-                                <StyledLink to={`/review/${id}`} text="Tillbaka till granskningsöversikten" />
-                            </>
-                        ) : (<>
-                            <p>Krav-ID: {reqId} hittades inte.</p>
-                            <StyledLink to={`/review/${id}`} text="Tillbaka till granskningsöversikten" />
-                        </>
-
-                        );
-
-                    })()}
+                    {reqId && (
+                        (() => {
+                            const requirement = review?.requirements.find(req => String(req.id) === String(reqId));
+                            if (requirement) {
+                                return (
+                                    <div className="flex gap-4">
+                                        <div className="w-1/4">
+                                            {categoriesWithRequirements.map(category => (
+                                                <div key={category.category}>
+                                                    <StyledLink text={category.category} to={`/review/${id}/${category.requirements[0].id}`} />
+                                                    <ul className="ml-4">
+                                                        {category.requirements.map(req => (
+                                                            <li key={req.id}>
+                                                                <StyledLink text={req.topic} to={`/review/${id}/${req.id}`} />
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div>
+                                            {review &&
+                                                <div className="content-container">
+                                                    <ReviewRequirement requirement={requirement} review={review} />
+                                                </div>}
+                                            <StyledLink to={`/review/${id}`} text="Tillbaka till granskningsöversikten" />
+                                        </div>
+                                    </div>
+                                );
+                            } else {
+                                return (
+                                    <div>
+                                        <p>Krav-ID: {reqId} hittades inte.</p>
+                                        <StyledLink to={`/review/${id}`} text="Tillbaka till granskningsöversikten" />
+                                    </div>
+                                );
+                            }
+                        })()
+                    )}
+                    {/* Visa granskningsöversikt */}
                     {review && !reqId && <Review review={review} />}
-                </main>
+                </div>
             </DigiTypography>
         </DigiLayoutContainer >
     );

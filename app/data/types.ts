@@ -25,6 +25,13 @@ export type Requirement = {
     howToTest: HowToTest;
 }
 
+export enum Status {
+    pass = "Godkänd",
+    fail = "Underkänd",
+    irrelevant = "Irrelevant",
+    not_assessed = "Ej bedömd"
+}
+
 // Database types
 import type { Database } from "~/data/supabase-types";
 

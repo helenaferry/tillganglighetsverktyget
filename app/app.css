@@ -16,3 +16,7 @@ body {
     color-scheme: dark;
   }
 }
+
+.content-container {
+  @apply bg-white rounded-[var(--digi--border-radius--secondary)] p-6 my-6;
+}

@@ -1,18 +1,17 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import type { FullReview, RequirementWithCheck, UpsertCheckInput } from "~/data/types";
+import type { FullReview, RequirementWithCheck, Status, UpsertCheckInput } from "~/data/types";
 import {
     DigiFormRadiogroup,
     DigiFormRadiobutton,
     DigiFormTextarea,
-    DigiIconCheck,
-    DigiIconExclamationTriangleFilled,
-    DigiTag
+    DigiTag,
 } from "@digi/arbetsformedlingen-react";
 import { FormTextareaVariation, TagSize } from "@digi/arbetsformedlingen";
 import { useUpsertCheck, useDeleteCheck } from '~/hooks/useReviewData'
 import { StyledLink } from "./StyledLink";
 import RequirementDetails from "./RequirementDetails";
+import StatusBadge from "./StatusBadge";
 
 type Props = {
     requirement: RequirementWithCheck;
@@ -26,8 +25,6 @@ export default function ReviewRequirement({ requirement, review }: Props) {
     const scrollPosRef = useRef<number>(0);
     const location = useLocation();
 
-    console.log(requirement);
-
     useEffect(() => {
         window.scrollTo(0, scrollPosRef.current);
     }, [location]);
@@ -36,7 +33,7 @@ export default function ReviewRequirement({ requirement, review }: Props) {
         scrollPosRef.current = window.scrollY;
     };
     return (
-        <>
+        <div>
             <div className="flex justify-between mb-2">
                 <div>
                     {Number(requirement.id) > 1 && (
@@ -54,7 +51,7 @@ export default function ReviewRequirement({ requirement, review }: Props) {
                     )}
                 </div>
             </div>
-            <section className="mb-8 p-6 rounded-md bg-[var(--digi--grayscale-100)]">
+            <section className="mb-8 p-6 rounded-md">
                 <div className="border-b-1 md:flex gap-4 justify-between">
                     <div className="flex gap-4">
                         <h2>{requirement.id}. {requirement.topic}</h2>
@@ -77,11 +74,7 @@ export default function ReviewRequirement({ requirement, review }: Props) {
                         </div>
                     </div>
                     <div>
-                        {(requirement.check?.status === "pass" || requirement.check?.status === "fail") && <div className="bg-white p-3 rounded-full">
-                            {requirement.check?.status === "pass" && <DigiIconCheck style={{ "--digi--icon--color": "var(--digi--leaf-600)" } as React.CSSProperties} />}
-                            {requirement.check?.status === "fail" && <DigiIconExclamationTriangleFilled style={{ "--digi--icon--color": "var(--digi--ruby-700)" } as React.CSSProperties} />}
-
-                        </div>}
+                        <StatusBadge status={requirement.check?.status} />
                     </div>
                 </div>
                 <div className="md:flex my-5 gap-5">
@@ -151,6 +144,6 @@ export default function ReviewRequirement({ requirement, review }: Props) {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     );
 }

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-import type { Application, Check, FullReview, Requirement, ReviewSummary, UpsertCheckInput } from '~/data/types';
+import type { Application, Category, Check, FullReview, Requirement, ReviewSummary, RequirementWithCheck, UpsertCheckInput } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
 // All reviews with summary data
@@ -25,6 +25,15 @@ export function useRequirementCategories(path: string = "/tillganglighetslistan.
         queryKey: ["requirementCategories", path],
         queryFn: () => ReviewService.getAllRequirementCategories(path),
     });
+}
+
+// Requirements grouped by category
+export function useCategoriesWithRequirements(categories: string[] | undefined, requirements: RequirementWithCheck[] | undefined): Category[] {
+    if (!categories || !requirements) return [];
+    return categories.map(category => ({
+        category,
+        requirements: requirements.filter(req => req.category === category)
+    }));
 }
 
 // Full review with requirements and checks

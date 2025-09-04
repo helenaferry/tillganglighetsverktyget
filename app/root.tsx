@@ -41,7 +41,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </DigiHeader>
           </DigiLayoutContainer>
           <QueryClientProvider client={queryClient}>
-            {children}
+            <div className="!bg-[var(--digi--grayscale-100)]">
+              {children}
+            </div>
           </QueryClientProvider>
           <DigiFooter afVariation={FooterVariation.LARGE}>
             <div slot="content-bottom-left">

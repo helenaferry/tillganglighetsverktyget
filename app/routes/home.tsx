@@ -13,11 +13,11 @@ export function meta({ }: Route.MetaArgs) {
 export default function Home() {
   return <DigiLayoutContainer afVerticalPadding>
     <DigiTypography>
-      <main>
+      <>
         <h1>Granskningar</h1>
         <StyledLink to="/add" text="Skapa ny granskning" isButton={true} />
         <ReviewsList />
-      </main>
+      </>
     </DigiTypography>
   </DigiLayoutContainer>;
 }
