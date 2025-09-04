@@ -56,22 +56,18 @@ export default function ReviewPage() {
                             <h1>{review?.title}</h1>
                             <p>
                                 <b>Applikation:</b> {review?.application?.name}<br />
-                                <b>Granskning startad:</b> {formatDate(review?.created_at)}
-                            </p>
-                            <p><b>Relevanta krav:</b> {statusCounts['totalRelevant'] || 0} / 96, {formatPercentage((statusCounts['totalRelevant'] || 0) / 96)}<br />
-                                <b>Klara av alla:</b> {formatPercentage((statusCounts['totalChecks'] || 0) / 96)}<br />
-                                <b>Klara av relevanta:</b> {statusCounts['done'] || 0} ({statusCounts['pass'] || 0} godkända, {statusCounts['fail']} underkända), {statusCounts['done'] > 0 ? formatPercentage(statusCounts['done'] / statusCounts['totalRelevant']) : "0%"}<br />
-                                <b>Kvar att granska:</b> {statusCounts['Ej granskad'] || 0}
+                                <b>Granskning startad:</b> {formatDate(review?.created_at)}<br />
+                                <b>Relevanta krav:</b> {statusCounts['totalRelevant'] || 0} / 96, {formatPercentage((statusCounts['totalRelevant'] || 0) / 96)}<br />
                             </p>
                         </div>
                         <div>
-                            {statusCounts['done'] > 0 && <div className="h-24 w-24 md:h-32 md:w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
+                            {statusCounts['done'] > 0 && <div className="h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
                                 <div>
                                     <span className="block text-center text-[2.5rem]">{formatPercentage(statusCounts['done'] / statusCounts['totalRelevant']) || "0%"}</span>
                                     <span className="block text-center">K L A R T</span>
                                 </div>
                             </div>}
-                            <div className="h-24 w-24 md:h-24 md:w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
+                            <div className="h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
                                 <div>
                                     <span className="block text-center leading-none">BARA</span>
                                     <span className="block text-center text-[2rem] leading-none">{statusCounts['Ej granskad'] || 0}</span>

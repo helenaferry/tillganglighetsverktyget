@@ -55,3 +55,8 @@ export type UpsertCheckInput = {
     status?: 'pass' | 'fail' | 'irrelevant';
     comment?: string;
 };
+
+export type Category = {
+    category: string;
+    requirements: RequirementWithCheck[];
+}
