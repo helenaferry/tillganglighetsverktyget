@@ -101,7 +101,7 @@ export default function ReviewPage() {
                                                 </DigiExpandableAccordion>
                                             )}
                                         </div>
-                                        <div>
+                                        <div className="flex-1">
                                             {review &&
                                                 <div className="content-container">
                                                     <ReviewRequirement requirement={requirement} review={review} />
