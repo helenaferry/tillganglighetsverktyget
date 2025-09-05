@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import type { FullReview, RequirementWithCheck, UpsertCheckInput } from "~/data/types";
+import { Status, type FullReview, type RequirementWithCheck, type UpsertCheckInput } from "~/data/types";
 import {
     DigiFormRadiogroup,
     DigiFormRadiobutton,
@@ -12,6 +12,7 @@ import { useUpsertCheck, useDeleteCheck } from '~/hooks/useReviewData'
 import { StyledLink } from "./StyledLink";
 import RequirementDetails from "./RequirementDetails";
 import StatusBadge from "./StatusBadge";
+import RequirementForm from "./RequirementForm";
 
 type Props = {
     requirement: RequirementWithCheck;
@@ -36,7 +37,7 @@ export default function ReviewRequirement({ requirement, review, hideIrrelevant 
 
     const relevantRequirements = useMemo(() => {
         if (!requirement) return [];
-        return review.requirements.filter(req => !hideIrrelevant || req.check?.status !== 'irrelevant');
+        return review.requirements.filter(req => !hideIrrelevant || req.check?.status !== Status.IRRELEVANT);
     }, [requirement, review, hideIrrelevant]);
 
     const nextRequirementId = useMemo(() => {
@@ -97,67 +98,10 @@ export default function ReviewRequirement({ requirement, review, hideIrrelevant 
                 <div className="md:flex my-5 gap-5">
                     <RequirementDetails requirement={requirement} />
                     <div className="flex-1">
-                        <form id="requirement-form">
-                            <DigiFormRadiogroup afName="fulfillment"
-                                onAfOnGroupChange={(e: CustomEvent) => {
-                                    const status = e.detail.target.value;
-                                    if (!status && requirement.check) {
-                                        deleteCheck.mutate(requirement.id);
-                                    }
-                                    const input: UpsertCheckInput = {
-                                        reviewId: review.id,
-                                        requirement: requirement.id,
-                                        status: status,
-                                        comment: requirement.check?.comment ?? "",
-                                    };
-                                    upsertCheck.mutate(input, {
-                                        onError: (err) => {
-                                            console.error("Could not save check:", err);
-                                        },
-                                    });
-                                }}>
-                                <DigiFormRadiobutton
-                                    value=""
-                                    afLabel="Kravet är ej bedömt"
-                                    afChecked={!requirement.check} />
-                                <DigiFormRadiobutton
-                                    value="pass"
-                                    afLabel="Kravet uppfylls"
-                                    afChecked={requirement.check?.status === 'pass'}
-                                />
-                                <DigiFormRadiobutton
-                                    value="fail"
-                                    afLabel="Kravet uppfylls inte"
-                                    afChecked={requirement.check?.status === 'fail'}
-                                />
-                                <DigiFormRadiobutton
-                                    value="irrelevant"
-                                    afLabel="Kravet är ej relevant"
-                                    afChecked={requirement.check?.status === 'irrelevant'}
-                                />
-                            </DigiFormRadiogroup>
-                            {upsertCheck.isError ? "Fel vid sparande" : ""}
-                            {requirement.check?.status &&
-                                <DigiFormTextarea
-                                    afValue={requirement.check?.comment ?? ""}
-                                    afLabel={`Kommentar för krav: ${requirement.topic}`}
-                                    afVariation={FormTextareaVariation.LARGE}
-                                    onChange={(event) => {
-                                        const input: UpsertCheckInput = {
-                                            reviewId: review.id,
-                                            requirement: requirement.id,
-                                            status: (requirement.check?.status === 'pass' || requirement.check?.status === 'fail' || requirement.check?.status === 'irrelevant')
-                                                ? requirement.check?.status
-                                                : undefined,
-                                            comment: (event.target as HTMLInputElement).value,
-                                        };
-                                        upsertCheck.mutate(input, {
-                                            onError: (err) => {
-                                                console.error("Could not save check:", err);
-                                            },
-                                        });
-                                    }} />}
-                        </form>
+                        <RequirementForm
+                            requirement={requirement}
+                            reviewId={review.id}
+                        />
                     </div>
                 </div>
             </section>

@@ -1,4 +1,4 @@
-import type { Application, Check, Requirement, Review, ReviewSummary } from "./types";
+import { Status, type Application, type Check, type Requirement, type Review, type ReviewSummary } from "./types";
 
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://siouoxdqpgykibzayejt.supabase.co'
@@ -56,9 +56,9 @@ export const ReviewService = {
             const reviewChecks = checks.filter((c: any) => c.review === review.id);
             return {
                 ...review,
-                passCount: reviewChecks.filter((c: any) => c.status === 'pass').length,
-                failCount: reviewChecks.filter((c: any) => c.status === 'fail').length,
-                irrelevantCount: reviewChecks.filter((c: any) => c.status === 'irrelevant').length,
+                passCount: reviewChecks.filter((c: any) => c.status === Status.PASS).length,
+                failCount: reviewChecks.filter((c: any) => c.status === Status.FAIL).length,
+                irrelevantCount: reviewChecks.filter((c: any) => c.status === Status.IRRELEVANT).length,
             };
         });
     },
@@ -85,7 +85,7 @@ export const ReviewService = {
     async upsertCheck(input: {
         reviewId: string;
         requirement: string;
-        status?: "pass" | "fail" | "irrelevant";
+        status?: Status;
         comment?: string;
     }): Promise<Check> {
         const { reviewId, requirement, status, comment } = input;
@@ -126,7 +126,7 @@ export const ReviewService = {
         const inserts = requirements.map((requirement) => ({
             review: reviewId,
             requirement,
-            status: "irrelevant",
+            status: Status.IRRELEVANT,
             comment: "",
         }));
         const { data, error } = await supabase

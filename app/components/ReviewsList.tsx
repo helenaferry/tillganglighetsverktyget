@@ -1,13 +1,14 @@
 import { DigiTable, DigiLoaderSkeleton, DigiButton, DigiIconTrash } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from "./StyledLink";
-import { useReviews, useDeleteReview } from "~/hooks/useReviewData";
+import { useReviews, useDeleteReview, useRequirements } from "~/hooks/useReviewData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import { formatDate, formatPercentage } from "~/formattingHelper";
 
 export function ReviewsList() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
   const deleteReview = useDeleteReview();
-
+  const { data: requirements } = useRequirements();
+  const requirementsCount = requirements?.length || 0;
   return (
     <div>
       {reviewsLoading &&
@@ -42,8 +43,8 @@ export function ReviewsList() {
                 <td>{formatDate(review.created_at)}</td>
                 <td>{review.passCount}</td>
                 <td>{review.failCount}</td>
-                <td>{96 - review.irrelevantCount}/96 {formatPercentage((96 - review.irrelevantCount) / 96)}</td>
-                <td>{formatPercentage((review.passCount + review.failCount + review.irrelevantCount) / 96)}</td>
+                <td>{requirementsCount - review.irrelevantCount}/{requirementsCount} {formatPercentage((requirementsCount - review.irrelevantCount) / requirementsCount)}</td>
+                <td>{formatPercentage((review.passCount + review.failCount + review.irrelevantCount) / requirementsCount)}</td>
                 <td>
                   <DigiButton
                     afType="button"

@@ -12,7 +12,7 @@ export function useReviews(): UseQueryResult<ReviewSummary[], Error> {
 }
 
 // All requirements
-export function useRequirementsData(path: string = "/tillganglighetslistan.json"): UseQueryResult<Requirement[], Error> {
+export function useRequirements(path: string = "/tillganglighetslistan.json"): UseQueryResult<Requirement[], Error> {
     return useQuery<Requirement[], Error>({
         queryKey: ["requirements", path],
         queryFn: () => ReviewService.getAllRequirements(path),
@@ -38,7 +38,7 @@ export function useCategoriesWithRequirements(categories: string[] | undefined, 
 
 // Full review with requirements and checks
 export function useFullReview(reviewId: string): { review?: FullReview; isLoading: boolean } {
-    const { data: requirements, isLoading: requirementsLoading } = useRequirementsData();
+    const { data: requirements, isLoading: requirementsLoading } = useRequirements();
 
     const { data: reviewData, isLoading: reviewLoading } = useQuery<ReviewSummary, Error>({
         queryKey: ["review", reviewId],

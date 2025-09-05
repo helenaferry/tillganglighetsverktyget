@@ -42,7 +42,8 @@ export type Database = {
           id: number
           requirement: string | null
           review: number | null
-          status: string | null
+          status: number | null
+          updated_at: string | null
         }
         Insert: {
           comment?: string | null
@@ -50,7 +51,8 @@ export type Database = {
           id?: number
           requirement?: string | null
           review?: number | null
-          status?: string | null
+          status?: number | null
+          updated_at?: string | null
         }
         Update: {
           comment?: string | null
@@ -58,7 +60,8 @@ export type Database = {
           id?: number
           requirement?: string | null
           review?: number | null
-          status?: string | null
+          status?: number | null
+          updated_at?: string | null
         }
         Relationships: [
           {

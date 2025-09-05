@@ -3,39 +3,54 @@ import { DigiBadgeStatus } from "@digi/arbetsformedlingen-react";
 import { Status } from "~/data/types"
 
 type Props = {
-    status?: string | null;
+    status?: number | undefined | null;
+}
+
+// TODO proper i18n?
+const getStatusText = (status: Status) => {
+    switch (status) {
+        case Status.FAIL:
+            return "Underkänd";
+        case Status.IRRELEVANT:
+            return "Irrelevant";
+        case Status.PASS:
+            return "Godkänd";
+        case Status.NOT_ASSESSED:
+            return "Ej bedömd";
+        default:
+            return "";
+    }
 }
 
 export default function StatusBadge({ status }: Props) {
-    if (!status) { status = "not_assessed"; }
-    const value = Status[status as keyof typeof Status];
-    switch (value) {
-        case Status.fail:
+    const enumStatus = typeof status === 'number' ? status as Status : Status.NOT_ASSESSED;
+    switch (enumStatus) {
+        case Status.FAIL:
             return <DigiBadgeStatus
                 afType={BadgeStatusType.DENIED}
                 afVariation={BadgeStatusVariation.SECONDARY}
-                afText={Status.fail}
+                afText={getStatusText(Status.FAIL)}
                 afSize={BadgeStatusSize.LARGE}
             />
-        case Status.irrelevant:
+        case Status.IRRELEVANT:
             return <DigiBadgeStatus
                 afType={BadgeStatusType.NEUTRAL}
                 afVariation={BadgeStatusVariation.SECONDARY}
-                afText={Status.irrelevant}
+                afText={getStatusText(Status.IRRELEVANT)}
                 afSize={BadgeStatusSize.LARGE}
             />
-        case Status.pass:
+        case Status.PASS:
             return <DigiBadgeStatus
                 afType={BadgeStatusType.APPROVED}
                 afVariation={BadgeStatusVariation.SECONDARY}
-                afText={Status.pass}
+                afText={getStatusText(Status.PASS)}
                 afSize={BadgeStatusSize.LARGE}
             />
-        case Status.not_assessed:
+        case Status.NOT_ASSESSED:
             return <DigiBadgeStatus
                 afType={BadgeStatusType.PROMPT}
                 afVariation={BadgeStatusVariation.SECONDARY}
-                afText={Status.not_assessed}
+                afText={getStatusText(Status.NOT_ASSESSED)}
                 afSize={BadgeStatusSize.LARGE}
             />
     }

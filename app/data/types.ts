@@ -26,10 +26,10 @@ export type Requirement = {
 }
 
 export enum Status {
-    pass = "Godkänd",
-    fail = "Underkänd",
-    irrelevant = "Irrelevant",
-    not_assessed = "Ej bedömd"
+    PASS,
+    FAIL,
+    IRRELEVANT,
+    NOT_ASSESSED
 }
 
 // Database types
@@ -59,7 +59,7 @@ export type FullReview = {
 export type UpsertCheckInput = {
     reviewId: number;
     requirement: string;
-    status?: 'pass' | 'fail' | 'irrelevant';
+    status: Status;
     comment?: string;
 };
 

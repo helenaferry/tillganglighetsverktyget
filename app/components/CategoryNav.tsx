@@ -1,6 +1,6 @@
 import { NavigationVerticalMenuVariation } from "@digi/arbetsformedlingen";
 import { DigiNavigationVerticalMenu, DigiNavigationVerticalMenuItem } from "@digi/arbetsformedlingen-react";
-import type { Category } from "~/data/types";
+import { Status, type Category } from "~/data/types";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 
@@ -17,7 +17,7 @@ export default function CategoryNav({ reviewId, categories, selectedCategory, se
         const firstInCategory = categories.find(cat => cat.category === category);
         if (firstInCategory) {
             const firstRequirement = firstInCategory.requirements.filter(req => {
-                if (hideIrrelevant && req.check?.status === 'irrelevant') return false;
+                if (hideIrrelevant && req.check?.status === Status.IRRELEVANT) return false;
                 return true;
             })[0];
             if (firstRequirement) {
@@ -25,13 +25,13 @@ export default function CategoryNav({ reviewId, categories, selectedCategory, se
             }
         }
     };
-    const getShortStatus = (status: string) => {
+    const getShortStatus = (status: Status) => {
         switch (status) {
-            case 'pass':
+            case Status.PASS:
                 return '✅';
-            case 'fail':
+            case Status.FAIL:
                 return '❌';
-            case 'irrelevant':
+            case Status.IRRELEVANT:
                 return '🚫';
             default:
                 return '';
@@ -40,8 +40,8 @@ export default function CategoryNav({ reviewId, categories, selectedCategory, se
     const getCategoryStatus = (category: string) => {
         const requirements = categories.find(cat => cat.category === category)?.requirements;
         if (!requirements) return '';
-        const checked = requirements.filter(req => req.check?.status === 'pass' || req.check?.status === 'fail').length;
-        const total = requirements.filter(req => hideIrrelevant ? req.check?.status !== "irrelevant" : true).length;
+        const checked = requirements.filter(req => req.check?.status === Status.PASS || req.check?.status === Status.FAIL).length;
+        const total = requirements.filter(req => hideIrrelevant ? req.check?.status !== Status.IRRELEVANT : true).length;
         return `(${checked}/${total})`;
     };
 
@@ -49,7 +49,7 @@ export default function CategoryNav({ reviewId, categories, selectedCategory, se
         return categories.map(category => ({
             ...category,
             requirements: category.requirements.filter(req =>
-                !(hideIrrelevant && req.check?.status === 'irrelevant')
+                !(hideIrrelevant && req.check?.status === Status.IRRELEVANT)
             ),
         })).filter(category => category.requirements.length > 0);
     }, [categories, hideIrrelevant]);
@@ -71,7 +71,7 @@ export default function CategoryNav({ reviewId, categories, selectedCategory, se
                             {category.requirements.map(req => (
                                 <li key={req.id}>
                                     <DigiNavigationVerticalMenuItem
-                                        afText={`${selectedRequirement == req.id ? '➡ ' : ''}${req.topic ?? ""} ${getShortStatus(req.check?.status ?? "")}`}
+                                        afText={`${selectedRequirement == req.id ? '➡ ' : ''}${req.topic ?? ""} ${getShortStatus(req.check?.status ?? Status.NOT_ASSESSED)}`}
                                         onClick={() => navigate(`/review/${reviewId}/${req.id}`)}
                                     />
                                 </li>

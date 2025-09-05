@@ -9,6 +9,7 @@ import ReviewRequirement from "~/components/ReviewRequirement";
 import { formatDate, formatPercentage } from "~/formattingHelper";
 import { useMemo, useState } from "react";
 import CategoryNav from "~/components/CategoryNav";
+import { Status } from "~/data/types";
 
 export function meta({ }: Route.MetaArgs) {
     return [,
@@ -31,11 +32,11 @@ export default function ReviewPage() {
             const status = req.check?.status || 'Ej granskad';
             acc[status] = (acc[status] || 0) + 1;
             // Count relevant requirements (not 'irrelevant')
-            if (status !== 'irrelevant') {
+            if (status !== Status.IRRELEVANT) {
                 acc.totalRelevant = (acc.totalRelevant || 0) + 1;
             }
             // Count done requirements (status 'pass' or 'fail')
-            if (status === 'pass' || status === 'fail') {
+            if (status === Status.PASS || status === Status.FAIL) {
                 acc.done = (acc.done || 0) + 1;
             }
             // Count all checks
@@ -91,7 +92,6 @@ export default function ReviewPage() {
                                                 afLabel="Dölj irrelevanta krav"
                                                 afChecked={hideIrrelevant}
                                                 onAfOnChange={(e) => {
-                                                    console.log(e.detail.target.checked);
                                                     setHideIrrelevant(e.detail.target.checked)
                                                 }}
                                                 afVariation={FormCheckboxVariation.PRIMARY}

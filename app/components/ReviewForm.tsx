@@ -1,15 +1,15 @@
 import { DigiFormInput, DigiFormSelectFilter, DigiButton, DigiFormFieldset, DigiFormCheckbox } from "@digi/arbetsformedlingen-react";
-import { useApplications, useRequirementsData, useUpsertReview, useDisableChecks } from "~/hooks/useReviewData";
+import { useApplications, useRequirements, useUpsertReview, useDisableChecks } from "~/hooks/useReviewData";
 import { useState } from "react";
 
 export function ReviewForm() {
     const { data: applications } = useApplications();
-    const { data: requirements } = useRequirementsData();
+    const { data: requirements } = useRequirements();
     const disableChecks = useDisableChecks();
     const upsertReview = useUpsertReview();
     const [title, setTitle] = useState("");
     const [application, setApplication] = useState("");
-    const allContentTypes = ["Ikoner & bilder", "Ljud", "Video", "Formulär", "Komponenter - Länkar", "Komponenter - Knappar", "Komponenter - Listor", "Komponenter - Tabeller", "Komponenter - Iframes", "Felhantering"];
+    const allContentTypes = ["Ikoner & bilder", "Ljud", "Video", "Formulär", "Komponenter - Knappar", "Komponenter - Listor", "Komponenter - Tabeller", "Komponenter - Iframes", "Felhantering"];
     const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>(allContentTypes);
 
     const handleContentChange = (e: CustomEvent) => {
