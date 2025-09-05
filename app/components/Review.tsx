@@ -1,6 +1,6 @@
 import { DigiTable, DigiFormSelectFilter, DigiTag, DigiFormInput } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from './StyledLink';
-import { Status, type FullReview } from '~/data/types';
+import { type FullReview } from '~/data/types';
 import { useRequirementCategories } from "~/hooks/useReviewData";
 import { useState } from "react";
 import StatusBadge from "./StatusBadge";

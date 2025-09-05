@@ -1,13 +1,14 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
 import { useFullReview, useRequirementCategories, useCategoriesWithRequirements } from '~/hooks/useReviewData'
-import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiExpandableAccordion } from "@digi/arbetsformedlingen-react";
-import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
+import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiExpandableAccordion, DigiFormCheckbox } from "@digi/arbetsformedlingen-react";
+import { FormCheckboxVariation, LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import Review from "~/components/Review";
 import { StyledLink } from "~/components/StyledLink";
 import ReviewRequirement from "~/components/ReviewRequirement";
 import { formatDate, formatPercentage } from "~/formattingHelper";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import CategoryNav from "~/components/CategoryNav";
 
 export function meta({ }: Route.MetaArgs) {
     return [,
@@ -19,6 +20,7 @@ export function meta({ }: Route.MetaArgs) {
 export default function ReviewPage() {
     const { id, reqId } = useParams<{ id: string, reqId?: string }>();
     const { review: review, isLoading: fullReviewLoading } = useFullReview(id ?? '');
+    const [hideIrrelevant, setHideIrrelevant] = useState(true);
 
     const { data: categories } = useRequirementCategories();
     const categoriesWithRequirements = useCategoriesWithRequirements(categories, review?.requirements);
@@ -81,30 +83,36 @@ export default function ReviewPage() {
                     {reqId && (
                         (() => {
                             const requirement = review?.requirements.find(req => String(req.id) === String(reqId));
-                            if (requirement) {
+                            if (requirement && id) {
                                 return (
                                     <div className="flex gap-4">
                                         <div className="w-1/4">
-                                            {categoriesWithRequirements.map(category =>
-                                                <DigiExpandableAccordion
-                                                    afHeading={category.category}
-                                                    afExpanded={requirement.category === category.category}
-                                                >
-                                                    <ul>
-                                                        {category.requirements.map(catReq => (
-                                                            <li key={catReq.id} className="flex gap-2">
-                                                                <div className="w-[1rem]">{reqId == catReq.id && <span>&raquo;</span>}</div>
-                                                                <StyledLink text={catReq.topic} to={`/review/${id}/${catReq.id}`} />
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </DigiExpandableAccordion>
-                                            )}
+                                            <DigiFormCheckbox
+                                                afLabel="Dölj irrelevanta krav"
+                                                afChecked={hideIrrelevant}
+                                                onAfOnChange={(e) => {
+                                                    console.log(e.detail.target.checked);
+                                                    setHideIrrelevant(e.detail.target.checked)
+                                                }}
+                                                afVariation={FormCheckboxVariation.PRIMARY}
+                                            />
+                                            <br />
+                                            <CategoryNav
+                                                reviewId={id}
+                                                categories={categoriesWithRequirements}
+                                                selectedCategory={requirement.category}
+                                                selectedRequirement={reqId}
+                                                hideIrrelevant={hideIrrelevant}
+                                            />
                                         </div>
                                         <div className="flex-1">
                                             {review &&
                                                 <div className="content-container">
-                                                    <ReviewRequirement requirement={requirement} review={review} />
+                                                    <ReviewRequirement
+                                                        requirement={requirement}
+                                                        review={review}
+                                                        hideIrrelevant={hideIrrelevant}
+                                                    />
                                                 </div>}
                                             <StyledLink to={`/review/${id}`} text="Tillbaka till granskningsöversikten" />
                                         </div>
@@ -120,7 +128,7 @@ export default function ReviewPage() {
                             }
                         })()
                     )}
-                    {/* Visa granskningsöversikt */}
+                    {/* Visa granskningsöversikt om det inte finns något valt krav */}
                     {review && !reqId && <Review review={review} />}
                 </div>
             </DigiTypography>

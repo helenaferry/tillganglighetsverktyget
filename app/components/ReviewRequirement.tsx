@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import type { FullReview, RequirementWithCheck, UpsertCheckInput } from "~/data/types";
 import {
@@ -16,9 +16,10 @@ import StatusBadge from "./StatusBadge";
 type Props = {
     requirement: RequirementWithCheck;
     review: FullReview;
+    hideIrrelevant: boolean;
 };
 
-export default function ReviewRequirement({ requirement, review }: Props) {
+export default function ReviewRequirement({ requirement, review, hideIrrelevant }: Props) {
     const upsertCheck = useUpsertCheck();
     const deleteCheck = useDeleteCheck();
 
@@ -32,19 +33,35 @@ export default function ReviewRequirement({ requirement, review }: Props) {
     const handleRequirementNav = () => {
         scrollPosRef.current = window.scrollY;
     };
+
+    const relevantRequirements = useMemo(() => {
+        if (!requirement) return [];
+        return review.requirements.filter(req => !hideIrrelevant || req.check?.status !== 'irrelevant');
+    }, [requirement, review, hideIrrelevant]);
+
+    const nextRequirementId = useMemo(() => {
+        const currentIndex = relevantRequirements.findIndex(req => req.id === requirement.id);
+        return relevantRequirements[currentIndex + 1]?.id || null;
+    }, [requirement, relevantRequirements]);
+
+    const previousRequirementId = useMemo(() => {
+        const currentIndex = relevantRequirements.findIndex(req => req.id === requirement.id);
+        return relevantRequirements[currentIndex - 1]?.id || null;
+    }, [requirement, relevantRequirements]);
+
     return (
         <div>
             <div className="flex justify-between mb-2">
                 <div>
-                    {Number(requirement.id) > 1 && (
-                        <StyledLink to={`/review/${review.id}/${Number(requirement.id) - 1}`}
+                    {previousRequirementId && (
+                        <StyledLink to={`/review/${review.id}/${previousRequirementId}`}
                             text="Föregående krav"
                             onClick={handleRequirementNav} />
                     )}
                 </div>
                 <div>
-                    {Number(requirement.id) < 96 && (
-                        <StyledLink to={`/review/${review.id}/${Number(requirement.id) + 1}`}
+                    {nextRequirementId && (
+                        <StyledLink to={`/review/${review.id}/${nextRequirementId}`}
                             text="Nästa krav"
                             onClick={handleRequirementNav}
                         />

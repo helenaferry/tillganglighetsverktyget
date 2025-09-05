@@ -7,7 +7,6 @@ type Props = {
 }
 
 export default function StatusBadge({ status }: Props) {
-    console.log(status);
     if (!status) { status = "not_assessed"; }
     const value = Status[status as keyof typeof Status];
     switch (value) {

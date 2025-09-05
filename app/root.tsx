@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
 import {
   isRouteErrorResponse,
   Link,
@@ -9,6 +8,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { useLocation } from "react-router-dom";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ClientOnly } from "./clientOnly";
@@ -16,14 +16,16 @@ import {
   DigiHeader,
   DigiFooter,
   DigiLogo,
-  DigiLayoutContainer
+  DigiHeaderNavigation,
+  DigiHeaderNavigationItem
 } from "@digi/arbetsformedlingen-react";
 import {
-  FooterVariation, LogoColor, LogoVariation
+  FooterVariation, HeaderCenterContentWidth, LogoColor, LogoVariation
 } from "@digi/arbetsformedlingen";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient();
+  const location = useLocation();
   return (
     <html lang="sv">
       <head>
@@ -34,12 +36,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ClientOnly>
-          <DigiLayoutContainer>
-            <DigiHeader
-              afSystemName="Tillgänglighetsverktyget">
-              <Link slot="header-logo" aria-label="Tillgänglighetsverktygets startsida" to="/"></Link>
-            </DigiHeader>
-          </DigiLayoutContainer>
+          <DigiHeader
+            afSystemName="Tillgänglighetsverktyget"
+            afCentered={HeaderCenterContentWidth.WIDTH_1400}
+          >
+            <Link slot="header-logo" aria-label="Tillgänglighetsverktygets startsida" to="/"></Link>
+            <div slot="header-navigation">
+              <DigiHeaderNavigation
+                afCloseButtonText="Stäng"
+                afCloseButtonAriaLabel="Stäng meny"
+                afNavAriaLabel="Huvudmeny"
+                afCentered={HeaderCenterContentWidth.WIDTH_1400}
+              >
+                <DigiHeaderNavigationItem afCurrentPage={location.pathname === "/"}>
+                  <Link to="/">Granskningar</Link>
+                </DigiHeaderNavigationItem>
+                <DigiHeaderNavigationItem afCurrentPage={location.pathname === "/add"}>
+                  <Link to="/add">Skapa ny granskning</Link>
+                </DigiHeaderNavigationItem>
+              </DigiHeaderNavigation>
+            </div>
+          </DigiHeader>
           <QueryClientProvider client={queryClient}>
             <div className="!bg-[var(--digi--grayscale-100)]">
               {children}
