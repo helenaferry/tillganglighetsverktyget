@@ -1,7 +1,7 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
 import { useFullReview, useRequirementCategories, useCategoriesWithRequirements } from '~/hooks/useReviewData'
-import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiExpandableAccordion, DigiFormCheckbox } from "@digi/arbetsformedlingen-react";
+import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiFormCheckbox } from "@digi/arbetsformedlingen-react";
 import { FormCheckboxVariation, LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import Review from "~/components/Review";
 import { StyledLink } from "~/components/StyledLink";
@@ -31,11 +31,11 @@ export default function ReviewPage() {
         return review.requirements.reduce((acc, req) => {
             const status = req.check?.status || 'Ej granskad';
             acc[status] = (acc[status] || 0) + 1;
-            // Count relevant requirements (not 'irrelevant')
+            // Count relevant requirements
             if (status !== Status.IRRELEVANT) {
                 acc.totalRelevant = (acc.totalRelevant || 0) + 1;
             }
-            // Count done requirements (status 'pass' or 'fail')
+            // Count done requirements
             if (status === Status.PASS || status === Status.FAIL) {
                 acc.done = (acc.done || 0) + 1;
             }
@@ -109,6 +109,7 @@ export default function ReviewPage() {
                                             {review &&
                                                 <div className="content-container">
                                                     <ReviewRequirement
+                                                        key={requirement.id}
                                                         requirement={requirement}
                                                         review={review}
                                                         hideIrrelevant={hideIrrelevant}

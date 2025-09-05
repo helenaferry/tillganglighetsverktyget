@@ -72,6 +72,20 @@ export function useFullReview(reviewId: string): { review?: FullReview; isLoadin
     return { review: fullReview, isLoading: reviewLoading || requirementsLoading || checksLoading };
 }
 
+// Get a check by reviewId and requirementId
+export function useCheck(reviewId: string, requirementId: string): { check?: Check | null; isLoading: boolean } {
+    const { data: checkData, isLoading } = useQuery<Check | null, Error>({
+        queryKey: ["check", reviewId, requirementId],
+        queryFn: () => ReviewService.getCheckById(reviewId, requirementId),
+        enabled: !!reviewId && !!requirementId,
+        staleTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: false,
+    });
+
+    return { check: checkData, isLoading };
+}
+
 // Update or add check
 export function useUpsertCheck() {
     const queryClient = useQueryClient();
@@ -82,6 +96,7 @@ export function useUpsertCheck() {
             reviewId: String(input.reviewId),
         }),
         onSuccess: (_newCheck, input) => {
+            queryClient.invalidateQueries({ queryKey: ["check", String(input.reviewId), String(input.requirement)] });
             queryClient.invalidateQueries({ queryKey: ["checks", String(input.reviewId)] });
             queryClient.invalidateQueries({ queryKey: ["review", String(input.reviewId)] });
         },

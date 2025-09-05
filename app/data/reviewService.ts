@@ -113,6 +113,16 @@ export const ReviewService = {
         }
     },
 
+    async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
+        const { data, error } = await supabase
+            .from('checks')
+            .select('*')
+            .eq('review', reviewId)
+            .eq('requirement', requirementId);
+        if (error) throw error;
+        return data.length > 0 ? (data[0] as Check) : null;
+    },
+
     async deleteCheck(checkId: string): Promise<boolean> {
         const { error } = await supabase
             .from('checks')

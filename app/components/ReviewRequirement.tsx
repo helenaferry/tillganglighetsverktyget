@@ -2,17 +2,14 @@ import { useEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Status, type FullReview, type RequirementWithCheck, type UpsertCheckInput } from "~/data/types";
 import {
-    DigiFormRadiogroup,
-    DigiFormRadiobutton,
-    DigiFormTextarea,
     DigiTag,
 } from "@digi/arbetsformedlingen-react";
-import { FormTextareaVariation, TagSize } from "@digi/arbetsformedlingen";
-import { useUpsertCheck, useDeleteCheck } from '~/hooks/useReviewData'
+import { TagSize } from "@digi/arbetsformedlingen";
 import { StyledLink } from "./StyledLink";
 import RequirementDetails from "./RequirementDetails";
 import StatusBadge from "./StatusBadge";
 import RequirementForm from "./RequirementForm";
+import { useCheck } from '~/hooks/useReviewData';
 
 type Props = {
     requirement: RequirementWithCheck;
@@ -21,8 +18,7 @@ type Props = {
 };
 
 export default function ReviewRequirement({ requirement, review, hideIrrelevant }: Props) {
-    const upsertCheck = useUpsertCheck();
-    const deleteCheck = useDeleteCheck();
+    const { check } = useCheck(String(review.id), String(requirement.id));
 
     const scrollPosRef = useRef<number>(0);
     const location = useLocation();
@@ -37,16 +33,16 @@ export default function ReviewRequirement({ requirement, review, hideIrrelevant 
 
     const relevantRequirements = useMemo(() => {
         if (!requirement) return [];
-        return review.requirements.filter(req => !hideIrrelevant || req.check?.status !== Status.IRRELEVANT);
+        return review.requirements.filter((req: RequirementWithCheck) => !hideIrrelevant || req.check?.status !== Status.IRRELEVANT);
     }, [requirement, review, hideIrrelevant]);
 
     const nextRequirementId = useMemo(() => {
-        const currentIndex = relevantRequirements.findIndex(req => req.id === requirement.id);
+        const currentIndex = relevantRequirements.findIndex((req: RequirementWithCheck) => req.id === requirement.id);
         return relevantRequirements[currentIndex + 1]?.id || null;
     }, [requirement, relevantRequirements]);
 
     const previousRequirementId = useMemo(() => {
-        const currentIndex = relevantRequirements.findIndex(req => req.id === requirement.id);
+        const currentIndex = relevantRequirements.findIndex((req: RequirementWithCheck) => req.id === requirement.id);
         return relevantRequirements[currentIndex - 1]?.id || null;
     }, [requirement, relevantRequirements]);
 
@@ -92,13 +88,14 @@ export default function ReviewRequirement({ requirement, review, hideIrrelevant 
                         </div>
                     </div>
                     <div>
-                        <StatusBadge status={requirement.check?.status} />
+                        <StatusBadge key={requirement.id} status={check?.status} />
                     </div>
                 </div>
                 <div className="md:flex my-5 gap-5">
                     <RequirementDetails requirement={requirement} />
                     <div className="flex-1">
                         <RequirementForm
+                            key={requirement.id}
                             requirement={requirement}
                             reviewId={review.id}
                         />

@@ -1,7 +1,7 @@
 import { FormTextareaVariation } from "@digi/arbetsformedlingen";
 import { DigiFormRadiogroup, DigiFormRadiobutton, DigiFormTextarea } from "@digi/arbetsformedlingen-react";
 import { Status, type RequirementWithCheck, type UpsertCheckInput } from "~/data/types";
-import { useUpsertCheck, useDeleteCheck } from '~/hooks/useReviewData'
+import { useUpsertCheck, useDeleteCheck, useCheck } from '~/hooks/useReviewData'
 
 
 type Props = {
@@ -12,20 +12,21 @@ type Props = {
 export default function RequirementForm({ requirement, reviewId }: Props) {
     const upsertCheck = useUpsertCheck();
     const deleteCheck = useDeleteCheck();
+    const { check } = useCheck(String(reviewId), String(requirement.id));
 
     return (
         <form id="requirement-form">
             <DigiFormRadiogroup afName="fulfillment"
                 onAfOnGroupChange={(e: CustomEvent) => {
                     const status = e.detail.target.value;
-                    if (status === Status.NOT_ASSESSED.toString() && requirement.check && !requirement.check.comment) {
-                        deleteCheck.mutate(requirement.id);
+                    if (status === Status.NOT_ASSESSED.toString() && check && !check.comment) {
+                        deleteCheck.mutate(String(check.id));
                     }
                     const input: UpsertCheckInput = {
                         reviewId: reviewId,
                         requirement: String(requirement.id),
                         status: Number(status),
-                        comment: requirement.check?.comment ?? "",
+                        comment: check?.comment ?? "",
                     };
                     upsertCheck.mutate(input, {
                         onError: (err) => {
@@ -36,32 +37,32 @@ export default function RequirementForm({ requirement, reviewId }: Props) {
                 <DigiFormRadiobutton
                     value={Status.NOT_ASSESSED.toString()}
                     afLabel="Kravet är ej bedömt"
-                    afChecked={!requirement.check} />
+                    afChecked={!check} />
                 <DigiFormRadiobutton
                     value={Status.PASS.toString()}
                     afLabel="Kravet uppfylls"
-                    afChecked={requirement.check?.status === Status.PASS}
+                    afChecked={check?.status === Status.PASS}
                 />
                 <DigiFormRadiobutton
                     value={Status.FAIL.toString()}
                     afLabel="Kravet uppfylls inte"
-                    afChecked={requirement.check?.status === Status.FAIL}
+                    afChecked={check?.status === Status.FAIL}
                 />
                 <DigiFormRadiobutton
                     value={Status.IRRELEVANT.toString()}
                     afLabel="Kravet är ej relevant"
-                    afChecked={requirement.check?.status === Status.IRRELEVANT}
+                    afChecked={check?.status === Status.IRRELEVANT}
                 />
             </DigiFormRadiogroup>
             <DigiFormTextarea
-                afValue={requirement.check?.comment ?? ""}
+                afValue={check?.comment ?? ""}
                 afLabel="Kommentar"
                 afVariation={FormTextareaVariation.LARGE}
                 onChange={(event) => {
                     const input: UpsertCheckInput = {
                         reviewId: reviewId,
                         requirement: String(requirement.id),
-                        status: requirement.check?.status || Status.NOT_ASSESSED,
+                        status: check?.status || Status.NOT_ASSESSED,
                         comment: (event.target as HTMLInputElement).value,
                     };
                     upsertCheck.mutate(input, {
