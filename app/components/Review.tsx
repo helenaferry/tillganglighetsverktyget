@@ -1,20 +1,21 @@
 import { DigiTable, DigiFormSelectFilter, DigiTag, DigiFormInput } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from './StyledLink';
-import { Status, type FullReview } from '~/data/types';
+import { Status, type RequirementWithCheck, type Review } from '~/data/types';
 import { useRequirementCategories } from "~/hooks/useReviewData";
 import { useState } from "react";
 import StatusBadge from "./StatusBadge";
 
 type Props = {
-    review: FullReview;
+    relevantRequirements: RequirementWithCheck[];
+    review: Review;
 };
 
-export default function Review({ review }: Props) {
+export default function Review({ review, relevantRequirements }: Props) {
     const { data: categories } = useRequirementCategories();
     const [filterCategories, setFilterCategories] = useState<string[]>([]);
     const [filterStatus, setFilterStatus] = useState<Status[]>([Status.PASS, Status.FAIL, Status.NOT_ASSESSED]);
     const [filterFreeText, setFilterFreeText] = useState<string>("");
-    const filteredRequirements = review?.requirements?.filter(req => {
+    const filteredRequirements = relevantRequirements?.filter(req => {
         const filters = [
             filterCategories.length === 0 ? true : filterCategories.includes(req.category),
             filterStatus.length === 0 ? true : filterStatus.includes(req.check?.status ?? Status.NOT_ASSESSED),
@@ -57,7 +58,7 @@ export default function Review({ review }: Props) {
                                 afSubmitButtonText="Filtrera"
                                 afMultipleItems={true}
                                 sortAlphabetically={false}
-                                afListItems={[{ label: 'Godkänd', value: 'pass', selected: filterStatus.includes(Status.PASS) }, { label: 'Underkänd', value: 'fail', selected: filterStatus.includes(Status.FAIL) }, { label: 'Ej bedömd', value: 'not_assessed', selected: filterStatus.includes(Status.NOT_ASSESSED) }, { label: 'Ej relevant', value: 'irrelevant', selected: filterStatus.includes(Status.IRRELEVANT) },]}
+                                afListItems={[{ label: 'Godkänd', value: Status.PASS.toString(), selected: filterStatus.includes(Status.PASS) }, { label: 'Underkänd', value: Status.FAIL.toString(), selected: filterStatus.includes(Status.FAIL) }, { label: 'Ej bedömd', value: Status.NOT_ASSESSED.toString(), selected: filterStatus.includes(Status.NOT_ASSESSED) }, { label: 'Ej relevant', value: Status.IRRELEVANT.toString(), selected: filterStatus.includes(Status.IRRELEVANT) },]}
                                 onAfOnSubmitFilters={(e) => {
                                     setFilterStatus(e.detail.map((item: any) => item.value));
                                 }}

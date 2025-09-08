@@ -1,18 +1,18 @@
 import { FormTextareaVariation } from "@digi/arbetsformedlingen";
 import { DigiFormRadiogroup, DigiFormRadiobutton, DigiFormTextarea } from "@digi/arbetsformedlingen-react";
-import { Status, type RequirementWithCheck, type UpsertCheckInput } from "~/data/types";
+import { Status, type UpsertCheckInput } from "~/data/types";
 import { useUpsertCheck, useDeleteCheck, useCheck } from '~/hooks/useReviewData'
 
 
 type Props = {
-    requirement: RequirementWithCheck;
-    reviewId: number;
+    requirementId: string;
+    reviewId: string;
 }
 
-export default function RequirementForm({ requirement, reviewId }: Props) {
+export default function RequirementForm({ requirementId, reviewId }: Props) {
     const upsertCheck = useUpsertCheck();
     const deleteCheck = useDeleteCheck();
-    const { check } = useCheck(String(reviewId), String(requirement.id));
+    const { check } = useCheck(reviewId, requirementId);
 
     return (
         <form id="requirement-form">
@@ -23,8 +23,8 @@ export default function RequirementForm({ requirement, reviewId }: Props) {
                         deleteCheck.mutate(String(check.id));
                     }
                     const input: UpsertCheckInput = {
-                        reviewId: reviewId,
-                        requirement: String(requirement.id),
+                        reviewId: Number(reviewId),
+                        requirement: requirementId,
                         status: Number(status),
                         comment: check?.comment ?? "",
                     };
@@ -60,8 +60,8 @@ export default function RequirementForm({ requirement, reviewId }: Props) {
                 afVariation={FormTextareaVariation.LARGE}
                 onChange={(event) => {
                     const input: UpsertCheckInput = {
-                        reviewId: reviewId,
-                        requirement: String(requirement.id),
+                        reviewId: Number(reviewId),
+                        requirement: String(requirementId),
                         status: check?.status || Status.NOT_ASSESSED,
                         comment: (event.target as HTMLInputElement).value,
                     };

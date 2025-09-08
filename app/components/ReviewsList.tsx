@@ -2,23 +2,24 @@ import { DigiTable, DigiLoaderSkeleton, DigiButton, DigiIconTrash } from "@digi/
 import { StyledLink } from "./StyledLink";
 import { useReviews, useDeleteReview, useRequirements } from "~/hooks/useReviewData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
-import { formatDate, formatPercentage } from "~/formattingHelper";
+import { formatDate, formatDateAndTime } from "~/formattingHelper";
 
 export function ReviewsList() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
   const deleteReview = useDeleteReview();
-  const { data: requirements } = useRequirements();
+  const { data: requirements, isLoading: requirementsLoading } = useRequirements();
   const requirementsCount = requirements?.length || 0;
+  const loading = reviewsLoading || requirementsLoading;
   return (
     <div>
-      {reviewsLoading &&
+      {loading &&
         <DigiLoaderSkeleton
           afVariation={LoaderSkeletonVariation.SECTION}
           afCount={4}
         >
         </DigiLoaderSkeleton>}
       {reviewsError && <p>Fel vid hämtning av granskningar</p>}
-      {!reviewsLoading && !reviews || reviews?.length === 0 && <p>Inga granskningar hittades.</p>}
+      {!loading && !reviews || reviews?.length === 0 && <p>Inga granskningar hittades.</p>}
       {reviews && <div className="content-container"><DigiTable>
         <table>
           <thead>
@@ -28,8 +29,8 @@ export function ReviewsList() {
               <th scope="col">Skapad</th>
               <th>Godkända</th>
               <th>Underkända</th>
-              <th>Relevanta krav</th>
-              <th>% klart</th>
+              <th>Ej granskade</th>
+              <th>Senaste uppdatering</th>
               <th></th>
             </tr>
           </thead>
@@ -43,8 +44,8 @@ export function ReviewsList() {
                 <td>{formatDate(review.created_at)}</td>
                 <td>{review.passCount}</td>
                 <td>{review.failCount}</td>
-                <td>{requirementsCount - review.irrelevantCount}/{requirementsCount} {formatPercentage((requirementsCount - review.irrelevantCount) / requirementsCount)}</td>
-                <td>{formatPercentage((review.passCount + review.failCount + review.irrelevantCount) / requirementsCount)}</td>
+                <td>{requirementsCount - review.irrelevantCount - review.passCount - review.failCount}</td>
+                <td>{formatDateAndTime(review.latestUpdate)}</td>
                 <td>
                   <DigiButton
                     afType="button"

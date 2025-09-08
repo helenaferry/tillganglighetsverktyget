@@ -26,10 +26,10 @@ export type Requirement = {
 }
 
 export enum Status {
-    PASS,
-    FAIL,
-    IRRELEVANT,
-    NOT_ASSESSED
+    FAIL, //0
+    PASS, //1
+    IRRELEVANT, //2
+    NOT_ASSESSED //3
 }
 
 // Database types
@@ -40,21 +40,13 @@ export type Check = Database['public']['Tables']['checks']['Row'];
 export type Application = Database['public']['Tables']['applications']['Row'];
 
 export type ReviewSummary = Review & {
+    latestUpdate: string;
     application?: Application;
     passCount: number;
     failCount: number;
     irrelevantCount: number;
 };
 export type RequirementWithCheck = Requirement & { check?: Check };
-
-export type FullReview = {
-    id: number;
-    created_at: string;
-    updated?: string;
-    title: string | null;
-    application?: Application;
-    requirements: RequirementWithCheck[];
-};
 
 export type UpsertCheckInput = {
     reviewId: number;

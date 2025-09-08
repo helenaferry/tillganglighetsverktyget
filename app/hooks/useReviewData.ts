@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
-import React from 'react';
-import type { Application, Category, Check, FullReview, Requirement, ReviewSummary, RequirementWithCheck, UpsertCheckInput } from '~/data/types';
+import type { Application, Review, Check, Requirement, ReviewSummary, UpsertCheckInput } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
 // All reviews with summary data
@@ -27,49 +26,32 @@ export function useRequirementCategories(path: string = "/tillganglighetslistan.
     });
 }
 
-// Requirements grouped by category
-export function useCategoriesWithRequirements(categories: string[] | undefined, requirements: RequirementWithCheck[] | undefined): Category[] {
-    if (!categories || !requirements) return [];
-    return categories.map(category => ({
-        category,
-        requirements: requirements.filter(req => req.category === category)
-    }));
-}
-
-// Full review with requirements and checks
-export function useFullReview(reviewId: string): { review?: FullReview; isLoading: boolean } {
-    const { data: requirements, isLoading: requirementsLoading } = useRequirements();
-
-    const { data: reviewData, isLoading: reviewLoading } = useQuery<ReviewSummary, Error>({
+// Get a single review by ID
+export function useReviewById(reviewId: string): { review?: Review; isLoading: boolean } {
+    const { data: reviewData, isLoading } = useQuery<ReviewSummary, Error>({
         queryKey: ["review", reviewId],
         queryFn: () => ReviewService.getReviewById(reviewId),
         enabled: !!reviewId,
+        staleTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: false,
     });
+    return { review: reviewData, isLoading };
+}
 
-    const { data: checks, isLoading: checksLoading } = useQuery<Check[], Error>({
-        queryKey: ["checks", reviewId],
-        queryFn: () => ReviewService.getChecksForReview(reviewId),
+// Get checks for a review
+export function useChecksForReview(reviewId: string): { checks?: Check[]; isLoading: boolean } {
+    const { data: checksData, isLoading } = useQuery<Check[], Error>({
+        queryKey: ["checks", String(reviewId)],
+        queryFn: () => {
+            return ReviewService.getChecksForReview(String(reviewId));
+        },
         enabled: !!reviewId,
+        staleTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: false,
     });
-
-    const fullReview: FullReview | undefined = React.useMemo(() => {
-        if (!reviewData || !requirements) return undefined;
-
-        const reqsWithChecks = requirements.map(req => {
-            const check = checks?.find(c => String(c.requirement) === String(req.id));
-            return { ...req, check };
-        });
-
-        return {
-            id: reviewData.id,
-            created_at: reviewData.created_at,
-            title: reviewData.title,
-            application: reviewData.application,
-            requirements: reqsWithChecks,
-        };
-    }, [reviewData, requirements, checks]);
-
-    return { review: fullReview, isLoading: reviewLoading || requirementsLoading || checksLoading };
+    return { checks: checksData, isLoading };
 }
 
 // Get a check by reviewId and requirementId
@@ -82,7 +64,6 @@ export function useCheck(reviewId: string, requirementId: string): { check?: Che
         refetchOnMount: true,
         refetchOnWindowFocus: false,
     });
-
     return { check: checkData, isLoading };
 }
 
@@ -96,7 +77,7 @@ export function useUpsertCheck() {
             reviewId: String(input.reviewId),
         }),
         onSuccess: (_newCheck, input) => {
-            queryClient.invalidateQueries({ queryKey: ["check", String(input.reviewId), String(input.requirement)] });
+            queryClient.invalidateQueries({ queryKey: ["check"] });
             queryClient.invalidateQueries({ queryKey: ["checks", String(input.reviewId)] });
             queryClient.invalidateQueries({ queryKey: ["review", String(input.reviewId)] });
         },
@@ -111,7 +92,7 @@ export function useDeleteCheck() {
         mutationFn: checkId => ReviewService.deleteCheck(checkId),
         onSuccess: (_, checkId) => {
             queryClient.invalidateQueries({ queryKey: ["checks", checkId] });
-            queryClient.invalidateQueries({ queryKey: ["review", checkId] });
+            queryClient.invalidateQueries({ queryKey: ["reviews"] });
         },
     });
 }

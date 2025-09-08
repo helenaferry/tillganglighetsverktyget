@@ -48,14 +48,20 @@ export const ReviewService = {
         // Get all checks for all reviews
         const { data: checks, error: checksError } = await supabase
             .from('checks')
-            .select('review, status');
+            .select('review, status, updated_at');
         if (checksError) throw checksError;
 
-        // Aggregate counts per review
         return (reviews as ReviewSummary[]).map(review => {
             const reviewChecks = checks.filter((c: any) => c.review === review.id);
+            const times = reviewChecks
+                .map((c: any) => c.updated_at && !isNaN(new Date(c.updated_at).getTime()) ? new Date(c.updated_at).getTime() : null)
+                .filter((t: number | null) => t !== null);
+            const latestUpdate = times.length > 0
+                ? new Date(Math.max(...times)).toISOString()
+                : review.created_at;
             return {
                 ...review,
+                latestUpdate,
                 passCount: reviewChecks.filter((c: any) => c.status === Status.PASS).length,
                 failCount: reviewChecks.filter((c: any) => c.status === Status.FAIL).length,
                 irrelevantCount: reviewChecks.filter((c: any) => c.status === Status.IRRELEVANT).length,
@@ -67,7 +73,7 @@ export const ReviewService = {
         const { data, error } = await supabase
             .from('reviews')
             .select('*, application(*)')
-            .eq('id', reviewId)
+            .eq('id', Number(reviewId))
             .single();
         if (error) throw error;
         return data as ReviewSummary;
@@ -77,7 +83,7 @@ export const ReviewService = {
         const { data, error } = await supabase
             .from('checks')
             .select('*')
-            .eq('review', reviewId);
+            .eq('review', Number(reviewId));
         if (error) throw error;
         return data as Check[];
     },
@@ -92,8 +98,8 @@ export const ReviewService = {
         const { data: existing, error: findError } = await supabase
             .from('checks')
             .select('*')
-            .eq('review', reviewId)
-            .eq('requirement', requirement);
+            .eq('review', Number(reviewId))
+            .eq('requirement', Number(requirement));
         if (findError) throw findError;
         if (existing && existing.length > 0) {
             const { data, error } = await supabase
@@ -117,8 +123,8 @@ export const ReviewService = {
         const { data, error } = await supabase
             .from('checks')
             .select('*')
-            .eq('review', reviewId)
-            .eq('requirement', requirementId);
+            .eq('review', Number(reviewId))
+            .eq('requirement', Number(requirementId));
         if (error) throw error;
         return data.length > 0 ? (data[0] as Check) : null;
     },
@@ -127,15 +133,15 @@ export const ReviewService = {
         const { error } = await supabase
             .from('checks')
             .delete()
-            .eq('id', checkId);
+            .eq('id', Number(checkId));
         if (error) throw error;
         return true;
     },
 
     async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
         const inserts = requirements.map((requirement) => ({
-            review: reviewId,
-            requirement,
+            review: Number(reviewId),
+            requirement: Number(requirement),
             status: Status.IRRELEVANT,
             comment: "",
         }));
@@ -166,7 +172,7 @@ export const ReviewService = {
             const { data, error } = await supabase
                 .from('reviews')
                 .update({ title, application, excludedContentTypes: excludedContentTypes.join(", ") })
-                .eq('id', id)
+                .eq('id', Number(id))
                 .select();
             if (error) throw error;
             return data[0] as Review;
@@ -184,13 +190,13 @@ export const ReviewService = {
         await supabase
             .from('checks')
             .delete()
-            .eq('review', reviewId);
+            .eq('review', Number(reviewId));
     },
 
     async deleteReview(reviewId: number): Promise<void> {
         await supabase
             .from('reviews')
             .delete()
-            .eq('id', reviewId);
+            .eq('id', Number(reviewId));
     },
 };

@@ -23,8 +23,9 @@ import {
   FooterVariation, HeaderCenterContentWidth, LogoColor, LogoVariation
 } from "@digi/arbetsformedlingen";
 
+const queryClient = new QueryClient();
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const queryClient = new QueryClient();
   const location = useLocation();
   return (
     <html lang="sv">
