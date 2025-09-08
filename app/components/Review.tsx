@@ -6,16 +6,16 @@ import { useState } from "react";
 import StatusBadge from "./StatusBadge";
 
 type Props = {
-    relevantRequirements: RequirementWithCheck[];
+    requirements: RequirementWithCheck[];
     review: Review;
 };
 
-export default function Review({ review, relevantRequirements }: Props) {
+export default function Review({ review, requirements }: Props) {
     const { data: categories } = useRequirementCategories();
     const [filterCategories, setFilterCategories] = useState<string[]>([]);
     const [filterStatus, setFilterStatus] = useState<Status[]>([Status.PASS, Status.FAIL, Status.NOT_ASSESSED]);
     const [filterFreeText, setFilterFreeText] = useState<string>("");
-    const filteredRequirements = relevantRequirements?.filter(req => {
+    const filteredRequirements = requirements?.filter(req => {
         const filters = [
             filterCategories.length === 0 ? true : filterCategories.includes(req.category),
             filterStatus.length === 0 ? true : filterStatus.includes(req.check?.status ?? Status.NOT_ASSESSED),
@@ -60,7 +60,7 @@ export default function Review({ review, relevantRequirements }: Props) {
                                 sortAlphabetically={false}
                                 afListItems={[{ label: 'Godkänd', value: Status.PASS.toString(), selected: filterStatus.includes(Status.PASS) }, { label: 'Underkänd', value: Status.FAIL.toString(), selected: filterStatus.includes(Status.FAIL) }, { label: 'Ej bedömd', value: Status.NOT_ASSESSED.toString(), selected: filterStatus.includes(Status.NOT_ASSESSED) }, { label: 'Ej relevant', value: Status.IRRELEVANT.toString(), selected: filterStatus.includes(Status.IRRELEVANT) },]}
                                 onAfOnSubmitFilters={(e) => {
-                                    setFilterStatus(e.detail.map((item: any) => item.value));
+                                    setFilterStatus(e.detail.map((item: any) => Number(item.value) as Status));
                                 }}
                             />
                         </div>

@@ -45,7 +45,7 @@ export default function ReviewPage() {
         return checks.filter(check => (check.status === Status.PASS || check.status === Status.FAIL)).length;
     }, [checks]);
 
-    const relevantRequirements = useMemo(() => {
+    const relevantRequirementsWithChecks = useMemo(() => {
         if (!requirements || !checks) return [];
         return requirements.map(req => {
             const check = checks?.find(check => String(check.requirement) === String(req.id));
@@ -56,14 +56,22 @@ export default function ReviewPage() {
         });
     }, [requirements, checks, hideIrrelevant]);
 
+    const allRequirementsWithChecks = useMemo(() => {
+        if (!requirements || !checks) return [];
+        return requirements.map(req => {
+            const check = checks?.find(check => String(check.requirement) === String(req.id));
+            return { ...req, check };
+        });
+    }, [requirements, checks]);
+
     const nextRequirementId = (currentId: string) => {
-        const currentIndex = relevantRequirements.findIndex((req: RequirementWithCheck) => String(req.id) === String(currentId));
-        return relevantRequirements[currentIndex + 1]?.id || null;
+        const currentIndex = relevantRequirementsWithChecks.findIndex((req: RequirementWithCheck) => String(req.id) === String(currentId));
+        return relevantRequirementsWithChecks[currentIndex + 1]?.id || null;
     }
 
     const previousRequirementId = (currentId: string) => {
-        const currentIndex = relevantRequirements.findIndex((req: RequirementWithCheck) => String(req.id) === String(currentId));
-        return relevantRequirements[currentIndex - 1]?.id || null;
+        const currentIndex = relevantRequirementsWithChecks.findIndex((req: RequirementWithCheck) => String(req.id) === String(currentId));
+        return relevantRequirementsWithChecks[currentIndex - 1]?.id || null;
     }
 
     return (
@@ -87,14 +95,14 @@ export default function ReviewPage() {
                         <div>
                             {numberDone > 0 && <div className="h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
                                 <div>
-                                    <span className="block text-center text-[2.5rem]">{formatPercentage(numberDone / relevantRequirements.length) || "0%"}</span>
+                                    <span className="block text-center text-[2.5rem]">{formatPercentage(numberDone / relevantRequirementsWithChecks.length) || "0%"}</span>
                                     <span className="block text-center">K L A R T</span>
                                 </div>
                             </div>}
                             <div className="h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
                                 <div>
                                     <span className="block text-center leading-none">BARA</span>
-                                    <span className="block text-center text-[2rem] leading-none">{relevantRequirements.length - numberDone || 0}</span>
+                                    <span className="block text-center text-[2rem] leading-none">{relevantRequirementsWithChecks.length - numberDone || 0}</span>
                                     <span className="block text-center leading-none">KVAR!</span></div>
                             </div>
                         </div>
@@ -149,7 +157,7 @@ export default function ReviewPage() {
                         })()
                     )}
                     {/* Visa granskningsöversikt om det inte finns något valt krav */}
-                    {review && !reqId && <Review relevantRequirements={relevantRequirements} review={review} />}
+                    {review && !reqId && <Review requirements={allRequirementsWithChecks} review={review} />}
                 </div>
             </DigiTypography>
         </DigiLayoutContainer >
