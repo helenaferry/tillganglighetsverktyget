@@ -1,4 +1,4 @@
-import { Status, type Application, type Check, type Requirement, type Review, type ReviewSummary } from "./types";
+import { Status, type Application, type Check, type Requirement, type Review, type ReviewSummary, type ReviewWithApplication } from "./types";
 
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = 'https://siouoxdqpgykibzayejt.supabase.co'
@@ -69,14 +69,14 @@ export const ReviewService = {
         });
     },
 
-    async getReviewById(reviewId: string): Promise<ReviewSummary> {
+    async getReviewById(reviewId: string): Promise<ReviewWithApplication> {
         const { data, error } = await supabase
             .from('reviews')
             .select('*, application(*)')
             .eq('id', Number(reviewId))
             .single();
         if (error) throw error;
-        return data as ReviewSummary;
+        return data as ReviewWithApplication;
     },
 
     async getChecksForReview(reviewId: string): Promise<Check[]> {

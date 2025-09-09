@@ -88,7 +88,7 @@ export default function ReviewPage() {
                         <div>
                             <h1>{review?.title}</h1>
                             <p>
-                                <b>Applikation:</b> {/*review?.application*/} TODO<br />
+                                <b>Applikation:</b> {review?.application.name}<br />
                                 <b>Granskning startad:</b> {formatDateLong(review?.created_at)}<br />
                             </p>
                         </div>

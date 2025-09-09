@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
-import type { Application, Review, Check, Requirement, ReviewSummary, UpsertCheckInput } from '~/data/types';
+import type { Application, Review, Check, Requirement, ReviewSummary, UpsertCheckInput, ReviewWithApplication } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
 // All reviews with summary data
@@ -27,8 +27,8 @@ export function useRequirementCategories(path: string = "/tillganglighetslistan.
 }
 
 // Get a single review by ID
-export function useReviewById(reviewId: string): { review?: Review; isLoading: boolean } {
-    const { data: reviewData, isLoading } = useQuery<ReviewSummary, Error>({
+export function useReviewById(reviewId: string): { review?: ReviewWithApplication; isLoading: boolean } {
+    const { data: reviewData, isLoading } = useQuery<ReviewWithApplication, Error>({
         queryKey: ["review", reviewId],
         queryFn: () => ReviewService.getReviewById(reviewId),
         enabled: !!reviewId,

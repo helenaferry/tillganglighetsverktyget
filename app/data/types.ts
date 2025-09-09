@@ -39,6 +39,8 @@ export type Review = Database['public']['Tables']['reviews']['Row'];
 export type Check = Database['public']['Tables']['checks']['Row'];
 export type Application = Database['public']['Tables']['applications']['Row'];
 
+export type ReviewWithApplication = Review & { application?: Application };
+
 export type ReviewSummary = Review & {
     latestUpdate: string;
     application?: Application;
