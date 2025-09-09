@@ -21,7 +21,7 @@ export type Requirement = {
     type: RequirementType;
     wcag: string;
     wcagLevel: Level;
-    en301459: string;
+    en301549: string;
     contentType: string;
     category: string;
     objectType: ObjectType;

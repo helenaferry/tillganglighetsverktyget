@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { type Requirement } from "~/data/types";
 import {
-    DigiTag,
+    DigiBadgeStatus,
 } from "@digi/arbetsformedlingen-react";
-import { TagSize } from "@digi/arbetsformedlingen";
+import { BadgeStatusSize, BadgeStatusType } from "@digi/arbetsformedlingen";
 import RequirementDetails from "./RequirementDetails";
 import StatusBadge from "./StatusBadge";
 import RequirementForm from "./RequirementForm";
@@ -57,20 +57,20 @@ export default function ReviewRequirement({ requirement, reviewId, nextRequireme
                         <div>
                             <h2>{requirement.id}. {requirement.name}</h2>
                             <div className="flex gap-2 mb-5">
-                                <DigiTag
+                                <DigiBadgeStatus
                                     afText={requirement.category}
-                                    afSize={TagSize.SMALL}
-                                    afNoIcon={true}
+                                    afType={BadgeStatusType.PROMPT}
+                                    afSize={BadgeStatusSize.LARGE}
                                 />
-                                {requirement.en301459 && <DigiTag
-                                    afText={requirement.en301459}
-                                    afSize={TagSize.SMALL}
-                                    afNoIcon={true}
+                                {requirement.en301549 && <DigiBadgeStatus
+                                    afText={requirement.en301549}
+                                    afType={BadgeStatusType.PROMPT}
+                                    afSize={BadgeStatusSize.LARGE}
                                 />}
-                                {requirement.wcag && <DigiTag
+                                {requirement.wcag && <DigiBadgeStatus
                                     afText={`WCAG ${requirement.wcag} ${requirement.wcagLevel}`}
-                                    afSize={TagSize.SMALL}
-                                    afNoIcon={true}
+                                    afType={BadgeStatusType.PROMPT}
+                                    afSize={BadgeStatusSize.LARGE}
                                 />}
                             </div>
                         </div>

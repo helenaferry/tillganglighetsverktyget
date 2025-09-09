@@ -1,7 +1,7 @@
 
 import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
 import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
-import { DigiLoaderSkeleton, DigiFormCheckbox, DigiTypographyHeadingJumbo } from "@digi/arbetsformedlingen-react";
+import { DigiLoaderSkeleton, DigiFormCheckbox, DigiTypographyHeadingJumbo, DigiNavigationBreadcrumbs } from "@digi/arbetsformedlingen-react";
 import { FormCheckboxVariation, LoaderSkeletonVariation, TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from "@digi/arbetsformedlingen";
 import { StyledLink } from "~/components/StyledLink";
 import ReviewRequirement from "~/components/ReviewRequirement";
@@ -10,6 +10,8 @@ import { useMemo, useState } from "react";
 import CategoryNav from "~/components/CategoryNav";
 import { Status, type RequirementWithCheck } from "~/data/types";
 import ReviewOverview from "~/components/ReviewOverview";
+import { Link } from 'react-router-dom';
+import Breadcrumbs from './Breadcrumbs';
 
 interface Props {
     reviewId: string;
@@ -79,12 +81,27 @@ export default function Review({ reviewId, requirementId }: Props) {
                 </DigiLoaderSkeleton>}
             {review && <div className="md:flex justify-between mb-4">
                 <div>
+                    <Breadcrumbs
+                        currentPage={requirementId ? requirements?.find(req => String(req.id) === String(requirementId))?.name || "Krav" : review.title || "Granskning"}
+                        pages={
+                            requirementId
+                                ? [
+                                    { title: 'Granskningar', href: '/' },
+                                    { title: review?.title || "Granskning", href: `/review/${review?.id}` }
+
+                                ]
+                                : [
+                                    { title: 'Granskningar', href: '/' },
+                                ]
+                        }
+                    />
                     <DigiTypographyHeadingJumbo
                         afText={review?.title || "Granskning"}
                         afLevel={TypographyHeadingJumboLevel.H1}
                         afVariation={TypographyHeadingJumboVariation.PRIMARY}
                     >
                     </DigiTypographyHeadingJumbo>
+
                     <p>
                         <b>Applikation:</b> {review?.application.name}<br />
                         <b>Granskning startad:</b> {formatDateLong(review?.created_at)}<br />

@@ -44,7 +44,7 @@ export default function ReviewOverview({ review, requirements }: Props) {
                                 afSubmitButtonText="Filtrera"
                                 afMultipleItems={true}
                                 sortAlphabetically={false}
-                                afListItems={categories?.map((cat: string) => ({ label: cat, value: cat })) || []}
+                                afListItems={categories?.map((cat: string) => ({ label: cat, value: cat, selected: filterCategories.includes(cat) })) || []}
                                 onAfOnSubmitFilters={(e) => {
                                     setFilterCategories(e.detail.map((item: any) => item.value));
                                 }}
@@ -82,7 +82,7 @@ export default function ReviewOverview({ review, requirements }: Props) {
                                                 <StyledLink to={"/review/" + review.id + "/" + req.id} text={`${req.id}. ${req.name}`} />
                                             </td>
                                             <td>
-                                                <DigiTag afText={req.category} afNoIcon={true} />
+                                                <DigiTag afText={req.category} afNoIcon={true} onAfOnClick={() => setFilterCategories([req.category])} />
                                             </td>
                                             <td>
                                                 <StatusBadge status={req.check?.status} />

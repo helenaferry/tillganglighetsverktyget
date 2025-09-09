@@ -22,9 +22,8 @@ const getStatusText = (status: Status) => {
     }
 }
 
-export default function StatusBadge({ status }: Props) {
-    const enumStatus = typeof status === 'number' ? status as Status : Status.NOT_ASSESSED;
-    switch (enumStatus) {
+const getBadge = (status: Status) => {
+    switch (status) {
         case Status.FAIL:
             return <DigiBadgeStatus
                 afType={BadgeStatusType.DENIED}
@@ -54,4 +53,9 @@ export default function StatusBadge({ status }: Props) {
                 afSize={BadgeStatusSize.LARGE}
             />
     }
+}
+
+export default function StatusBadge({ status }: Props) {
+    const enumStatus = typeof status === 'number' ? status as Status : Status.NOT_ASSESSED;
+    return <div className="min-w-[6rem]">{getBadge(enumStatus)}</div>;
 }
