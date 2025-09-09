@@ -1,8 +1,8 @@
 import { Status, type Application, type Check, type Requirement, type Review, type ReviewSummary, type ReviewWithApplication } from "./types";
 
 import { createClient } from '@supabase/supabase-js'
-const supabaseUrl = 'https://siouoxdqpgykibzayejt.supabase.co'
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpb3VveGRxcGd5a2liemF5ZWp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY0NzIxODIsImV4cCI6MjA3MjA0ODE4Mn0.sgavqOdB1sjrNpQdvdC4669xTtwPQoRACo53Tn13pZk"// TODO process.env.SUPABASE_KEY
+const supabaseUrl = import.meta.env.VITE_DATABASE_URL;
+const supabaseKey = import.meta.env.VITE_DATABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export const ReviewService = {

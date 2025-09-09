@@ -1,10 +1,13 @@
+
 import { type Requirement } from "./types";
 
+const requirementsPath = import.meta.env.VITE_REQUIREMENTS_URL;
+
 export const RequirementService = {
-    async getAllRequirements(path: string = "/krav.json"): Promise<Requirement[]> {
-        const res = await fetch(path);
+    async getAllRequirements(): Promise<Requirement[]> {
+        const res = await fetch(requirementsPath);
         if (!res.ok) {
-            throw new Error(`Failed to load requirements from ${path}: ${res.status} ${res.statusText}`);
+            throw new Error(`Failed to load requirements from ${requirementsPath}: ${res.status} ${res.statusText}`);
         }
         const json: { data: Requirement[] } = await res.json();
         if (!Array.isArray(json.data)) {
@@ -13,10 +16,10 @@ export const RequirementService = {
         return json.data;
     },
 
-    async getAllRequirementCategories(path: string = "/krav.json"): Promise<string[]> {
-        const res = await fetch(path);
+    async getAllRequirementCategories(): Promise<string[]> {
+        const res = await fetch(requirementsPath);
         if (!res.ok) {
-            throw new Error(`Failed to load requirement categories from ${path}: ${res.status} ${res.statusText}`);
+            throw new Error(`Failed to load requirement categories from ${requirementsPath}: ${res.status} ${res.statusText}`);
         }
         const json: { data: Requirement[] } = await res.json();
         if (!Array.isArray(json.data)) {
@@ -26,10 +29,10 @@ export const RequirementService = {
         return categories;
     },
 
-    async getAllRequirementContentTypes(path: string = "/krav.json"): Promise<string[]> {
-        const res = await fetch(path);
+    async getAllRequirementContentTypes(): Promise<string[]> {
+        const res = await fetch(requirementsPath);
         if (!res.ok) {
-            throw new Error(`Failed to load requirement content types from ${path}: ${res.status} ${res.statusText}`);
+            throw new Error(`Failed to load requirement content types from ${requirementsPath}: ${res.status} ${res.statusText}`);
         }
         const json: { data: Requirement[] } = await res.json();
         if (!Array.isArray(json.data)) {

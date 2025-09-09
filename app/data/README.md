@@ -3,7 +3,9 @@
 Beslut om slutgiltig datahantering är inte fattat. Under utvecklingsfasen använder vi Supabase.
 
 ## Kom igång med Supabase
-För att göra ändringar i databasen behöver ett konto på Supabase kopplat till organisationen Tillgänglighetsverktyget (siouoxdqpgykibzayejt).
+För att göra ändringar i databasen behöver du ett konto på Supabase kopplat till organisationen Tillgänglighetsverktyget.
+
+TODO: Instruktioner för hur man annars kommer igång med en egen Supabase.
 
 ## Ändring av databasschemat
 - Ändringar görs i Table Editor i Supabase dashboard.
@@ -13,7 +15,6 @@ För att göra ändringar i databasen behöver ett konto på Supabase kopplat ti
     - Kör npx supabase@latest gen types typescript --project-id siouoxdqpgykibzayejt --schema public > app/data/supabase-types.ts
 
 ## Interaktion med Supabase
-
-- Interaktionen med Supabase ska hållas i data/reviewService. Den används sedan av useReviewData-hooken, som inte har specifik kännedom om PocketBase.
+- Interaktionen med Supabase ska hållas i data/reviewService. Den används sedan av useReviewData-hooken, som inte har specifik kännedom om Supabase.
 - Supabase-specifika typer importeras även i data/types.ts men exporteras vidare under alias för att minska beroendet till en specifik databaslösning.
-- Säkerställ att inga andra delar av applikationen pratar direkt med PocketBase.
+- Säkerställ att inga andra delar av applikationen pratar direkt med Supabase.

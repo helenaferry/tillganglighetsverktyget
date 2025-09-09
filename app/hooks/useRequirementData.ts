@@ -4,25 +4,25 @@ import { RequirementService } from '~/data/requirementService';
 
 
 // All requirements
-export function useRequirements(path: string = "/krav.json"): UseQueryResult<Requirement[], Error> {
+export function useRequirements(): UseQueryResult<Requirement[], Error> {
     return useQuery<Requirement[], Error>({
-        queryKey: ["requirements", path],
-        queryFn: () => RequirementService.getAllRequirements(path),
+        queryKey: ["requirements"],
+        queryFn: () => RequirementService.getAllRequirements(),
     });
 }
 
 // All requirement categories
-export function useRequirementCategories(path: string = "/krav.json"): UseQueryResult<string[], Error> {
+export function useRequirementCategories(): UseQueryResult<string[], Error> {
     return useQuery<string[], Error>({
-        queryKey: ["requirementCategories", path],
-        queryFn: () => RequirementService.getAllRequirementCategories(path),
+        queryKey: ["requirementCategories"],
+        queryFn: () => RequirementService.getAllRequirementCategories(),
     });
 }
 
 // All requirement contentTypes
-export function useRequirementContentTypes(path: string = "/krav.json"): UseQueryResult<string[], Error> {
+export function useRequirementContentTypes(): UseQueryResult<string[], Error> {
     return useQuery<string[], Error>({
-        queryKey: ["requirementContentTypes", path],
-        queryFn: () => RequirementService.getAllRequirementContentTypes(path),
+        queryKey: ["requirementContentTypes"],
+        queryFn: () => RequirementService.getAllRequirementContentTypes(),
     });
 }
