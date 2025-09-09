@@ -1,9 +1,10 @@
-import { DigiTable, DigiLoaderSkeleton, DigiButton, DigiIconTrash } from "@digi/arbetsformedlingen-react";
+import { DigiTable, DigiLoaderSkeleton, DigiButton, DigiIconTrash, DigiIconEdit } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from "./StyledLink";
 import { useReviews, useDeleteReview } from "~/hooks/useReviewData";
 import { useRequirements } from "~/hooks/useRequirementData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import { formatDate, formatDateAndTime } from "~/formattingHelper";
+import { useNavigate } from "react-router";
 
 export function ReviewsList() {
   const { data: reviews, isLoading: reviewsLoading, error: reviewsError, isFetched: reviewsFetched } = useReviews();
@@ -12,6 +13,7 @@ export function ReviewsList() {
   const requirementsCount = requirements?.length || 0;
   const loading = reviewsLoading || requirementsLoading;
   const fetched = reviewsFetched && requirementsFetched;
+  const navigate = useNavigate();
   return (
     <div>
       {loading &&
@@ -33,7 +35,7 @@ export function ReviewsList() {
               <th>Underkända</th>
               <th>Ej granskade</th>
               <th>Senaste uppdatering</th>
-              <th></th>
+              <th></th><th></th>
             </tr>
           </thead>
           <tbody>
@@ -48,6 +50,17 @@ export function ReviewsList() {
                 <td>{review.failCount}</td>
                 <td>{requirementsCount - review.irrelevantCount - review.passCount - review.failCount}</td>
                 <td>{formatDateAndTime(review.latestUpdate)}</td>
+                <td>
+                  <DigiButton
+                    afType="button"
+                    afVariation="function"
+                    afAriaLabel={"Redigera granskning " + review.title}
+                    onClick={() => {
+                      navigate(`/edit/${review.id}`);
+                    }}>
+                    <DigiIconEdit slot="icon" />
+                  </DigiButton>
+                </td>
                 <td>
                   <DigiButton
                     afType="button"

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
-import type { Application, Review, Check, Requirement, ReviewSummary, UpsertCheckInput, ReviewWithApplication } from '~/data/types';
+import type { Application, Check, ReviewSummary, UpsertCheckInput, ReviewWithApplication } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
 // All reviews with summary data
@@ -15,7 +15,7 @@ export function useReviewById(reviewId: string): { review?: ReviewWithApplicatio
     const { data: reviewData, isLoading } = useQuery<ReviewWithApplication, Error>({
         queryKey: ["review", reviewId],
         queryFn: () => ReviewService.getReviewById(reviewId),
-        enabled: !!reviewId,
+        enabled: !!reviewId && reviewId !== 'undefined',
         staleTime: 0,
         refetchOnMount: true,
         refetchOnWindowFocus: false,
@@ -87,6 +87,19 @@ export function useDisableChecks() {
 
     return useMutation<Check[], Error, { reviewId: number; requirements: string[] }>({
         mutationFn: ({ reviewId, requirements }) => ReviewService.disableChecks(reviewId, requirements),
+        onSuccess: (_, { reviewId }) => {
+            queryClient.invalidateQueries({ queryKey: ["checks", reviewId] });
+            queryClient.invalidateQueries({ queryKey: ["review", reviewId] });
+        },
+    });
+}
+
+// Enable multiple checks
+export function useEnableChecks() {
+    const queryClient = useQueryClient();
+
+    return useMutation<void, Error, { reviewId: number; requirements: string[] }>({
+        mutationFn: ({ reviewId, requirements }) => ReviewService.enableChecks(reviewId, requirements),
         onSuccess: (_, { reviewId }) => {
             queryClient.invalidateQueries({ queryKey: ["checks", reviewId] });
             queryClient.invalidateQueries({ queryKey: ["review", reviewId] });

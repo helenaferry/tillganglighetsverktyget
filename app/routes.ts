@@ -4,5 +4,6 @@ export default [
     index("routes/home.tsx"),
     route("review/:id/:reqId", "routes/review.tsx", { id: "review-req" }),
     route("review/:id", "routes/review.tsx", { id: "review" }),
-    route("add", "routes/addReview.tsx")
+    route("add", "routes/addReview.tsx"),
+    route("edit/:id", "routes/editReview.tsx", { id: "edit" }),
 ] satisfies RouteConfig;

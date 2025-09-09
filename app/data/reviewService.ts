@@ -128,6 +128,16 @@ export const ReviewService = {
         return data as Check[];
     },
 
+    async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
+        const { error } = await supabase
+            .from('checks')
+            .delete()
+            .eq('review', Number(reviewId))
+            .in('requirement', requirements.map(r => Number(r)))
+            .eq('status', Status.IRRELEVANT);
+        if (error) throw error;
+    },
+
     async getApplications(): Promise<Application[]> {
         const { data, error } = await supabase
             .from('applications')
@@ -146,7 +156,7 @@ export const ReviewService = {
         if (id) {
             const { data, error } = await supabase
                 .from('reviews')
-                .update({ title, application, excludedContentTypes: excludedContentTypes.join(", ") })
+                .update({ title, application, excludedContentTypes: excludedContentTypes.join(";") })
                 .eq('id', Number(id))
                 .select();
             if (error) throw error;
@@ -154,7 +164,7 @@ export const ReviewService = {
         } else {
             const { data, error } = await supabase
                 .from('reviews')
-                .insert({ title, application, excludedContentTypes: excludedContentTypes.join(", ") })
+                .insert({ title, application, excludedContentTypes: excludedContentTypes.join(";") })
                 .select();
             if (error) throw error;
             return data[0] as Review;
