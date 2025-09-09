@@ -1,99 +1,160 @@
-import { DigiTable, DigiFormSelectFilter, DigiTag, DigiFormInput } from "@digi/arbetsformedlingen-react";
-import { StyledLink } from './StyledLink';
-import { Status, type RequirementWithCheck, type Review } from '~/data/types';
-import { useRequirementCategories } from "~/hooks/useRequirementData";
-import { useState } from "react";
-import StatusBadge from "./StatusBadge";
 
-type Props = {
-    requirements: RequirementWithCheck[];
-    review: Review;
-};
+import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
+import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
+import { DigiLoaderSkeleton, DigiFormCheckbox, DigiTypographyHeadingJumbo } from "@digi/arbetsformedlingen-react";
+import { FormCheckboxVariation, LoaderSkeletonVariation, TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from "@digi/arbetsformedlingen";
+import { StyledLink } from "~/components/StyledLink";
+import ReviewRequirement from "~/components/ReviewRequirement";
+import { formatDateLong, formatPercentage } from "~/formattingHelper";
+import { useMemo, useState } from "react";
+import CategoryNav from "~/components/CategoryNav";
+import { Status, type RequirementWithCheck } from "~/data/types";
+import ReviewOverview from "~/components/ReviewOverview";
 
-export default function Review({ review, requirements }: Props) {
-    const { data: categories } = useRequirementCategories();
-    const [filterCategories, setFilterCategories] = useState<string[]>([]);
-    const [filterStatus, setFilterStatus] = useState<Status[]>([Status.PASS, Status.FAIL, Status.NOT_ASSESSED]);
-    const [filterFreeText, setFilterFreeText] = useState<string>("");
-    const filteredRequirements = requirements?.filter(req => {
-        const filters = [
-            filterCategories.length === 0 ? true : filterCategories.includes(req.category),
-            filterStatus.length === 0 ? true : filterStatus.includes(req.check?.status ?? Status.NOT_ASSESSED),
-            (filterFreeText && filterFreeText.length === 0) ? true : req.name.toLowerCase().includes(filterFreeText.toLowerCase()),
-        ];
-        return filters.every(Boolean);
-    });
+interface Props {
+    reviewId: string;
+    requirementId?: string;
+}
 
+export default function Review({ reviewId, requirementId }: Props) {
+    const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
+    const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
+    const { data: requirements, isLoading: requirementsLoading } = useRequirements();
+    const { data: categories, isLoading: categoriesLoading } = useRequirementCategories();
+    const loading = reviewLoading || checksLoading || requirementsLoading || categoriesLoading;
+
+    const [hideIrrelevant, setHideIrrelevant] = useState(true);
+
+    const categoriesWithRequirements = useMemo(() => {
+        if (!categories || !requirements) return [];
+        return categories.map(category => ({
+            category,
+            requirements: requirements.filter(req => req.category === category).map(req => {
+                const check = checks?.find(check => String(check.requirement) === String(req.id));
+                return { ...req, check };
+            })
+        }));
+    }, [categories, requirements, checks]);
+
+    const numberDone = useMemo(() => {
+        if (!checks) return 0;
+        return checks.filter(check => (check.status === Status.PASS || check.status === Status.FAIL)).length;
+    }, [checks]);
+
+    const relevantRequirementsWithChecks = useMemo(() => {
+        if (!requirements || !checks) return [];
+        return requirements.map(req => {
+            const check = checks?.find(check => String(check.requirement) === String(req.id));
+            return { ...req, check };
+        }).filter((req: RequirementWithCheck) => {
+            if (!hideIrrelevant) return true;
+            return !req.check || req.check.status !== Status.IRRELEVANT;
+        });
+    }, [requirements, checks, hideIrrelevant]);
+
+    const allRequirementsWithChecks = useMemo(() => {
+        if (!requirements || !checks) return [];
+        return requirements.map(req => {
+            const check = checks?.find(check => String(check.requirement) === String(req.id));
+            return { ...req, check };
+        });
+    }, [requirements, checks]);
+
+    const nextRequirementId = (currentId: string) => {
+        const currentIndex = relevantRequirementsWithChecks.findIndex((req: RequirementWithCheck) => String(req.id) === String(currentId));
+        return relevantRequirementsWithChecks[currentIndex + 1]?.id || null;
+    }
+
+    const previousRequirementId = (currentId: string) => {
+        const currentIndex = relevantRequirementsWithChecks.findIndex((req: RequirementWithCheck) => String(req.id) === String(currentId));
+        return relevantRequirementsWithChecks[currentIndex - 1]?.id || null;
+    }
     return (
         <div>
-            {review &&
-                <>
-                    <div className="md:flex md:gap-4">
-                        <div className="md:w-1/4">
-                            <DigiFormInput
-                                afLabel="Sök"
-                                value={filterFreeText}
-                                onAfOnInput={(e) => setFilterFreeText(e.detail.target.value)}
-                            />
+            {loading &&
+                <DigiLoaderSkeleton
+                    afVariation={LoaderSkeletonVariation.SECTION}
+                    afCount={4}
+                >
+                </DigiLoaderSkeleton>}
+            {review && <div className="md:flex justify-between mb-4">
+                <div>
+                    <DigiTypographyHeadingJumbo
+                        afText={review?.title || "Granskning"}
+                        afLevel={TypographyHeadingJumboLevel.H1}
+                        afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                    >
+                    </DigiTypographyHeadingJumbo>
+                    <p>
+                        <b>Applikation:</b> {review?.application.name}<br />
+                        <b>Granskning startad:</b> {formatDateLong(review?.created_at)}<br />
+                    </p>
+                </div>
+                <div>
+                    {numberDone > 0 && <div className="h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
+                        <div>
+                            <span className="block text-center text-[2.5rem]">{formatPercentage(numberDone / relevantRequirementsWithChecks.length) || "0%"}</span>
+                            <span className="block text-center">K L A R T</span>
                         </div>
-                        <div className="md:w-1/4">
-                            <DigiFormSelectFilter
-                                afFilterButtonTextLabel="Kategori"
-                                afFilterButtonText="Visa alla"
-                                afName="Sök kategori"
-                                afSubmitButtonText="Filtrera"
-                                afMultipleItems={true}
-                                sortAlphabetically={false}
-                                afListItems={categories?.map((cat: string) => ({ label: cat, value: cat })) || []}
-                                onAfOnSubmitFilters={(e) => {
-                                    setFilterCategories(e.detail.map((item: any) => item.value));
-                                }}
-                            />
-                        </div>
-                        <div className="md:w-1/4">
-                            <DigiFormSelectFilter
-                                afFilterButtonTextLabel="Status"
-                                afFilterButtonText="Visa alla"
-                                afName="Sök status"
-                                afSubmitButtonText="Filtrera"
-                                afMultipleItems={true}
-                                sortAlphabetically={false}
-                                afListItems={[{ label: 'Godkänd', value: Status.PASS.toString(), selected: filterStatus.includes(Status.PASS) }, { label: 'Underkänd', value: Status.FAIL.toString(), selected: filterStatus.includes(Status.FAIL) }, { label: 'Ej bedömd', value: Status.NOT_ASSESSED.toString(), selected: filterStatus.includes(Status.NOT_ASSESSED) }, { label: 'Ej relevant', value: Status.IRRELEVANT.toString(), selected: filterStatus.includes(Status.IRRELEVANT) },]}
-                                onAfOnSubmitFilters={(e) => {
-                                    setFilterStatus(e.detail.map((item: any) => Number(item.value) as Status));
-                                }}
-                            />
-                        </div>
+                    </div>}
+                    <div className="h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
+                        <div>
+                            <span className="block text-center leading-none">BARA</span>
+                            <span className="block text-center text-[2rem] leading-none">{relevantRequirementsWithChecks.length - numberDone || 0}</span>
+                            <span className="block text-center leading-none">KVAR!</span></div>
                     </div>
-                    <div className="content-container">
-                        <DigiTable>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Krav - visar {filteredRequirements.length}</th>
-                                        <th scope="col">Kategori</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredRequirements.map(req =>
-                                        <tr key={req.id}>
-                                            <td>
-                                                <StyledLink to={"/review/" + review.id + "/" + req.id} text={`${req.id}. ${req.name}`} />
-                                            </td>
-                                            <td>
-                                                <DigiTag afText={req.category} afNoIcon={true} />
-                                            </td>
-                                            <td>
-                                                <StatusBadge status={req.check?.status} />
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </DigiTable></div>
-                </>
-            }
-        </div>
-    );
-}
+                </div>
+            </div>}
+            {requirementId && (
+                (() => {
+                    const requirement = requirements?.find(req => String(req.id) === requirementId);
+                    if (requirement && reviewId) {
+                        return (
+                            <div className="flex gap-4">
+                                <div className="w-1/4">
+                                    <DigiFormCheckbox
+                                        afLabel="Dölj irrelevanta krav"
+                                        afChecked={hideIrrelevant}
+                                        onAfOnChange={(e) => {
+                                            setHideIrrelevant(e.detail.target.checked)
+                                        }}
+                                        afVariation={FormCheckboxVariation.PRIMARY}
+                                    />
+                                    <br />
+                                    <CategoryNav
+                                        reviewId={reviewId}
+                                        categories={categoriesWithRequirements}
+                                        selectedCategory={requirement.category}
+                                        selectedRequirement={requirementId}
+                                        hideIrrelevant={hideIrrelevant}
+                                    />
+                                </div>
+                                <div className="flex-1">
+                                    {review &&
+                                        <div className="content-container">
+                                            <ReviewRequirement
+                                                key={requirement.id}
+                                                requirement={requirement}
+                                                reviewId={reviewId}
+                                                nextRequirementId={nextRequirementId(requirementId)}
+                                                previousRequirementId={previousRequirementId(requirementId)}
+                                            />
+                                        </div>}
+                                    <StyledLink to={`/review/${reviewId}`} text="Tillbaka till granskningsöversikten" />
+                                </div>
+                            </div>
+                        );
+                    } else {
+                        return (
+                            <div>
+                                <p>Krav-ID: {requirementId} hittades inte.</p>
+                                <StyledLink to={`/review/${reviewId}`} text="Tillbaka till granskningsöversikten" />
+                            </div>
+                        );
+                    }
+                })()
+            )}
+            {/* Visa granskningsöversikt om det inte finns något valt krav */}
+            {review && !requirementId && <ReviewOverview requirements={allRequirementsWithChecks} review={review} />}
+        </div>);
+};

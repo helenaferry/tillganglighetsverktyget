@@ -10,7 +10,7 @@ export function meta({ }: Route.MetaArgs) {
     ];
 }
 
-export default function AddReview() {
+export default function AddReviewPage() {
     return <DigiLayoutContainer afVerticalPadding>
         <DigiTypography>
             <>
