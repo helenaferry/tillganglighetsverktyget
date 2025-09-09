@@ -1,6 +1,7 @@
-import { DigiLayoutContainer, DigiTypography } from "@digi/arbetsformedlingen-react";
+import { DigiLayoutContainer, DigiTypography, DigiTypographyHeadingJumbo } from "@digi/arbetsformedlingen-react";
 import type { Route } from "./+types/review";
 import { ReviewForm } from "~/components/ReviewForm";
+import { TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from "@digi/arbetsformedlingen";
 
 export function meta({ }: Route.MetaArgs) {
     return [,
@@ -13,7 +14,11 @@ export default function AddReview() {
     return <DigiLayoutContainer afVerticalPadding>
         <DigiTypography>
             <>
-                <h1>Skapa ny granskning</h1>
+                <DigiTypographyHeadingJumbo
+                    afText="Skapa ny granskning"
+                    afLevel={TypographyHeadingJumboLevel.H1}
+                    afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                ></DigiTypographyHeadingJumbo>
                 <ReviewForm />
             </>
         </DigiTypography>

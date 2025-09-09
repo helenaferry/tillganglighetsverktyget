@@ -4,25 +4,31 @@ export enum Level {
     AA = "AA",
 }
 
-export interface HowToTest {
-    id: number;
-    title: string;
-    content: string;
+export enum RequirementType {
+    REQUIREMENT = "requirement",
+    GUIDELINE = "guideline"
+}
+
+export enum ObjectType {
+    WEB = "web",
+    DOCUMENT = "document",
+    APP = "app"
 }
 
 export type Requirement = {
     id: string;
-    topic: string;
-    criteria: string;
+    name: string;
+    type: RequirementType;
+    wcag: string;
+    wcagLevel: Level;
+    en301459: string;
+    contentType: string;
     category: string;
-    level: Level;
-    principle: string;
-    guideline: string;
+    objectType: ObjectType;
     statement: string;
     why: string;
-    role: string;
-    wcag: string;
-    howToTest: HowToTest;
+    howToTestTitle: string;
+    howToTestContent: string;
 }
 
 export enum Status {

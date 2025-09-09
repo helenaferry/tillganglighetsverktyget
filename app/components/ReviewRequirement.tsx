@@ -55,23 +55,23 @@ export default function ReviewRequirement({ requirement, reviewId, nextRequireme
                 <div className="border-b-1 md:flex gap-4 justify-between">
                     <div className="flex gap-4">
                         <div>
-                            <h2>{requirement.id}. {requirement.topic}</h2>
+                            <h2>{requirement.id}. {requirement.name}</h2>
                             <div className="flex gap-2 mb-5">
                                 <DigiTag
                                     afText={requirement.category}
                                     afSize={TagSize.SMALL}
                                     afNoIcon={true}
                                 />
-                                <DigiTag
-                                    afText={requirement.role}
+                                {requirement.en301459 && <DigiTag
+                                    afText={requirement.en301459}
                                     afSize={TagSize.SMALL}
                                     afNoIcon={true}
-                                />
-                                <DigiTag
-                                    afText={requirement.level}
+                                />}
+                                {requirement.wcag && <DigiTag
+                                    afText={`WCAG ${requirement.wcag} ${requirement.wcagLevel}`}
                                     afSize={TagSize.SMALL}
                                     afNoIcon={true}
-                                />
+                                />}
                             </div>
                         </div>
                     </div>

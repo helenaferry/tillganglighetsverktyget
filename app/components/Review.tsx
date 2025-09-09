@@ -1,7 +1,7 @@
 import { DigiTable, DigiFormSelectFilter, DigiTag, DigiFormInput } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from './StyledLink';
 import { Status, type RequirementWithCheck, type Review } from '~/data/types';
-import { useRequirementCategories } from "~/hooks/useReviewData";
+import { useRequirementCategories } from "~/hooks/useRequirementData";
 import { useState } from "react";
 import StatusBadge from "./StatusBadge";
 
@@ -19,7 +19,7 @@ export default function Review({ review, requirements }: Props) {
         const filters = [
             filterCategories.length === 0 ? true : filterCategories.includes(req.category),
             filterStatus.length === 0 ? true : filterStatus.includes(req.check?.status ?? Status.NOT_ASSESSED),
-            (filterFreeText && filterFreeText.length === 0) ? true : req.topic.toLowerCase().includes(filterFreeText.toLowerCase()),
+            (filterFreeText && filterFreeText.length === 0) ? true : req.name.toLowerCase().includes(filterFreeText.toLowerCase()),
         ];
         return filters.every(Boolean);
     });
@@ -79,7 +79,7 @@ export default function Review({ review, requirements }: Props) {
                                     {filteredRequirements.map(req =>
                                         <tr key={req.id}>
                                             <td>
-                                                <StyledLink to={"/review/" + review.id + "/" + req.id} text={`${req.id}. ${req.topic}`} />
+                                                <StyledLink to={"/review/" + review.id + "/" + req.id} text={`${req.id}. ${req.name}`} />
                                             </td>
                                             <td>
                                                 <DigiTag afText={req.category} afNoIcon={true} />

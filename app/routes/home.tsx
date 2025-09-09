@@ -1,7 +1,8 @@
-import { DigiLayoutContainer, DigiTypography } from "@digi/arbetsformedlingen-react";
+import { DigiLayoutContainer, DigiTypography, DigiTypographyHeadingJumbo } from "@digi/arbetsformedlingen-react";
 import type { Route } from "./+types/home";
 import { ReviewsList } from "~/components/ReviewsList";
 import { StyledLink } from "~/components/StyledLink";
+import { TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from "@digi/arbetsformedlingen";
 
 export function meta({ }: Route.MetaArgs) {
   return [
@@ -14,9 +15,14 @@ export default function Home() {
   return <DigiLayoutContainer afVerticalPadding>
     <DigiTypography>
       <>
-        <h1>Granskningar</h1>
-        <StyledLink to="/add" text="Skapa ny granskning" isButton={true} />
+        <DigiTypographyHeadingJumbo
+          afText="Granskningar"
+          afLevel={TypographyHeadingJumboLevel.H1}
+          afVariation={TypographyHeadingJumboVariation.PRIMARY}
+        >
+        </DigiTypographyHeadingJumbo>
         <ReviewsList />
+        <StyledLink to="/add" text="Skapa ny granskning" isButton={true} />
       </>
     </DigiTypography>
   </DigiLayoutContainer>;

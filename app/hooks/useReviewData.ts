@@ -10,22 +10,6 @@ export function useReviews(): UseQueryResult<ReviewSummary[], Error> {
     });
 }
 
-// All requirements
-export function useRequirements(path: string = "/tillganglighetslistan.json"): UseQueryResult<Requirement[], Error> {
-    return useQuery<Requirement[], Error>({
-        queryKey: ["requirements", path],
-        queryFn: () => ReviewService.getAllRequirements(path),
-    });
-}
-
-// All requirement categories
-export function useRequirementCategories(path: string = "/tillganglighetslistan.json"): UseQueryResult<string[], Error> {
-    return useQuery<string[], Error>({
-        queryKey: ["requirementCategories", path],
-        queryFn: () => ReviewService.getAllRequirementCategories(path),
-    });
-}
-
 // Get a single review by ID
 export function useReviewById(reviewId: string): { review?: ReviewWithApplication; isLoading: boolean } {
     const { data: reviewData, isLoading } = useQuery<ReviewWithApplication, Error>({

@@ -1,24 +1,25 @@
 import { DigiFormInput, DigiFormSelectFilter, DigiButton, DigiFormFieldset, DigiFormCheckbox } from "@digi/arbetsformedlingen-react";
-import { useApplications, useRequirements, useUpsertReview, useDisableChecks } from "~/hooks/useReviewData";
+import { useApplications, useUpsertReview, useDisableChecks } from "~/hooks/useReviewData";
+import { useRequirements, useRequirementContentTypes } from "~/hooks/useRequirementData";
 import { useState } from "react";
 
 export function ReviewForm() {
     const { data: applications } = useApplications();
     const { data: requirements } = useRequirements();
+    const { data: contentTypes } = useRequirementContentTypes();
     const disableChecks = useDisableChecks();
     const upsertReview = useUpsertReview();
     const [title, setTitle] = useState("");
     const [application, setApplication] = useState("");
-    const allContentTypes = ["Ikoner & bilder", "Ljud", "Video", "Formulär", "Komponenter - Knappar", "Komponenter - Listor", "Komponenter - Tabeller", "Komponenter - Iframes", "Felhantering"];
-    const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>(allContentTypes);
+    const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
 
     const handleContentChange = (e: CustomEvent) => {
         const selected = e.detail.target.value;
         const checked = e.detail.target.checked;
         if (checked) {
-            setExcludedContentTypes(prev => prev.filter(type => type !== selected));
-        } else {
             setExcludedContentTypes(prev => [...prev, selected]);
+        } else {
+            setExcludedContentTypes(prev => prev.filter(type => type !== selected));
         }
     };
 
@@ -27,15 +28,14 @@ export function ReviewForm() {
         upsertReview.mutate({ title, application, excludedContentTypes }, {
             onSuccess: (review) => {
                 const reviewId = review.id;
-                const matchingRequirements = requirements?.filter(req => excludedContentTypes.includes(req.category)).map(req => req.id);
+                const matchingRequirements = requirements?.filter(req => excludedContentTypes.includes(req.contentType)).map(req => req.id);
                 disableChecks.mutate({ reviewId: reviewId, requirements: matchingRequirements || [] });
             }
         });
-
     };
 
     return (
-        <form id="review-form" onSubmit={handleSubmit}>
+        <form id="review-form" className="content-container" onSubmit={handleSubmit}>
             <DigiFormInput
                 afLabel="Rubrik"
                 afValue={title}
@@ -47,13 +47,18 @@ export function ReviewForm() {
                 afListItems={applications?.map(app => ({ value: String(app.id), label: app.name ?? "" })) ?? []}
                 onAfOnSelect={(e) => setApplication(e.detail[0].value)}
             />
+            <h2>Exkludera irrelevanta krav</h2>
+            <p>Den totala mängden krav är stor och för att minska arbetsbelastningen är det viktigt att exkludera irrelevanta krav.
+                Bocka för innehållstyper som saknas i granskningsobjektet, så markeras relaterade krav automatiskt som irrelevanta.
+                De döljs då i granskningen, men du kan välja att visa dem för att kontrollera att de verkligen är irrelevanta
+                och återta dem till granskningen om du vill.</p>
             <DigiFormFieldset
                 afForm="review-form"
-                afLegend="Ange alla innehållstyper som finns i den granskade produkten (krav som specifikt rör ej valda typer kommer att filtreras bort)"
+                afLegend="Vänligen välj de innehållstyper som inte är relevanta för granskningsobjektet"
                 afName="content"
 
             >
-                {allContentTypes.map(contentType => (
+                {contentTypes && contentTypes.map(contentType => (
                     <DigiFormCheckbox
                         key={contentType}
                         afValue={contentType}

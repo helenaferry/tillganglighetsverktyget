@@ -1,8 +1,9 @@
 import type { Route } from "./+types/review";
 import { useParams } from "react-router-dom";
-import { useRequirements, useReviewById, useRequirementCategories, useChecksForReview } from '~/hooks/useReviewData'
-import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiFormCheckbox } from "@digi/arbetsformedlingen-react";
-import { FormCheckboxVariation, LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
+import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
+import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
+import { DigiLayoutContainer, DigiTypography, DigiLoaderSkeleton, DigiFormCheckbox, DigiTypographyHeadingJumbo } from "@digi/arbetsformedlingen-react";
+import { FormCheckboxVariation, LoaderSkeletonVariation, TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from "@digi/arbetsformedlingen";
 import Review from "~/components/Review";
 import { StyledLink } from "~/components/StyledLink";
 import ReviewRequirement from "~/components/ReviewRequirement";
@@ -86,7 +87,12 @@ export default function ReviewPage() {
                         </DigiLoaderSkeleton>}
                     {review && <div className="md:flex justify-between mb-4">
                         <div>
-                            <h1>{review?.title}</h1>
+                            <DigiTypographyHeadingJumbo
+                                afText={review?.title || "Granskning"}
+                                afLevel={TypographyHeadingJumboLevel.H1}
+                                afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                            >
+                            </DigiTypographyHeadingJumbo>
                             <p>
                                 <b>Applikation:</b> {review?.application.name}<br />
                                 <b>Granskning startad:</b> {formatDateLong(review?.created_at)}<br />

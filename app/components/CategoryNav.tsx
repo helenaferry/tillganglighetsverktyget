@@ -71,7 +71,7 @@ export default function CategoryNav({ reviewId, categories, selectedCategory, se
                             {category.requirements.map(req => (
                                 <li key={req.id}>
                                     <DigiNavigationVerticalMenuItem
-                                        afText={`${selectedRequirement == req.id ? '➡ ' : ''}${req.topic ?? ""} ${getShortStatus(req.check?.status ?? Status.NOT_ASSESSED)}`}
+                                        afText={`${selectedRequirement == req.id ? '➡ ' : ''}${req.name ?? ""} ${getShortStatus(req.check?.status ?? Status.NOT_ASSESSED)}`}
                                         onClick={() => navigate(`/review/${reviewId}/${req.id}`)}
                                     />
                                 </li>

@@ -1,15 +1,17 @@
 import { DigiTable, DigiLoaderSkeleton, DigiButton, DigiIconTrash } from "@digi/arbetsformedlingen-react";
 import { StyledLink } from "./StyledLink";
-import { useReviews, useDeleteReview, useRequirements } from "~/hooks/useReviewData";
+import { useReviews, useDeleteReview } from "~/hooks/useReviewData";
+import { useRequirements } from "~/hooks/useRequirementData";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
 import { formatDate, formatDateAndTime } from "~/formattingHelper";
 
 export function ReviewsList() {
-  const { data: reviews, isLoading: reviewsLoading, error: reviewsError } = useReviews();
+  const { data: reviews, isLoading: reviewsLoading, error: reviewsError, isFetched: reviewsFetched } = useReviews();
   const deleteReview = useDeleteReview();
-  const { data: requirements, isLoading: requirementsLoading } = useRequirements();
+  const { data: requirements, isLoading: requirementsLoading, isFetched: requirementsFetched } = useRequirements();
   const requirementsCount = requirements?.length || 0;
   const loading = reviewsLoading || requirementsLoading;
+  const fetched = reviewsFetched && requirementsFetched;
   return (
     <div>
       {loading &&
@@ -19,8 +21,8 @@ export function ReviewsList() {
         >
         </DigiLoaderSkeleton>}
       {reviewsError && <p>Fel vid hämtning av granskningar</p>}
-      {!loading && !reviews || reviews?.length === 0 && <p>Inga granskningar hittades.</p>}
-      {reviews && <div className="content-container"><DigiTable>
+      {fetched && !reviews || reviews?.length === 0 && <p>Inga granskningar hittades.</p>}
+      {fetched && reviews && <div className="content-container"><DigiTable>
         <table>
           <thead>
             <tr>
