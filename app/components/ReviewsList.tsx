@@ -46,7 +46,7 @@ export function ReviewsList() {
               <thead>
                 <tr>
                   <th scope="col">Titel</th>
-                  <th scope="col">Applikation</th>
+                  <th scope="col">Granskningsobjekt</th>
                   <th scope="col">Skapad</th>
                   <th>Godkända</th>
                   <th>Underkända</th>

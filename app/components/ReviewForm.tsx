@@ -146,9 +146,9 @@ export function ReviewForm({ reviewId }: Props) {
             onAfOnInput={(e) => setTitle(e.detail.target.value)}
           />
           <DigiFormSelectFilter
-            afFilterButtonText="Välj produkt"
-            afFilterButtonTextLabel="Produkt som ska granskas"
-            afName="Produkt"
+            afFilterButtonText="Välj granskningsobjekt"
+            afFilterButtonTextLabel="Granskningsobjekt"
+            afName="Granskningsobjekt"
             afListItems={
               applications?.map((app) => ({
                 value: String(app.id),

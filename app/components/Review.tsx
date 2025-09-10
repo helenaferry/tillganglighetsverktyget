@@ -120,7 +120,7 @@ export default function Review({ reviewId, requirementId }: Props) {
               afVariation={TypographyHeadingJumboVariation.PRIMARY}
             ></DigiTypographyHeadingJumbo>
             <p>
-              <b>Applikation:</b> {review?.application.name}
+              <b>Granskningsobjekt:</b> {review?.application.name}
               <br />
               <b>Granskning startad:</b> {formatDateLong(review?.created_at)}
               <br />
