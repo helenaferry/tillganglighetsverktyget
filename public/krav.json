@@ -49,13 +49,13 @@
       "id": 4,
       "name": "Max tre blinkningar per sekund",
       "type": "requirement",
-      "wcag": "2.3.1 / 2.3.2",
+      "wcag": "2.3.1",
       "wcagLevel": "A*",
       "en301549": "",
       "contentType": "",
       "category": "Störigt / Skadligt",
       "objectType": "web",
-      "statement": "Ingen del av innehållet blinkar på ett sätt som riskerar att trigga epileptiska anfall, det vill säga mer än tre gånger under en period på en sekund.",
+      "statement": "Inget innehåll ska flimra mer än tre gånger under en sekund, eller så ska flimret ligga under de generella tröskelvärdena för flimmer och rött flimmer. Kravet gäller flimmer som täcker en yta som motsvarar mer än 25 % av det centrala synfältet",
       "why": "Vi vill inte riskera att orsaka epileptiska anfall eller fysiska reaktioner hos våra användare.",
       "howToTestTitle": "Max tre blinkningar per sekund",
       "howToTestContent": "1. Kontrollera om det finns något innehåll som blinkar.\r\n\r\n2. Säkerställ att innehållet inte blinkar snabbare än tre gånger per sekund.\r\n\r\nVar extra uppmärksam med att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger. Riskera aldrig att orsaka epileptiska anfall hos våra användare.\r\n"
@@ -109,13 +109,13 @@
       "id": 8,
       "name": "Förebyggande av fel",
       "type": "requirement",
-      "wcag": "3.3.4 / 3.3.6",
+      "wcag": "3.3.4",
       "wcagLevel": "AA",
       "en301549": "",
       "contentType": "Formulär & inmatningsfält",
       "category": "Generellt",
       "objectType": "web",
-      "statement": "På sidor där användaren ska skicka in information ska ett eller flera av följande alternativ gälla:\r\n• användaren kan ångra sig och gå tillbaka\r\n• användaren kan kontrollera sin information och rätta eventuella fel\r\n• användaren kan förhandsgranska, ändra och bekräfta innan informationen sparas eller skickas in.",
+      "statement": "För webbsidor som leder till att användare ingår rättsliga åtaganden eller utför ekonomiska transaktioner, eller som ändrar eller raderar användarstyrd data i datalagringssystem eller tar emot användarens provsvar, så ska minst en av följande punkter gälla:\r\n\r\nMöjlig att ångra: Åtgärder kan ångras.\r\nKontrollerad: Data som matats in av användaren kontrolleras, och om inmatningsfel hittas ges användaren möjlighet att rätta till dem.\r\nBekräftad: Det finns en metod/funktion för att förhandsgranska, bekräfta och rätta till information innan åtgärden slutförs.",
       "why": "Det är viktigt för våra användare och vår verksamhet att skydda användarna från allvarliga konsekvenser som orsakats av att de råkat göra ett misstag.",
       "howToTestTitle": "Förebyggande av fel",
       "howToTestContent": "1. För tjänster eller webbsidor där användaren kan fylla i och skicka information, gör följande:\r\n\r\n2. Utför alla steg i tjänsten för att simulera att en användare utför en uppgift. För att undvika eventuella fel i bakomliggande system bör testdata användas här.\r\n\r\n3. Kontrollera om den aktuella tjänsten eller formulären på webbsidan avslutas med en knapp för att granska informationen i formuläret.\r\n\r\n4. Kontrollera att nästa steg i tjänsten tar användaren till en sida där användaren kan granska den information som den har angett i formuläret.\r\n\r\n5. Kontrollera att det finns en möjlighet för användaren att gå tillbaka och korrigera information som har blivit fel.\r\n"
@@ -844,13 +844,13 @@
       "id": 57,
       "name": "Synliga länktexter",
       "type": "requirement",
-      "wcag": "2.4.4 / 2.4.9",
+      "wcag": "2.4.4",
       "wcagLevel": "A",
       "en301549": "",
       "contentType": "",
       "category": "Komponenter - Länkar",
       "objectType": "web",
-      "statement": "Länkar har synliga länktexter. Undantag är länkar i form av logotyper som exempelvis leder till webbplatsens startsida.",
+      "statement": "Syftet med varje länk framgår utan omgivande sammanhang, eller åtminstone tillsammans med texten som föregår länken (i samma stycke, lista, tabellcell eller liknande).\r\nUndantaget är om syftet med länken är oklart även för personer utan funktionsnedsättning.\r\n",
       "why": "Det behöver vara tydligt för användare vart en länk leder. Länkar utan text försvårar för alla användare.",
       "howToTestTitle": "Synliga länktexter",
       "howToTestContent": "1. Gå igenom alla länkar på sidan, inkluderat sådana som leder till andra sidor på samma webbplats, till andra delar av samma sida och länkar till andra webbplatser eller dokument.\r\n\r\n2. Kontrollera att länkarna har synliga länktexter.\r\n"
@@ -859,13 +859,13 @@
       "id": 58,
       "name": "Tydliga länktexter",
       "type": "requirement",
-      "wcag": "2.4.4 / 2.4.9",
+      "wcag": "2.4.4",
       "wcagLevel": "A",
       "en301549": "",
       "contentType": "",
       "category": "Komponenter - Länkar",
       "objectType": "web",
-      "statement": "Länktexter är begripliga och kan tolkas även om länken tas ur sitt sammanhang. Länktexter som “Läs mer” och “Klicka här” används inte. I flöden är det ok att använda länktexter som \"Tillbaka\" men helst ska det framgå vad användaren går tillbaka till.. ",
+      "statement": "Denna rad borde konna tas bort.Länktexter är begripliga och kan tolkas även om länken tas ur sitt sammanhang. Länktexter som “Läs mer” och “Klicka här” används inte. I flöden är det ok att använda länktexter som \"Tillbaka\" men helst ska det framgå vad användaren går tillbaka till.. ",
       "why": "Användare som navigerar med skärmläsare kan samla webbsidans alla länkar i en länklista. Därför behöver länktexter vara begripliga i sig själva för att användaren ska förstå dem i en samlad lista. Sammanhanget ska inte vara avgörande. När det gäller länkar går myndigheten lite längre än vad kravet gäller eftersom länkars mål ska vara logiska både i och utanför sitt sammanhang.",
       "howToTestTitle": "Tydliga länktexter",
       "howToTestContent": "1. Gå igenom alla länkar på sidan, inkluderat sådana som leder till andra sidor på samma webbplats, till andra delar av samma sida och länkar till andra webbplatser eller dokument.\r\n\r\n2. Kontrollera att alla länkar har tydliga länktexter som är begripliga utanför sitt sammanhang, alltså förklarande i sig själva.\r\n\r\nFör att hitta alla länkar på sidan kan du använda dig av en skärmläsare, exempelvis Jaws eller NVDA för Windows eller Voice Over för MacOS eller iOS.\r\n\r\nTesta gärna även med användare ur olika målgrupper för att säkerställa att länktexter är tydliga och lätta att förstå.\r\n"
@@ -874,13 +874,13 @@
       "id": 59,
       "name": "Länktexter för externa webbplatser och dokument",
       "type": "requirement",
-      "wcag": "2.4.4 / 2.4.9",
+      "wcag": "2.4.4",
       "wcagLevel": "A",
       "en301549": "",
       "contentType": "",
       "category": "Komponenter - Länkar",
       "objectType": "web",
-      "statement": "Om en länk leder användaren till en extern sida utanför myndighetens webbplats, eller till ett dokument, framgår det tydligt av länkens utformning, både visuellt och som ett alternativ i text.",
+      "statement": "Detta står under rekommendationer, inte lagkrav. Borde kunna tas bort.Om en länk leder användaren till en extern sida utanför myndighetens webbplats, eller till ett dokument, framgår det tydligt av länkens utformning, både visuellt och som ett alternativ i text.",
       "why": "Det kan av användare upplevas som oväntat att länkar leder till andra webbplatser eller till dokument som laddas ner. Sådan information ska därför framgå av länkens utformning för att användaren ska veta vad den har att vänta sig.",
       "howToTestTitle": "Länktexter för externa webbplatser och dokument",
       "howToTestContent": "1. Gå igenom alla länkar på sidan som leder till externa sidor utanför Arbetsförmedlingen.\r\n\r\n2. Kontrollera att det är tydligt för användaren att länken leder till en extern sida med en annan avsändare än Arbetsförmedlingen.\r\n\r\n3. Gå igenom alla länkar på sidan som leder till dokument.\r\n\r\n4. Kontrollera att länktexten beskriver vilken typ av dokument det är och dokumentets storlek.\r\n\r\n5. Kontrollera att det är tydligt när länkar och dokumentet öppnas i nya flikar eller om dokument laddas ner. Om ikoner används för att beskriva det, finns motsvarande information som text i koden för användare med hjälpmedel. "
@@ -1396,21 +1396,6 @@
     },
     {
       "id": 94,
-      "name": "Konsekvent navigering på myndigheten",
-      "type": "requirement",
-      "wcag": "3.2.3",
-      "wcagLevel": "AA",
-      "en301549": "",
-      "contentType": "",
-      "category": "Konsekvent",
-      "objectType": "web",
-      "statement": "Tjänsten följer myndighetens digitala riktlinjer för navigering. Kravet är uppfyllt om ni använder er av komponenter och designmönster i designsystemet.",
-      "why": "När navigeringsfunktioner placeras på samma plats och i samma ordning på varje sida hjälper det användare att snabbt hitta vad de söker.",
-      "howToTestTitle": "",
-      "howToTestContent": ""
-    },
-    {
-      "id": 95,
       "name": "Konsekvent identifiering i tjänsten",
       "type": "requirement",
       "wcag": "3.2.4",
@@ -1425,22 +1410,7 @@
       "howToTestContent": "Granska hur funktioner benämns i webbtjänsten och kontrollera att de benämns på samma sätt på tjänstens alla sidor."
     },
     {
-      "id": 96,
-      "name": "Konsekvent identifiering på myndigheten",
-      "type": "requirement",
-      "wcag": "3.2.4",
-      "wcagLevel": "AA",
-      "en301549": "",
-      "contentType": "",
-      "category": "Konsekvent",
-      "objectType": "web",
-      "statement": "Funktioner inom en tjänst identifieras på samma sätt som på andra ställen där funktionen används på webbplatsen. Exempel är när samma termer används för att beskriva knappar som gör samma sak. Kravet är uppfyllt om ni använder er av komponenter och designmönster i designsystemet.",
-      "why": "Användare kan lättare hitta och använda en funktion på alla sidor inom en tjänst där funktionen finns. Användare som navigerar med hjälpmedel får en mer förutsägbar upplevelse när textalternativ för funktioner anges konsekvent.",
-      "howToTestTitle": "",
-      "howToTestContent": ""
-    },
-    {
-      "id": 97,
+      "id": 95,
       "name": "Gör funktioner för tillgänglighet lätta att hitta",
       "type": "requirement",
       "wcag": "",
@@ -1455,7 +1425,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 98,
+      "id": 96,
       "name": "Gör inte användning av tjänster beroende av endast en biometrisk egenskap",
       "type": "requirement",
       "wcag": "",
@@ -1470,7 +1440,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 99,
+      "id": 97,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, ljudkvalitet",
       "type": "requirement",
       "wcag": "",
@@ -1485,7 +1455,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 100,
+      "id": 98,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, realtext",
       "type": "requirement",
       "wcag": "",
@@ -1500,7 +1470,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 101,
+      "id": 99,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, en anslutning för att tala och skicka",
       "type": "requirement",
       "wcag": "",
@@ -1515,7 +1485,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 102,
+      "id": 100,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, Visuell skillnad på meddelanden",
       "type": "requirement",
       "wcag": "",
@@ -1530,7 +1500,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 103,
+      "id": 101,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, Särskilja meddelanden på ett maskinläsbart sätt",
       "type": "requirement",
       "wcag": "",
@@ -1545,7 +1515,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 104,
+      "id": 102,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, Visa vem som skriver realtidstexten",
       "type": "requirement",
       "wcag": "",
@@ -1560,7 +1530,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 105,
+      "id": 103,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, visuell indikator som visar när det finns ljud",
       "type": "requirement",
       "wcag": "",
@@ -1575,7 +1545,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 106,
+      "id": 104,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, kommunicera med liknande tjänster",
       "type": "requirement",
       "wcag": "",
@@ -1590,7 +1560,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 107,
+      "id": 105,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, inmatning av realtidstext",
       "type": "requirement",
       "wcag": "",
@@ -1605,7 +1575,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 108,
+      "id": 106,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, namn och/eller nummerpresentation",
       "type": "requirement",
       "wcag": "",
@@ -1620,7 +1590,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 109,
+      "id": 107,
       "name": "Alternativ till ljud- och videobaserade tjänster",
       "type": "requirement",
       "wcag": "",
@@ -1635,7 +1605,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 110,
+      "id": 108,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, upplösning",
       "type": "requirement",
       "wcag": "",
@@ -1650,7 +1620,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 111,
+      "id": 109,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, bildfrekvens",
       "type": "requirement",
       "wcag": "",
@@ -1665,7 +1635,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 112,
+      "id": 110,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, fördröjning mellan ljud och bild",
       "type": "requirement",
       "wcag": "",
@@ -1680,7 +1650,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 113,
+      "id": 111,
       "name": "Funktioner för video- och röstsamtal ska vara tillgängliga, synlig indikator när någon talar",
       "type": "requirement",
       "wcag": "",
@@ -1695,7 +1665,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 114,
+      "id": 112,
       "name": "v Funktioner för video- och röstsamtal ska vara tillgängliga, indikator för teckenspråkstolk",
       "type": "requirement",
       "wcag": "",
@@ -1710,7 +1680,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 115,
+      "id": 113,
       "name": "Alternativ till ljud- och videobaserade tjänster",
       "type": "requirement",
       "wcag": "",
@@ -1725,7 +1695,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 116,
+      "id": 114,
       "name": "Teknik för hantering av undertexter, visa tillgängliga undertexter",
       "type": "requirement",
       "wcag": "",
@@ -1740,7 +1710,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 117,
+      "id": 115,
       "name": "Teknik för hantering av undertexter, synkronisera ljud och undertexter",
       "type": "requirement",
       "wcag": "",
@@ -1755,7 +1725,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 118,
+      "id": 116,
       "name": "Teknik för hantering av undertexter, bevara undertextdata",
       "type": "requirement",
       "wcag": "",
@@ -1770,7 +1740,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 119,
+      "id": 117,
       "name": "Teknik för hantering av undertexter, anpassa undertexter",
       "type": "requirement",
       "wcag": "",
@@ -1785,7 +1755,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 120,
+      "id": 118,
       "name": "Teknik för hantering av undertexter, möjlighet att läsa upp undertexter",
       "type": "requirement",
       "wcag": "",
@@ -1800,7 +1770,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 121,
+      "id": 119,
       "name": "Teknik för hantering av undertexter, möjlighet att aktivera undertextning och syntolkning",
       "type": "requirement",
       "wcag": "",
@@ -1815,7 +1785,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 122,
+      "id": 120,
       "name": "Teknik för syntolkning, spela upp ljudspår",
       "type": "requirement",
       "wcag": "",
@@ -1830,7 +1800,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 123,
+      "id": 121,
       "name": "Teknik för syntolkning, synkronisera innehåll och syntolkning",
       "type": "requirement",
       "wcag": "",
@@ -1845,7 +1815,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 124,
+      "id": 122,
       "name": "Teknik för syntolkning, bevara data för syntolkning",
       "type": "requirement",
       "wcag": "",
@@ -1860,7 +1830,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 125,
+      "id": 123,
       "name": "Respektera användarens inställningar",
       "type": "requirement",
       "wcag": "",
@@ -1875,7 +1845,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 126,
+      "id": 124,
       "name": "Se till att funktioner för redigering ger stöd för tillgänglighet, tillgängligt innehållsskapande",
       "type": "requirement",
       "wcag": "",
@@ -1890,7 +1860,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 127,
+      "id": 125,
       "name": "Se till att funktioner för redigering ger stöd för tillgänglighet, bevarande av tillgänglighets information vidomvandling",
       "type": "requirement",
       "wcag": "",
@@ -1905,7 +1875,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 128,
+      "id": 126,
       "name": "Se till att funktioner för redigering ger stöd för tillgänglighet, hjälp med rättelse",
       "type": "requirement",
       "wcag": "",
@@ -1920,7 +1890,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 129,
+      "id": 127,
       "name": "Se till att funktioner för redigering ger stöd för tillgänglighet, mallar",
       "type": "requirement",
       "wcag": "",
@@ -1935,7 +1905,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 130,
+      "id": 128,
       "name": "Tillgänglig produktdokumentation",
       "type": "requirement",
       "wcag": "",
@@ -1950,7 +1920,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 131,
+      "id": 129,
       "name": "Säkerställ tillgänglighet i supporttjänster, supporttjänster",
       "type": "requirement",
       "wcag": "",
@@ -1965,7 +1935,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 132,
+      "id": 130,
       "name": "Säkerställ tillgänglighet i supporttjänster, information om tillgänglighet",
       "type": "requirement",
       "wcag": "",
@@ -1980,7 +1950,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 133,
+      "id": 131,
       "name": "Säkerställ tillgänglighet i supporttjänster, kommunikation utifrån den enskildes behov",
       "type": "requirement",
       "wcag": "",
@@ -1995,7 +1965,7 @@
       "howToTestContent": ""
     },
     {
-      "id": 134,
+      "id": 132,
       "name": "Säkerställ tillgänglighet i supporttjänster, tillgänglig dokumentation",
       "type": "requirement",
       "wcag": "",
