@@ -5,6 +5,7 @@ import {
   DigiFormTextarea,
 } from '@digi/arbetsformedlingen-react';
 import { Status, type UpsertCheckInput } from '~/data/types';
+import { useState, useEffect } from 'react';
 import { useUpsertCheck, useDeleteCheck, useCheck } from '~/hooks/useReviewData';
 
 type Props = {
@@ -16,20 +17,26 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
   const upsertCheck = useUpsertCheck();
   const deleteCheck = useDeleteCheck();
   const { check } = useCheck(reviewId, requirementId);
+  const [localStatus, setLocalStatus] = useState<number | undefined>(check?.status ?? undefined);
+
+  useEffect(() => {
+    setLocalStatus(check?.status ?? undefined);
+  }, [check]);
 
   return (
     <form id="requirement-form">
       <DigiFormRadiogroup
         afName="fulfillment"
         onAfOnGroupChange={(e: CustomEvent) => {
-          const status = e.detail.target.value;
-          if (status === Status.NOT_ASSESSED.toString() && check && !check.comment) {
+          const status = Number(e.detail.target.value);
+          setLocalStatus(status);
+          if (status === Status.NOT_ASSESSED && check && !check.comment) {
             deleteCheck.mutate(String(check.id));
           }
           const input: UpsertCheckInput = {
             reviewId: Number(reviewId),
             requirement: requirementId,
-            status: Number(status),
+            status,
             comment: check?.comment ?? '',
           };
           upsertCheck.mutate(input, {
@@ -68,7 +75,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
           const input: UpsertCheckInput = {
             reviewId: Number(reviewId),
             requirement: String(requirementId),
-            status: check?.status || Status.NOT_ASSESSED,
+            status: localStatus ?? Status.NOT_ASSESSED,
             comment: (event.target as HTMLInputElement).value,
           };
           upsertCheck.mutate(input, {

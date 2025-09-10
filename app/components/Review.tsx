@@ -119,13 +119,18 @@ export default function Review({ reviewId, requirementId }: Props) {
               afLevel={TypographyHeadingJumboLevel.H1}
               afVariation={TypographyHeadingJumboVariation.PRIMARY}
             ></DigiTypographyHeadingJumbo>
-
             <p>
               <b>Applikation:</b> {review?.application.name}
               <br />
               <b>Granskning startad:</b> {formatDateLong(review?.created_at)}
               <br />
             </p>
+
+            <StyledLink
+              to={`/review/${review.id}/export`}
+              text="Skapa tillgänglighetsredogörelse"
+              isButton={true}
+            />
           </div>
           <div>
             {numberDone > 0 && (

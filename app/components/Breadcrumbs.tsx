@@ -13,12 +13,14 @@ export default function Breadcrumbs({ currentPage, pages }: Props) {
     navigate(href);
   };
   return (
-    <DigiNavigationBreadcrumbs afCurrentPage={currentPage}>
-      {pages?.map((page) => (
-        <a key={page.href} href={page.href} onClick={(e) => handleClick(e, page.href)}>
-          {page.title}
-        </a>
-      ))}
-    </DigiNavigationBreadcrumbs>
+    <div className="mb-4">
+      <DigiNavigationBreadcrumbs afCurrentPage={currentPage}>
+        {pages?.map((page) => (
+          <a key={page.href} href={page.href} onClick={(e) => handleClick(e, page.href)}>
+            {page.title}
+          </a>
+        ))}
+      </DigiNavigationBreadcrumbs>
+    </div>
   );
 }
