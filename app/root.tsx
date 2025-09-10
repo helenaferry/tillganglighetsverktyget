@@ -7,21 +7,24 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "react-router";
-import { useLocation } from "react-router-dom";
-import type { Route } from "./+types/root";
-import "./app.css";
-import { ClientOnly } from "./clientOnly";
+} from 'react-router';
+import { useLocation } from 'react-router-dom';
+import type { Route } from './+types/root';
+import './app.css';
+import { ClientOnly } from './clientOnly';
 import {
   DigiHeader,
   DigiFooter,
   DigiLogo,
   DigiHeaderNavigation,
-  DigiHeaderNavigationItem
-} from "@digi/arbetsformedlingen-react";
+  DigiHeaderNavigationItem,
+} from '@digi/arbetsformedlingen-react';
 import {
-  FooterVariation, HeaderCenterContentWidth, LogoColor, LogoVariation
-} from "@digi/arbetsformedlingen";
+  FooterVariation,
+  HeaderCenterContentWidth,
+  LogoColor,
+  LogoVariation,
+} from '@digi/arbetsformedlingen';
 
 const queryClient = new QueryClient();
 
@@ -49,24 +52,25 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 afNavAriaLabel="Huvudmeny"
                 afCentered={HeaderCenterContentWidth.WIDTH_1400}
               >
-                <DigiHeaderNavigationItem afCurrentPage={location.pathname === "/"}>
+                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/'}>
                   <Link to="/">Granskningar</Link>
                 </DigiHeaderNavigationItem>
-                <DigiHeaderNavigationItem afCurrentPage={location.pathname === "/add"}>
+                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/add'}>
                   <Link to="/add">Skapa ny granskning</Link>
                 </DigiHeaderNavigationItem>
               </DigiHeaderNavigation>
             </div>
           </DigiHeader>
           <QueryClientProvider client={queryClient}>
-            <div className="!bg-[var(--digi--grayscale-100)]">
-              {children}
-            </div>
+            <div className="!bg-[var(--digi--grayscale-100)]">{children}</div>
           </QueryClientProvider>
           <DigiFooter afVariation={FooterVariation.LARGE}>
             <div slot="content-bottom-left">
               <Link to="https://www.arbetsformedlingen.se">
-                <DigiLogo afVariation={LogoVariation.LARGE} afColor={LogoColor.SECONDARY}></DigiLogo>
+                <DigiLogo
+                  afVariation={LogoVariation.LARGE}
+                  afColor={LogoColor.SECONDARY}
+                ></DigiLogo>
               </Link>
             </div>
           </DigiFooter>
@@ -74,7 +78,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ScrollRestoration />
         <Scripts />
       </body>
-    </html >
+    </html>
   );
 }
 
@@ -83,16 +87,14 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
+  let message = 'Oops!';
+  let details = 'An unexpected error occurred.';
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
+    message = error.status === 404 ? '404' : 'Error';
     details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
+      error.status === 404 ? 'The requested page could not be found.' : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
