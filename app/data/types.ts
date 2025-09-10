@@ -67,3 +67,12 @@ export type Category = {
     category: string;
     requirements: RequirementWithCheck[];
 }
+
+export type PrefillRequirement = {
+    id: string;
+    automatic: string;
+    activateText: string;
+    status: string;
+    requirements: string;
+    comment: string;
+}

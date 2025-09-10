@@ -1,4 +1,4 @@
-import { Status, type Application, type Check, type Requirement, type Review, type ReviewSummary, type ReviewWithApplication } from "./types";
+import { Status, type Application, type Check, type PrefillRequirement, type Requirement, type Review, type ReviewSummary, type ReviewWithApplication } from "./types";
 
 import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_DATABASE_URL;
@@ -6,18 +6,11 @@ const supabaseKey = import.meta.env.VITE_DATABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 export const ReviewService = {
-    async getAllReviews(): Promise<Review[]> {
-        const { data, error } = await supabase
-            .from('reviews')
-            .select('*');
-        if (error) throw error;
-        return data as Review[];
-    },
-
     async getAllReviewSummaries(): Promise<ReviewSummary[]> {
         const { data: reviews, error: reviewError } = await supabase
             .from('reviews')
-            .select('*, application(*)');
+            .select('*, application(*)')
+            .order('created_at', { ascending: false });
         if (reviewError) throw reviewError;
 
         // Get all checks for all reviews
@@ -138,6 +131,44 @@ export const ReviewService = {
         if (error) throw error;
     },
 
+    async prefillChecks(reviewId: number, prefill: PrefillRequirement): Promise<Check[]> {
+        const reqIds = prefill.requirements.split(",").map(r => r.trim()).filter(r => r !== "");
+        if (reqIds.length === 0) return [];
+
+        const status = prefill.status === "PASS" ? Status.PASS : prefill.status === "FAIL" ? Status.FAIL : prefill.status === "IRRELEVANT" ? Status.IRRELEVANT : Status.NOT_ASSESSED;
+        const comment = prefill.comment || "";
+        const results: Check[] = [];
+
+        for (const requirement of reqIds) {
+            // Check if a check already exists
+            const { data: existing, error: findError } = await supabase
+                .from('checks')
+                .select('*')
+                .eq('review', Number(reviewId))
+                .eq('requirement', Number(requirement));
+            if (findError) throw findError;
+            if (existing && existing.length > 0) {
+                // Update existing check
+                const { data: updated, error: updateError } = await supabase
+                    .from('checks')
+                    .update({ status, comment })
+                    .eq('id', existing[0].id)
+                    .select();
+                if (updateError) throw updateError;
+                if (updated && updated.length > 0) results.push(updated[0] as Check);
+            } else {
+                // Insert new check
+                const { data: inserted, error: insertError } = await supabase
+                    .from('checks')
+                    .insert({ review: Number(reviewId), requirement: Number(requirement), status, comment })
+                    .select();
+                if (insertError) throw insertError;
+                if (inserted && inserted.length > 0) results.push(inserted[0] as Check);
+            }
+        }
+        return results;
+    },
+
     async getApplications(): Promise<Application[]> {
         const { data, error } = await supabase
             .from('applications')
@@ -151,12 +182,13 @@ export const ReviewService = {
         application: string;
         id?: string;
         excludedContentTypes: string[];
+        selectedPrefillIds: string;
     }): Promise<Review> {
-        const { title, application, id, excludedContentTypes } = input;
+        const { title, application, id, excludedContentTypes, selectedPrefillIds } = input;
         if (id) {
             const { data, error } = await supabase
                 .from('reviews')
-                .update({ title, application, excludedContentTypes: excludedContentTypes.join(";") })
+                .update({ title, application, excludedContentTypes: excludedContentTypes.join(";"), selectedPrefillIds })
                 .eq('id', Number(id))
                 .select();
             if (error) throw error;
@@ -164,7 +196,7 @@ export const ReviewService = {
         } else {
             const { data, error } = await supabase
                 .from('reviews')
-                .insert({ title, application, excludedContentTypes: excludedContentTypes.join(";") })
+                .insert({ title, application, excludedContentTypes: excludedContentTypes.join(";"), selectedPrefillIds })
                 .select();
             if (error) throw error;
             return data[0] as Review;

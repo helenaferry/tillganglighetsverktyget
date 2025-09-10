@@ -79,6 +79,7 @@ export type Database = {
           created_at: string
           excludedContentTypes: string | null
           id: number
+          selectedPrefillIds: string | null
           title: string | null
         }
         Insert: {
@@ -86,6 +87,7 @@ export type Database = {
           created_at?: string
           excludedContentTypes?: string | null
           id?: number
+          selectedPrefillIds?: string | null
           title?: string | null
         }
         Update: {
@@ -93,6 +95,7 @@ export type Database = {
           created_at?: string
           excludedContentTypes?: string | null
           id?: number
+          selectedPrefillIds?: string | null
           title?: string | null
         }
         Relationships: [

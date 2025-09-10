@@ -1,8 +1,9 @@
 import { DigiFormInput, DigiFormSelectFilter, DigiButton, DigiFormFieldset, DigiFormCheckbox, DigiLoaderSkeleton } from "@digi/arbetsformedlingen-react";
-import { useApplications, useUpsertReview, useDisableChecks, useEnableChecks, useReviewById } from "~/hooks/useReviewData";
+import { useApplications, useUpsertReview, useDisableChecks, useEnableChecks, useReviewById, usePrefillRequirements } from "~/hooks/useReviewData";
 import { useRequirements, useRequirementContentTypes } from "~/hooks/useRequirementData";
 import { useState, useEffect } from "react";
 import { LoaderSkeletonVariation } from "@digi/arbetsformedlingen";
+import type { PrefillRequirement } from "~/data/types";
 
 type Props = {
     reviewId?: string;
@@ -14,20 +15,24 @@ export function ReviewForm({ reviewId }: Props) {
     const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes();
     const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
     const loading = isLoadingApplications || isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
+    const prefillRequirements = JSON.parse(import.meta.env.VITE_PREFILL_REQUIREMENTS || "{}") as PrefillRequirement[];
 
     const disableChecks = useDisableChecks();
     const enableChecks = useEnableChecks();
     const upsertReview = useUpsertReview();
+    const prefillChecks = usePrefillRequirements();
 
     const [title, setTitle] = useState<string>("");
     const [application, setApplication] = useState<string>("");
     const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
+    const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirement[]>([]);
 
     useEffect(() => {
         if (review) {
             setTitle(review.title || "");
             setApplication(String(review.application.id) || "");
             setExcludedContentTypes(review.excludedContentTypes?.split(";") || []);
+            setSelectedPrefills(prefillRequirements.filter(p => review.selectedPrefillIds?.split(";").includes(p.id)) || []);
         }
     }, [review]);
 
@@ -49,13 +54,38 @@ export function ReviewForm({ reviewId }: Props) {
         const addedTypes = excludedContentTypes.filter(type => !currentExcludedContentTypes.includes(type));
         const removedTypes = currentExcludedContentTypes.filter(type => !excludedContentTypes.includes(type));
 
-        upsertReview.mutate({ id: reviewId, title, application, excludedContentTypes }, {
+        // Check if selected prefill requirements differ from current review's selected prefill requirements
+        const currentSelectedPrefillIds = review?.selectedPrefillIds?.split(";") || [];
+        const addedPrefills = selectedPrefills.filter(prefill => !currentSelectedPrefillIds.includes(prefill.id));
+        const removedPrefills = currentSelectedPrefillIds.filter(id => !selectedPrefills.some(prefill => prefill.id === id));
+
+        upsertReview.mutate({
+            id: reviewId,
+            title,
+            application,
+            excludedContentTypes,
+            selectedPrefillIds: selectedPrefills.map(p => p.id).join(";")
+        }, {
             onSuccess: (review) => {
                 const reviewId = review.id;
                 const requirementsToDisable = requirements?.filter(req => addedTypes.includes(req.contentType)).map(req => req.id);
                 disableChecks.mutate({ reviewId: reviewId, requirements: requirementsToDisable || [] });
                 const requirementsToEnable = requirements?.filter(req => removedTypes.includes(req.contentType)).map(req => req.id);
                 enableChecks.mutate({ reviewId: reviewId, requirements: requirementsToEnable || [] });
+                addedPrefills.forEach(prefill => {
+                    prefillChecks.mutate({ reviewId: reviewId, prefill });
+                });
+                removedPrefills.forEach(prefillId => {
+                    const prefill = prefillRequirements.find(p => p.id === prefillId);
+                    if (prefill) {
+                        const reqIds = prefill.requirements.split(",").map(r => r.trim()).filter(r => r !== "");
+                        enableChecks.mutate({ reviewId: reviewId, requirements: reqIds });
+                    }
+                });
+                // Automatic prefill requirements
+                prefillRequirements.filter(prefill => prefill.automatic === "true").forEach(prefill => {
+                    prefillChecks.mutate({ reviewId: reviewId, prefill });
+                });
             }
         });
     };
@@ -89,7 +119,6 @@ export function ReviewForm({ reviewId }: Props) {
                         afForm="review-form"
                         afLegend="Vänligen välj de innehållstyper som inte är relevanta för granskningsobjektet"
                         afName="content"
-
                     >
                         {contentTypes && contentTypes.map(contentType => (
                             <DigiFormCheckbox
@@ -101,26 +130,33 @@ export function ReviewForm({ reviewId }: Props) {
                                 }} afLabel={contentType}></DigiFormCheckbox>
                         ))}
                     </DigiFormFieldset>
-                    {/*
-                <DigiFormFieldset
-                    afForm="review-form"
-                    afLegend="Andra förutsättningar"
-                    afName="other"
-                >
-                    <DigiFormCheckbox
-                        afValue="digi"
-                        onAfOnChange={(e) => {
-                            if (e.detail.target.checked) {
-                                setExcludedContentTypes([...excludedContentTypes, "Kontraster", "Färg & form"]);
-                            } else {
-                                setExcludedContentTypes(excludedContentTypes.filter(type => type !== "Kontraster" && type !== "Färg & form"));
-                            }
-                        }} afLabel="Produkten använder enbart designsystemets komponenter och uppfyller därmed krav inom kategorierna Kontraster och Färg & form"></DigiFormCheckbox>
-                </DigiFormFieldset>*/}
+
+                    {prefillRequirements.find((prefill: PrefillRequirement) => prefill.automatic === "false") &&
+                        <DigiFormFieldset
+                            afForm="review-form"
+                            afLegend="Andra förutsättningar"
+                            afName="other"
+                        >
+                            {prefillRequirements.filter((prefill: PrefillRequirement) => prefill.automatic === "false").map((prefill: PrefillRequirement) =>
+                                <DigiFormCheckbox
+                                    afValue="digi"
+                                    checked={selectedPrefills.some(p => p.id === prefill.id)}
+                                    onAfOnChange={(e) => {
+                                        if (e.detail.target.checked) {
+                                            setSelectedPrefills([...selectedPrefills, prefill]);
+                                        } else {
+                                            setSelectedPrefills(selectedPrefills.filter(p => p.id !== prefill.id));
+                                        }
+                                    }} afLabel={prefill.activateText}></DigiFormCheckbox>
+                            )}
+                        </DigiFormFieldset>
+                    }
+
                     <DigiButton afType="submit">Spara</DigiButton>
                     {upsertReview.isError && <p>Fel vid sparande</p>}
                     {upsertReview.isSuccess && <p>Sparad!</p>}
-                </form>}
+                </form>
+            }
         </div>
     );
 }

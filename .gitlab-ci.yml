@@ -17,7 +17,7 @@ variables:
   VITE_DATABASE_URL: 'https://siouoxdqpgykibzayejt.supabase.co'
   VITE_DATABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpb3VveGRxcGd5a2liemF5ZWp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY0NzIxODIsImV4cCI6MjA3MjA0ODE4Mn0.sgavqOdB1sjrNpQdvdC4669xTtwPQoRACo53Tn13pZk'
   VITE_REQUIREMENTS_URL: "/krav.json"
-  VITE_PREFILL_REQUIREMENTS: '[{"description": "Applikationen använder enbart designsystemets komponenter", "status": "IRRELEVANT", "requirements": "35,42,43,44,45,46"}]'
+  VITE_PREFILL_REQUIREMENTS: '[{"id":"1","automatic":"false","activateText":"Applikationen använder enbart designsystemets komponenter","status":"IRRELEVANT","requirements":"35,42,43,44,45,46","comment":"Detta krav har förifyllts som irrelevant eftersom applikationen använder enbart designsystemets komponenter."},{"id":"2","automatic":"true","activateText":"","status":"IRRELEVANT","requirements":"130,131,131,132,133,134","comment":"Arbetsförmedlingen har beslutat att krav rörande support och dokumentation faller utanför ansvarsområdet för denna applikation."}]'
 
 secret_evaluation:
   needs: [secret_detection]

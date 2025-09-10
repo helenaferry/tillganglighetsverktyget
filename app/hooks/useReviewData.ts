@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
-import type { Application, Check, ReviewSummary, UpsertCheckInput, ReviewWithApplication } from '~/data/types';
+import type { Application, Check, ReviewSummary, UpsertCheckInput, ReviewWithApplication, PrefillRequirement } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
 // All reviews with summary data
@@ -107,6 +107,21 @@ export function useEnableChecks() {
     });
 }
 
+// Prefill requirements
+export function usePrefillRequirements() {
+    const queryClient = useQueryClient();
+
+    return useMutation<void, Error, { reviewId: number; prefill: PrefillRequirement }>({
+        mutationFn: async ({ reviewId, prefill }) => {
+            await ReviewService.prefillChecks(reviewId, prefill);
+        },
+        onSuccess: (_, { reviewId }) => {
+            queryClient.invalidateQueries({ queryKey: ["checks", reviewId] });
+            queryClient.invalidateQueries({ queryKey: ["review", reviewId] });
+        },
+    });
+}
+
 // All applications
 export function useApplications(): UseQueryResult<Application[], Error> {
     return useQuery<Application[], Error>({
@@ -119,7 +134,7 @@ export function useApplications(): UseQueryResult<Application[], Error> {
 export function useUpsertReview() {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (input: { title: string; application: string; id?: string, excludedContentTypes: string[] }) =>
+        mutationFn: (input: { title: string; application: string; id?: string, excludedContentTypes: string[], selectedPrefillIds: string }) =>
             ReviewService.upsertReview(input),
         onSuccess: (_newReview, input) => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
