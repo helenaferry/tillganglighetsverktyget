@@ -61,9 +61,7 @@ export default function ReviewRequirement({
         <div className="border-b-1 md:flex gap-4 justify-between">
           <div className="flex gap-4">
             <div>
-              <h2>
-                {requirement.id}. {requirement.name}
-              </h2>
+              <h2>{requirement.name}</h2>
               <div className="flex gap-2 mb-5">
                 <DigiBadgeStatus
                   afText={requirement.category}

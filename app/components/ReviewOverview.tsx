@@ -121,10 +121,7 @@ export default function ReviewOverview({ review, requirements }: Props) {
                   {filteredRequirements.map((req) => (
                     <tr key={req.id}>
                       <td>
-                        <StyledLink
-                          to={'/review/' + review.id + '/' + req.id}
-                          text={`${req.id}. ${req.name}`}
-                        />
+                        <StyledLink to={'/review/' + review.id + '/' + req.id} text={req.name} />
                       </td>
                       <td>
                         <DigiTag
