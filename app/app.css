@@ -21,3 +21,15 @@ body {
 .content-container {
   @apply bg-white rounded-[var(--digi--border-radius--secondary)] p-6 my-6 max-w-full overflow-x-auto;
 }
+
+.content-container ul {
+  @apply list-disc pl-5;
+}
+
+.content-container ol {
+  @apply list-decimal pl-5;
+}
+
+.content-container li {
+  @apply mb-2;
+}

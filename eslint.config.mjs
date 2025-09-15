@@ -20,6 +20,9 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
+    ignores: ['.react-router/**/*'],
+  },
+  {
     extends: compat.extends(
       'eslint:recommended',
       'plugin:react/recommended',
@@ -48,13 +51,6 @@ export default defineConfig([
     },
     rules: {
       'react/react-in-jsx-scope': 'off',
-    },
-  },
-  // Disable namespace rule for generated router types
-  {
-    files: ['.react-router/types/**/*.ts'],
-    rules: {
-      '@typescript-eslint/no-namespace': 'off',
     },
   },
 ]);

@@ -1,8 +1,4 @@
-import {
-  NotificationAlertSize,
-  NotificationAlertVariation,
-  type DigiButtonCustomEvent,
-} from '@digi/arbetsformedlingen';
+import { NotificationAlertSize, NotificationAlertVariation } from '@digi/arbetsformedlingen';
 import {
   DigiButton,
   DigiFormCheckbox,

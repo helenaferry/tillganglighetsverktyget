@@ -1,33 +1,33 @@
+import { ExpandableAccordionHeaderLevel } from '@digi/arbetsformedlingen';
 import { DigiExpandableAccordion } from '@digi/arbetsformedlingen-react';
 import type { Requirement } from '~/data/types';
+import ReactMarkdown from 'react-markdown';
 
 export type Props = {
   requirement: Requirement;
 };
 
 export default function RequirementDetails({ requirement }: Props) {
-  const renderParagraphs = (text: string) => {
-    return text
-      .split(/\n+/)
-      .map((p) => p.trim())
-      .filter(Boolean)
-      .map((p, i) => <p key={i}>{p}</p>);
-  };
   return (
     <div>
       {requirement.statement && (
         <div>
-          <b>Påstående:</b> {renderParagraphs(requirement.statement)}
+          <h3>Beskrivning</h3>
+          <ReactMarkdown>{requirement.statement}</ReactMarkdown>
         </div>
       )}
       {requirement.why && (
         <div className="mt-4">
-          <b>Syfte:</b> {renderParagraphs(requirement.why)}
+          <h3>Varför är detta viktigt?</h3>
+          <ReactMarkdown>{requirement.why}</ReactMarkdown>
         </div>
       )}
       {requirement.howToTestContent && (
-        <DigiExpandableAccordion afHeading="Hur du kan testa">
-          <div>{renderParagraphs(requirement.howToTestContent)}</div>
+        <DigiExpandableAccordion
+          afHeading="Hur du kan testa"
+          afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+        >
+          <ReactMarkdown>{requirement.howToTestContent}</ReactMarkdown>
         </DigiExpandableAccordion>
       )}
     </div>
