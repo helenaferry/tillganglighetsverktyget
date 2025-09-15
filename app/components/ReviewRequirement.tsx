@@ -88,7 +88,9 @@ export default function ReviewRequirement({
           <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
         </div>
         <div className="md:flex my-5 gap-5">
-          <RequirementDetails requirement={requirement} />
+          <div className="flex-1">
+            <RequirementDetails requirement={requirement} />
+          </div>
           <div className="flex-1">
             <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
           </div>

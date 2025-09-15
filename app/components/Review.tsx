@@ -53,6 +53,11 @@ export default function Review({ reviewId, requirementId }: Props) {
       .length;
   }, [checks]);
 
+  const numberIrrelevant = useMemo(() => {
+    if (!checks) return 0;
+    return checks.filter((check) => check.status === Status.IRRELEVANT).length;
+  }, [checks]);
+
   const relevantRequirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];
     return requirements
@@ -78,6 +83,7 @@ export default function Review({ reviewId, requirementId }: Props) {
     const currentIndex = relevantRequirementsWithChecks.findIndex(
       (req: RequirementWithCheck) => String(req.id) === String(currentId),
     );
+    if (currentIndex === -1) return null;
     return relevantRequirementsWithChecks[currentIndex + 1]?.id || null;
   };
 
@@ -85,6 +91,7 @@ export default function Review({ reviewId, requirementId }: Props) {
     const currentIndex = relevantRequirementsWithChecks.findIndex(
       (req: RequirementWithCheck) => String(req.id) === String(currentId),
     );
+    if (currentIndex === -1) return null;
     return relevantRequirementsWithChecks[currentIndex - 1]?.id || null;
   };
   return (
@@ -144,7 +151,9 @@ export default function Review({ reviewId, requirementId }: Props) {
               <div className="h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
                 <div>
                   <span className="block text-center text-[2.5rem]">
-                    {formatPercentage(numberDone / relevantRequirementsWithChecks.length) || '0%'}
+                    {requirements && requirements.length
+                      ? formatPercentage((numberDone + numberIrrelevant) / requirements.length)
+                      : '0%'}
                   </span>
                   <span className="block text-center">K L A R T</span>
                 </div>
@@ -154,7 +163,7 @@ export default function Review({ reviewId, requirementId }: Props) {
               <div>
                 <span className="block text-center leading-none">BARA</span>
                 <span className="block text-center text-[2rem] leading-none">
-                  {relevantRequirementsWithChecks.length - numberDone || 0}
+                  {(requirements ? requirements.length - numberIrrelevant - numberDone : 0) || 0}
                 </span>
                 <span className="block text-center leading-none">KVAR!</span>
               </div>
