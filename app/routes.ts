@@ -6,5 +6,5 @@ export default [
   route('review/:id', 'routes/review.tsx', { id: 'review' }),
   route('add', 'routes/addReview.tsx'),
   route('edit/:id', 'routes/editReview.tsx', { id: 'edit' }),
-  route('review/:id/export', 'routes/exportReview.tsx', { id: 'export' }),
+  route('review/:id/export/:type', 'routes/export.tsx', { id: 'export' }),
 ] satisfies RouteConfig;

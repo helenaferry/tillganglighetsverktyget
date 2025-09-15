@@ -25,7 +25,7 @@ export default function CreateStatement({ review, checks, requirements }: Props)
   const numberOfNotAssessed = requirements.length - numberOfDone;
 
   return (
-    <div>
+    <div className="content-container">
       {numberOfNotAssessed > 0 && (
         <DigiNotificationAlert
           afSize={NotificationAlertSize.LARGE}

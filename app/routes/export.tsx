@@ -13,17 +13,18 @@ import {
   TypographyHeadingJumboVariation,
 } from '@digi/arbetsformedlingen';
 import CreateStatement from '~/components/CreateStatement';
+import ExportTasks from '~/components/ExportTasks';
 import Breadcrumbs from '~/components/Breadcrumbs';
 
 export function meta() {
   return [
-    { title: 'Tillgänglighetsverktyget: Skapa tillgänglighetsredogörelse' },
-    { name: 'description', content: 'Skapa tillgänglighetsredogörelse' },
+    { title: 'Tillgänglighetsverktyget: Export' },
+    { name: 'description', content: 'Export' },
   ];
 }
 
 export default function ExportReviewPage() {
-  const { id } = useParams<{ id: string }>();
+  const { id, type } = useParams<{ id: string; type: 'statement' | 'tasks' }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
   const { data: requirements, isLoading: requirementsLoading } = useRequirements();
@@ -40,14 +41,22 @@ export default function ExportReviewPage() {
                   { title: 'Granskningar', href: '/' },
                   { title: review?.title || 'Granskning', href: `/review/${review.id}` },
                 ]}
-                currentPage="Skapa tillgänglighetsredogörelse"
+                currentPage={
+                  type === 'tasks' ? 'Exportera uppgifter' : 'Skapa tillgänglighetsredogörelse'
+                }
               />
               <DigiTypographyHeadingJumbo
-                afText="Skapa tillgänglighetsredogörelse"
+                afText={
+                  type === 'tasks' ? 'Exportera uppgifter' : 'Skapa tillgänglighetsredogörelse'
+                }
                 afLevel={TypographyHeadingJumboLevel.H1}
                 afVariation={TypographyHeadingJumboVariation.PRIMARY}
               ></DigiTypographyHeadingJumbo>
-              <CreateStatement review={review} checks={checks} requirements={requirements} />
+              {type === 'tasks' ? (
+                <ExportTasks review={review} checks={checks} requirements={requirements} />
+              ) : (
+                <CreateStatement review={review} checks={checks} requirements={requirements} />
+              )}
             </>
           )}
         </div>

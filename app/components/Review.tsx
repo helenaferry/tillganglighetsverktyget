@@ -126,11 +126,18 @@ export default function Review({ reviewId, requirementId }: Props) {
               <br />
             </p>
 
-            <StyledLink
-              to={`/review/${review.id}/export`}
-              text="Skapa tillgänglighetsredogörelse"
-              isButton={true}
-            />
+            <div className="flex flex-col md:flex-row gap-4 my-4">
+              <StyledLink
+                to={`/review/${review.id}/export/statement`}
+                text="Skapa tillgänglighetsredogörelse"
+                isButton={true}
+              />
+              <StyledLink
+                to={`/review/${review.id}/export/tasks`}
+                text="Exportera uppgifter (.csv)"
+                isButton={true}
+              />
+            </div>
           </div>
           <div>
             {numberDone > 0 && (

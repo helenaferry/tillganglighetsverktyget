@@ -19,5 +19,5 @@ body {
 }
 
 .content-container {
-  @apply bg-white rounded-[var(--digi--border-radius--secondary)] p-6 my-6;
+  @apply bg-white rounded-[var(--digi--border-radius--secondary)] p-6 my-6 max-w-full overflow-x-auto;
 }
