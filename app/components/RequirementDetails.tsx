@@ -1,6 +1,6 @@
 import { ExpandableAccordionHeaderLevel } from '@digi/arbetsformedlingen';
 import { DigiExpandableAccordion } from '@digi/arbetsformedlingen-react';
-import type { Requirement } from '~/data/types';
+import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
 import ReactMarkdown from 'react-markdown';
 
 export type Props = {
@@ -8,6 +8,9 @@ export type Props = {
 };
 
 export default function RequirementDetails({ requirement }: Props) {
+  const requirementAdditions = JSON.parse(
+    import.meta.env.VITE_REQUIREMENT_ADDITIONS || '{}',
+  ) as RequirementAdditionsSetting;
   return (
     <div>
       {requirement.statement && (
@@ -20,6 +23,14 @@ export default function RequirementDetails({ requirement }: Props) {
         <div className="mt-4">
           <h3>Varför är detta viktigt?</h3>
           <ReactMarkdown>{requirement.why}</ReactMarkdown>
+        </div>
+      )}
+      {requirementAdditions.items.find((item) => item.id === requirement.id) && (
+        <div className="mt-4">
+          <h3>{requirementAdditions.heading}</h3>
+          <ReactMarkdown>
+            {requirementAdditions.items.find((item) => item.id === requirement.id)?.text || ''}
+          </ReactMarkdown>
         </div>
       )}
       {requirement.howToTestContent && (

@@ -17,7 +17,7 @@ import {
 import { useRequirements, useRequirementContentTypes } from '~/hooks/useRequirementData';
 import { useState, useEffect } from 'react';
 import { LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
-import type { PrefillRequirement } from '~/data/types';
+import type { PrefillRequirementSetting } from '~/data/types';
 
 type Props = {
   reviewId?: string;
@@ -32,7 +32,7 @@ export function ReviewForm({ reviewId }: Props) {
     isLoadingApplications || isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
   const prefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
-  ) as PrefillRequirement[];
+  ) as PrefillRequirementSetting[];
 
   const disableChecks = useDisableChecks();
   const enableChecks = useEnableChecks();
@@ -42,7 +42,7 @@ export function ReviewForm({ reviewId }: Props) {
   const [title, setTitle] = useState<string>('');
   const [application, setApplication] = useState<string>('');
   const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
-  const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirement[]>([]);
+  const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
 
   useEffect(() => {
     if (review) {
@@ -50,8 +50,9 @@ export function ReviewForm({ reviewId }: Props) {
       setApplication(String(review.application.id) || '');
       setExcludedContentTypes(review.excludedContentTypes?.split(';') || []);
       setSelectedPrefills(
-        prefillRequirements.filter((p) => review.selectedPrefillIds?.split(';').includes(p.id)) ||
-          [],
+        prefillRequirements.filter((p) =>
+          review.selectedPrefillIds?.split(';').includes(String(p.id)),
+        ) || [],
       );
     }
   }, [review]);
@@ -112,10 +113,7 @@ export function ReviewForm({ reviewId }: Props) {
           removedPrefills.forEach((prefillId) => {
             const prefill = prefillRequirements.find((p) => p.id === prefillId);
             if (prefill) {
-              const reqIds = prefill.requirements
-                .split(',')
-                .map((r) => r.trim())
-                .filter((r) => r !== '');
+              const reqIds = prefill.prefillRequirements.map((r) => r.id);
               enableChecks.mutate({ reviewId: reviewId, requirements: reqIds });
             }
           });
@@ -186,12 +184,12 @@ export function ReviewForm({ reviewId }: Props) {
           </DigiFormFieldset>
 
           {prefillRequirements.find(
-            (prefill: PrefillRequirement) => prefill.automatic === 'false',
+            (prefill: PrefillRequirementSetting) => prefill.automatic === 'false',
           ) && (
             <DigiFormFieldset afForm="review-form" afLegend="Andra förutsättningar" afName="other">
               {prefillRequirements
-                .filter((prefill: PrefillRequirement) => prefill.automatic === 'false')
-                .map((prefill: PrefillRequirement) => (
+                .filter((prefill: PrefillRequirementSetting) => prefill.automatic === 'false')
+                .map((prefill: PrefillRequirementSetting) => (
                   <DigiFormCheckbox
                     key={prefill.id}
                     afValue="digi"

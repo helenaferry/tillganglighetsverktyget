@@ -69,10 +69,19 @@ export type Category = {
 };
 
 export type PrefillRequirement = {
+  status: string;
+  id: string;
+  comment: string;
+};
+
+export type PrefillRequirementSetting = {
   id: string;
   automatic: string;
-  activateText: string;
-  status: string;
-  requirements: string;
-  comment: string;
+  activateText?: string;
+  prefillRequirements: PrefillRequirement[];
+};
+
+export type RequirementAdditionsSetting = {
+  heading: string;
+  items: { id: string; text: string }[];
 };

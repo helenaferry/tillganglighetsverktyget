@@ -63,6 +63,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/add'}>
                   <Link to="/add">Skapa ny granskning</Link>
                 </DigiHeaderNavigationItem>
+                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/requirements'}>
+                  <Link to="/requirements">Krav</Link>
+                </DigiHeaderNavigationItem>
               </DigiHeaderNavigation>
             </div>
           </DigiHeader>

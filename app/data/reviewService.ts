@@ -2,7 +2,7 @@ import {
   Status,
   type Application,
   type Check,
-  type PrefillRequirement,
+  type PrefillRequirementSetting,
   type Review,
   type ReviewSummary,
   type ReviewWithApplication,
@@ -78,7 +78,7 @@ export const ReviewService = {
       .from('checks')
       .select('*')
       .eq('review', Number(reviewId))
-      .eq('requirement', Number(requirement));
+      .eq('requirement', requirement);
     if (findError) throw findError;
     if (existing && existing.length > 0) {
       const { data, error } = await supabase
@@ -103,7 +103,7 @@ export const ReviewService = {
       .from('checks')
       .select('*')
       .eq('review', Number(reviewId))
-      .eq('requirement', Number(requirementId));
+      .eq('requirement', requirementId);
     if (error) throw error;
     return data.length > 0 ? (data[0] as Check) : null;
   },
@@ -117,7 +117,7 @@ export const ReviewService = {
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
     const inserts = requirements.map((requirement) => ({
       review: Number(reviewId),
-      requirement: Number(requirement),
+      requirement: requirement,
       status: Status.IRRELEVANT,
       comment: '',
     }));
@@ -133,37 +133,38 @@ export const ReviewService = {
       .eq('review', Number(reviewId))
       .in(
         'requirement',
-        requirements.map((r) => Number(r)),
+        requirements.map((r) => r),
       )
       .eq('status', Status.IRRELEVANT);
     if (error) throw error;
   },
 
-  async prefillChecks(reviewId: number, prefill: PrefillRequirement): Promise<Check[]> {
-    const reqIds = prefill.requirements
-      .split(',')
-      .map((r) => r.trim())
-      .filter((r) => r !== '');
-    if (reqIds.length === 0) return [];
-
-    const status =
-      prefill.status === 'PASS'
-        ? Status.PASS
-        : prefill.status === 'FAIL'
-          ? Status.FAIL
-          : prefill.status === 'IRRELEVANT'
-            ? Status.IRRELEVANT
-            : Status.NOT_ASSESSED;
-    const comment = prefill.comment || '';
+  async prefillChecks(reviewId: number, prefill: PrefillRequirementSetting): Promise<Check[]> {
     const results: Check[] = [];
+    for (const prefillReq of prefill.prefillRequirements) {
+      const requirementId = prefillReq.id;
+      let status: Status;
+      switch (prefillReq.status) {
+        case 'PASS':
+          status = Status.PASS;
+          break;
+        case 'FAIL':
+          status = Status.FAIL;
+          break;
+        case 'IRRELEVANT':
+          status = Status.IRRELEVANT;
+          break;
+        default:
+          status = Status.NOT_ASSESSED;
+      }
+      const comment = prefillReq.comment || '';
 
-    for (const requirement of reqIds) {
       // Check if a check already exists
       const { data: existing, error: findError } = await supabase
         .from('checks')
         .select('*')
         .eq('review', Number(reviewId))
-        .eq('requirement', Number(requirement));
+        .eq('requirement', requirementId);
       if (findError) throw findError;
       if (existing && existing.length > 0) {
         // Update existing check
@@ -178,7 +179,7 @@ export const ReviewService = {
         // Insert new check
         const { data: inserted, error: insertError } = await supabase
           .from('checks')
-          .insert({ review: Number(reviewId), requirement: Number(requirement), status, comment })
+          .insert({ review: Number(reviewId), requirement: requirementId, status, comment })
           .select();
         if (insertError) throw insertError;
         if (inserted && inserted.length > 0) results.push(inserted[0] as Check);

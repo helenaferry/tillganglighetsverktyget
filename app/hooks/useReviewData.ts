@@ -6,6 +6,7 @@ import type {
   UpsertCheckInput,
   ReviewWithApplication,
   PrefillRequirement,
+  PrefillRequirementSetting,
 } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';
 
@@ -125,7 +126,7 @@ export function useEnableChecks() {
 export function usePrefillRequirements() {
   const queryClient = useQueryClient();
 
-  return useMutation<void, Error, { reviewId: number; prefill: PrefillRequirement }>({
+  return useMutation<void, Error, { reviewId: number; prefill: PrefillRequirementSetting }>({
     mutationFn: async ({ reviewId, prefill }) => {
       await ReviewService.prefillChecks(reviewId, prefill);
     },
