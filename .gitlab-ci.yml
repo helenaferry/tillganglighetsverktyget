@@ -13,6 +13,8 @@ variables:
   CODE_QUALITY_DISABLED: false
   GIT_DEPTH: 10
   SECURE_LOG_LEVEL: debug
+
+secret_evaluation:
   needs: [secret_detection]
   artifacts:
     paths:
