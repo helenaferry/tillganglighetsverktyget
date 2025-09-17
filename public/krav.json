@@ -163,7 +163,7 @@
       "statement": "Alla sidor har en titel som beskriver sidans syfte eller innehåll. Sidtiteln anges i elementet `<title>` i sidans `<head>`-element.",
       "why": "En beskrivande sidtitel hjälper användare att snabbt och enkelt avgöra om sidan är relevant utifrån deras behov. Beskrivande sidtitlar är också viktigt för sökmotoroptimering.",
       "howToTestTitle": "Sidans titel",
-      "howToTestContent": "1. Gör en sökning på den aktuella webbsidan med exempelvis Google. Kopiera sidans webbadress, gå till sökfältet, klistra in webbadressen och sök. Den text som visas som en länkas i sökmotorns första sökträff är sidans titel.\r\n\r\n2. Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller högerklicka på ett objekt på sidan och välj ”Inspektera”. Nästan längst upp i sidans dokumentstruktur och innanför elementet `<head>`-sektionen finns sidans titel i elementet `<title>`.\r\n\r\n3. Granska texten som visas för den aktuella webbsidan i din webbläsares flikfält. I Google Chrome och Microsoft Edge visas flikfältet längst upp i webbläsarfönstret. Den text som visas i fliken är sidans titel. Om du hovrar över den aktuella fliken med din musmarkör visas en utökad tooltip som innehåller sidans titel.\r\n\t\r\n    Titeln ska innehålla sidans namn och gärna beskriva sidans ämne eller syfte. Den ska vara så unik som möjligt och vara specifik och innehålla den mest relevanta informationen först. På Arbetsförmedlingen skriver vi sidans namn följt av avsändarens namn. Exempel: \"Platsbanken - Sök lediga jobb - Arbetsförmedlingen\".\r\n"
+      "howToTestContent": "1. Gör en sökning på den aktuella webbsidan med exempelvis Google. Kopiera sidans webbadress, gå till sökfältet, klistra in webbadressen och sök. Den text som visas som en länkas i sökmotorns första sökträff är sidans titel.\r\n\r\n2. Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller högerklicka på ett objekt på sidan och välj ”Inspektera”. Nästan längst upp i sidans dokumentstruktur och innanför elementet `<head>`-sektionen finns sidans titel i elementet `<title>`.\r\n\r\n3. Granska texten som visas för den aktuella webbsidan i din webbläsares flikfält. I Google Chrome och Microsoft Edge visas flikfältet längst upp i webbläsarfönstret. Den text som visas i fliken är sidans titel. Om du hovrar över den aktuella fliken med din musmarkör visas en utökad tooltip som innehåller sidans titel.\r\n\t\r\n    Titeln ska innehålla sidans namn och gärna beskriva sidans ämne eller syfte. Den ska vara så unik som möjligt och vara specifik och innehålla den mest relevanta informationen först. \r\n"
     },
     {
       "id": "sids",
@@ -782,7 +782,7 @@
     },
     {
       "id": "unvi",
-      "name": "Undertexter till video",
+      "name": "Undertexter till förinspelad video",
       "type": "requirement",
       "wcag": "1.2.2",
       "wcagLevel": "A",
@@ -794,6 +794,21 @@
       "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i videoklipp och filmer. Undertexter är även bra för användare med svenska som andraspråk. De är också bra för de som befinner sig i en miljö där de inte kan ha ljud aktiverat, exempelvis i kollektivtrafiken eller för att de saknar hörlurar.",
       "howToTestTitle": "Undertexter till video",
       "howToTestContent": "- Kontrollera att det på webbsidor som innehåller video, exempelvis filmer, för varje film finns undertexter som användaren själv kan aktivera.\r\n\r\n- I Arbetsförmedlingens mediespelare Screen9 finns undertexter under menyn “Textningsinställningar” i spelarens högra nedre hörn.\r\n\r\n- Menyn beskrivs med en ikon av en pratbubbla med tre små streck.\r\n\r\n- Kontrollera att undertexterna är synkroniserade med ljudet och att de stämmer med filmens innehåll."
+    },
+    {
+      "id": "unvl",
+      "name": "Undertexter till livevideo",
+      "type": "requirement",
+      "wcag": "1.2.4",
+      "wcagLevel": "AA",
+      "en301549": "EN 9.1.2.4",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "Live-video har undertexter som inkluderar all dialog, men också information om vem som pratar och andra signifikanta ljud.",
+      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i videoklipp och filmer. Undertexter är även bra för användare med svenska som andraspråk. De är också bra för de som befinner sig i en miljö där de inte kan ha ljud aktiverat, exempelvis i kollektivtrafiken eller för att de saknar hörlurar.",
+      "howToTestTitle": "Undertexter till livevideo",
+      "howToTestContent": "Kontrollera att det på webbsidor som innehåller livevideo finns undertexter som användaren själv kan aktivera."
     },
     {
       "id": "syvi",

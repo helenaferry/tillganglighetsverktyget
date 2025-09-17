@@ -108,7 +108,7 @@ export default function RequirementsPage() {
           </p>
           <p>
             <b>Innehållstyp:</b> När du startar en granskning kan du välja bort krav som märkts med
-            en specifik innehållstyp.
+            en specifik innehållstyp. Denna märkning finns i grunddatat.
           </p>
           <p>
             <strong>Förifyllnad</strong> kan vara antingen valbar eller automatisk. I din
@@ -289,6 +289,10 @@ export default function RequirementsPage() {
                             <tr id={req.id}>
                               <td colSpan={4}>
                                 <h2>{req.name}</h2>
+                                <p>
+                                  <strong>ID: </strong>
+                                  {req.id}
+                                </p>
                                 <RequirementDetails requirement={req} />
                               </td>
                             </tr>
