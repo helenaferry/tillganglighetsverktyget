@@ -107,8 +107,8 @@ export default function RequirementsPage() {
             <strong>Förifyllnad</strong>.
           </p>
           <p>
-            <b>Innehållstyp:</b> När du startar en granskning kan du välja bort krav som märkts med
-            en specifik innehållstyp. Denna märkning finns i grunddatat.
+            <strong>Innehållstyp:</strong> När du startar en granskning kan du välja bort krav som
+            märkts med en specifik innehållstyp. Denna märkning finns i grunddatat.
           </p>
           <p>
             <strong>Förifyllnad</strong> kan vara antingen valbar eller automatisk. I din
@@ -117,13 +117,13 @@ export default function RequirementsPage() {
 
           {prefillRequirements.map((item) => (
             <p key={item.id} className="ml-4">
-              {item.automatic === 'true' ? 'Automatisk-' : 'Valbar-'}
+              <strong>{item.automatic === 'true' ? 'Automatisk-' : 'Valbar-'}</strong>
               {item.id} {item.activateText}
             </p>
           ))}
           <p>
-            Kolumnen <b>Förifyllnad</b> i tabellen visar vilka krav som förifylls av respektive
-            förifyllnad och med vilken status.
+            Kolumnen <strong>Förifyllnad</strong> i tabellen visar vilka krav som förifylls av
+            respektive förifyllnad och med vilken status.
           </p>
 
           {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
