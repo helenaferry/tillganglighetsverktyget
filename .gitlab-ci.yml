@@ -41,6 +41,7 @@ pages:
   stage: deploy
   script:
     - npm ci
+    - printenv | grep VITE_
     - npm run build
     - cp -r build/client/* public/
   artifacts:
