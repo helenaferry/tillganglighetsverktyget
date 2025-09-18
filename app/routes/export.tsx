@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
-import { useRequirements } from '~/hooks/useRequirementData';
+import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
 import {
   DigiLayoutContainer,
   DigiTypography,
@@ -15,6 +15,7 @@ import {
 import CreateStatement from '~/components/CreateStatement';
 import ExportTasks from '~/components/ExportTasks';
 import Breadcrumbs from '~/components/Breadcrumbs';
+import type { ObjectType } from '~/data/types';
 
 export function meta() {
   return [
@@ -27,8 +28,13 @@ export default function ExportReviewPage() {
   const { id, type } = useParams<{ id: string; type: 'statement' | 'tasks' }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
-  const { data: requirements, isLoading: requirementsLoading } = useRequirements();
-  const loading = reviewLoading || checksLoading || requirementsLoading;
+  const { data: requirements, isLoading: requirementsLoading } = useRequirements(
+    review?.objectType as ObjectType,
+  );
+  const { data: categories, isLoading: categoriesLoading } = useRequirementCategories(
+    review?.objectType as ObjectType,
+  );
+  const loading = reviewLoading || checksLoading || requirementsLoading || categoriesLoading;
   return (
     <DigiLayoutContainer afVerticalPadding>
       <DigiTypography>
@@ -55,7 +61,12 @@ export default function ExportReviewPage() {
               {type === 'tasks' ? (
                 <ExportTasks review={review} checks={checks} requirements={requirements} />
               ) : (
-                <CreateStatement review={review} checks={checks} requirements={requirements} />
+                <CreateStatement
+                  review={review}
+                  checks={checks}
+                  requirements={requirements}
+                  categories={categories || []}
+                />
               )}
             </>
           )}

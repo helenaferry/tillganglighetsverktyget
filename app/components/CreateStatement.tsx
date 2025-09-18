@@ -1,14 +1,16 @@
 import { NotificationAlertSize, NotificationAlertVariation } from '@digi/arbetsformedlingen';
-import { DigiNotificationAlert } from '@digi/arbetsformedlingen-react';
+import { DigiFormCheckbox, DigiNotificationAlert } from '@digi/arbetsformedlingen-react';
+import { useState } from 'react';
 import { Status, type Check, type Requirement, type ReviewWithApplication } from '~/data/types';
 
 type Props = {
   review: ReviewWithApplication;
   checks?: Check[];
   requirements: Requirement[];
+  categories: string[];
 };
 
-export default function CreateStatement({ review, checks, requirements }: Props) {
+export default function CreateStatement({ review, checks, requirements, categories }: Props) {
   const failedChecks = checks
     ? checks.filter(
         (check) => check.status === 0 || check.status === null || check.status === undefined,
@@ -23,6 +25,8 @@ export default function CreateStatement({ review, checks, requirements }: Props)
       ).length
     : 0;
   const numberOfNotAssessed = requirements.length - numberOfDone;
+  const [showTitles, setShowTitles] = useState(true);
+  const [showComments, setShowComments] = useState(true);
 
   return (
     <div className="content-container">
@@ -40,14 +44,44 @@ export default function CreateStatement({ review, checks, requirements }: Props)
         <b>Granskning:</b> {review.title}
       </p>
       <h2>Underkända krav</h2>
-      <p>TODO: Gör nåt med dessa :)</p>
-      {failedChecks.map((check) => {
-        const requirement = requirements.find(
-          (req) => String(req.id) === String(check.requirement),
-        );
+      <p>Här följer en översikt av de underkända krav du behöver redogöra för.</p>
+      <DigiFormCheckbox
+        checked={showTitles}
+        onAfOnChange={() => setShowTitles(!showTitles)}
+        afLabel="Visa kravtitlar"
+      />
+      <DigiFormCheckbox
+        checked={showComments}
+        onAfOnChange={() => setShowComments(!showComments)}
+        afLabel="Visa kommentarer"
+      />
+      {categories.map((cat) => {
+        const failedInCategory = failedChecks.filter((check) => {
+          const requirement = requirements.find(
+            (req) => String(req.id) === String(check.requirement),
+          );
+          return requirement?.category === cat;
+        });
+
+        if (failedInCategory.length === 0) return null;
+
         return (
-          <div key={check.id} className="mt-4">
-            {requirement?.name} {check.comment && <>- {check.comment}</>}
+          <div key={cat} className="mt-4">
+            <h3>{cat}</h3>
+            <ul>
+              {failedInCategory.map((check) => {
+                const requirement = requirements.find(
+                  (req) => String(req.id) === String(check.requirement),
+                );
+                return (
+                  <li key={check.id} className="mt-4">
+                    {showTitles && requirement?.name}
+                    {showTitles && showComments && check.comment && <>: </>}
+                    {showComments && check.comment && check.comment}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         );
       })}
