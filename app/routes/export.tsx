@@ -15,7 +15,8 @@ import {
 import CreateStatement from '~/components/CreateStatement';
 import ExportTasks from '~/components/ExportTasks';
 import Breadcrumbs from '~/components/Breadcrumbs';
-import type { ObjectType } from '~/data/types';
+import { ObjectType } from '~/data/types';
+import { useMemo } from 'react';
 
 export function meta() {
   return [
@@ -28,13 +29,31 @@ export default function ExportReviewPage() {
   const { id, type } = useParams<{ id: string; type: 'statement' | 'tasks' }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
-  const { data: requirements, isLoading: requirementsLoading } = useRequirements(
+  const { data: requirementsWeb, isLoading: requirementsWebLoading } = useRequirements(
+    ObjectType.WEB,
+  );
+  const { data: requirementsDoc, isLoading: requirementsDocLoading } = useRequirements(
+    ObjectType.DOCUMENT,
+  );
+  const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
     review?.objectType as ObjectType,
   );
-  const { data: categories, isLoading: categoriesLoading } = useRequirementCategories(
-    review?.objectType as ObjectType,
-  );
-  const loading = reviewLoading || checksLoading || requirementsLoading || categoriesLoading;
+  const requirements = useMemo(() => {
+    return review?.objectType === (ObjectType.DOCUMENT as String)
+      ? requirementsDoc
+      : requirementsWeb;
+  }, [review]);
+  const categories = useMemo(() => {
+    return review?.objectType === (ObjectType.DOCUMENT as String)
+      ? ['Dokumentkrav']
+      : categoriesWeb;
+  }, [review]);
+  const loading =
+    reviewLoading ||
+    checksLoading ||
+    requirementsWebLoading ||
+    requirementsDocLoading ||
+    categoriesWebLoading;
   return (
     <DigiLayoutContainer afVerticalPadding>
       <DigiTypography>

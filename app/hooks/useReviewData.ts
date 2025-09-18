@@ -5,7 +5,6 @@ import type {
   ReviewSummary,
   UpsertCheckInput,
   ReviewWithApplication,
-  PrefillRequirement,
   PrefillRequirementSetting,
 } from '~/data/types';
 import { ReviewService } from '~/data/reviewService';

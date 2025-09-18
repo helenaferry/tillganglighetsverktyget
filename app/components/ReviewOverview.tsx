@@ -5,8 +5,7 @@ import {
   DigiFormInput,
 } from '@digi/arbetsformedlingen-react';
 import { StyledLink } from './StyledLink';
-import { Status, type RequirementWithCheck, type Review, ObjectType } from '~/data/types';
-import { useRequirementCategories } from '~/hooks/useRequirementData';
+import { Status, type RequirementWithCheck, type Review } from '~/data/types';
 import { useState } from 'react';
 import StatusBadge from './StatusBadge';
 

@@ -44,17 +44,22 @@ export default function CreateStatement({ review, checks, requirements, categori
         <b>Granskning:</b> {review.title}
       </p>
       <h2>Underkända krav</h2>
-      <p>Här följer en översikt av de underkända krav du behöver redogöra för.</p>
-      <DigiFormCheckbox
-        checked={showTitles}
-        onAfOnChange={() => setShowTitles(!showTitles)}
-        afLabel="Visa kravtitlar"
-      />
-      <DigiFormCheckbox
-        checked={showComments}
-        onAfOnChange={() => setShowComments(!showComments)}
-        afLabel="Visa kommentarer"
-      />
+      {failedChecks.length > 0 && (
+        <>
+          <p>Här följer en översikt av de underkända krav du behöver redogöra för.</p>
+          <DigiFormCheckbox
+            checked={showTitles}
+            onAfOnChange={() => setShowTitles(!showTitles)}
+            afLabel="Visa kravtitlar"
+          />
+          <DigiFormCheckbox
+            checked={showComments}
+            onAfOnChange={() => setShowComments(!showComments)}
+            afLabel="Visa kommentarer"
+          />
+        </>
+      )}
+      {failedChecks.length === 0 && <p>Det finns inga underkända krav.</p>}
       {categories.map((cat) => {
         const failedInCategory = failedChecks.filter((check) => {
           const requirement = requirements.find(
