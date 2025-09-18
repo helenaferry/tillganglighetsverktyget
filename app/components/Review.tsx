@@ -16,7 +16,7 @@ import ReviewRequirement from '~/components/ReviewRequirement';
 import { formatDateLong, formatPercentage } from '~/formattingHelper';
 import { useMemo, useState } from 'react';
 import CategoryNav from '~/components/CategoryNav';
-import { Status, type RequirementWithCheck } from '~/data/types';
+import { Status, type RequirementWithCheck, ObjectType } from '~/data/types';
 import ReviewOverview from '~/components/ReviewOverview';
 import Breadcrumbs from './Breadcrumbs';
 
@@ -28,9 +28,48 @@ interface Props {
 export default function Review({ reviewId, requirementId }: Props) {
   const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
   const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
-  const { data: requirements, isLoading: requirementsLoading } = useRequirements();
-  const { data: categories, isLoading: categoriesLoading } = useRequirementCategories();
-  const loading = reviewLoading || checksLoading || requirementsLoading || categoriesLoading;
+  const { data: requirementsWeb, isLoading: requirementsWebLoading } = useRequirements(
+    ObjectType.WEB,
+  );
+  const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
+    ObjectType.WEB,
+  );
+
+  const { data: requirementsDoc, isLoading: requirementsDocLoading } = useRequirements(
+    ObjectType.DOCUMENT,
+  );
+  /* TEMP hårdkoda in en kategori för dokumentkrav eftersom datat saknas i nuläget
+  const { data: categoriesDoc, isLoading: categoriesDocLoading } = useRequirementCategories(
+    ObjectType.DOCUMENT,
+  );*/
+  const categoriesDoc = ['Dokumentkrav'];
+  const categoriesDocLoading = false;
+
+  const requirements = useMemo(() => {
+    if (review?.objectType === ObjectType.DOCUMENT) {
+      requirementsDoc?.map((req) => {
+        req.category = 'Dokumentkrav';
+        return req;
+      });
+      return requirementsDoc;
+    }
+    return requirementsWeb;
+  }, [review, requirementsWeb, requirementsDoc]);
+
+  const categories = useMemo(() => {
+    if (review?.objectType === ObjectType.DOCUMENT) {
+      return categoriesDoc;
+    }
+    return categoriesWeb;
+  }, [review, categoriesWeb, categoriesDoc]);
+
+  const loading =
+    reviewLoading ||
+    checksLoading ||
+    requirementsWebLoading ||
+    categoriesWebLoading ||
+    requirementsDocLoading ||
+    categoriesDocLoading;
 
   const [hideIrrelevant, setHideIrrelevant] = useState(true);
 
@@ -225,7 +264,11 @@ export default function Review({ reviewId, requirementId }: Props) {
         })()}
       {/* Visa granskningsöversikt om det inte finns något valt krav */}
       {review && !requirementId && (
-        <ReviewOverview requirements={allRequirementsWithChecks} review={review} />
+        <ReviewOverview
+          requirements={allRequirementsWithChecks}
+          review={review}
+          categories={categories}
+        />
       )}
     </div>
   );

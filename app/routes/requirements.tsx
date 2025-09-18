@@ -1,6 +1,9 @@
 import {
   DigiButton,
+  DigiFormFieldset,
   DigiFormInput,
+  DigiFormRadiobutton,
+  DigiFormRadiogroup,
   DigiFormSelectFilter,
   DigiIconChevronDown,
   DigiIconChevronUp,
@@ -24,16 +27,28 @@ import {
 import { type PrefillRequirementSetting, type RequirementAdditionsSetting } from '~/data/types';
 import RequirementDetails from '~/components/RequirementDetails';
 import { useMemo, useState } from 'react';
+import { ObjectType } from '~/data/types';
 
 export function meta() {
   return [{ title: 'Tillgänglighetsverktyget: Krav' }, { name: 'description', content: 'Krav' }];
 }
 
 export default function RequirementsPage() {
-  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements();
-  const { data: categories, isLoading: isLoadingCategories } = useRequirementCategories();
-  const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes();
-  const isLoading = isLoadingRequirements || isLoadingCategories || isLoadingContentTypes;
+  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements(ObjectType.WEB);
+  const { data: requirementsDoc, isLoading: isLoadingRequirementsDoc } = useRequirements(
+    ObjectType.DOCUMENT,
+  );
+  const { data: categories, isLoading: isLoadingCategories } = useRequirementCategories(
+    ObjectType.WEB,
+  );
+  const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
+    ObjectType.WEB,
+  );
+  const isLoading =
+    isLoadingRequirements ||
+    isLoadingRequirementsDoc ||
+    isLoadingCategories ||
+    isLoadingContentTypes;
 
   const prefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
@@ -48,14 +63,19 @@ export default function RequirementsPage() {
     return requirementAdditions.items.length > 0;
   }, [requirements, requirementAdditions]);
 
+  const [showObjectType, setShowObjectType] = useState<ObjectType>(ObjectType.WEB);
   const [filterFreeText, setFilterFreeText] = useState('');
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [filterContentTypes, setFilterContentTypes] = useState<string[]>([]);
   const [filterPrefill, setFilterPrefill] = useState<string[]>([]);
   const [filterHasAdditions, setFilterHasAdditions] = useState<string[]>([]);
+  const selectedRequirements = useMemo(() => {
+    return showObjectType === ObjectType.WEB ? requirements : requirementsDoc;
+  }, [showObjectType, requirements, requirementsDoc]);
+
   const filteredRequirements = useMemo(() => {
-    if (!requirements) return [];
-    return requirements.filter((req) => {
+    if (!selectedRequirements) return [];
+    return selectedRequirements.filter((req) => {
       if (filterCategories.length > 0 && !filterCategories.includes(req.category)) return false;
       if (filterFreeText && !req.name.toLowerCase().includes(filterFreeText.toLowerCase()))
         return false;
@@ -129,6 +149,22 @@ export default function RequirementsPage() {
           {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
           {!isLoading && filteredRequirements && (
             <div>
+              <DigiFormFieldset afForm="review-form" afLegend="Visa krav för" afName="typ">
+                <DigiFormRadiogroup afName="type">
+                  <DigiFormRadiobutton
+                    afLabel="Webbsida eller webbtjänst"
+                    afValue="web"
+                    afChecked={showObjectType === ObjectType.WEB}
+                    onAfOnChange={() => setShowObjectType(ObjectType.WEB)}
+                  ></DigiFormRadiobutton>
+                  <DigiFormRadiobutton
+                    afLabel="Dokument"
+                    afValue="doc"
+                    afChecked={showObjectType === ObjectType.DOCUMENT}
+                    onAfOnChange={() => setShowObjectType(ObjectType.DOCUMENT)}
+                  ></DigiFormRadiobutton>
+                </DigiFormRadiogroup>
+              </DigiFormFieldset>
               <div className="md:flex md:gap-4">
                 <div className="md:w-1/5">
                   <DigiFormInput
@@ -137,83 +173,102 @@ export default function RequirementsPage() {
                     onAfOnInput={(e) => setFilterFreeText(e.detail.target.value)}
                   />
                 </div>
-                <div className="md:w-1/5">
-                  <DigiFormSelectFilter
-                    afFilterButtonTextLabel="Kategori"
-                    afFilterButtonText="Visa alla"
-                    afName="Sök kategori"
-                    afSubmitButtonText="Filtrera"
-                    afMultipleItems={true}
-                    sortAlphabetically={false}
-                    afListItems={
-                      categories?.map((cat: string) => ({
-                        label: cat,
-                        value: cat,
-                        selected: filterCategories.includes(cat),
-                      })) || []
-                    }
-                    onAfOnSubmitFilters={(e) => {
-                      setFilterCategories(e.detail.map((item: { value: string }) => item.value));
-                    }}
-                  />
-                </div>
-                <div className="md:w-1/5">
-                  <DigiFormSelectFilter
-                    afFilterButtonTextLabel="Innehållstyp"
-                    afFilterButtonText="Visa alla"
-                    afName="Sök innehållstyp"
-                    afSubmitButtonText="Filtrera"
-                    afMultipleItems={true}
-                    sortAlphabetically={false}
-                    afListItems={
-                      contentTypes?.map((type: string) => ({
-                        label: type,
-                        value: type,
-                        selected: filterContentTypes.includes(type),
-                      })) || []
-                    }
-                    onAfOnSubmitFilters={(e) => {
-                      setFilterContentTypes(e.detail.map((item: { value: string }) => item.value));
-                    }}
-                  />
-                </div>
-                <div className="md:w-1/5">
-                  <DigiFormSelectFilter
-                    afFilterButtonTextLabel="Förifyllnad"
-                    afFilterButtonText="Visa alla"
-                    afName="Sök förifyllnad"
-                    afSubmitButtonText="Filtrera"
-                    afMultipleItems={true}
-                    sortAlphabetically={false}
-                    afListItems={
-                      prefillRequirements?.map((item) => ({
-                        label: `${item.automatic === 'true' ? 'Automatisk-' : 'Valbar-'}${item.id} ${item.activateText} `,
-                        value: String(item.id),
-                        selected: filterPrefill.includes(String(item.id)),
-                      })) || []
-                    }
-                    onAfOnSubmitFilters={(e) => {
-                      setFilterPrefill(e.detail.map((item: { value: string }) => item.value));
-                    }}
-                  />
-                </div>
-                <div className="md:w-1/5">
-                  <DigiFormSelectFilter
-                    afFilterButtonTextLabel="Har tillägg"
-                    afFilterButtonText="Visa alla"
-                    afName="Sök tillägg"
-                    afSubmitButtonText="Filtrera"
-                    afMultipleItems={true}
-                    sortAlphabetically={false}
-                    afListItems={[
-                      { label: 'Ja', value: 'yes', selected: filterHasAdditions.includes('yes') },
-                      { label: 'Nej', value: 'no', selected: filterHasAdditions.includes('no') },
-                    ]}
-                    onAfOnSubmitFilters={(e) => {
-                      setFilterHasAdditions(e.detail.map((item: { value: string }) => item.value));
-                    }}
-                  />
-                </div>
+
+                {showObjectType === ObjectType.WEB && (
+                  <>
+                    <div className="md:w-1/5">
+                      <DigiFormSelectFilter
+                        afFilterButtonTextLabel="Kategori"
+                        afFilterButtonText="Visa alla"
+                        afName="Sök kategori"
+                        afSubmitButtonText="Filtrera"
+                        afMultipleItems={true}
+                        sortAlphabetically={false}
+                        afListItems={
+                          categories?.map((cat: string) => ({
+                            label: cat,
+                            value: cat,
+                            selected: filterCategories.includes(cat),
+                          })) || []
+                        }
+                        onAfOnSubmitFilters={(e) => {
+                          setFilterCategories(
+                            e.detail.map((item: { value: string }) => item.value),
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="md:w-1/5">
+                      <DigiFormSelectFilter
+                        afFilterButtonTextLabel="Innehållstyp"
+                        afFilterButtonText="Visa alla"
+                        afName="Sök innehållstyp"
+                        afSubmitButtonText="Filtrera"
+                        afMultipleItems={true}
+                        sortAlphabetically={false}
+                        afListItems={
+                          contentTypes?.map((type: string) => ({
+                            label: type,
+                            value: type,
+                            selected: filterContentTypes.includes(type),
+                          })) || []
+                        }
+                        onAfOnSubmitFilters={(e) => {
+                          setFilterContentTypes(
+                            e.detail.map((item: { value: string }) => item.value),
+                          );
+                        }}
+                      />
+                    </div>
+                    <div className="md:w-1/5">
+                      <DigiFormSelectFilter
+                        afFilterButtonTextLabel="Förifyllnad"
+                        afFilterButtonText="Visa alla"
+                        afName="Sök förifyllnad"
+                        afSubmitButtonText="Filtrera"
+                        afMultipleItems={true}
+                        sortAlphabetically={false}
+                        afListItems={
+                          prefillRequirements?.map((item) => ({
+                            label: `${item.automatic === 'true' ? 'Automatisk-' : 'Valbar-'}${item.id} ${item.activateText} `,
+                            value: String(item.id),
+                            selected: filterPrefill.includes(String(item.id)),
+                          })) || []
+                        }
+                        onAfOnSubmitFilters={(e) => {
+                          setFilterPrefill(e.detail.map((item: { value: string }) => item.value));
+                        }}
+                      />
+                    </div>
+                    <div className="md:w-1/5">
+                      <DigiFormSelectFilter
+                        afFilterButtonTextLabel="Har tillägg"
+                        afFilterButtonText="Visa alla"
+                        afName="Sök tillägg"
+                        afSubmitButtonText="Filtrera"
+                        afMultipleItems={true}
+                        sortAlphabetically={false}
+                        afListItems={[
+                          {
+                            label: 'Ja',
+                            value: 'yes',
+                            selected: filterHasAdditions.includes('yes'),
+                          },
+                          {
+                            label: 'Nej',
+                            value: 'no',
+                            selected: filterHasAdditions.includes('no'),
+                          },
+                        ]}
+                        onAfOnSubmitFilters={(e) => {
+                          setFilterHasAdditions(
+                            e.detail.map((item: { value: string }) => item.value),
+                          );
+                        }}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
               <div className="content-container">
                 <DigiTable>
@@ -221,7 +276,10 @@ export default function RequirementsPage() {
                     <thead>
                       <tr>
                         <th>
-                          Krav - Visar {filteredRequirements.length} av {requirements.length}{' '}
+                          Krav - Visar {filteredRequirements.length} av{' '}
+                          {showObjectType === ObjectType.WEB
+                            ? requirements.length
+                            : requirementsDoc?.length}{' '}
                         </th>
                         <th>Kategori</th>
                         <th>Innehållstyp</th>

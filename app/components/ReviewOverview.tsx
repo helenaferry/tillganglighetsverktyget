@@ -5,7 +5,7 @@ import {
   DigiFormInput,
 } from '@digi/arbetsformedlingen-react';
 import { StyledLink } from './StyledLink';
-import { Status, type RequirementWithCheck, type Review } from '~/data/types';
+import { Status, type RequirementWithCheck, type Review, ObjectType } from '~/data/types';
 import { useRequirementCategories } from '~/hooks/useRequirementData';
 import { useState } from 'react';
 import StatusBadge from './StatusBadge';
@@ -13,10 +13,10 @@ import StatusBadge from './StatusBadge';
 type Props = {
   requirements: RequirementWithCheck[];
   review: Review;
+  categories?: string[];
 };
 
-export default function ReviewOverview({ review, requirements }: Props) {
-  const { data: categories } = useRequirementCategories();
+export default function ReviewOverview({ review, requirements, categories }: Props) {
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<Status[]>([
     Status.PASS,

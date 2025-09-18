@@ -5,6 +5,9 @@ import {
   DigiFormFieldset,
   DigiFormCheckbox,
   DigiLoaderSkeleton,
+  DigiFormRadiobutton,
+  DigiFormRadiogroup,
+  DigiDialog,
 } from '@digi/arbetsformedlingen-react';
 import {
   useApplications,
@@ -15,9 +18,10 @@ import {
   usePrefillRequirements,
 } from '~/hooks/useReviewData';
 import { useRequirements, useRequirementContentTypes } from '~/hooks/useRequirementData';
-import { useState, useEffect } from 'react';
-import { LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
+import { useState, useEffect, useMemo } from 'react';
+import { DialogSize, LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
 import type { PrefillRequirementSetting } from '~/data/types';
+import { ObjectType } from '~/data/types';
 
 type Props = {
   reviewId?: string;
@@ -25,12 +29,14 @@ type Props = {
 
 export function ReviewForm({ reviewId }: Props) {
   const { data: applications, isLoading: isLoadingApplications } = useApplications();
-  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements();
-  const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes();
+  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements(ObjectType.WEB);
+  const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
+    ObjectType.WEB,
+  );
   const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
   const loading =
     isLoadingApplications || isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
-  const prefillRequirements = JSON.parse(
+  const allPrefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
   ) as PrefillRequirementSetting[];
 
@@ -43,6 +49,24 @@ export function ReviewForm({ reviewId }: Props) {
   const [application, setApplication] = useState<string>('');
   const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
   const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
+  const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
+  const [showDocumentInfo, setShowDocumentInfo] = useState<boolean>(false);
+
+  const prefillRequirements = useMemo(() => {
+    if (!objectType || !requirements) return [];
+    return allPrefillRequirements
+      .map((setting) => {
+        const filteredPrefills = setting.prefillRequirements.filter((prefill) => {
+          const req = requirements.find((r) => r.id === prefill.id);
+          return req && req.objectType === objectType;
+        });
+        return {
+          ...setting,
+          prefillRequirements: filteredPrefills,
+        };
+      })
+      .filter((setting) => setting.prefillRequirements.length > 0);
+  }, [objectType, requirements, allPrefillRequirements]);
 
   useEffect(() => {
     if (review) {
@@ -54,6 +78,7 @@ export function ReviewForm({ reviewId }: Props) {
           review.selectedPrefillIds?.split(';').includes(String(p.id)),
         ) || [],
       );
+      setObjectType((review.objectType as ObjectType) || ObjectType.WEB);
     }
   }, [review]);
 
@@ -95,6 +120,7 @@ export function ReviewForm({ reviewId }: Props) {
         application,
         excludedContentTypes,
         selectedPrefillIds: selectedPrefills.map((p) => p.id).join(';'),
+        objectType: objectType ?? ObjectType.WEB,
       },
       {
         onSuccess: (review) => {
@@ -138,6 +164,63 @@ export function ReviewForm({ reviewId }: Props) {
       )}
       {!loading && (!reviewId || review) && (
         <form id="review-form" className="content-container" onSubmit={handleSubmit}>
+          <DigiFormFieldset afForm="review-form" afLegend="Typ av granskningsobjekt" afName="typ">
+            <DigiFormRadiogroup afName="type">
+              <DigiFormRadiobutton
+                afLabel="Webbsida eller webbtjänst"
+                afValue={ObjectType.WEB}
+                onAfOnInput={() => {
+                  console.log('web');
+                  setObjectType(ObjectType.WEB);
+                }}
+                afChecked={objectType === ObjectType.WEB}
+              ></DigiFormRadiobutton>
+              <DigiFormRadiobutton
+                afLabel="Dokument"
+                afValue={ObjectType.DOCUMENT}
+                onAfOnInput={() => {
+                  console.log('doc');
+                  setObjectType(ObjectType.DOCUMENT);
+                }}
+                afChecked={objectType === ObjectType.DOCUMENT}
+              ></DigiFormRadiobutton>
+            </DigiFormRadiogroup>
+          </DigiFormFieldset>
+          <DigiButton afType="button" onClick={() => setShowDocumentInfo(true)}>
+            Vad menas med dokument?
+          </DigiButton>
+          <DigiDialog
+            afSize={DialogSize.MEDIUM}
+            afShowDialog={showDocumentInfo}
+            afHeading="Dokument som inte är webb, enligt avsnitt 10 i EN 301 549"
+            afPrimaryButtonText="Stäng"
+            onAfOnClose={() => setShowDocumentInfo(false)}
+            onAfPrimaryButtonClick={() => setShowDocumentInfo(false)}
+          >
+            Krav i avsnitt 10 gäller för:
+            <ul>
+              <li>dokument som inte är webbsidor,</li>
+              <li>dokument som inte är inbäddade i webbsidor, och</li>
+              <li>
+                dokument som tillhandahålls tillsammans med webbsidor men som varken är inbäddade
+                eller återges tillsammans med den webbsida från vilken de tillhandahålls (dvs. detta
+                avsnitt gäller för nedladdningsbara dokument).
+              </li>
+            </ul>
+            <p>
+              Exempel på dokument är brev, kalkylblad, e-post, böcker, bilder, presentationer och
+              filmer.
+            </p>
+            <p>
+              Framgångskriterierna i avsnitt 10 är avsedda att harmonisera med W3C:s WCAG2ICT Task
+              Force:s arbetsdokument [i.26].
+            </p>
+            <p>
+              Krav i avsnitt 10 gäller även dokument som skyddats med mekanismer som digitala
+              signaturer, kryptering, lösenordsskydd och vattenstämplar när de presenteras för
+              användaren.
+            </p>
+          </DigiDialog>
           <DigiFormInput
             afLabel="Rubrik"
             afValue={title}
@@ -156,32 +239,36 @@ export function ReviewForm({ reviewId }: Props) {
             }
             onAfOnSelect={(e) => setApplication(e.detail[0].value)}
           />
-          <h2>Exkludera irrelevanta krav</h2>
-          <p>
-            Den totala mängden krav är stor och för att minska arbetsbelastningen är det viktigt att
-            exkludera irrelevanta krav. Bocka för innehållstyper som saknas i granskningsobjektet,
-            så markeras relaterade krav automatiskt som irrelevanta. De döljs då i granskningen, men
-            du kan välja att visa dem för att kontrollera att de verkligen är irrelevanta och återta
-            dem till granskningen om du vill.
-          </p>
-          <DigiFormFieldset
-            afForm="review-form"
-            afLegend="Vänligen välj de innehållstyper som inte är relevanta för granskningsobjektet"
-            afName="content"
-          >
-            {contentTypes &&
-              contentTypes.map((contentType) => (
-                <DigiFormCheckbox
-                  key={contentType}
-                  afValue={contentType}
-                  afChecked={excludedContentTypes.includes(contentType)}
-                  onAfOnChange={(e) => {
-                    handleContentChange(e);
-                  }}
-                  afLabel={contentType}
-                ></DigiFormCheckbox>
-              ))}
-          </DigiFormFieldset>
+          {objectType === ObjectType.WEB && (
+            <div>
+              <h2>Exkludera irrelevanta krav</h2>
+              <p>
+                Den totala mängden krav är stor och för att minska arbetsbelastningen är det viktigt
+                att exkludera irrelevanta krav. Bocka för innehållstyper som saknas i
+                granskningsobjektet, så markeras relaterade krav automatiskt som irrelevanta. De
+                döljs då i granskningen, men du kan välja att visa dem för att kontrollera att de
+                verkligen är irrelevanta och återta dem till granskningen om du vill.
+              </p>
+              <DigiFormFieldset
+                afForm="review-form"
+                afLegend="Vänligen välj de innehållstyper som inte är relevanta för granskningsobjektet"
+                afName="content"
+              >
+                {contentTypes &&
+                  contentTypes.map((contentType) => (
+                    <DigiFormCheckbox
+                      key={contentType}
+                      afValue={contentType}
+                      afChecked={excludedContentTypes.includes(contentType)}
+                      onAfOnChange={(e) => {
+                        handleContentChange(e);
+                      }}
+                      afLabel={contentType}
+                    ></DigiFormCheckbox>
+                  ))}
+              </DigiFormFieldset>
+            </div>
+          )}
 
           {prefillRequirements.find(
             (prefill: PrefillRequirementSetting) => prefill.automatic === 'false',

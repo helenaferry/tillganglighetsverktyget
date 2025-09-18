@@ -155,6 +155,7 @@ export function useUpsertReview() {
       id?: string;
       excludedContentTypes: string[];
       selectedPrefillIds: string;
+      objectType: string;
     }) => ReviewService.upsertReview(input),
     onSuccess: (_newReview, input) => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] });

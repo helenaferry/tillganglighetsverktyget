@@ -11,7 +11,7 @@ export enum RequirementType {
 
 export enum ObjectType {
   WEB = 'web',
-  DOCUMENT = 'document',
+  DOCUMENT = 'doc',
   APP = 'app',
 }
 

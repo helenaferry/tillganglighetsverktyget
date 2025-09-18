@@ -11,6 +11,7 @@ import { useRequirements } from '~/hooks/useRequirementData';
 import { LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
 import { formatDate, formatDateAndTime } from '~/formattingHelper';
 import { useNavigate } from 'react-router';
+import { ObjectType } from '~/data/types';
 
 export function ReviewsList() {
   const {
@@ -24,10 +25,16 @@ export function ReviewsList() {
     data: requirements,
     isLoading: requirementsLoading,
     isFetched: requirementsFetched,
-  } = useRequirements();
+  } = useRequirements(ObjectType.WEB);
+  const {
+    data: requirementsDoc,
+    isLoading: isLoadingDoc,
+    isFetched: isFetchedDoc,
+  } = useRequirements(ObjectType.DOCUMENT);
   const requirementsCount = requirements?.length || 0;
-  const loading = reviewsLoading || requirementsLoading;
-  const fetched = reviewsFetched && requirementsFetched;
+  const requirementsDocCount = requirementsDoc?.length || 0;
+  const loading = reviewsLoading || requirementsLoading || isLoadingDoc;
+  const fetched = reviewsFetched && requirementsFetched && isFetchedDoc;
   const navigate = useNavigate();
   return (
     <div>
@@ -67,10 +74,15 @@ export function ReviewsList() {
                     <td>{review.passCount}</td>
                     <td>{review.failCount}</td>
                     <td>
-                      {requirementsCount -
-                        review.irrelevantCount -
-                        review.passCount -
-                        review.failCount}
+                      {review.objectType === ObjectType.DOCUMENT
+                        ? requirementsDocCount -
+                          review.irrelevantCount -
+                          review.passCount -
+                          review.failCount
+                        : requirementsCount -
+                          review.irrelevantCount -
+                          review.passCount -
+                          review.failCount}
                     </td>
                     <td>{formatDateAndTime(review.latestUpdate)}</td>
                     <td>

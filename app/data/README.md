@@ -13,8 +13,8 @@ TODO: Instruktioner för hur man annars kommer igång med en egen Supabase.
 - Ändringar görs i Table Editor i Supabase dashboard.
 - Typgenerering (för att uppdatera supabase-types.ts som används i projektet):
   - Du behöver en access token från https://supabase.com/dashboard/account/
-  - I din terminal, skriv export SUPABASE*ACCESS_TOKEN=sbp*... (gäller för sessionen)
-  - Kör npx supabase@latest gen types typescript --project-id siouoxdqpgykibzayejt --schema public > app/data/supabase-types.ts
+- I din terminal, skriv `export SUPABASE_ACCESS_TOKEN=sbp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxx` (ersätt med din token, gäller för sessionen)
+  - Kör `npx supabase@latest gen types typescript --project-id siouoxdqpgykibzayejt --schema public > app/data/supabase-types.ts`
 
 ## Interaktion med Supabase
 
