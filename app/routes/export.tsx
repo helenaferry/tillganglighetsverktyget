@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
 import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
 import {
-  DigiLayoutContainer,
   DigiTypography,
   DigiTypographyHeadingJumbo,
   DigiLoaderSkeleton,
@@ -26,7 +25,7 @@ export function meta() {
 }
 
 export default function ExportReviewPage() {
-  const { id, type } = useParams<{ id: string; type: 'statement' | 'tasks' }>();
+  const { id, type } = useParams<{ id: string; type: 'redogorelse' | 'uppgifter' }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
   const { data: requirementsWeb, isLoading: requirementsWebLoading } = useRequirements(
@@ -39,12 +38,12 @@ export default function ExportReviewPage() {
     review?.objectType as ObjectType,
   );
   const requirements = useMemo(() => {
-    return review?.objectType === (ObjectType.DOCUMENT as String)
+    return review?.objectType === (ObjectType.DOCUMENT as string)
       ? requirementsDoc
       : requirementsWeb;
   }, [review]);
   const categories = useMemo(() => {
-    return review?.objectType === (ObjectType.DOCUMENT as String)
+    return review?.objectType === (ObjectType.DOCUMENT as string)
       ? ['Dokumentkrav']
       : categoriesWeb;
   }, [review]);
@@ -55,42 +54,40 @@ export default function ExportReviewPage() {
     requirementsDocLoading ||
     categoriesWebLoading;
   return (
-    <DigiLayoutContainer afVerticalPadding>
-      <DigiTypography>
-        <div>
-          {loading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
-          {!loading && review && checks && requirements && (
-            <>
-              <Breadcrumbs
-                pages={[
-                  { title: 'Granskningar', href: '/' },
-                  { title: review?.title || 'Granskning', href: `/review/${review.id}` },
-                ]}
-                currentPage={
-                  type === 'tasks' ? 'Exportera uppgifter' : 'Skapa tillgänglighetsredogörelse'
-                }
+    <DigiTypography>
+      <div>
+        {loading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
+        {!loading && review && checks && requirements && (
+          <>
+            <Breadcrumbs
+              pages={[
+                { title: 'Granskningar', href: '/' },
+                { title: review?.title || 'Granskning', href: `/granskning/${review.id}` },
+              ]}
+              currentPage={
+                type === 'uppgifter' ? 'Exportera uppgifter' : 'Skapa tillgänglighetsredogörelse'
+              }
+            />
+            <DigiTypographyHeadingJumbo
+              afText={
+                type === 'uppgifter' ? 'Exportera uppgifter' : 'Skapa tillgänglighetsredogörelse'
+              }
+              afLevel={TypographyHeadingJumboLevel.H1}
+              afVariation={TypographyHeadingJumboVariation.PRIMARY}
+            ></DigiTypographyHeadingJumbo>
+            {type === 'uppgifter' ? (
+              <ExportTasks review={review} checks={checks} requirements={requirements} />
+            ) : (
+              <CreateStatement
+                review={review}
+                checks={checks}
+                requirements={requirements}
+                categories={categories || []}
               />
-              <DigiTypographyHeadingJumbo
-                afText={
-                  type === 'tasks' ? 'Exportera uppgifter' : 'Skapa tillgänglighetsredogörelse'
-                }
-                afLevel={TypographyHeadingJumboLevel.H1}
-                afVariation={TypographyHeadingJumboVariation.PRIMARY}
-              ></DigiTypographyHeadingJumbo>
-              {type === 'tasks' ? (
-                <ExportTasks review={review} checks={checks} requirements={requirements} />
-              ) : (
-                <CreateStatement
-                  review={review}
-                  checks={checks}
-                  requirements={requirements}
-                  categories={categories || []}
-                />
-              )}
-            </>
-          )}
-        </div>
-      </DigiTypography>
-    </DigiLayoutContainer>
+            )}
+          </>
+        )}
+      </div>
+    </DigiTypography>
   );
 }

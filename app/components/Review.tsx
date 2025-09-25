@@ -4,6 +4,7 @@ import {
   DigiLoaderSkeleton,
   DigiFormCheckbox,
   DigiTypographyHeadingJumbo,
+  DigiTypography,
 } from '@digi/arbetsformedlingen-react';
 import {
   FormCheckboxVariation,
@@ -14,10 +15,10 @@ import {
 import { StyledLink } from '~/components/StyledLink';
 import ReviewRequirement from '~/components/ReviewRequirement';
 import { formatDateLong, formatPercentage } from '~/formattingHelper';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import CategoryNav from '~/components/CategoryNav';
 import { Status, type RequirementWithCheck, ObjectType } from '~/data/types';
-import ReviewOverview from '~/components/ReviewOverview';
+import ReviewRequirements from '~/components/ReviewRequirements';
 import Breadcrumbs from './Breadcrumbs';
 
 interface Props {
@@ -72,6 +73,9 @@ export default function Review({ reviewId, requirementId }: Props) {
     categoriesDocLoading;
 
   const [hideIrrelevant, setHideIrrelevant] = useState(true);
+  const [showCategoryNav, setShowCategoryNav] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,
+  );
 
   const categoriesWithRequirements = useMemo(() => {
     if (!categories || !requirements) return [];
@@ -133,90 +137,70 @@ export default function Review({ reviewId, requirementId }: Props) {
     if (currentIndex === -1) return null;
     return relevantRequirementsWithChecks[currentIndex - 1]?.id || null;
   };
+
+  const scrollPosRef = useRef<number>(0);
+  const [requirement, setRequirement] = useState<RequirementWithCheck | null>(null);
+
+  useEffect(() => {
+    const requirement = requirements?.find((req) => String(req.id) === requirementId);
+    setRequirement(requirement || null);
+  }, [requirements, requirementId]);
+
   return (
-    <div>
+    <div className="grid">
       {loading && (
         <DigiLoaderSkeleton
           afVariation={LoaderSkeletonVariation.SECTION}
           afCount={4}
         ></DigiLoaderSkeleton>
       )}
-      {review && (
-        <div className="md:flex justify-between mb-4">
-          <div>
-            <Breadcrumbs
-              currentPage={
-                requirementId
-                  ? requirements?.find((req) => String(req.id) === String(requirementId))?.name ||
-                    'Krav'
-                  : review.title || 'Granskning'
-              }
-              pages={
-                requirementId
-                  ? [
-                      { title: 'Granskningar', href: '/' },
-                      { title: review?.title || 'Granskning', href: `/review/${review?.id}` },
-                    ]
-                  : [{ title: 'Granskningar', href: '/' }]
-              }
-            />
-            <DigiTypographyHeadingJumbo
-              afText={review?.title || 'Granskning'}
-              afLevel={TypographyHeadingJumboLevel.H1}
-              afVariation={TypographyHeadingJumboVariation.PRIMARY}
-            ></DigiTypographyHeadingJumbo>
-            <p>
-              <b>Granskningsobjekt:</b> {review?.application.name}
-              <br />
-              <b>Granskning startad:</b> {formatDateLong(review?.created_at)}
-              <br />
-            </p>
-
-            <div className="flex flex-col md:flex-row gap-4 my-4">
-              <StyledLink
-                to={`/review/${review.id}/export/statement`}
-                text="Skapa tillgänglighetsredogörelse"
-                isButton={true}
-              />
-              <StyledLink
-                to={`/review/${review.id}/export/tasks`}
-                text="Exportera uppgifter (.csv)"
-                isButton={true}
-              />
-            </div>
-          </div>
-          <div>
-            {numberDone > 0 && (
-              <div className="h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
-                <div>
-                  <span className="block text-center text-[2.5rem]">
-                    {requirements && requirements.length
-                      ? formatPercentage((numberDone + numberIrrelevant) / requirements.length)
-                      : '0%'}
-                  </span>
-                  <span className="block text-center">K L A R T</span>
-                </div>
-              </div>
-            )}
-            <div className="h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
+      <div className="bg-white">
+        <DigiTypography>
+          {review && (
+            <div className="lg:flex justify-between mb-4 bg-white p-5">
               <div>
-                <span className="block text-center leading-none">BARA</span>
-                <span className="block text-center text-[2rem] leading-none">
-                  {(requirements ? requirements.length - numberIrrelevant - numberDone : 0) || 0}
-                </span>
-                <span className="block text-center leading-none">KVAR!</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {requirementId &&
-        (() => {
-          const requirement = requirements?.find((req) => String(req.id) === requirementId);
-          if (requirement && reviewId) {
-            return (
-              <div className="flex gap-4">
-                <div className="w-1/4">
+                <Breadcrumbs
+                  currentPage={
+                    requirementId
+                      ? requirements?.find((req) => String(req.id) === String(requirementId))
+                          ?.name || 'Krav'
+                      : review.title || 'Granskning'
+                  }
+                  pages={
+                    requirementId
+                      ? [
+                          { title: 'Granskningar', href: '/' },
+                          {
+                            title: review?.title || 'Granskning',
+                            href: `/granskning/${review?.id}`,
+                          },
+                        ]
+                      : [{ title: 'Granskningar', href: '/' }]
+                  }
+                />
+                <DigiTypographyHeadingJumbo
+                  afText={review?.title || 'Granskning'}
+                  afLevel={TypographyHeadingJumboLevel.H1}
+                  afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                ></DigiTypographyHeadingJumbo>
+                <p>
+                  <b>Granskningsobjekt:</b> {review?.application.name}
+                  <br />
+                  <b>Granskning startad:</b> {formatDateLong(review?.created_at)}
+                  <br />
+                </p>
+
+                <div className="flex flex-col md:flex-row gap-4 my-4">
+                  <StyledLink
+                    to={`/granskning/${review.id}/export/redogorelse`}
+                    text="Skapa tillgänglighetsredogörelse"
+                    isButton={true}
+                  />
+                  <StyledLink
+                    to={`/granskning/${review.id}/export/uppgifter`}
+                    text="Exportera uppgifter (.csv)"
+                    isButton={true}
+                  />
                   <DigiFormCheckbox
                     afLabel="Dölj irrelevanta krav"
                     afChecked={hideIrrelevant}
@@ -225,29 +209,68 @@ export default function Review({ reviewId, requirementId }: Props) {
                     }}
                     afVariation={FormCheckboxVariation.PRIMARY}
                   />
-                  <br />
-                  <CategoryNav
-                    reviewId={reviewId}
-                    categories={categoriesWithRequirements}
-                    selectedCategory={requirement.category}
-                    selectedRequirement={requirementId}
-                    hideIrrelevant={hideIrrelevant}
-                  />
                 </div>
-                <div className="flex-1">
-                  {review && (
-                    <div className="content-container">
-                      <ReviewRequirement
-                        key={requirement.id}
-                        requirement={requirement}
-                        reviewId={reviewId}
-                        nextRequirementId={nextRequirementId(requirementId)}
-                        previousRequirementId={previousRequirementId(requirementId)}
-                      />
+              </div>
+              <div>
+                {numberDone > 0 && (
+                  <div className="h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
+                    <div>
+                      <span className="block text-center text-[2.5rem]">
+                        {requirements && requirements.length
+                          ? formatPercentage((numberDone + numberIrrelevant) / requirements.length)
+                          : '0%'}
+                      </span>
+                      <span className="block text-center">K L A R T</span>
                     </div>
+                  </div>
+                )}
+                <div className="h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
+                  <div>
+                    <span className="block text-center leading-none">BARA</span>
+                    <span className="block text-center text-[2rem] leading-none">
+                      {(requirements ? requirements.length - numberIrrelevant - numberDone : 0) ||
+                        0}
+                    </span>
+                    <span className="block text-center leading-none">KVAR!</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </DigiTypography>
+      </div>
+      {requirementId &&
+        (() => {
+          if (requirement && reviewId) {
+            return (
+              <div className={`${showCategoryNav ? 'sm:flex sm:gap-5' : ''}`}>
+                <CategoryNav
+                  reviewId={reviewId}
+                  categories={categoriesWithRequirements}
+                  selectedCategory={requirement.category}
+                  selectedRequirement={requirementId}
+                  hideIrrelevant={hideIrrelevant}
+                  showCategoryNav={showCategoryNav}
+                  onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+                  onSelectCategory={() => {
+                    scrollPosRef.current = window.scrollY;
+                  }}
+                />
+                <div
+                  className="content-container content-container--largest"
+                  style={{ width: !showCategoryNav ? 'calc(100% - 4rem)' : '100%' }}
+                >
+                  {review && (
+                    <ReviewRequirement
+                      key={requirement.id}
+                      requirement={requirement}
+                      reviewId={reviewId}
+                      nextRequirementId={nextRequirementId(requirementId)}
+                      previousRequirementId={previousRequirementId(requirementId)}
+                    />
                   )}
                   <StyledLink
-                    to={`/review/${reviewId}`}
+                    to={`/granskning/${reviewId}`}
                     text="Tillbaka till granskningsöversikten"
                   />
                 </div>
@@ -257,18 +280,25 @@ export default function Review({ reviewId, requirementId }: Props) {
             return (
               <div>
                 <p>Krav-ID: {requirementId} hittades inte.</p>
-                <StyledLink to={`/review/${reviewId}`} text="Tillbaka till granskningsöversikten" />
+                <StyledLink
+                  to={`/granskning/${reviewId}`}
+                  text="Tillbaka till granskningsöversikten"
+                />
               </div>
             );
           }
         })()}
-      {/* Visa granskningsöversikt om det inte finns något valt krav */}
+      {/* Visa kravlista om det inte finns något valt krav */}
       {review && !requirementId && (
-        <ReviewOverview
-          requirements={allRequirementsWithChecks}
-          review={review}
-          categories={categories}
-        />
+        <div className="content-container content-container--largest">
+          <div className="content-container content-container--white content-container--largest">
+            <ReviewRequirements
+              requirements={allRequirementsWithChecks}
+              review={review}
+              categories={categories}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

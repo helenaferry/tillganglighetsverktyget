@@ -15,7 +15,7 @@ type Props = {
   categories?: string[];
 };
 
-export default function ReviewOverview({ review, requirements, categories }: Props) {
+export default function ReviewRequirements({ review, requirements, categories }: Props) {
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<Status[]>([
     Status.PASS,
@@ -40,7 +40,7 @@ export default function ReviewOverview({ review, requirements, categories }: Pro
     <div>
       {review && (
         <>
-          <div className="md:flex md:gap-4">
+          <div className="md:flex md:gap-4 p-5">
             <div className="md:w-1/4">
               <DigiFormInput
                 afLabel="Sök"
@@ -106,7 +106,7 @@ export default function ReviewOverview({ review, requirements, categories }: Pro
               />
             </div>
           </div>
-          <div className="content-container">
+          <div className="container">
             <DigiTable>
               <table>
                 <thead>
@@ -120,7 +120,10 @@ export default function ReviewOverview({ review, requirements, categories }: Pro
                   {filteredRequirements.map((req) => (
                     <tr key={req.id}>
                       <td>
-                        <StyledLink to={'/review/' + review.id + '/' + req.id} text={req.name} />
+                        <StyledLink
+                          to={'/granskning/' + review.id + '/' + req.id}
+                          text={req.name}
+                        />
                       </td>
                       <td>
                         <DigiTag

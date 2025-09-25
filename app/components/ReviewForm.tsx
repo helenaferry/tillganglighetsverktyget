@@ -155,7 +155,7 @@ export function ReviewForm({ reviewId }: Props) {
   };
 
   return (
-    <div>
+    <div className="content-container content-container--white content-container--largest">
       {loading && (
         <DigiLoaderSkeleton
           afVariation={LoaderSkeletonVariation.SECTION}
@@ -221,24 +221,28 @@ export function ReviewForm({ reviewId }: Props) {
               användaren.
             </p>
           </DigiDialog>
-          <DigiFormInput
-            afLabel="Rubrik"
-            afValue={title}
-            onAfOnInput={(e) => setTitle(e.detail.target.value)}
-          />
-          <DigiFormSelectFilter
-            afFilterButtonText="Välj granskningsobjekt"
-            afFilterButtonTextLabel="Granskningsobjekt"
-            afName="Granskningsobjekt"
-            afListItems={
-              applications?.map((app) => ({
-                value: String(app.id),
-                label: app.name ?? '',
-                selected: String(app.id) === application,
-              })) ?? []
-            }
-            onAfOnSelect={(e) => setApplication(e.detail[0].value)}
-          />
+          <p>
+            <DigiFormInput
+              afLabel="Rubrik"
+              afValue={title}
+              onAfOnInput={(e) => setTitle(e.detail.target.value)}
+            />
+          </p>
+          <p>
+            <DigiFormSelectFilter
+              afFilterButtonText="Välj granskningsobjekt"
+              afFilterButtonTextLabel="Granskningsobjekt"
+              afName="Granskningsobjekt"
+              afListItems={
+                applications?.map((app) => ({
+                  value: String(app.id),
+                  label: app.name ?? '',
+                  selected: String(app.id) === application,
+                })) ?? []
+              }
+              onAfOnSelect={(e) => setApplication(e.detail[0].value)}
+            />
+          </p>
           {objectType === ObjectType.WEB && (
             <div>
               <h2>Exkludera irrelevanta krav</h2>

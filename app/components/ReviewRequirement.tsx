@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { type Requirement } from '~/data/types';
-import { DigiBadgeStatus } from '@digi/arbetsformedlingen-react';
-import { BadgeStatusSize, BadgeStatusType } from '@digi/arbetsformedlingen';
+import { DigiTypography } from '@digi/arbetsformedlingen-react';
 import RequirementDetails from './RequirementDetails';
 import StatusBadge from './StatusBadge';
 import RequirementForm from './RequirementForm';
@@ -36,66 +35,64 @@ export default function ReviewRequirement({
   };
 
   return (
-    <div>
-      <div className="flex justify-between mb-2">
-        <div>
-          {previousRequirementId && (
-            <StyledLink
-              to={`/review/${reviewId}/${previousRequirementId}`}
-              text="Föregående krav"
-              onClick={handleRequirementNav}
-            />
-          )}
+    <div className="content-container content-container--white content-container--largest">
+      <DigiTypography>
+        <div className="flex flex-col md:flex:row justify-between mb-2">
+          <div>
+            {previousRequirementId && (
+              <StyledLink
+                to={`/granskning/${reviewId}/${previousRequirementId}`}
+                text="Föregående krav"
+                onClick={handleRequirementNav}
+              />
+            )}
+          </div>
+          <div>
+            {nextRequirementId && (
+              <StyledLink
+                to={`/granskning/${reviewId}/${nextRequirementId}`}
+                text="Nästa krav"
+                onClick={handleRequirementNav}
+              />
+            )}
+          </div>
         </div>
         <div>
-          {nextRequirementId && (
-            <StyledLink
-              to={`/review/${reviewId}/${nextRequirementId}`}
-              text="Nästa krav"
-              onClick={handleRequirementNav}
-            />
-          )}
-        </div>
-      </div>
-      <section className="mb-8 p-6 rounded-md">
-        <div className="border-b-1 md:flex gap-4 justify-between">
-          <div className="flex gap-4">
-            <div>
-              <h2>{requirement.name}</h2>
-              <div className="flex gap-2 mb-5">
-                <DigiBadgeStatus
-                  afText={requirement.category}
-                  afType={BadgeStatusType.PROMPT}
-                  afSize={BadgeStatusSize.LARGE}
-                />
-                {requirement.en301549 && (
-                  <DigiBadgeStatus
-                    afText={requirement.en301549}
-                    afType={BadgeStatusType.PROMPT}
-                    afSize={BadgeStatusSize.LARGE}
-                  />
-                )}
-                {requirement.wcag && (
-                  <DigiBadgeStatus
-                    afText={`WCAG ${requirement.wcag} ${requirement.wcagLevel}`}
-                    afType={BadgeStatusType.PROMPT}
-                    afSize={BadgeStatusSize.LARGE}
-                  />
-                )}
+          <div className="border-b-1 md:flex gap-4 justify-between">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div>
+                <h2>{requirement.name}</h2>
+                <div>
+                  <span>{requirement.category}</span>
+                  <br />
+                  {requirement.en301549 &&
+                    requirement.en301549.length > 0 &&
+                    requirement.en301549
+                      .split(',')
+                      .map((text, index) => <span key={index}>{`EN ${text}`}</span>)}
+                  <br />
+                  {requirement.wcag &&
+                    requirement.wcag.length > 0 &&
+                    requirement.wcag
+                      .split(',')
+                      .map((text, index) => (
+                        <span key={index}>{`WCAG ${text} (${requirement.wcagLevel})`}</span>
+                      ))}
+                </div>
               </div>
             </div>
+            <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
           </div>
-          <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
+          <div className="md:flex my-5 gap-5">
+            <div className="flex-1">
+              <RequirementDetails requirement={requirement} />
+            </div>
+            <div className="flex-1">
+              <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
+            </div>
+          </div>
         </div>
-        <div className="md:flex my-5 gap-5">
-          <div className="flex-1">
-            <RequirementDetails requirement={requirement} />
-          </div>
-          <div className="flex-1">
-            <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
-          </div>
-        </div>
-      </section>
+      </DigiTypography>
     </div>
   );
 }

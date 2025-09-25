@@ -1,11 +1,7 @@
-import { NavigationVerticalMenuVariation } from '@digi/arbetsformedlingen';
-import {
-  DigiNavigationVerticalMenu,
-  DigiNavigationVerticalMenuItem,
-} from '@digi/arbetsformedlingen-react';
 import { Status, type Category } from '~/data/types';
 import { useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
 
 type Props = {
   reviewId: string;
@@ -13,16 +9,60 @@ type Props = {
   selectedCategory: string;
   selectedRequirement: string;
   hideIrrelevant: boolean;
+  showCategoryNav: boolean;
+  onToggleNav: () => void;
+  onSelectCategory?: () => void;
 };
+const activeColor = 'var(--digi--stratos-500)';
+const tagBgColor = 'var(--digi--grayscale-200)';
+const NumberOrChecked = ({
+  number,
+  checked,
+  active,
+}: {
+  number: number;
+  checked: boolean;
+  active: boolean;
+}) => {
+  const bgColor = active ? 'white' : checked ? activeColor : tagBgColor;
+  return (
+    <div
+      className={`flex items-center justify-center text-center w-[2rem] h-[2rem] rounded-full`}
+      style={{ backgroundColor: bgColor }}
+    >
+      {checked ? (
+        <DigiIconCheck
+          style={
+            {
+              '--digi--icon--color': active ? activeColor : '#fff',
+              '--digi--icon--width': '0.875rem',
+            } as React.CSSProperties
+          }
+        />
+      ) : (
+        <span>{number}</span>
+      )}
+    </div>
+  );
+};
+
 export default function CategoryNav({
   reviewId,
   categories,
   selectedCategory,
   selectedRequirement,
   hideIrrelevant,
+  showCategoryNav,
+  onToggleNav,
+  onSelectCategory,
 }: Props) {
   const navigate = useNavigate();
-  const onSelectCategory = (category: string) => {
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([selectedCategory]);
+
+  const selectCategory = (category: string) => {
+    setExpandedCategories((prev) =>
+      prev.includes(category) ? prev.filter((cat) => cat !== category) : [...prev, category],
+    );
     const firstInCategory = categories.find((cat) => cat.category === category);
     if (firstInCategory) {
       const firstRequirement = firstInCategory.requirements.filter((req) => {
@@ -30,21 +70,11 @@ export default function CategoryNav({
         return true;
       })[0];
       if (firstRequirement) {
-        navigate(`/review/${reviewId}/${firstRequirement.id}`);
+        navigate(`/granskning/${reviewId}/${firstRequirement.id}`);
+        // I stället ladda in bara?
       }
     }
-  };
-  const getShortStatus = (status: Status) => {
-    switch (status) {
-      case Status.PASS:
-        return '✅';
-      case Status.FAIL:
-        return '❌';
-      case Status.IRRELEVANT:
-        return '🚫';
-      default:
-        return '';
-    }
+    onSelectCategory?.();
   };
   const getCategoryStatus = (category: string) => {
     const requirements = categories.find((cat) => cat.category === category)?.requirements;
@@ -55,7 +85,16 @@ export default function CategoryNav({
     const total = requirements.filter((req) =>
       hideIrrelevant ? req.check?.status !== Status.IRRELEVANT : true,
     ).length;
-    return `(${checked}/${total})`;
+    return (
+      <span
+        className={`inline-block
+        ${tagBgColor}
+        rounded-[var(--digi--border-radius--complementary-2)] 
+        py-[var(--digi--padding--smaller)] 
+        px-[var(--digi--padding--small)]
+        mt-2`}
+      >{`${checked}/${total}`}</span>
+    );
   };
 
   const filteredCategories = useMemo(() => {
@@ -70,29 +109,65 @@ export default function CategoryNav({
   }, [categories, hideIrrelevant]);
 
   return (
-    <DigiNavigationVerticalMenu afVariation={NavigationVerticalMenuVariation.PRIMARY}>
-      <ul>
-        {filteredCategories.map((category) => (
-          <li key={category.category}>
-            <DigiNavigationVerticalMenuItem
-              afText={`${category.category} ${getCategoryStatus(category.category)}`}
-              afActiveSubnav={selectedCategory === category.category}
-              onClick={() => onSelectCategory(category.category)}
-              afActive={selectedCategory === category.category}
-            />
-            <ul>
-              {category.requirements.map((req) => (
-                <li key={req.id}>
-                  <DigiNavigationVerticalMenuItem
-                    afText={`${selectedRequirement == req.id ? '➡ ' : ''}${req.name ?? ''} ${getShortStatus(req.check?.status ?? Status.NOT_ASSESSED)}`}
-                    onClick={() => navigate(`/review/${reviewId}/${req.id}`)}
-                  />
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-    </DigiNavigationVerticalMenu>
+    <nav
+      className={`h-screen max-h-screen pb-[100vh] overflow-y-scroll bg-white ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem] float-left'} `}
+    >
+      <DigiTypography>
+        <div className="flex justify-between">
+          {showCategoryNav && <h3>Kravkategorier</h3>}
+          <button onClick={onToggleNav}>{showCategoryNav ? 'Fäll in' : 'Fäll ut'}</button>
+        </div>
+        <ul className={showCategoryNav ? '' : 'hidden'}>
+          {filteredCategories.map((category) => (
+            <li
+              key={category.category}
+              className="border-[var(--digi--grayscale-100)] border-b first:border-t p-3"
+            >
+              <button
+                onClick={() => selectCategory(category.category)}
+                aria-controls={category.category}
+                className="flex justify-between w-full text-left"
+              >
+                <div>
+                  <div>{category.category}</div>
+                  <div className="mb-0">{getCategoryStatus(category.category)}</div>
+                </div>
+                <div>{expandedCategories.includes(category.category) ? '-' : '+'}</div>
+              </button>
+              <ul
+                id={category.category}
+                style={{
+                  display: expandedCategories.includes(category.category) ? 'block' : 'none',
+                }}
+              >
+                {category.requirements.map((req, i) => {
+                  const done =
+                    req.check?.status === Status.PASS || req.check?.status === Status.FAIL;
+                  const selected = selectedRequirement === req.id;
+                  return (
+                    <li key={req.id}>
+                      <button
+                        onClick={() => navigate(`/granskning/${reviewId}/${req.id}`)}
+                        className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] 
+                        bg-[${selected ? activeColor : 'white'}]`}
+                      >
+                        <div className="h-full flex items-center">
+                          <NumberOrChecked number={i + 1} checked={done} active={selected} />
+                        </div>
+                        <div
+                          className={`text-left group-hover:underline ${selected ? 'text-white' : ''}  `}
+                        >
+                          {req.name}
+                        </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </DigiTypography>
+    </nav>
   );
 }

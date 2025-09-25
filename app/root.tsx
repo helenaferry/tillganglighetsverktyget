@@ -23,13 +23,9 @@ import {
   DigiLogo,
   DigiHeaderNavigation,
   DigiHeaderNavigationItem,
+  DigiTypography,
 } from '@digi/arbetsformedlingen-react';
-import {
-  FooterVariation,
-  HeaderCenterContentWidth,
-  LogoColor,
-  LogoVariation,
-} from '@digi/arbetsformedlingen';
+import { LogoColor, LogoVariation } from '@digi/arbetsformedlingen';
 
 const queryClient = new QueryClient();
 
@@ -43,36 +39,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="grid">
         <ClientOnly>
-          <DigiHeader
-            afSystemName="Tillgänglighetsverktyget"
-            afCentered={HeaderCenterContentWidth.WIDTH_1400}
-          >
-            <Link slot="header-logo" aria-label="Tillgänglighetsverktygets startsida" to="/"></Link>
+          <DigiHeader afSystemName="Granska tillgänglighet">
+            <Link
+              slot="header-logo"
+              aria-label="Startsida för Granska tillgänglighet"
+              to="/"
+            ></Link>
             <div slot="header-navigation">
               <DigiHeaderNavigation
                 afCloseButtonText="Stäng"
                 afCloseButtonAriaLabel="Stäng meny"
                 afNavAriaLabel="Huvudmeny"
-                afCentered={HeaderCenterContentWidth.WIDTH_1400}
               >
                 <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/'}>
                   <Link to="/">Granskningar</Link>
                 </DigiHeaderNavigationItem>
-                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/add'}>
-                  <Link to="/add">Skapa ny granskning</Link>
-                </DigiHeaderNavigationItem>
-                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/requirements'}>
-                  <Link to="/requirements">Krav</Link>
+                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
+                  <Link to="/krav">Krav</Link>
                 </DigiHeaderNavigationItem>
               </DigiHeaderNavigation>
             </div>
           </DigiHeader>
           <QueryClientProvider client={queryClient}>
-            <div className="!bg-[var(--digi--grayscale-100)]">{children}</div>
+            <div className="bg-[var(--digi--grayscale-100)]">{children}</div>
           </QueryClientProvider>
-          <DigiFooter afVariation={FooterVariation.LARGE}>
+          <DigiFooter>
             <div slot="content-bottom-left">
               <Link to="https://www.arbetsformedlingen.se">
                 <DigiLogo
@@ -110,13 +103,15 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
+      <DigiTypography>
+        <h1>{message}</h1>
+        <p>{details}</p>
+        {stack && (
+          <pre className="w-full p-4 overflow-x-auto">
+            <code>{stack}</code>
+          </pre>
+        )}
+      </DigiTypography>
     </main>
   );
 }

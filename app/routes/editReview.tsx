@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { DigiLayoutContainer, DigiTypography } from '@digi/arbetsformedlingen-react';
+import { DigiTypography } from '@digi/arbetsformedlingen-react';
 import { ReviewForm } from '~/components/ReviewForm';
 
 export function meta() {
@@ -13,10 +13,8 @@ export default function EditReviewPage() {
   const { id } = useParams<{ id: string }>();
 
   return (
-    <DigiLayoutContainer afVerticalPadding>
-      <DigiTypography>
-        <ReviewForm reviewId={String(id)} />
-      </DigiTypography>
-    </DigiLayoutContainer>
+    <DigiTypography>
+      <ReviewForm reviewId={String(id)} />
+    </DigiTypography>
   );
 }

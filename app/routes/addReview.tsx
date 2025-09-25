@@ -1,8 +1,4 @@
-import {
-  DigiLayoutContainer,
-  DigiTypography,
-  DigiTypographyHeadingJumbo,
-} from '@digi/arbetsformedlingen-react';
+import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
 import { ReviewForm } from '~/components/ReviewForm';
 import {
   TypographyHeadingJumboLevel,
@@ -18,17 +14,15 @@ export function meta() {
 
 export default function AddReviewPage() {
   return (
-    <DigiLayoutContainer afVerticalPadding>
-      <DigiTypography>
-        <>
-          <DigiTypographyHeadingJumbo
-            afText="Skapa ny granskning"
-            afLevel={TypographyHeadingJumboLevel.H1}
-            afVariation={TypographyHeadingJumboVariation.PRIMARY}
-          ></DigiTypographyHeadingJumbo>
-          <ReviewForm />
-        </>
-      </DigiTypography>
-    </DigiLayoutContainer>
+    <DigiTypography>
+      <div className="content-container">
+        <DigiTypographyHeadingJumbo
+          afText="Skapa ny granskning"
+          afLevel={TypographyHeadingJumboLevel.H1}
+          afVariation={TypographyHeadingJumboVariation.PRIMARY}
+        ></DigiTypographyHeadingJumbo>
+        <ReviewForm />
+      </div>
+    </DigiTypography>
   );
 }

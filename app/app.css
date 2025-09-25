@@ -4,9 +4,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans:
-    'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+  --breakpoint-xs: 20rem;
 }
 
 html,
@@ -19,7 +17,15 @@ body {
 }
 
 .content-container {
-  @apply bg-white rounded-[var(--digi--border-radius--secondary)] p-6 my-6 max-w-full overflow-x-auto;
+  @apply p-6 w-full max-w-screen overflow-x-scroll;
+}
+
+.content-container--white {
+  @apply bg-white my-6;
+}
+
+.content-container--largest {
+  @apply w-full min-[87.5rem]:max-w-[87.5rem]; /* [var(--digi--container-width--largest)] */
 }
 
 .content-container ul {

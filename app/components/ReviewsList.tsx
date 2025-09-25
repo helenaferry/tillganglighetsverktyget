@@ -4,11 +4,16 @@ import {
   DigiButton,
   DigiIconTrash,
   DigiIconEdit,
+  DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
 import { StyledLink } from './StyledLink';
 import { useReviews, useDeleteReview } from '~/hooks/useReviewData';
 import { useRequirements } from '~/hooks/useRequirementData';
-import { LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
+import {
+  LoaderSkeletonVariation,
+  TypographyHeadingJumboLevel,
+  TypographyHeadingJumboVariation,
+} from '@digi/arbetsformedlingen';
 import { formatDate, formatDateAndTime } from '~/formattingHelper';
 import { useNavigate } from 'react-router';
 import { ObjectType } from '~/data/types';
@@ -37,7 +42,12 @@ export function ReviewsList() {
   const fetched = reviewsFetched && requirementsFetched && isFetchedDoc;
   const navigate = useNavigate();
   return (
-    <div>
+    <div className="content-container content-container--largest">
+      <DigiTypographyHeadingJumbo
+        afText="Granskningar"
+        afLevel={TypographyHeadingJumboLevel.H1}
+        afVariation={TypographyHeadingJumboVariation.PRIMARY}
+      ></DigiTypographyHeadingJumbo>
       {loading && (
         <DigiLoaderSkeleton
           afVariation={LoaderSkeletonVariation.SECTION}
@@ -47,7 +57,7 @@ export function ReviewsList() {
       {reviewsError && <p>Fel vid hämtning av granskningar</p>}
       {(fetched && !reviews) || (reviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
       {fetched && reviews && (
-        <div className="content-container">
+        <div className="content-container content-container--white">
           <DigiTable>
             <table>
               <thead>
@@ -67,7 +77,10 @@ export function ReviewsList() {
                 {reviews.map((review) => (
                   <tr key={review.id}>
                     <td>
-                      <StyledLink to={`/review/${review.id}`} text={review.title || 'Granskning'} />
+                      <StyledLink
+                        to={`/granskning/${review.id}`}
+                        text={review.title || 'Granskning'}
+                      />
                     </td>
                     <td>{review.application?.name}</td>
                     <td>{formatDate(review.created_at)}</td>
@@ -91,7 +104,7 @@ export function ReviewsList() {
                         afVariation="function"
                         afAriaLabel={'Redigera granskning ' + review.title}
                         onClick={() => {
-                          navigate(`/edit/${review.id}`);
+                          navigate(`/granskning/${review.id}/redigera`);
                         }}
                       >
                         <DigiIconEdit slot="icon" />
@@ -124,6 +137,7 @@ export function ReviewsList() {
           </DigiTable>
         </div>
       )}
+      <StyledLink to="/granskning/skapa" text="Skapa ny granskning" isButton={true} />
     </div>
   );
 }
