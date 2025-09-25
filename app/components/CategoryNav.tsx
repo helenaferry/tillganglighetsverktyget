@@ -74,9 +74,12 @@ export default function CategoryNav({
     const requirements = categories.find((cat) => cat.category === category)?.requirements;
     if (!requirements) return '';
     const checked = requirements.filter(
-      (req) => req.check?.status === Status.PASS || req.check?.status === Status.FAIL,
+      (req) =>
+        req.check?.status === Status.PASS ||
+        req.check?.status === Status.FAIL ||
+        req.check?.status === Status.IRRELEVANT,
     ).length;
-    const total = requirements.filter.length;
+
     return (
       <span
         className={`inline-block
@@ -85,7 +88,7 @@ export default function CategoryNav({
         py-[var(--digi--padding--smaller)] 
         px-[var(--digi--padding--small)]
         mt-2`}
-      >{`${checked}/${total}`}</span>
+      >{`${checked}/${requirements.length}`}</span>
     );
   };
 
@@ -136,7 +139,7 @@ export default function CategoryNav({
                           <NumberOrChecked number={i + 1} checked={done} active={selected} />
                         </div>
                         <div
-                          className={`text-left group-hover:underline ${selected ? 'text-white' : ''}  `}
+                          className={`text-left group-hover:underline ${selected ? 'text-white' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
                         >
                           {req.name}
                         </div>
