@@ -100,7 +100,7 @@ export default function Review({ reviewId, requirementId }: Props) {
     return checks.filter((check) => check.status === Status.IRRELEVANT).length;
   }, [checks]);
 
-  const relevantRequirementsWithChecks = useMemo(() => {
+  const requirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];
     return requirements.map((req) => {
       const check = checks?.find((check) => String(check.requirement) === String(req.id));
@@ -108,28 +108,71 @@ export default function Review({ reviewId, requirementId }: Props) {
     });
   }, [requirements, checks]);
 
-  const allRequirementsWithChecks = useMemo(() => {
-    if (!requirements || !checks) return [];
-    return requirements.map((req) => {
-      const check = checks?.find((check) => String(check.requirement) === String(req.id));
-      return { ...req, check };
-    });
-  }, [requirements, checks]);
-
-  const nextRequirementId = (currentId: string) => {
-    const currentIndex = relevantRequirementsWithChecks.findIndex(
-      (req: RequirementWithCheck) => String(req.id) === String(currentId),
+  const nextUnhandledRequirement = (currentId: string) => {
+    const currentRequirement = requirementsWithChecks.find((req) => String(req.id) === currentId);
+    if (!currentRequirement || !currentRequirement.category) return undefined;
+    const currentCategoryIndex = categoriesWithRequirements.findIndex(
+      (cat) => cat.category === currentRequirement.category,
     );
-    if (currentIndex === -1) return null;
-    return relevantRequirementsWithChecks[currentIndex + 1]?.id || null;
+    if (currentCategoryIndex < 0) return undefined;
+    const currentCategory = categoriesWithRequirements[currentCategoryIndex];
+    if (!currentCategory) return undefined;
+    const currentRequirementIndex = currentCategory.requirements.findIndex(
+      (req) => String(req.id) === currentId,
+    );
+    // First check current category for next unhandled
+    for (let i = currentRequirementIndex + 1; i < currentCategory.requirements.length; i++) {
+      if (
+        !currentCategory.requirements[i].check ||
+        currentCategory.requirements[i].check?.status === Status.NOT_ASSESSED
+      ) {
+        return currentCategory.requirements[i];
+      }
+    }
+    // Next, check following categories for next unhandled
+    if (currentCategoryIndex == categoriesWithRequirements.length - 1) return undefined;
+    for (let i = currentCategoryIndex + 1; i < categoriesWithRequirements.length; i++) {
+      const category = categoriesWithRequirements[i];
+      for (const req of category.requirements) {
+        if (!req.check || req.check?.status === Status.NOT_ASSESSED) {
+          return req;
+        }
+      }
+    }
   };
 
-  const previousRequirementId = (currentId: string) => {
-    const currentIndex = relevantRequirementsWithChecks.findIndex(
-      (req: RequirementWithCheck) => String(req.id) === String(currentId),
+  const previousUnhandledRequirement = (currentId: string) => {
+    const currentRequirement = requirementsWithChecks.find((req) => String(req.id) === currentId);
+    if (!currentRequirement || !currentRequirement.category) return undefined;
+    const currentCategoryIndex = categoriesWithRequirements.findIndex(
+      (cat) => cat.category === currentRequirement.category,
     );
-    if (currentIndex === -1) return null;
-    return relevantRequirementsWithChecks[currentIndex - 1]?.id || null;
+    if (currentCategoryIndex < 0) return undefined;
+    const currentCategory = categoriesWithRequirements[currentCategoryIndex];
+    if (!currentCategory) return undefined;
+    const currentRequirementIndex = currentCategory.requirements.findIndex(
+      (req) => String(req.id) === currentId,
+    );
+    // First check current category for previous unhandled
+    for (let i = currentRequirementIndex - 1; i >= 0; i--) {
+      if (
+        !currentCategory.requirements[i].check ||
+        currentCategory.requirements[i].check?.status === Status.NOT_ASSESSED
+      ) {
+        return currentCategory.requirements[i];
+      }
+    }
+    if (currentCategoryIndex < 1) return undefined;
+    // Next, check previous categories for previous unhandled
+    for (let i = currentCategoryIndex - 1; i >= 0; i--) {
+      const category = categoriesWithRequirements[i];
+      for (let j = category.requirements.length - 1; j >= 0; j--) {
+        const req = category.requirements[j];
+        if (!req.check || req.check?.status === Status.NOT_ASSESSED) {
+          return req;
+        }
+      }
+    }
   };
 
   const scrollPosRef = useRef<number>(0);
@@ -250,8 +293,8 @@ export default function Review({ reviewId, requirementId }: Props) {
                       key={requirement.id}
                       requirement={requirement}
                       reviewId={reviewId}
-                      nextRequirementId={nextRequirementId(requirementId)}
-                      previousRequirementId={previousRequirementId(requirementId)}
+                      nextUnhandled={nextUnhandledRequirement(requirementId)}
+                      previousUnhandled={previousUnhandledRequirement(requirementId)}
                     />
                   )}
                   <StyledLink
@@ -278,7 +321,7 @@ export default function Review({ reviewId, requirementId }: Props) {
         <div className="content-container content-container--largest">
           <div className="content-container content-container--white content-container--largest">
             <ReviewRequirements
-              requirements={allRequirementsWithChecks}
+              requirements={requirementsWithChecks}
               review={review}
               categories={categories}
             />

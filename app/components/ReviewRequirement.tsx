@@ -11,15 +11,15 @@ import { StyledLink } from './StyledLink';
 type Props = {
   requirement: Requirement;
   reviewId: string;
-  nextRequirementId: string | null;
-  previousRequirementId: string | null;
+  nextUnhandled: Requirement | undefined;
+  previousUnhandled: Requirement | undefined;
 };
 
 export default function ReviewRequirement({
   requirement,
   reviewId,
-  nextRequirementId,
-  previousRequirementId,
+  nextUnhandled,
+  previousUnhandled,
 }: Props) {
   const { check, isLoading: isCheckLoading } = useCheck(String(reviewId), String(requirement.id));
 
@@ -37,27 +37,6 @@ export default function ReviewRequirement({
   return (
     <div className="content-container content-container--white content-container--largest">
       <DigiTypography>
-        {/* TODO Fix links */}
-        <div className="hidden flex flex-col md:flex:row justify-between mb-2">
-          <div>
-            {previousRequirementId && (
-              <StyledLink
-                to={`/granskning/${reviewId}/${previousRequirementId}`}
-                text="Föregående krav"
-                onClick={handleRequirementNav}
-              />
-            )}
-          </div>
-          <div>
-            {nextRequirementId && (
-              <StyledLink
-                to={`/granskning/${reviewId}/${nextRequirementId}`}
-                text="Nästa krav"
-                onClick={handleRequirementNav}
-              />
-            )}
-          </div>
-        </div>
         <div>
           <div className="border-b-1 md:flex gap-4 justify-between">
             <div className="flex flex-col md:flex-row gap-4">
@@ -91,6 +70,26 @@ export default function ReviewRequirement({
             <div className="flex-1">
               <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
             </div>
+          </div>
+        </div>
+        <div className="flex flex-col md:flex:row justify-between mb-2">
+          <div>
+            {previousUnhandled && (
+              <StyledLink
+                to={`/granskning/${reviewId}/${previousUnhandled.id}`}
+                text={`Föregående ogranskade krav: ${previousUnhandled.name}`}
+                onClick={handleRequirementNav}
+              />
+            )}
+          </div>
+          <div>
+            {nextUnhandled && (
+              <StyledLink
+                to={`/granskning/${reviewId}/${nextUnhandled.id}`}
+                text={`Nästa ogranskade krav: ${nextUnhandled.name}`}
+                onClick={handleRequirementNav}
+              />
+            )}
           </div>
         </div>
       </DigiTypography>

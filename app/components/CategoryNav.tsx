@@ -1,6 +1,6 @@
 import { Status, type Category } from '~/data/types';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
 
 type Props = {
@@ -56,6 +56,12 @@ export default function CategoryNav({
 }: Props) {
   const navigate = useNavigate();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([selectedCategory]);
+
+  useEffect(() => {
+    if (selectedCategory && !expandedCategories.includes(selectedCategory)) {
+      setExpandedCategories([selectedCategory]);
+    }
+  }, [selectedCategory]);
 
   const selectCategory = (category: string) => {
     setExpandedCategories((prev) =>
