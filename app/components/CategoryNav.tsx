@@ -126,7 +126,9 @@ export default function CategoryNav({
               >
                 {category.requirements.map((req, i) => {
                   const done =
-                    req.check?.status === Status.PASS || req.check?.status === Status.FAIL;
+                    req.check?.status === Status.PASS ||
+                    req.check?.status === Status.FAIL ||
+                    req.check?.status === Status.IRRELEVANT;
                   const selected = selectedRequirement === req.id;
                   return (
                     <li key={req.id}>
