@@ -72,7 +72,6 @@ export default function Review({ reviewId, requirementId }: Props) {
     requirementsDocLoading ||
     categoriesDocLoading;
 
-  const [hideIrrelevant, setHideIrrelevant] = useState(true);
   const [showCategoryNav, setShowCategoryNav] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,
   );
@@ -103,16 +102,11 @@ export default function Review({ reviewId, requirementId }: Props) {
 
   const relevantRequirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];
-    return requirements
-      .map((req) => {
-        const check = checks?.find((check) => String(check.requirement) === String(req.id));
-        return { ...req, check };
-      })
-      .filter((req: RequirementWithCheck) => {
-        if (!hideIrrelevant) return true;
-        return !req.check || req.check.status !== Status.IRRELEVANT;
-      });
-  }, [requirements, checks, hideIrrelevant]);
+    return requirements.map((req) => {
+      const check = checks?.find((check) => String(check.requirement) === String(req.id));
+      return { ...req, check };
+    });
+  }, [requirements, checks]);
 
   const allRequirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];
@@ -193,21 +187,13 @@ export default function Review({ reviewId, requirementId }: Props) {
                 <div className="flex flex-col md:flex-row gap-4 my-4">
                   <StyledLink
                     to={`/granskning/${review.id}/export/redogorelse`}
-                    text="Skapa tillgänglighetsredogörelse"
+                    text="Sammanställ brister"
                     isButton={true}
                   />
                   <StyledLink
                     to={`/granskning/${review.id}/export/uppgifter`}
                     text="Exportera uppgifter (.csv)"
                     isButton={true}
-                  />
-                  <DigiFormCheckbox
-                    afLabel="Dölj irrelevanta krav"
-                    afChecked={hideIrrelevant}
-                    onAfOnChange={(e) => {
-                      setHideIrrelevant(e.detail.target.checked);
-                    }}
-                    afVariation={FormCheckboxVariation.PRIMARY}
                   />
                 </div>
               </div>
@@ -249,7 +235,6 @@ export default function Review({ reviewId, requirementId }: Props) {
                   categories={categoriesWithRequirements}
                   selectedCategory={requirement.category}
                   selectedRequirement={requirementId}
-                  hideIrrelevant={hideIrrelevant}
                   showCategoryNav={showCategoryNav}
                   onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
                   onSelectCategory={() => {

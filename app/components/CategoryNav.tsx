@@ -1,6 +1,6 @@
 import { Status, type Category } from '~/data/types';
 import { useNavigate } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
 
 type Props = {
@@ -8,7 +8,6 @@ type Props = {
   categories: Category[];
   selectedCategory: string;
   selectedRequirement: string;
-  hideIrrelevant: boolean;
   showCategoryNav: boolean;
   onToggleNav: () => void;
   onSelectCategory?: () => void;
@@ -51,7 +50,6 @@ export default function CategoryNav({
   categories,
   selectedCategory,
   selectedRequirement,
-  hideIrrelevant,
   showCategoryNav,
   onToggleNav,
   onSelectCategory,
@@ -63,15 +61,11 @@ export default function CategoryNav({
     setExpandedCategories((prev) =>
       prev.includes(category) ? prev.filter((cat) => cat !== category) : [...prev, category],
     );
-    const firstInCategory = categories.find((cat) => cat.category === category);
-    if (firstInCategory) {
-      const firstRequirement = firstInCategory.requirements.filter((req) => {
-        if (hideIrrelevant && req.check?.status === Status.IRRELEVANT) return false;
-        return true;
-      })[0];
+    const activeCategory = categories.find((cat) => cat.category === category);
+    if (activeCategory) {
+      const firstRequirement = activeCategory.requirements[0];
       if (firstRequirement) {
         navigate(`/granskning/${reviewId}/${firstRequirement.id}`);
-        // I stället ladda in bara?
       }
     }
     onSelectCategory?.();
@@ -82,9 +76,7 @@ export default function CategoryNav({
     const checked = requirements.filter(
       (req) => req.check?.status === Status.PASS || req.check?.status === Status.FAIL,
     ).length;
-    const total = requirements.filter((req) =>
-      hideIrrelevant ? req.check?.status !== Status.IRRELEVANT : true,
-    ).length;
+    const total = requirements.filter.length;
     return (
       <span
         className={`inline-block
@@ -97,17 +89,6 @@ export default function CategoryNav({
     );
   };
 
-  const filteredCategories = useMemo(() => {
-    return categories
-      .map((category) => ({
-        ...category,
-        requirements: category.requirements.filter(
-          (req) => !(hideIrrelevant && req.check?.status === Status.IRRELEVANT),
-        ),
-      }))
-      .filter((category) => category.requirements.length > 0);
-  }, [categories, hideIrrelevant]);
-
   return (
     <nav
       className={`h-screen max-h-screen pb-[100vh] overflow-y-scroll bg-white ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem] float-left'} `}
@@ -118,7 +99,7 @@ export default function CategoryNav({
           <button onClick={onToggleNav}>{showCategoryNav ? 'Fäll in' : 'Fäll ut'}</button>
         </div>
         <ul className={showCategoryNav ? '' : 'hidden'}>
-          {filteredCategories.map((category) => (
+          {categories.map((category) => (
             <li
               key={category.category}
               className="border-[var(--digi--grayscale-100)] border-b first:border-t p-3"

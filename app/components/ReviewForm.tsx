@@ -245,13 +245,11 @@ export function ReviewForm({ reviewId }: Props) {
           </p>
           {objectType === ObjectType.WEB && (
             <div>
-              <h2>Exkludera irrelevanta krav</h2>
+              <h2>Förifyll irrelevanta krav</h2>
               <p>
                 Den totala mängden krav är stor och för att minska arbetsbelastningen är det viktigt
-                att exkludera irrelevanta krav. Bocka för innehållstyper som saknas i
-                granskningsobjektet, så markeras relaterade krav automatiskt som irrelevanta. De
-                döljs då i granskningen, men du kan välja att visa dem för att kontrollera att de
-                verkligen är irrelevanta och återta dem till granskningen om du vill.
+                att förifylla irrelevanta krav. Bocka för innehållstyper som saknas i
+                granskningsobjektet, så markeras relaterade krav automatiskt som irrelevanta.
               </p>
               <DigiFormFieldset
                 afForm="review-form"

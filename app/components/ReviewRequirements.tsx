@@ -17,11 +17,7 @@ type Props = {
 
 export default function ReviewRequirements({ review, requirements, categories }: Props) {
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
-  const [filterStatus, setFilterStatus] = useState<Status[]>([
-    Status.PASS,
-    Status.FAIL,
-    Status.NOT_ASSESSED,
-  ]);
+  const [filterStatus, setFilterStatus] = useState<Status[]>([]);
   const [filterFreeText, setFilterFreeText] = useState<string>('');
   const filteredRequirements = requirements?.filter((req) => {
     const filters = [

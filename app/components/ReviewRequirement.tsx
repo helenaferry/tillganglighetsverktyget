@@ -37,7 +37,8 @@ export default function ReviewRequirement({
   return (
     <div className="content-container content-container--white content-container--largest">
       <DigiTypography>
-        <div className="flex flex-col md:flex:row justify-between mb-2">
+        {/* TODO Fix links */}
+        <div className="hidden flex flex-col md:flex:row justify-between mb-2">
           <div>
             {previousRequirementId && (
               <StyledLink
