@@ -74,17 +74,17 @@ export default function ReviewRequirements({ review, requirements, categories }:
                 sortAlphabetically={false}
                 afListItems={[
                   {
-                    label: 'Godkänd',
+                    label: 'Godkänt',
                     value: Status.PASS.toString(),
                     selected: filterStatus.includes(Status.PASS),
                   },
                   {
-                    label: 'Underkänd',
+                    label: 'Underkänt',
                     value: Status.FAIL.toString(),
                     selected: filterStatus.includes(Status.FAIL),
                   },
                   {
-                    label: 'Ej bedömd',
+                    label: 'Ej bedömt',
                     value: Status.NOT_ASSESSED.toString(),
                     selected: filterStatus.includes(Status.NOT_ASSESSED),
                   },

@@ -48,22 +48,22 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
       >
         <DigiFormRadiobutton
           value={Status.NOT_ASSESSED.toString()}
-          afLabel="Kravet är ej bedömt"
+          afLabel="Ej granskat"
           afChecked={!check}
         />
         <DigiFormRadiobutton
           value={Status.PASS.toString()}
-          afLabel="Kravet uppfylls"
+          afLabel="Godkänt"
           afChecked={check?.status === Status.PASS}
         />
         <DigiFormRadiobutton
           value={Status.FAIL.toString()}
-          afLabel="Kravet uppfylls inte"
+          afLabel="Underkänt"
           afChecked={check?.status === Status.FAIL}
         />
         <DigiFormRadiobutton
           value={Status.IRRELEVANT.toString()}
-          afLabel="Kravet är ej relevant"
+          afLabel="Irrelevant"
           afChecked={check?.status === Status.IRRELEVANT}
         />
       </DigiFormRadiogroup>

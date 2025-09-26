@@ -10,13 +10,13 @@ type Props = {
 const getStatusText = (status: Status) => {
   switch (status) {
     case Status.FAIL:
-      return 'Underkänd';
+      return 'Underkänt';
     case Status.IRRELEVANT:
       return 'Irrelevant';
     case Status.PASS:
-      return 'Godkänd';
+      return 'Godkänt';
     case Status.NOT_ASSESSED:
-      return 'Ej bedömd';
+      return 'Ej granskat';
     default:
       return '';
   }
