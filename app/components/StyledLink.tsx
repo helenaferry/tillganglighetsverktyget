@@ -20,9 +20,9 @@ export function StyledLink({ to, text, isButton, onClick, ...props }: Props) {
     navigate(to);
   };
 
-  const handleButtonClick = (event: DigiLinkButtonCustomEvent<MouseEvent>) => {
-    event.preventDefault();
-    onClick?.(event);
+  const handleButtonClick = (e: DigiLinkButtonCustomEvent<MouseEvent>) => {
+    e.preventDefault();
+    onClick?.(e);
     navigate(to);
   };
 
@@ -33,7 +33,7 @@ export function StyledLink({ to, text, isButton, onClick, ...props }: Props) {
           {text}
         </DigiLinkButton>
       ) : (
-        <DigiLink {...props} afOverrideLink={true} onAfOnClick={handleLinkClick}>
+        <DigiLink afHref={to} afOverrideLink={true} onAfOnClick={handleLinkClick}>
           {text}
         </DigiLink>
       )}

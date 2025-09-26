@@ -2,12 +2,10 @@ import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
 import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
 import {
   DigiLoaderSkeleton,
-  DigiFormCheckbox,
   DigiTypographyHeadingJumbo,
   DigiTypography,
 } from '@digi/arbetsformedlingen-react';
 import {
-  FormCheckboxVariation,
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,

@@ -1,7 +1,8 @@
 import { Status, type Category } from '~/data/types';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
+import { DigiIconCheck, DigiLink, DigiTypography } from '@digi/arbetsformedlingen-react';
+import { StyledLink } from './StyledLink';
 
 type Props = {
   reviewId: string;
@@ -138,20 +139,24 @@ export default function CategoryNav({
                   const selected = selectedRequirement === req.id;
                   return (
                     <li key={req.id}>
-                      <button
-                        onClick={() => navigate(`/granskning/${reviewId}/${req.id}`)}
-                        className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] 
+                      <a
+                        href={`/granskning/${reviewId}/${req.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          navigate(`/granskning/${reviewId}/${req.id}`);
+                        }}
+                        className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline
                         bg-[${selected ? activeColor : 'white'}]`}
                       >
                         <div className="h-full flex items-center">
                           <NumberOrChecked number={i + 1} checked={done} active={selected} />
                         </div>
                         <div
-                          className={`text-left group-hover:underline ${selected ? 'text-white' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
+                          className={`text-left no-underline group-hover:underline ${selected ? 'text-white' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
                         >
                           {req.name}
                         </div>
-                      </button>
+                      </a>
                     </li>
                   );
                 })}
