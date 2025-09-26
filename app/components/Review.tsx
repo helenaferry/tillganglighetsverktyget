@@ -39,19 +39,12 @@ export default function Review({ reviewId, requirementId }: Props) {
   const { data: requirementsDoc, isLoading: requirementsDocLoading } = useRequirements(
     ObjectType.DOCUMENT,
   );
-  /* TEMP hårdkoda in en kategori för dokumentkrav eftersom datat saknas i nuläget
   const { data: categoriesDoc, isLoading: categoriesDocLoading } = useRequirementCategories(
     ObjectType.DOCUMENT,
-  );*/
-  const categoriesDoc = ['Dokumentkrav'];
-  const categoriesDocLoading = false;
+  );
 
   const requirements = useMemo(() => {
     if (review?.objectType === ObjectType.DOCUMENT) {
-      requirementsDoc?.map((req) => {
-        req.category = 'Dokumentkrav';
-        return req;
-      });
       return requirementsDoc;
     }
     return requirementsWeb;

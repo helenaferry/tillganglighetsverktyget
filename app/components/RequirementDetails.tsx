@@ -33,12 +33,12 @@ export default function RequirementDetails({ requirement }: Props) {
           </ReactMarkdown>
         </div>
       )}
-      {requirement.howToTestContent && (
+      {requirement.howToTest && (
         <DigiExpandableAccordion
           afHeading="Hur du kan testa"
           afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
         >
-          <ReactMarkdown>{requirement.howToTestContent}</ReactMarkdown>
+          <ReactMarkdown>{requirement.howToTest}</ReactMarkdown>
         </DigiExpandableAccordion>
       )}
     </div>

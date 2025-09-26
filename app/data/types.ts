@@ -27,8 +27,7 @@ export type Requirement = {
   objectType: ObjectType;
   statement: string;
   why: string;
-  howToTestTitle: string;
-  howToTestContent: string;
+  howToTest: string;
 };
 
 export enum Status {

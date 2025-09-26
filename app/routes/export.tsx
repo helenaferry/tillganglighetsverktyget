@@ -35,7 +35,10 @@ export default function ExportReviewPage() {
     ObjectType.DOCUMENT,
   );
   const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
-    review?.objectType as ObjectType,
+    ObjectType.WEB,
+  );
+  const { data: categoriesDoc, isLoading: categoriesDocLoading } = useRequirementCategories(
+    ObjectType.DOCUMENT,
   );
   const requirements = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string)
@@ -43,16 +46,15 @@ export default function ExportReviewPage() {
       : requirementsWeb;
   }, [review]);
   const categories = useMemo(() => {
-    return review?.objectType === (ObjectType.DOCUMENT as string)
-      ? ['Dokumentkrav']
-      : categoriesWeb;
+    return review?.objectType === (ObjectType.DOCUMENT as string) ? categoriesDoc : categoriesWeb;
   }, [review]);
   const loading =
     reviewLoading ||
     checksLoading ||
     requirementsWebLoading ||
     requirementsDocLoading ||
-    categoriesWebLoading;
+    categoriesWebLoading ||
+    categoriesDocLoading;
   return (
     <DigiTypography>
       <div>
