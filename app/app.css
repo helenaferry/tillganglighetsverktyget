@@ -17,7 +17,7 @@ body {
 }
 
 .content-container {
-  @apply p-6 w-full max-w-screen overflow-x-scroll;
+  @apply p-6 w-full max-w-screen overflow-x-auto;
 }
 
 .content-container--white {
