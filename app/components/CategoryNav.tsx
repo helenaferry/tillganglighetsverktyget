@@ -99,9 +99,9 @@ export default function CategoryNav({
   };
 
   return (
-    <nav
-      className={`h-screen max-h-screen pb-[100vh] overflow-y-auto bg-white ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem] float-left'} `}
-    >
+    <nav>
+      {/*className={`h-screen max-h-screen pb-[100vh] overflow-y-auto bg-white ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem] float-left'} `}*/}
+
       <DigiTypography>
         <div className="flex justify-between">
           {showCategoryNav && <h3>Kravkategorier</h3>}

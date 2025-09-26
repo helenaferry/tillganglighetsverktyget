@@ -265,35 +265,38 @@ export default function Review({ reviewId, requirementId }: Props) {
         (() => {
           if (requirement && reviewId) {
             return (
-              <div className={`${showCategoryNav ? 'sm:flex sm:gap-5' : ''}`}>
-                <CategoryNav
-                  reviewId={reviewId}
-                  categories={categoriesWithRequirements}
-                  selectedCategory={requirement.category}
-                  selectedRequirement={requirementId}
-                  showCategoryNav={showCategoryNav}
-                  onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
-                  onSelectCategory={() => {
-                    scrollPosRef.current = window.scrollY;
-                  }}
-                />
+              <div className="relative">
                 <div
-                  className="content-container content-container--largest"
-                  style={{ width: !showCategoryNav ? 'calc(100% - 4rem)' : '100%' }}
+                  className={`absolute inset-y-0 left-0 ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem]'} overflow-y-auto bg-white`}
                 >
-                  {review && (
-                    <ReviewRequirement
-                      key={requirement.id}
-                      requirement={requirement}
-                      reviewId={reviewId}
-                      nextUnhandled={nextUnhandledRequirement(requirementId)}
-                      previousUnhandled={previousUnhandledRequirement(requirementId)}
-                    />
-                  )}
-                  <StyledLink
-                    to={`/granskning/${reviewId}`}
-                    text="Tillbaka till granskningsöversikten"
+                  <CategoryNav
+                    reviewId={reviewId}
+                    categories={categoriesWithRequirements}
+                    selectedCategory={requirement.category}
+                    selectedRequirement={requirementId}
+                    showCategoryNav={showCategoryNav}
+                    onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+                    onSelectCategory={() => {
+                      scrollPosRef.current = window.scrollY;
+                    }}
                   />
+                </div>
+                <div className={`${showCategoryNav ? 'ml-[25rem]' : 'ml-[4rem]'}`}>
+                  <div className="content-container content-container--largest">
+                    {review && (
+                      <ReviewRequirement
+                        key={requirement.id}
+                        requirement={requirement}
+                        reviewId={reviewId}
+                        nextUnhandled={nextUnhandledRequirement(requirementId)}
+                        previousUnhandled={previousUnhandledRequirement(requirementId)}
+                      />
+                    )}
+                    <StyledLink
+                      to={`/granskning/${reviewId}`}
+                      text="Tillbaka till granskningsöversikten"
+                    />
+                  </div>
                 </div>
               </div>
             );
