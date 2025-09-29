@@ -1,4 +1,4 @@
-import { DigiTypography, DigiIconCheck } from '@digi/arbetsformedlingen-react';
+import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
