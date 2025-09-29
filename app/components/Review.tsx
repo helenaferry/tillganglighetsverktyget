@@ -13,7 +13,7 @@ import {
 import { StyledLink } from '~/components/StyledLink';
 import ReviewRequirement from '~/components/ReviewRequirement';
 import { formatDateLong, formatPercentage } from '~/formattingHelper';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CategoryNav from '~/components/CategoryNav';
 import { Status, type RequirementWithCheck, ObjectType } from '~/data/types';
 import ReviewRequirements from '~/components/ReviewRequirements';
@@ -166,7 +166,6 @@ export default function Review({ reviewId, requirementId }: Props) {
     }
   };
 
-  const scrollPosRef = useRef<number>(0);
   const [requirement, setRequirement] = useState<RequirementWithCheck | null>(null);
 
   useEffect(() => {
@@ -274,9 +273,6 @@ export default function Review({ reviewId, requirementId }: Props) {
                     selectedRequirement={requirementId}
                     showCategoryNav={showCategoryNav}
                     onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
-                    onSelectCategory={() => {
-                      scrollPosRef.current = window.scrollY;
-                    }}
                   />
                 </div>
                 <div className={`${showCategoryNav ? 'ml-[25rem]' : 'ml-[4rem]'}`}>

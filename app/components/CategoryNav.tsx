@@ -10,7 +10,6 @@ type Props = {
   selectedRequirement: string;
   showCategoryNav: boolean;
   onToggleNav: () => void;
-  onSelectCategory?: () => void;
 };
 const activeColor = 'var(--digi--stratos-500)';
 const tagBgColor = 'var(--digi--grayscale-200)';
@@ -52,7 +51,6 @@ export default function CategoryNav({
   selectedRequirement,
   showCategoryNav,
   onToggleNav,
-  onSelectCategory,
 }: Props) {
   const navigate = useNavigate();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([selectedCategory]);
@@ -67,14 +65,6 @@ export default function CategoryNav({
     setExpandedCategories((prev) =>
       prev.includes(category) ? prev.filter((cat) => cat !== category) : [...prev, category],
     );
-    const activeCategory = categories.find((cat) => cat.category === category);
-    if (activeCategory) {
-      const firstRequirement = activeCategory.requirements[0];
-      if (firstRequirement) {
-        navigate(`/granskning/${reviewId}/${firstRequirement.id}`);
-      }
-    }
-    onSelectCategory?.();
   };
   const getCategoryStatus = (category: string) => {
     const requirements = categories.find((cat) => cat.category === category)?.requirements;
