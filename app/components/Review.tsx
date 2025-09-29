@@ -266,7 +266,7 @@ export default function Review({ reviewId, requirementId }: Props) {
             return (
               <div className="relative">
                 <div
-                  className={`absolute inset-y-0 left-0 ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem]'} overflow-y-auto bg-white`}
+                  className={`absolute inset-y-0 left-0 ${showCategoryNav ? 'w-screen sm:w-[17rem]' : 'w-[4rem]'} overflow-y-auto bg-white`}
                 >
                   <CategoryNav
                     reviewId={reviewId}
@@ -277,7 +277,7 @@ export default function Review({ reviewId, requirementId }: Props) {
                     onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
                   />
                 </div>
-                <div className={`${showCategoryNav ? 'ml-[25rem]' : 'ml-[4rem]'}`}>
+                <div className={`${showCategoryNav ? 'ml-[17rem]' : 'ml-[4rem]'}`}>
                   <div className="content-container content-container--largest">
                     {review && (
                       <ReviewRequirement

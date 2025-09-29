@@ -1,4 +1,9 @@
-import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
+import {
+  DigiIconCheck,
+  DigiIconMinus,
+  DigiIconPlus,
+  DigiTypography,
+} from '@digi/arbetsformedlingen-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,34 +17,26 @@ type Props = {
   showCategoryNav: boolean;
   onToggleNav: () => void;
 };
-const activeColor = 'var(--digi--stratos-500)';
-const tagBgColor = 'var(--digi--grayscale-200)';
-const NumberOrChecked = ({
-  number,
-  checked,
-  active,
-}: {
-  number: number;
-  checked: boolean;
-  active: boolean;
-}) => {
-  const bgColor = active ? 'white' : checked ? activeColor : tagBgColor;
+const StatusIndicator = ({ checked, active }: { checked: boolean; active: boolean }) => {
   return (
     <div
-      className={`flex items-center justify-center text-center w-[2rem] h-[2rem] rounded-full`}
-      style={{ backgroundColor: bgColor }}
+      className={`flex items-center justify-center text-center w-[1.5rem] h-[1.5rem] p-[0.2rem] rounded-full border border-2 border-dashed
+        ${!active && !checked ? 'border-grayscale-700' : ''}
+        ${active && checked ? 'bg-white border-transparent' : ''}
+        ${!active && checked ? 'bg-stratos-500 border-transparent' : ''}
+        ${active && !checked ? 'bg-stratos-500 border-white' : ''}
+        `}
     >
       {checked ? (
         <DigiIconCheck
           style={
             {
-              '--digi--icon--color': active ? activeColor : '#fff',
-              '--digi--icon--width': '0.875rem',
+              '--digi--icon--color': active ? '--digi--stratos-500' : 'white',
             } as React.CSSProperties
           }
         />
       ) : (
-        <span>{number}</span>
+        <span></span>
       )}
     </div>
   );
@@ -76,14 +73,14 @@ export default function CategoryNav({
         req.check?.status === Status.FAIL ||
         req.check?.status === Status.IRRELEVANT,
     ).length;
-
+    const done = checked === requirements.length;
     return (
       <span
-        className={`inline-block
-        ${tagBgColor}
+        className={`inline-block border border-2 border-dashed
+        ${done ? 'bg-stratos-500 text-white border-transparent' : 'bg-white border-grayscale-700'}
         rounded-[var(--digi--border-radius--complementary-2)] 
-        py-[var(--digi--padding--smaller)] 
-        px-[var(--digi--padding--small)]
+        py-[0.1875rem] 
+        px-[0.6875rem]
         mt-2`}
       >{`${checked}/${requirements.length}`}</span>
     );
@@ -91,8 +88,6 @@ export default function CategoryNav({
 
   return (
     <nav>
-      {/*className={`h-screen max-h-screen pb-[100vh] overflow-y-auto bg-white ${showCategoryNav ? 'w-screen sm:w-[25rem]' : 'w-[4rem] float-left'} `}*/}
-
       <DigiTypography>
         <div className="flex justify-between">
           {showCategoryNav && <h3>Kravkategorier</h3>}
@@ -113,7 +108,17 @@ export default function CategoryNav({
                   <div>{category.category}</div>
                   <div className="mb-0">{getCategoryStatus(category.category)}</div>
                 </div>
-                <div>{expandedCategories.includes(category.category) ? '-' : '+'}</div>
+                <div>
+                  {expandedCategories.includes(category.category) ? (
+                    <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-leaf-200 p-[0.2rem] rounded-full">
+                      <DigiIconMinus />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-grayscale-200 p-[0.2rem] rounded-full">
+                      <DigiIconPlus />
+                    </div>
+                  )}
+                </div>
               </button>
               <ul
                 id={category.category}
@@ -121,7 +126,7 @@ export default function CategoryNav({
                   display: expandedCategories.includes(category.category) ? 'block' : 'none',
                 }}
               >
-                {category.requirements.map((req, i) => {
+                {category.requirements.map((req) => {
                   const done =
                     req.check?.status === Status.PASS ||
                     req.check?.status === Status.FAIL ||
@@ -135,14 +140,14 @@ export default function CategoryNav({
                           e.preventDefault();
                           navigate(`/granskning/${reviewId}/${req.id}`);
                         }}
-                        className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline
-                        bg-[${selected ? activeColor : 'white'}]`}
+                        className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
+                        bg-${selected ? 'stratos-500' : 'white'}`}
                       >
                         <div className="h-full flex items-center">
-                          <NumberOrChecked number={i + 1} checked={done} active={selected} />
+                          <StatusIndicator checked={done} active={selected} />
                         </div>
                         <div
-                          className={`text-left no-underline group-hover:underline ${selected ? 'text-white' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
+                          className={`text-left no-underline group-hover:underline ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
                         >
                           {req.name}
                         </div>
