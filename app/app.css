@@ -5,19 +5,14 @@
 
 @theme {
   --color-text: var(--digi--typography--color--text);
+
   --color-stratos-500: var(--digi--stratos-500);
+
   --color-leaf-200: var(--digi--leaf-200);
+
+  --color-grayscale-100: var(--digi--grayscale-100);
   --color-grayscale-200: var(--digi--grayscale-200);
   --color-grayscale-700: var(--digi--grayscale-700);
-}
-
-html,
-body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
 }
 
 .content-container {
