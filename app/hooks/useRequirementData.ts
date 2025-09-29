@@ -1,6 +1,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
-import type { Requirement, ObjectType } from '~/data/types';
+
 import { RequirementService } from '~/data/requirementService';
+import type { ObjectType, Requirement } from '~/data/types';
 
 // All requirements
 export function useRequirements(objectType: ObjectType): UseQueryResult<Requirement[], Error> {

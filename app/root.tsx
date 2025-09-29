@@ -3,6 +3,17 @@ import type { LinksFunction } from 'react-router';
 export const links: LinksFunction = () => [
   { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
 ];
+import './app.css';
+
+import { LogoColor, LogoVariation } from '@digi/arbetsformedlingen';
+import {
+  DigiFooter,
+  DigiHeader,
+  DigiHeaderNavigation,
+  DigiHeaderNavigationItem,
+  DigiLogo,
+  DigiTypography,
+} from '@digi/arbetsformedlingen-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   isRouteErrorResponse,
@@ -14,18 +25,9 @@ import {
   ScrollRestoration,
 } from 'react-router';
 import { useLocation } from 'react-router-dom';
+
 import type { Route } from './+types/root';
-import './app.css';
 import { ClientOnly } from './clientOnly';
-import {
-  DigiHeader,
-  DigiFooter,
-  DigiLogo,
-  DigiHeaderNavigation,
-  DigiHeaderNavigationItem,
-  DigiTypography,
-} from '@digi/arbetsformedlingen-react';
-import { LogoColor, LogoVariation } from '@digi/arbetsformedlingen';
 
 const queryClient = new QueryClient();
 

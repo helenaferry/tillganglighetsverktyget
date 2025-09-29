@@ -1,5 +1,6 @@
-import { useParams } from 'react-router-dom';
 import { DigiTypography } from '@digi/arbetsformedlingen-react';
+import { useParams } from 'react-router-dom';
+
 import { ReviewForm } from '~/components/ReviewForm';
 
 export function meta() {

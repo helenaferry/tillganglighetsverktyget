@@ -1,7 +1,8 @@
 import { NotificationAlertSize, NotificationAlertVariation } from '@digi/arbetsformedlingen';
 import { DigiFormCheckbox, DigiNotificationAlert } from '@digi/arbetsformedlingen-react';
 import { useState } from 'react';
-import { Status, type Check, type Requirement, type ReviewWithApplication } from '~/data/types';
+
+import { type Check, type Requirement, type ReviewWithApplication, Status } from '~/data/types';
 
 type Props = {
   review: ReviewWithApplication;

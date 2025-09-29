@@ -1,12 +1,13 @@
 import { FormTextareaVariation } from '@digi/arbetsformedlingen';
 import {
-  DigiFormRadiogroup,
   DigiFormRadiobutton,
+  DigiFormRadiogroup,
   DigiFormTextarea,
 } from '@digi/arbetsformedlingen-react';
+import { useEffect, useState } from 'react';
+
 import { Status, type UpsertCheckInput } from '~/data/types';
-import { useState, useEffect } from 'react';
-import { useUpsertCheck, useDeleteCheck, useCheck } from '~/hooks/useReviewData';
+import { useCheck, useDeleteCheck, useUpsertCheck } from '~/hooks/useReviewData';
 
 type Props = {
   requirementId: string;

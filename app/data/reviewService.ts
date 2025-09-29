@@ -1,14 +1,14 @@
+import { createClient } from '@supabase/supabase-js';
+
 import {
-  Status,
   type Application,
   type Check,
   type PrefillRequirementSetting,
   type Review,
   type ReviewSummary,
   type ReviewWithApplication,
+  Status,
 } from './types';
-
-import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_DATABASE_URL;
 const supabaseKey = import.meta.env.VITE_DATABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);

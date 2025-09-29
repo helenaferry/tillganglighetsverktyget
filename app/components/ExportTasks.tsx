@@ -6,9 +6,10 @@ import {
   DigiFormTextarea,
   DigiNotificationAlert,
 } from '@digi/arbetsformedlingen-react';
-import { Status, type Check, type Requirement, type ReviewWithApplication } from '~/data/types';
 import { DigiFormInput } from '@digi/arbetsformedlingen-react';
 import { useState } from 'react';
+
+import { type Check, type Requirement, type ReviewWithApplication, Status } from '~/data/types';
 
 type Props = {
   review: ReviewWithApplication;

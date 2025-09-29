@@ -1,11 +1,13 @@
+import { DigiTypography } from '@digi/arbetsformedlingen-react';
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { type Requirement } from '~/data/types';
-import { DigiTypography } from '@digi/arbetsformedlingen-react';
-import RequirementDetails from './RequirementDetails';
-import StatusBadge from './StatusBadge';
-import RequirementForm from './RequirementForm';
 import { useCheck } from '~/hooks/useReviewData';
+
+import RequirementDetails from './RequirementDetails';
+import RequirementForm from './RequirementForm';
+import StatusBadge from './StatusBadge';
 import { StyledLink } from './StyledLink';
 
 type Props = {

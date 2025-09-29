@@ -1,22 +1,24 @@
 import {
-  DigiTable,
-  DigiLoaderSkeleton,
-  DigiButton,
-  DigiIconTrash,
-  DigiIconEdit,
-  DigiTypographyHeadingJumbo,
-} from '@digi/arbetsformedlingen-react';
-import { StyledLink } from './StyledLink';
-import { useReviews, useDeleteReview } from '~/hooks/useReviewData';
-import { useRequirements } from '~/hooks/useRequirementData';
-import {
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@digi/arbetsformedlingen';
-import { formatDate, formatDateAndTime } from '~/formattingHelper';
+import {
+  DigiButton,
+  DigiIconEdit,
+  DigiIconTrash,
+  DigiLoaderSkeleton,
+  DigiTable,
+  DigiTypographyHeadingJumbo,
+} from '@digi/arbetsformedlingen-react';
 import { useNavigate } from 'react-router';
+
 import { ObjectType } from '~/data/types';
+import { formatDate, formatDateAndTime } from '~/formattingHelper';
+import { useRequirements } from '~/hooks/useRequirementData';
+import { useDeleteReview, useReviews } from '~/hooks/useReviewData';
+
+import { StyledLink } from './StyledLink';
 
 export function ReviewsList() {
   const {

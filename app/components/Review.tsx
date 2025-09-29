@@ -1,22 +1,24 @@
-import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
-import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
-import {
-  DigiLoaderSkeleton,
-  DigiTypographyHeadingJumbo,
-  DigiTypography,
-} from '@digi/arbetsformedlingen-react';
 import {
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@digi/arbetsformedlingen';
-import { StyledLink } from '~/components/StyledLink';
-import ReviewRequirement from '~/components/ReviewRequirement';
-import { formatDateLong, formatPercentage } from '~/formattingHelper';
+import {
+  DigiLoaderSkeleton,
+  DigiTypography,
+  DigiTypographyHeadingJumbo,
+} from '@digi/arbetsformedlingen-react';
 import { useEffect, useMemo, useState } from 'react';
+
 import CategoryNav from '~/components/CategoryNav';
-import { Status, type RequirementWithCheck, ObjectType } from '~/data/types';
+import ReviewRequirement from '~/components/ReviewRequirement';
 import ReviewRequirements from '~/components/ReviewRequirements';
+import { StyledLink } from '~/components/StyledLink';
+import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
+import { formatDateLong, formatPercentage } from '~/formattingHelper';
+import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
+
 import Breadcrumbs from './Breadcrumbs';
 
 interface Props {

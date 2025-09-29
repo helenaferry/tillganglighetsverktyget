@@ -1,21 +1,22 @@
-import { useParams } from 'react-router-dom';
-import { useReviewById, useChecksForReview } from '~/hooks/useReviewData';
-import { useRequirements, useRequirementCategories } from '~/hooks/useRequirementData';
-import {
-  DigiTypography,
-  DigiTypographyHeadingJumbo,
-  DigiLoaderSkeleton,
-} from '@digi/arbetsformedlingen-react';
 import {
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@digi/arbetsformedlingen';
+import {
+  DigiLoaderSkeleton,
+  DigiTypography,
+  DigiTypographyHeadingJumbo,
+} from '@digi/arbetsformedlingen-react';
+import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+
+import Breadcrumbs from '~/components/Breadcrumbs';
 import CreateStatement from '~/components/CreateStatement';
 import ExportTasks from '~/components/ExportTasks';
-import Breadcrumbs from '~/components/Breadcrumbs';
 import { ObjectType } from '~/data/types';
-import { useMemo } from 'react';
+import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 export function meta() {
   return [

@@ -1,13 +1,15 @@
 import {
-  DigiTable,
-  DigiFormSelectFilter,
-  DigiTag,
   DigiFormInput,
+  DigiFormSelectFilter,
+  DigiTable,
+  DigiTag,
 } from '@digi/arbetsformedlingen-react';
-import { StyledLink } from './StyledLink';
-import { Status, type RequirementWithCheck, type Review } from '~/data/types';
 import { useState } from 'react';
+
+import { type RequirementWithCheck, type Review, Status } from '~/data/types';
+
 import StatusBadge from './StatusBadge';
+import { StyledLink } from './StyledLink';
 
 type Props = {
   requirements: RequirementWithCheck[];

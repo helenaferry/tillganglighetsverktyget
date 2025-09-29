@@ -1,7 +1,8 @@
 import { ExpandableAccordionHeaderLevel } from '@digi/arbetsformedlingen';
 import { DigiExpandableAccordion } from '@digi/arbetsformedlingen-react';
-import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
 import ReactMarkdown from 'react-markdown';
+
+import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
 
 export type Props = {
   requirement: Requirement;

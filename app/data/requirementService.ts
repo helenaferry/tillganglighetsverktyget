@@ -1,4 +1,4 @@
-import { type Requirement, ObjectType } from './types';
+import { ObjectType, type Requirement } from './types';
 
 const requirementsPath = import.meta.env.VITE_REQUIREMENTS_URL;
 

@@ -1,7 +1,8 @@
-import { Status, type Category } from '~/data/types';
-import { useNavigate } from 'react-router-dom';
+import { DigiTypography, DigiIconCheck } from '@digi/arbetsformedlingen-react';
 import { useEffect, useState } from 'react';
-import { DigiIconCheck, DigiTypography } from '@digi/arbetsformedlingen-react';
+import { useNavigate } from 'react-router-dom';
+
+import { type Category, Status } from '~/data/types';
 
 type Props = {
   reviewId: string;

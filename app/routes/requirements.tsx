@@ -1,4 +1,10 @@
 import {
+  ButtonVariation,
+  LoaderSkeletonVariation,
+  TypographyHeadingJumboLevel,
+  TypographyHeadingJumboVariation,
+} from '@digi/arbetsformedlingen';
+import {
   DigiButton,
   DigiFormFieldset,
   DigiFormInput,
@@ -12,21 +18,16 @@ import {
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
+import { useMemo, useState } from 'react';
+
+import RequirementDetails from '~/components/RequirementDetails';
+import { type PrefillRequirementSetting, type RequirementAdditionsSetting } from '~/data/types';
+import { ObjectType } from '~/data/types';
 import {
-  TypographyHeadingJumboLevel,
-  TypographyHeadingJumboVariation,
-  LoaderSkeletonVariation,
-  ButtonVariation,
-} from '@digi/arbetsformedlingen';
-import {
-  useRequirements,
   useRequirementCategories,
   useRequirementContentTypes,
+  useRequirements,
 } from '~/hooks/useRequirementData';
-import { type PrefillRequirementSetting, type RequirementAdditionsSetting } from '~/data/types';
-import RequirementDetails from '~/components/RequirementDetails';
-import { useMemo, useState } from 'react';
-import { ObjectType } from '~/data/types';
 
 export function meta() {
   return [{ title: 'Tillgänglighetsverktyget: Krav' }, { name: 'description', content: 'Krav' }];

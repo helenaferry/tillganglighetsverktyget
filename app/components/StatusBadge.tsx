@@ -1,5 +1,6 @@
-import { BadgeStatusType, BadgeStatusVariation, BadgeStatusSize } from '@digi/arbetsformedlingen';
+import { BadgeStatusSize, BadgeStatusType, BadgeStatusVariation } from '@digi/arbetsformedlingen';
 import { DigiBadgeStatus } from '@digi/arbetsformedlingen-react';
+
 import { Status } from '~/data/types';
 
 type Props = {

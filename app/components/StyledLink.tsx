@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router';
-import { DigiLink, DigiLinkButton } from '@digi/arbetsformedlingen-react';
 import { type DigiLinkButtonCustomEvent, type DigiLinkCustomEvent } from '@digi/arbetsformedlingen';
+import { DigiLink, DigiLinkButton } from '@digi/arbetsformedlingen-react';
+import { useNavigate } from 'react-router';
 
 type Props = {
   to: string;

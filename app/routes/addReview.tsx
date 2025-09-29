@@ -1,9 +1,10 @@
-import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
-import { ReviewForm } from '~/components/ReviewForm';
 import {
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@digi/arbetsformedlingen';
+import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
+
+import { ReviewForm } from '~/components/ReviewForm';
 
 export function meta() {
   return [

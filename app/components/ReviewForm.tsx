@@ -1,27 +1,28 @@
+import { DialogSize, LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
 import {
-  DigiFormInput,
-  DigiFormSelectFilter,
   DigiButton,
-  DigiFormFieldset,
+  DigiDialog,
   DigiFormCheckbox,
-  DigiLoaderSkeleton,
+  DigiFormFieldset,
+  DigiFormInput,
   DigiFormRadiobutton,
   DigiFormRadiogroup,
-  DigiDialog,
+  DigiFormSelectFilter,
+  DigiLoaderSkeleton,
 } from '@digi/arbetsformedlingen-react';
-import {
-  useApplications,
-  useUpsertReview,
-  useDisableChecks,
-  useEnableChecks,
-  useReviewById,
-  usePrefillRequirements,
-} from '~/hooks/useReviewData';
-import { useRequirements, useRequirementContentTypes } from '~/hooks/useRequirementData';
-import { useState, useEffect, useMemo } from 'react';
-import { DialogSize, LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
+import { useEffect, useMemo, useState } from 'react';
+
 import type { PrefillRequirementSetting } from '~/data/types';
 import { ObjectType } from '~/data/types';
+import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
+import {
+  useApplications,
+  useDisableChecks,
+  useEnableChecks,
+  usePrefillRequirements,
+  useReviewById,
+  useUpsertReview,
+} from '~/hooks/useReviewData';
 
 type Props = {
   reviewId?: string;
