@@ -150,7 +150,7 @@ export default function CategoryNav({
                           <StatusIndicator checked={done} active={selected} />
                         </div>
                         <div
-                          className={`text-left no-underline break-words ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
+                          className={`text-left no-underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
                         >
                           {req.name}
                         </div>
