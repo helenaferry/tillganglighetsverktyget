@@ -14,7 +14,7 @@ import {
 import { useNavigate } from 'react-router';
 
 import { ObjectType } from '~/data/types';
-import { formatDate, formatDateAndTime } from '~/formattingHelper';
+import { formatDate, formatDateAndTime } from '~/formattingHelpers';
 import { useRequirements } from '~/hooks/useRequirementData';
 import { useDeleteReview, useReviews } from '~/hooks/useReviewData';
 
@@ -139,7 +139,7 @@ export function ReviewsList() {
           </DigiTable>
         </div>
       )}
-      <StyledLink to="/granskning/skapa" text="Skapa ny granskning" isButton={true} />
+      <StyledLink to="/granskning/skapa" text="Skapa ny granskning" styleVariant="link-button" />
     </div>
   );
 }

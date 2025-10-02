@@ -15,11 +15,13 @@ import ReviewRequirement from '~/components/ReviewRequirement';
 import ReviewRequirements from '~/components/ReviewRequirements';
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
-import { formatDateLong, formatPercentage } from '~/formattingHelper';
+import { formatDateLong, formatPercentage } from '~/formattingHelpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 import Breadcrumbs from './Breadcrumbs';
+import CategoryOverview from './CategoryOverview';
+import PrevNextRequirement from './PrevNextRequirement';
 
 interface Props {
   reviewId: string;
@@ -223,12 +225,12 @@ export default function Review({ reviewId, requirementId }: Props) {
                   <StyledLink
                     to={`/granskning/${review.id}/export/redogorelse`}
                     text="Sammanställ brister"
-                    isButton={true}
+                    styleVariant="link-button"
                   />
                   <StyledLink
                     to={`/granskning/${review.id}/export/uppgifter`}
                     text="Exportera uppgifter (.csv)"
-                    isButton={true}
+                    styleVariant="link-button"
                   />
                 </div>
               </div>
@@ -280,25 +282,31 @@ export default function Review({ reviewId, requirementId }: Props) {
                 <div className={`${showCategoryNav ? 'ml-[17rem]' : 'ml-[4rem]'}`}>
                   <div className="content-container content-container--largest">
                     {review && (
-                      <ReviewRequirement
-                        key={requirement.id}
-                        requirement={requirement}
-                        reviewId={reviewId}
-                        nextUnhandled={nextUnhandledRequirement(requirementId)}
-                        previousUnhandled={previousUnhandledRequirement(requirementId)}
-                      />
+                      <>
+                        <CategoryOverview
+                          category={categoriesWithRequirements.find(
+                            (cat) => cat.category === requirement.category,
+                          )}
+                        />
+                        <ReviewRequirement
+                          key={requirement.id}
+                          requirement={requirement}
+                          reviewId={reviewId}
+                        />
+                        <PrevNextRequirement
+                          reviewId={reviewId}
+                          nextUnhandled={nextUnhandledRequirement(requirementId)}
+                          previousUnhandled={previousUnhandledRequirement(requirementId)}
+                        />
+                      </>
                     )}
-                    <StyledLink
-                      to={`/granskning/${reviewId}`}
-                      text="Tillbaka till granskningsöversikten"
-                    />
                   </div>
                 </div>
               </div>
             );
           } else {
             return (
-              <div>
+              <div className="content-container content-container--white content-container--largest p-5">
                 <p>Krav-ID: {requirementId} hittades inte.</p>
                 <StyledLink
                   to={`/granskning/${reviewId}`}

@@ -2,7 +2,7 @@
   "data": [
     {
       "id": "ljus",
-      "name": "Gör det möjligt att pausa, stänga av eller sänka ljud",
+      "name": "Justerbart ljud",
       "type": "requirement",
       "wcag": "1.4.2",
       "wcagLevel": "A",
@@ -16,7 +16,7 @@
     },
     {
       "id": "raut",
-      "name": "Gör det möjligt att pausa eller stänga av automatisk uppspelning",
+      "name": "Justerbar uppspelning",
       "type": "requirement",
       "wcag": "2.2.2",
       "wcagLevel": "A",
@@ -87,7 +87,7 @@
     },
     {
       "id": "fbfe",
-      "name": "Ge möjlighet att ångra, korrigera eller bekräfta vid viktiga transaktioner",
+      "name": "Användarkontroll vid viktiga transaktioner",
       "type": "requirement",
       "wcag": "3.3.4",
       "wcagLevel": "AA",
@@ -101,7 +101,7 @@
     },
     {
       "id": "jtin",
-      "name": "Gör det möjligt att justera tidsbegränsningar",
+      "name": "Justerbara tidsbegränsningar",
       "type": "requirement",
       "wcag": "2.2.1",
       "wcagLevel": "A",
@@ -123,9 +123,10 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Alla sidor har en titel som beskriver sidans syfte eller innehåll. Sidtiteln anges i elementet `<title>` i sidans `<head>`-element.",
+      "statement": "Alla sidor har en titel som beskriver sidans syfte eller innehåll. Sidtiteln anges i elementet `<title>` i sidans `<head>`-element.\r\n\r\nTiteln ska innehålla sidans namn och gärna beskriva sidans ämne eller syfte. Den ska vara så unik som möjligt och vara specifik och innehålla den mest relevanta informationen först. ",
       "why": "En beskrivande sidtitel hjälper användare att snabbt och enkelt avgöra om sidan är relevant utifrån deras behov. Beskrivande sidtitlar är också viktigt för sökmotoroptimering.",
-      "howToTest": "1. Gör en sökning på den aktuella webbsidan med exempelvis Google. Kopiera sidans webbadress, gå till sökfältet, klistra in webbadressen och sök. Den text som visas som en länkas i sökmotorns första sökträff är sidans titel.\r\n\r\n2. Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller högerklicka på ett objekt på sidan och välj ”Inspektera”. Nästan längst upp i sidans dokumentstruktur och innanför elementet `<head>`-sektionen finns sidans titel i elementet `<title>`.\r\n\r\n3. Granska texten som visas för den aktuella webbsidan i din webbläsares flikfält. I Google Chrome och Microsoft Edge visas flikfältet längst upp i webbläsarfönstret. Den text som visas i fliken är sidans titel. Om du hovrar över den aktuella fliken med din musmarkör visas en utökad tooltip som innehåller sidans titel.\r\n\t\r\n    Titeln ska innehålla sidans namn och gärna beskriva sidans ämne eller syfte. Den ska vara så unik som möjligt och vara specifik och innehålla den mest relevanta informationen först. \r\n"
+      "howToTest": "Välj ett av följande alternativ för att se sidans titel:\r\n\r\n- Gör en sökning på den aktuella webbsidan i en sökmotor. Den text som visas som sökträffens rubrik är sidans titel.\r\n\r\n- Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg. Nästan längst upp i sidans dokumentstruktur och inuti elementet `<head>` finns sidans titel i elementet `<title>`.\r\n\r\n- Granska texten som visas för den aktuella webbsidan i din webbläsares flikfält.\r\n",
+      "comment": "AF-tillägg."
     },
     {
       "id": "sids",
@@ -139,11 +140,11 @@
       "objectType": "web",
       "statement": "Varje sidas huvudspråk är angivet i koden. Huvudsakligt språk anges med attributet lang i elementet `<html>`.",
       "why": "Rätt språkinställningar hjälper användare av uppläsande hjälpmedel att läsa upp innehållet med rätt uttal. Det underlättar även avstavning och automatisk översättning.",
-      "howToTest": "1. Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller högerklicka på ett objekt på sidan och välj ”Inspektera”. Längst upp i sidans dokumentstruktur finns elementet `<html>`. Kontrollera att elementet har attributet lang='sv'.\r\n\r\n2. Om sidans huvudsakliga språk är svenska ska attributet lang ha värdet “sv”. Exempel `<html lang='sv'>`.\r\n\r\n3. Om sidans huvudsakliga språk är ett annat språk än svenska behöver du använda ett korrekt värde för det språket. Hitta rätt språk på W3Docs. [ISO Language Codes på W3Docs](https://www.w3docs.com/learn-html/html-language-codes.html)\r\n\r\n4. Du kan också testa genom att använda en skärmläsare som Jaws, NVDA, Voice Over eller Talkback. Kontrollera att sidans innehåll läses upp på svenska, sidans huvudsakliga språk är svenska.\r\n"
+      "howToTest": "Välj ett av följande alternativ för att se sidans språk:\r\n\r\n- Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg. Längst upp i sidans dokumentstruktur finns elementet `<html>`. Kontrollera att elementet har attributet lang='sv', om sidan är på svenska.\r\n\r\n- Om sidans huvudsakliga språk är ett annat språk än svenska behöver du använda ett korrekt värde för det språket. Hitta rätt språk på W3Docs. [ISO Language Codes på W3Docs](https://www.w3docs.com/learn-html/html-language-codes.html)"
     },
     {
       "id": "sems",
-      "name": "Semantisk sidstruktur med HTML",
+      "name": "Semantisk sidstruktur",
       "type": "requirement",
       "wcag": "1.3.1",
       "wcagLevel": "A",
@@ -151,65 +152,23 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Varje sida är strukturerad med HTML-element som `<main>`, `<nav>`, `<section>`, `<form>`, `<article>`, `<section>` och `<aside> för att beskriva syftet med sidans olika informationsområden.",
-      "why": "Struktur är grunden för god tillgänglighet. Semantiska HTML-element skapar landmärken i koden som gör det lättare för hjälpmedelsanvändare att orientera sig på webbsidan.",
-      "howToTest": "Gå igenom elementen i listan nedan och kontrollera att innehållet i varje informationsområde på webbsidan omsluts av element som är relevanta för den aktuella sidan.\r\n\r\n| Element | Användning |\r\n| ------ | ------ |\r\n| `<header>`   | Webbplatsövergripande del. Innehåller vanligtvis logotyp, övergripande navigation och funktioner för sök och uppläsning.   |\r\n| `<nav>`   | Navigering exempelvis i toppen av sidan eller sidonavigering om sådan används.   |\r\n| `<main>`   | Sidans huvudsakliga innehåll. Inleds med en h1-rubrik.   |\r\n| `<article>`   | Används om sidan innehåller en eller flera delar med redaktionellt material.   |\r\n| `<aside>`   | Används om sidan exempelvis innehåller information i en högerspalt.   |\r\n| `<section>`   | Används för en del av innehållet, som en del av <main>. Börjar vanligtvis med en rubrik.   |\r\n| `<form>`   | Används för formulär. Ska omsluta hela formuläret.   |\r\n| `<footer>`   | Sajtövergripande del. Innehåller ofta kontaktuppgifter, avsändare, generell information om webbplatsen, tillgänglighetsredogörelse med mera.   |"
-    },
-    {
-      "id": "semr",
-      "name": "Semantisk sidstruktur med attributet role",
-      "type": "requirement",
-      "wcag": "1.3.1",
-      "wcagLevel": "A",
-      "en301549": "9.1.3.1",
-      "contentType": "",
-      "category": "Struktur och språk",
-      "objectType": "web",
-      "statement": "Informationsområden som innehåller sökformulär märks upp som landmärken i koden. Eftersom det saknas ett semantiskt HTML-element för sökformulär används ARIA-attributet `role=”search”`.",
-      "why": "Landmärken hjälper användare som navigerar med skärmläsare att orientera sig på en webbsida. Med hjälp av inbyggda kortkommandon i skärmläsare kan användare navigera mellan landmärken på en sida.\r\nSemantiska element i HTML är alltid att föredra, men i vissa situationer är istället ARIA-attributet role ett alternativ i <div>-element för att ge området ett syfte. Exempel: <div role=”main”>.",
-      "howToTest": "Om sidans dokumentstruktur helt saknar landmärken och det inte är möjligt att ändra dokumentstrukturen till elementen i föregående punkt, kan följande attribut och värden läggas till på element som omsluter sidans informationsområden. De ger då element som annars saknar semantik, exempelvis elementet `<div>`, ett syfte och skapar landmärken på sidan som hjälpmedelsanvändare att orientera sig efter.\r\nNotera att attributen och värdena nedan inte är nödvändiga om sidan redan har landmärken med html-element. Undantaget är role=”search” som saknar en motsvarighet som element.\r\n\r\n| Landmärke | Motsvarande element | Användning |\r\n| ------ | ------ | ------ |\r\n| `role=”banner”`   | `<header>`   | Webbplatsövergripande del. Innehåller vanligtvis logotyp, övergripande navigation och funktioner för sök och uppläsning.   |\r\n| `role=”search”`   | Motsvarighet saknas   | Används för sökformulär.   |\r\n| `role=”navigation”`   | `<nav>`   | Navigering exempelvis i toppen av sidan eller sidonavigering om sådan används.   |\r\n| `role=”main”`   | `<main>`   | Sidans huvudsakliga innehåll. Inleds med en h1-rubrik.   |\r\n| `role=”complementary”`   | `<aside>`   | Används om sidan exempelvis innehåller information i en högerspalt.   |\r\n| `role=”region”`   | `<section>`   | Används för en del av innehållet, som en del av <`main`>. Börjar vanligtvis med en rubrik.   |\r\n| `role=”form”`   | `<form>`   | Används för formulär. Ska omsluta hela formuläret.   |\r\n| `role=”contentinfo”`   | `<footer>` | Sajtövergripande del. Innehåller ofta kontaktuppgifter, avsändare, generell information om webbplatsen, tillgänglighetsredogörelse med mera.   |"
+      "statement": "Varje sida är strukturerad med HTML-element som `<main>`, `<nav>`, `<section>`, `<form>`, `<article>` och `<aside> för att beskriva syftet med sidans olika informationsområden.\r\n\r\nEftersom det saknas ett semantiskt HTML-element för sökformulär används ARIA-attributet `role=”search”` för detta.",
+      "why": "Struktur är grunden för god tillgänglighet. Semantiska element skapar landmärken i koden som gör det lättare för hjälpmedelsanvändare att orientera sig på webbsidan.",
+      "howToTest": "Gå igenom sidan och kontrollera att den är korrekt uppmärkt med element från listan nedan:\r\n\r\n- `<header>` Webbplatsövergripande del. Innehåller vanligtvis logotyp, övergripande navigation och funktioner för sök och uppläsning. \r\n- `<nav>` Navigering exempelvis i toppen av sidan eller sidonavigering om sådan används.\r\n- `role=\"search\"` För sökfunktioner. \r\n- `<main>` Sidans huvudsakliga innehåll. Inleds med en h1-rubrik.\r\n- `<article>` Används om sidan innehåller en eller flera delar med redaktionellt material.\r\n- `<aside>` Används om sidan exempelvis innehåller information i en högerspalt.\r\n- `<section>` Används för en del av innehållet, som en del av <main>. Börjar vanligtvis med en rubrik.\r\n- `<form>` Används för formulär. Ska omsluta hela formuläret.\r\n- `<footer>` Sajtövergripande del. Innehåller ofta kontaktuppgifter, avsändare, generell information om webbplatsen, tillgänglighetsredogörelse med mera."
     },
     {
       "id": "seru",
-      "name": "Semantiska rubriker",
+      "name": "Rubriker",
       "type": "requirement",
-      "wcag": "1.3.1",
+      "wcag": "1.3.1, 2.4.6",
       "wcagLevel": "A",
-      "en301549": "9.1.3.1",
+      "en301549": "9.1.3.1, 9.2.4.6",
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Alla rubriker på en webbsida är korrekt uppmärkta med rubrikelementet `<h>` för att skapa semantiska rubriker. Det finns inga tomma rubrikelement och H-element används inte för sådant som inte är rubriker.",
-      "why": "Användare av uppläsande hjälpmedel kan navigera mellan rubriker och skumläsa sidans innehåll. Korrekt kodade rubriker bidrar också till ökad sökmotoroptimering.",
-      "howToTest": "1. Gå igenom sidan eller skissen och bestäm vilka av sidans texter som fungerar som rubriker.\r\n\r\n2. Kontrollera att alla rubriker är uppmärkta som rubriker i koden med elementen `<h1>` till `<h6>`.\r\n\r\n3. Kontrollera att ingen rubrik på sidan märks upp med endast fetstil eller lite större text men saknar rubrik-element i koden.\r\n\r\n4. Kontrollera att det inte finns några tomma rubriker, alltså h-element som saknar textinnehåll.\r\n\r\n5. Kontrollera att det inte finns några rubrikelement som används för text som inte är eller fungerar som rubriker.\r\n"
-    },
-    {
-      "id": "loru",
-      "name": "Logisk rubrikstruktur",
-      "type": "requirement",
-      "wcag": "1.3.1",
-      "wcagLevel": "A",
-      "en301549": "9.1.3.1",
-      "contentType": "",
-      "category": "Struktur och språk",
-      "objectType": "web",
-      "statement": "Sidans rubriknivåer skapar en logisk och korrekt hierarkisk ordning. Rubrikstrukturen hoppar inte över rubriknivåer.",
-      "why": "Användare med uppläsande hjälpmedel kan navigera mellan rubriker och rubriknivåer och skumläsa sidans innehåll. Korrekta rubrikstrukturer bidrar också till sökmotoroptimering.",
-      "howToTest": "1. Kontrollera att sidans första rubrik som beskriver dess huvudsakliga innehåll är uppmärkt med elementet `<h1>` för rubriknivå 1.\r\n\r\n2. Kontrollera att sidans resterande rubriker har en rubriknivå som motsvarar deras plats i innehållets struktur. Vanligtvis är alla underrubriker på en webbsida underordnad sidans huvudrubrik. Varje ny sektion på sidan inleds med en rubrik med elementet `<h2>` för rubriknivå 2. Det gäller så länge innehållet hör ihop med eller är sammankopplat med sidans huvudinnehåll.\r\n\r\n3. Innehåll som inte är underordnat sidans huvudrubrik utan utgör en del av webbplatsens generella information, kan inledas med en ny rubrik på nivå 1. Exempel är rubriker i webbplatsens sidfot som inte är underordnat den aktuella sidans huvudrubrik utan är ett eget område.\r\n"
-    },
-    {
-      "id": "beru",
-      "name": "Beskrivande rubriker",
-      "type": "requirement",
-      "wcag": "2.4.6",
-      "wcagLevel": "AA",
-      "en301549": "9.2.4.6",
-      "contentType": "",
-      "category": "Struktur och språk",
-      "objectType": "web",
-      "statement": "Sidans rubriker är beskrivande och har en koppling till texten som följer.",
-      "why": "Beskrivande rubriker underlättar för alla att förstå och förutse vad sidans avsnitt handlar om. Det är extra viktigt för personer med lässvårigheter eller nedsatt korttidsminne.",
-      "howToTest": "1. Identifiera huvudrubriker och underrubriker på sidan.\r\n\r\n2. Kontrollera att rubriker är beskrivande och har en tydlig koppling till innehållet.\r\n\r\n3. Testa med skärmläsare och använd kortkommandon i skärmläsaren för att visa skärmläsarens elementlista för rubriker. I vissa skärmläsare är kortkommandot Insert eller Caps Lock + F7. \r\n\r\n4. Gå igenom rubrikerna i listan och fundera över om du förstår vad rubrikerna representerar, helst utan att titta på innehållet på sidan."
+      "statement": "- Alla rubriker på en webbsida är korrekt uppmärkta med rubrikelement `<h1>`, `<h2>` osv. Det finns inga tomma rubrikelement. Rubrikelement används enbart för sådant som är rubriker.\r\n- Sidans rubriknivåer skapar en logisk och korrekt hierarkisk ordning. Rubrikstrukturen hoppar inte över rubriknivåer.\r\n- Sidans rubriker är beskrivande och har en koppling till texten som följer.",
+      "why": "- Användare med uppläsande hjälpmedel kan navigera mellan rubriker och skumläsa sidans innehåll. \r\n- Korrekt kodade rubriker bidrar också till ökad sökmotoroptimering.\r\n- Beskrivande rubriker underlättar för alla att förstå och förutse vad sidans avsnitt handlar om. Det är extra viktigt för personer med lässvårigheter eller nedsatt korttidsminne.",
+      "howToTest": "Kontrollera att:\r\n\r\n- Alla rubriker är uppmärkta som rubriker i koden med elementen `<h1>` till `<h6>`.\r\n\r\n- Sidans huvudrubrik är uppmärkt med elementet `<h1>`.\r\n\r\n- Övriga rubriker strukturerar innehållet på ett logiskt sätt.\r\n\r\n- Alla rubriknivåer finns, exempelvis följer inte `<h3>` direkt på en `<h1>`.\r\n\r\n- Rubriker på lägre nivå hör ihop innehållsmässigt med dem på högre nivå.\r\n\r\n- Det som visuellt uppfattas som en rubrik är uppmärkt som en rubrik i koden.\r\n\r\n- Det finns inte några tomma rubriker, alltså rubrikelement som saknar textinnehåll.\r\n\r\n- Allt som är uppmärkt som rubrikelement fungerar som rubriker.\r\n\r\n- Du förstår vad rubrikerna representerar, helst utan att titta på innehållet på sidan."
     },
     {
       "id": "beto",
@@ -221,9 +180,9 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Text med betoningar eller som utmärker sig visuellt är uppmärkt i koden. Elementet `<strong>` används istället för elementet `<b>` för att markera fetstil.",
+      "statement": "Text med betoningar är uppmärkt i koden, med antingen elementet `<strong>` eller `<em>` beroende på om det visuellt ska vara fetstil eller kursivering. Elementen `<b>` och `<i>` är inte tillräckliga, då de enbart påverkar det visuella.",
       "why": "Hjälpmedelsanvändare kan ta del av hur text utmärker sig. Att markera text visuellt är inte tillräckligt eftersom hjälpmedel inte kan återge det för användaren.",
-      "howToTest": "1. Gå igenom textinnehållet på sidan och kontrollera om det finns fetmarkerad text eller text som visuellt märks ut på att något annat sätt.\r\n\r\n2. Högerklicka på den markerade texten och välj “Inspektera” eller “Granska” i menyn.\r\n\r\n3. Kontrollera att texten är uppmärkt med elementet `<strong>` i koden, eller elementet `<em>` för kursiv text.\r\n\r\n4. Testa med skärmläsare och använd piltangenterna för att navigera och läsa i texten. Om inställningarna i skärmläsaren är satta att omfatta uppläsning av stil och betoning kommer skärmläsaren att annonsera markering av fet eller kursiv text. "
+      "howToTest": "1. Gå igenom textinnehållet på sidan och kontrollera om det finns fetmarkerad text eller text som visuellt märks ut på något annat sätt.\r\n\r\n2. Högerklicka på den markerade texten och öppna utvecklarverktyget.\r\n\r\n3. Kontrollera att texten är uppmärkt med elementet `<strong>` för fetstil, eller elementet `<em>` för kursiv text.\r\n"
     },
     {
       "id": "inse",
@@ -2063,7 +2022,8 @@
       "wcag": "2.4.2",
       "en301549": "10.2.4.2",
       "objectType": "doc",
-      "statement": "Detta krav motsvarar WCAG 2.4.2 Sidans titel."
+      "statement": "Alla dokument har en titel som beskriver dokumentets syfte och innehåll.",
+      "why": "En beskrivande dokumenttitel hjälper användaren att snabbt och enkelt avgöra vilket dokument hen hanterar."
     },
     {
       "id": "docfkn",
