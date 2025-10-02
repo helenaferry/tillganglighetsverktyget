@@ -1,9 +1,3 @@
-export enum Level {
-  Astar = 'A*',
-  A = 'A',
-  AA = 'AA',
-}
-
 export enum RequirementType {
   REQUIREMENT = 'requirement',
   GUIDELINE = 'guideline',
@@ -20,7 +14,6 @@ export type Requirement = {
   name: string;
   type: RequirementType;
   wcag: string;
-  wcagLevel: Level;
   en301549: string;
   contentType: string;
   category: string;

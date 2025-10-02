@@ -16,19 +16,19 @@ export default function RequirementDetails({ requirement }: Props) {
     <div>
       {requirement.statement && (
         <div>
-          <h3>Beskrivning</h3>
+          <h4>Beskrivning</h4>
           <ReactMarkdown>{requirement.statement}</ReactMarkdown>
         </div>
       )}
       {requirement.why && (
         <div className="mt-4">
-          <h3>Varför är detta viktigt?</h3>
+          <h4>Varför är detta viktigt?</h4>
           <ReactMarkdown>{requirement.why}</ReactMarkdown>
         </div>
       )}
       {requirementAdditions.items.find((item) => item.id === requirement.id) && (
         <div className="mt-4">
-          <h3>{requirementAdditions.heading}</h3>
+          <h4>{requirementAdditions.heading}</h4>
           <ReactMarkdown>
             {requirementAdditions.items.find((item) => item.id === requirement.id)?.text || ''}
           </ReactMarkdown>
@@ -37,7 +37,7 @@ export default function RequirementDetails({ requirement }: Props) {
       {requirement.howToTest && (
         <DigiExpandableAccordion
           afHeading="Hur du kan testa"
-          afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+          afHeadingLevel={ExpandableAccordionHeaderLevel.H4}
         >
           <ReactMarkdown>{requirement.howToTest}</ReactMarkdown>
         </DigiExpandableAccordion>
