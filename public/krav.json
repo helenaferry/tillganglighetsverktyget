@@ -22,7 +22,7 @@
       "contentType": "",
       "category": "Flexibilitet och anpassning",
       "objectType": "web",
-      "statement": "Det går att pausa, stoppa eller dölja innehåll som rör sig, blinkar eller scrollar automatiskt i mer än fem sekunder. Gäller exempelvis video, animationer och bildspel. Undantag är animationer eller indikationer som visar att en sida eller innehåll laddas, samt blinkande textmarkörer i aktiva inmatningsfält.",
+      "statement": "Det går att pausa, stoppa eller dölja innehåll som rör sig, blinkar eller scrollar automatiskt i mer än fem sekunder. Gäller exempelvis video, animationer och bildspel. \r\n\r\nUndantag är animationer eller indikationer som visar att en sida eller innehåll laddas, samt blinkande textmarkörer i aktiva inmatningsfält.",
       "why": "Automatisk uppspelning stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
       "howToTest": "- Kontrollera om det finns något innehåll som rör sig, blinkar eller scrollar automatiskt på sidan.\r\n- Kontrollera hur länge rörelsen pågår.\r\n- Om den pågår i mindre än fem sekunder är kravet godkänt.\r\n- Om det går att pausa, stoppa eller dölja innehållet är kravet godkänt."
     },
@@ -94,7 +94,7 @@
     },
     {
       "id": "jtin",
-      "name": "Justerbara tidsbegränsningar",
+      "name": "Justerbara tidsgränser",
       "type": "requirement",
       "wcag": "2.2.1 (A)",
       "en301549": "9.2.2.1",
@@ -128,9 +128,9 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "- Varje sidas huvudspråk är angivet i koden. Huvudsakligt språk anges med attributet lang i elementet `<html>`.\r\n\r\n- Ord, fraser och stycken som är på ett annat språk än sidans huvudspråk är uppmärkta med ett korrekt lang-attribut i koden.\r\n\r\nExempel:\r\n\r\n`<p>\r\nOrdet hej på engelska är <span lang=”en”>Hello</span>.\r\n</p>`",
+      "statement": "- Varje sidas huvudspråk är angivet i koden. Huvudsakligt språk anges med attributet lang i elementet `<html>`.\r\n\r\n- Ord, fraser och stycken som är på ett annat språk än sidans huvudspråk är uppmärkta med ett korrekt lang-attribut i koden.\r\n\r\nExempel:\r\n\r\n`<html lang=\"sv\">`\r\n\r\n`<p>Ordet hej på engelska är <span lang=”en”>Hello</span>.</p>`",
       "why": "Rätt språkinställningar hjälper användare av uppläsande hjälpmedel att läsa upp innehållet med rätt uttal. Det underlättar även avstavning och automatisk översättning.",
-      "howToTest": "Välj ett av följande alternativ för att se sidans språk:\r\n\r\n- Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg. Längst upp i sidans dokumentstruktur finns elementet `<html>`. Kontrollera att elementet har attributet lang='sv', om sidan är på svenska.\r\n\r\n- Om sidans huvudsakliga språk är ett annat språk än svenska behöver du använda ett korrekt värde för det språket. Hitta rätt språk på W3Docs. [ISO Language Codes på W3Docs](https://www.w3docs.com/learn-html/html-language-codes.html)\r\n\r\nKontrollera om det finns texter på andra språk än sidans huvudspråk. Granska texten på det andra språket i webbläsarens utvecklingsverktyg och kontrollera att den är korrekt uppmärkt med språket."
+      "howToTest": "Välj ett av följande alternativ för att se sidans språk:\r\n\r\n- Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg. Längst upp i sidans dokumentstruktur finns elementet `<html>`. Kontrollera att elementet har attributet lang=\"sv\", om sidan är på svenska.\r\n\r\n- Om sidans huvudsakliga språk är ett annat språk än svenska behöver du använda ett korrekt värde för det språket. Hitta rätt språk på W3Docs. [ISO Language Codes på W3Docs](https://www.w3docs.com/learn-html/html-language-codes.html)\r\n\r\nKontrollera om det finns texter på andra språk än sidans huvudspråk. Granska texten på det andra språket i webbläsarens utvecklingsverktyg och kontrollera att den är korrekt uppmärkt med språket."
     },
     {
       "id": "sems",
@@ -195,163 +195,109 @@
       "objectType": "web",
       "statement": "- Det går att navigera på sidan och interagera med alla komponenter genom att enbart använda tangentbordet. \r\n- När användaren flyttar fokus till en komponent med tangentbordet kan fokus också flyttas bort från komponenten. Användaren fastnar aldrig med fokus på eller inuti en komponent.",
       "why": "Användare med nedsatt motorik kan ha svårt att använda mus och navigerar därför med tangentbord eller med andra hjälpmedel som bygger på samma mekanismer. Hjälpmedel som exempelvis skärmläsare är utvecklade för att styras med endast tangentbord.",
-      "howToTest": "1. Ställ markören i webbläsarens adressfält och använd därefter varken mus eller touchpad. Navigera dig igenom hela sidan med tabbtangenten.\r\n\t- Tryck på Tabb för att navigera framåt.\r\n\t\r\n    - Tryck på Shift + Tabb för att navigera bakåt.\r\n    \r\n2. Kontrollera att det går att navigera till alla interaktiva objekt på sidan som länkar, knappar och formulärsfält. Du ska inte kunna navigera med tabbtangenten till rubriker eller brödtext.\r\n\r\n3. För varje interaktivt objekt, kontrollera att det går att aktivera komponenten.\r\n\t- Tryck på Enter för att aktivera en länk.\r\n    \r\n    - Tryck på Enter eller Mellanslag för att aktivera en knapp.\r\n\t\r\n    - Tryck på Mellanslag för att välja en kryssruta eller radioknapp.\r\n\t\r\n    - Tryck på Piltangenterna för att navigera mellan radioknappar, mellan valen i en dropdown-meny eller autocomplete-lista.\r\n\r\n4. Säkerställ att fokus aldrig fastnar någonstans.\r\n\r\n- Öppna en komponent. Kontrollera att det går att navigera ut ur komponenten och vidare till nästa komponent.\r\n\r\n- Öppna ett modalt fönster. Kontrollera att det går att avbryta eller stänga modalen med tangentbordet och att du inte fastnar i den.\r\n"
+      "howToTest": "1. Ställ markören i webbläsarens adressfält och använd därefter varken mus eller touchpad. Navigera dig igenom hela sidan med tabbtangenten.\r\n\t- Tryck på Tabb för att navigera framåt.\r\n\t\r\n    - Tryck på Shift + Tabb för att navigera bakåt.\r\n    \r\n2. Kontrollera att det går att navigera till alla interaktiva objekt på sidan som länkar, knappar och formulärsfält. Du ska inte kunna navigera med tabbtangenten till rubriker eller brödtext.\r\n\r\n3. För varje interaktivt objekt, kontrollera att det går att aktivera komponenten.\r\n\t- Tryck på Enter för att aktivera en länk.\r\n    \r\n    - Tryck på Enter eller Mellanslag för att aktivera en knapp.\r\n\t\r\n    - Tryck på Mellanslag för att välja en kryssruta eller radioknapp.\r\n\t\r\n    - Tryck på Piltangenterna för att navigera mellan radioknappar, mellan valen i en dropdown-meny eller autocomplete-lista.\r\n\r\n4. Säkerställ att fokus aldrig fastnar någonstans.\r\n\r\n    - Öppna en komponent. Kontrollera att det går att navigera ut ur komponenten och vidare till nästa komponent.\r\n\r\n    - Öppna ett modalt fönster. Kontrollera att det går att avbryta eller stänga modalen med tangentbordet och att du inte fastnar i den.\r\n"
     },
     {
       "id": "lofo",
-      "name": "Logisk fokusordning",
+      "name": "Fokus",
       "type": "requirement",
-      "wcag": "2.4.3 (A)",
-      "en301549": "9.2.4.3",
+      "wcag": "2.4.3 (A),2.4.7 (AA)",
+      "en301549": "9.2.4.3,9.2.4.7",
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Alla interaktiva element på en webbsida är placerade i en ordning som är logisk för användare som använder tangentbordet. Den visuella ordningen och fokusordningen ska vara densamma så långt det är möjligt.",
-      "why": "En logisk fokusordning hjälper användare som navigerar med tangentbord på en webbsida eftersom fokus flyttas på ett förväntat sätt. Att fokusordningen är konsekvent med läsordningen gör att tjänsten uppfattas som förutsägbar och intuitiv.",
-      "howToTest": "Navigera igenom hela sidan med tabbtangenten och testa att tabbordningen följer sidans läsordning. Ordningen ska kännas intuitiv och förutsägbar.\r\n\r\nModala fönster och dialogrutor:\r\n\r\n1. Öppna en modal och kontrollera att du får fokus inne i modalen.\r\n\r\n2. Kontrollera att det går att navigera mellan objekten inne i modalen och att fokus aldrig flyttas utanför den.\r\n\r\n3. Stäng modalen genom att trycka på Stäng-knappen eller Esc-tangenten.\r\n\r\n4. Kontrollera att fokus hamnar på rätt ställe efter att du stängt modalen.\r\n"
-    },
-    {
-      "id": "syfo",
-      "name": "Synligt fokus",
-      "type": "requirement",
-      "wcag": "2.4.7 (AA)",
-      "en301549": "9.2.4.7",
-      "contentType": "",
-      "category": "Navigation och interaktion",
-      "objectType": "web",
-      "statement": "När en användare navigerar på en webbsida med tangentbord, framgår det tydligt vilket element som har fokus.",
-      "why": "Användare som navigerar med tangentbord ska visuellt kunna avgöra vilket objekt som har fokus och som de kan interagera med.",
-      "howToTest": "1. Kontrollera att fokusmarkören inte är dold. Vanliga misstag är att sätta outline till 0 eller none i sidans CSS-kod.\r\n\r\n2. Navigera igenom sidan med tabbtangenten. När du navigerar till ett objekt, kontrollera att det är tydligt markerat att det är just det objekt som har fokus.\r\n\r\n3. Om du använder helt egengjorda komponenter behöver du själv säkerställa att komponenten har synligt fokus.\r\n"
+      "statement": "- När en användare navigerar på en webbsida med tangentbord, framgår det tydligt vilket element som har fokus.\r\n- Alla interaktiva element på en webbsida är placerade i en ordning som är logisk för användare som använder tangentbordet. Den visuella ordningen och fokusordningen ska vara densamma så långt det är möjligt.",
+      "why": "- Användare som navigerar med tangentbord ska visuellt kunna avgöra vilket objekt som har fokus och som de kan interagera med. \r\n- En logisk fokusordning hjälper användare som navigerar med tangentbord på en webbsida eftersom fokus flyttas på ett förväntat sätt. Att fokusordningen är konsekvent med läsordningen gör att tjänsten uppfattas som förutsägbar och intuitiv.",
+      "howToTest": "Navigera igenom hela sidan med tabbtangenten och testa att tabbordningen följer sidans läsordning. Ordningen ska kännas intuitiv och förutsägbar.\r\n\r\nNavigera igenom sidan med tabbtangenten. Kontrollera att det objekt som har fokus är tydligt markerat.\r\n\r\nModala fönster och dialogrutor:\r\n\r\n1. Öppna en modal och kontrollera att du får fokus inne i modalen.\r\n\r\n2. Kontrollera att det går att navigera mellan objekten inne i modalen och att fokus aldrig flyttas utanför den.\r\n\r\n3. Stäng modalen genom att trycka på Stäng-knappen eller Esc-tangenten.\r\n\r\n4. Kontrollera att fokus hamnar på rätt ställe efter att du stängt modalen."
     },
     {
       "id": "tgbg",
-      "name": "Tangentbordsgenväg",
+      "name": "Hoppa över grupperat innehåll",
       "type": "requirement",
       "wcag": "2.4.1 (A)",
       "en301549": "9.2.4.1",
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Överst på webbsidan finns en länk som låter användare som navigerar med tangentbord att hoppa över innehåll som upprepas på flera sidor, exempelvis menyer. Länken flyttar användarens fokus direkt till sidans huvudinnehåll.",
+      "statement": "Överst på webbsidan finns en länk som låter användare som navigerar med tangentbord hoppa över innehåll som upprepas på flera sidor, exempelvis menyer.",
       "why": "Användare som navigerar med tangentbord når huvudinnehållet på en webbsida snabbt och slipper navigera förbi samma navigationsområden varje gång användaren öppnar en ny sida.",
-      "howToTest": "1. Ställ markören i webbläsarens adressfält. Tryck en gång på tabbtangenten. I vissa webbläsare kan du första behöva navigera förbi flera knappar i webbläsarens inbyggda gränssnitt, exempelvis bokmärken och favoriter.\r\n\r\n2. Kontrollera att en länk med länktexten 'Gå till sidans innehåll' eller liknande visas längst upp på sidan. Länken ska alltså vara det först interaktiva objektet på sidan och före sidans logotyp. Den ska bara vara synlig när den har fokus.\r\n\r\n3. Tryck på Enter för att aktivera länken. Fokus ska nu flyttas till sidans huvudinnehåll, oftast dess första H1-rubrik. Beroende på hur stort sidhuvudet är kan sidan kan scrolla ner lite så att huvudrubriken hamnar högst upp på den synliga delen av sidan.\r\n\r\n4. Navigera till nästa interaktiva objekt genom att trycka på tabbtangenten en gång till. Kontrollera att fokus då hamnar på nästa interaktiva objekt efter huvudrubriken.\r\n"
+      "howToTest": "1. Se till att du är högst upp på sidan. Tryck en gång på tabbtangenten.\r\n\r\n2. Kontrollera att en länk med länktexten 'Gå till sidans innehåll' eller liknande visas längst upp på sidan. Länken ska alltså vara det första interaktiva objektet på sidan och ligga före sidans logotyp. Den ska bara vara synlig när den har fokus.\r\n\r\n3. Tryck på Enter för att aktivera länken. Du ska nu hoppa till sidans huvudinnehåll, oftast dess första H1-rubrik. Beroende på hur stort sidhuvudet är kan sidan kan scrolla ner lite så att huvudrubriken hamnar högst upp på den synliga delen av sidan.\r\n\r\n4. Navigera till nästa interaktiva objekt genom att trycka på tabbtangenten en gång till. Kontrollera att fokus då hamnar på nästa interaktiva objekt efter huvudrubriken.\r\n"
     },
     {
       "id": "kork",
-      "name": "Kortkommandon aktiveras inte med endast en tangent",
+      "name": "Kortkommandon",
       "type": "requirement",
       "wcag": "2.1.4 (A)",
       "en301549": "9.2.1.4",
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Webbsidan innehåller inga kortkommandon som aktiveras med endast en bokstav, siffra eller specialtecken. Om det finns kortkommandon krävs också en modifieringstangent, exempelvis Ctrl, Alt eller Caps-lock.",
-      "why": "Kortkommandon som bara består av ett tecken kan orsaka problem för användare som navigerar med röststyrning och för användare med nedsatt motorik som kan råka trycka på en tangent av misstag.",
-      "howToTest": "Om inte kortkommandon har byggts in explicit, finns egentligen inget behov av att göra tester av denna punkt. Om webbsidan eller tjänsten som ska testas inte byggts av det egna teamet, och det är oklart huruvida kortkommandon har byggts in, testa genom att göra följande:\r\n\r\n1. Testa om det finns kortkommandon kopplade till alfabetiska tangenter genom att trycka på varje tangent i tur och ordning.\r\n\r\n2. Notera om det sker något i gränssnittet när tangenterna trycks ner.\r\n\r\n3. Gör samma test med numeriska tangenter och notera om det sker något i gränssnittet när tangenterna trycks ner.\r\n\r\n4. Om det sker något i gränssnittet när en tangent trycks ner, justera kortkommandot att inte aktiveras med enskilda bokstäver eller siffror. Lägg exempelvis till en eller flera moderingstangenter.\r\n"
+      "statement": "Webbsidan innehåller inga kortkommandon som aktiveras med enbart en tangent. Om det finns kortkommandon krävs en modifieringstangent, exempelvis Ctrl, Alt eller Caps-lock.",
+      "why": "Vi vill undvika att användare aktiverar kortkommandon av misstag. Detta är särskilt viktigt för användare med nedsatt motorik eller användare som navigerar med röststyrning.",
+      "howToTest": "Tryck ner alla tangenter i tur och ordning. Notera om det sker något i gränssnittet."
     },
     {
       "id": "fbfo",
-      "name": "Förutsägbart fokus",
+      "name": "Inga oväntade förändringar",
       "type": "requirement",
-      "wcag": "3.2.1 (A)",
-      "en301549": "9.3.2.1",
+      "wcag": "3.2.1 (A),3.2.2 (A)",
+      "en301549": "9.3.2.1,9.3.2.2",
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "När användaren flyttar fokus till en komponent sker inga oväntade förändringar. Exempel på oväntade förändringar är att nya fönster öppnas, fokus flyttas, att användaren skickas till en annan sida eller att innehållet på sidan förändras.",
+      "statement": "Inga oväntade förändringar sker när användaren:\r\n- flyttar fokus till en komponent\r\n- ändrar en komponent, exempelvis skriver något i ett textfält eller markerar en kryssruta\r\n\r\nExempel på oväntade förändringar är att nya fönster öppnas, fokus flyttas, att användaren skickas till en annan sida, att formulär skickas automatiskt eller att innehållet på sidan förändras.",
       "why": "Ett gränssnitt uppfattas som mer förutsägbart av användare när vi undviker oväntade förändringar. Det underlättar särskilt för användare med nedsatt syn, kognition eller motorik.",
-      "howToTest": "Sätt fokus på en komponent, antingen genom att klicka på komponenten men helst genom att navigera till den med tabbtangenten. Kontrollera därefter följande:\r\n\r\n1. Inget nytt fönster eller ny modal öppnas\r\n\r\n2. Fokus är kvar på komponenten till dess att användaren väljer att flytta fokus\r\n\r\n3. Användaren är kvar på sidan\r\n\r\n4. Formulär skickas inte\r\n\r\n5. Det sker ingen större förändring av innehållet på sidan\r\n\r\nTesta gärna med användare för att kontrollera att allt som sker uppfattas som intuitivt och förväntat.\r\n"
+      "howToTest": "Kontrollera att ingen förändring sker på sidan när en komponent får fokus eller ändras.\r\n"
     },
     {
       "id": "ihof",
-      "name": "Innehåll visas inte endast vid hover eller fokus",
+      "name": "Innehåll som visas vid hover eller fokus",
       "type": "requirement",
       "wcag": "1.4.13 (AA)",
       "en301549": "9.1.4.13",
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Innehåll som aktiveras vid hover kan också aktiveras med fokus och tvärtom. Det finns minst ett tydligt sätt för användaren att stänga eller dölja innehållet. När användaren hovrar över innehållet döljs det inte förrän användaren själv väljer att stänga eller dölja det.",
-      "why": "Innehåll som bara visas vid hover ska även kunna visas för användare som navigerar med tangentbord. Användaren ska själv kunna kontrollera om innehållet ska visas och hur länge för att kunna ta del av det utifrån sina förutsättningar.",
-      "howToTest": "1. Navigera igenom sidan med tabbtangenten och kontrollera om ny information visas i anslutning till komponenter eller interaktiva objekt när de får fokus.\r\n\r\n2. Använd musmarkören och hovra över komponenter och interaktiva objekt. Kontrollera om ny information visas i anslutning till objekten vid hover.\r\n\r\n3. Jämför och kontrollera att information som läggs till vid komponenter och interaktiva objekt vid fokus eller hover är möjlig att få fram med båda navigationssätten. Innehåll ska inte förutsätta att användaren kan navigera med antingen tangentbord eller mus.\r\n\r\n4. Kontrollera att tooltips och liknande komponenter enbart visar extra information när användaren har valt att interagera med komponenten, exempelvis genom att klicka på komponenten eller trycka Enter när komponenten har fokus.\r\n"
+      "statement": "Innehåll som visas vid hover kan också visas med fokus och tvärtom. Det finns minst ett tydligt sätt för användaren att sluta visa innehållet. Innehållet slutar inte visas förrän användaren själv väljer att sluta visa det.",
+      "why": "Användaren ska oavsett om hen använder mus eller tangentbord kunna kontrollera om innehållet ska visas och hur länge för att kunna ta del av det utifrån sina förutsättningar.",
+      "howToTest": "1. Navigera igenom sidan med tabbtangenten och kontrollera om ny information visas i anslutning till interaktiva objekt när de får fokus.\r\n\r\n2. Använd musmarkören och hovra över interaktiva objekt. Kontrollera om ny information visas i anslutning till objekten vid hover.\r\n\r\n3. Jämför och kontrollera att information som läggs till vid interaktiva objekt vid fokus eller hover är möjlig att få fram med båda navigationssätten."
     },
     {
       "id": "inko",
       "name": "Inaktiva komponenter",
-      "type": "requirement",
-      "wcag": "3.3.1 (A)",
-      "en301549": "9.3.3.1",
+      "type": "guideline",
       "contentType": "",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Komponenter är aldrig inaktiva, det vill säga uppmärkta med attributet disabled. Komponenter som knappar, radioknappar och kryssrutor är alltid aktiva och går alltid att interagera med. Det finns en tydlig felhantering kopplad till komponenten när den inte fungerar och användaren inte kan gå vidare i ett flöde.",
-      "why": "Inaktiva komponenter, exempelvis knappar, är i praktiken osynliga för många användare. Det är därför svårt att förstå varför något som uppfattas som valbart ibland inte är det. Det är också svårt att utforma en knapp som är tydlig och inaktiv. Genom att koppla en tydlig felhantering till inaktiva knappar som inte är valbara i en viss situation, hjälper vi våra användare att förstå vad som är fel.",
-      "howToTest": "Gå igenom sidan och kontrollera att alla interaktiva komponenter går att använda. Det ska inte finnas någon komponent på sidan som är inaktiverad med attributet disable."
-    },
-    {
-      "id": "fbin",
-      "name": "Förutsägbar inmatning",
-      "type": "requirement",
-      "wcag": "3.2.2 (A)",
-      "en301549": "9.3.2.2",
-      "contentType": "",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "När användaren ändrar en komponent, exempelvis skriver något i ett textfält eller gör ett val, sker inga oväntade förändringar. Exempel på oväntade förändringar är att nya fönster öppnas, fokus flyttas, att användaren skickas till en annan sida eller att formuläret skickas automatiskt.",
-      "why": "Användaren ska kunna veta var markören befinner sig för att undvika att skriva i fel fält eller göra ett felaktigt val. Förutsägbara funktioner underlättar för alla användare, men särskilt för användare med nedsatt syn eller kognition.",
-      "howToTest": "1. Granska alla komponenter på sidan som låter användaren välja ett värde eller mata in information.\r\n\r\n2. Gör ett val eller mata in information i varje komponent. Om det tillkommer nya fält som en konsekvens av ditt val eller den information som du har matat in, är det okej. Det är viktigt att den övergripande strukturen på sidan är den samma.\r\n\r\n3. Kontrollera att inga nya fönster öppnas utan förvarning när du exempelvis väljer en radioknapp, kryssruta eller gör ett val i en dropdownmeny.\r\n\r\n4. Kontrollera att fokus inte automatiskt flyttas till nästa komponent när du skriver in text eller gör ett val. Fokus ska vara kvar på samma komponent tills du väljer att flytta fokus. Om sidan laddas om när du gör ett val, exempelvis för att hämta ny data när du gör ett val i en dropdownmeny, ska fokus vara kvar på det valda elementet även efter att sidan har laddat färdigt.\r\n\r\n5. Kontrollera att formulär inte skickas automatiskt när du flyttar fokus från en komponent till en annan. Skriv in information i formulärets sista fält och navigera vidare med tabbtangenten. Fokus ska då flyttas till nästa komponent, som troligtvis är en knapp för att skicka. \r\n\r\n6. Kontrollera att det finns en knapp i formuläret för att skicka informationen till mottagaren och att . informationen skickas när du aktiverar knappen. Om formuläret innehåller fel visas ett felmeddelande.\r\n\r\n7. Testa gärna med användare för att säkerställa att allt som sker känns intuitivt och förväntat.\r\n"
-    },
-    {
-      "id": "pola",
-      "name": "Porträtt- och landskapsläge",
-      "type": "requirement",
-      "wcag": "1.3.4 (AA)",
-      "en301549": "9.1.3.4",
-      "contentType": "",
-      "category": "Flexibilitet och anpassning",
-      "objectType": "web",
-      "statement": "Webbsidan eller tjänsten fungerar oavsett om användaren visar den i porträtt- eller landskapsläge. Gränssnittet kräver inte att skärmens riktning är låst.",
-      "why": "Användare med nedsatt motorik kan behöva montera fast sin dator, surfplatta eller telefon på exempelvis en rullstol eller ett stativ. Att själv välja det håll som passar bäst underlättar även för användare med nedsatt syn.",
-      "howToTest": "Testa den aktuella webbsidan eller tjänsten med en mobil enhet, eller genom att göra följande:\r\n\r\n1. Starta webbläsarens utvecklingsverktyg med F12.\r\n\r\n2. Aktivera verktyget för att testa den aktuella webbsidan med mobilenheter.\r\n\r\n3. Välj en enhet att testa med, exempelvis iPone 12 Pro.\r\n\r\n4. Använd knappen för att rotera skärm för att testa om gränssnittet fungerar i porträtt- och landskapsläge."
+      "statement": "Komponenter är aldrig inaktiva, det vill säga uppmärkta med attributet `disabled`. Komponenter som knappar, radioknappar och kryssrutor är alltid aktiva och går alltid att interagera med. Det finns en tydlig felhantering kopplad till komponenten när den inte fungerar och användaren inte kan gå vidare i ett flöde.",
+      "why": "Inaktiva komponenter får inte tabbfokus och kan därför vara svåra att hitta. Det är också problematiskt att uppfylla kontrastkraven och samtidigt signalera att komponenten är inaktiv.",
+      "howToTest": "Gå igenom sidan och kontrollera att alla interaktiva komponenter går att använda. Det ska inte finnas någon komponent på sidan som är inaktiverad med attributet `disabled`."
     },
     {
       "id": "flla",
       "name": "Flexibel layout",
       "type": "requirement",
-      "wcag": "1.4.10 (AA)",
-      "en301549": "9.1.4.10",
+      "wcag": "1.4.10 (AA),1.3.4 (AA)",
+      "en301549": "9.1.4.10,9.1.3.4",
       "contentType": "",
       "category": "Flexibilitet och anpassning",
       "objectType": "web",
-      "statement": "Webbsidans layout är flexibel och responsiv, alltså följsam till storleken på användarens skärm. Innehållet kan visas med en skärmbredd på 320 pixlar utan att innehåll eller funktionalitet försvinner. Användaren behöver inte skrolla i mer än en riktning, om det inte finns särskilda skäl.",
-      "why": "Webbsidor med en följsam layout underlättar för användare som behöver förstora texten i ett gränssnitt och för alla användare som besöker en webbsida med en liten skärm.",
-      "howToTest": "1. Testa den aktuella webbsidan eller tjänsten i mobila enheter med olika skärmbreddar.\r\n\r\n2. Justera bredden på webbläsarens fönster för att kontrollera hur innehållet på sidan förhåller sig till fönstrets bredd.\r\n\r\n3. Zooma i webbläsaren genom att trycka på Ctrl + (plus) och Ctrl - (minus). Ctrl 0 återställer zoomfunktionen till 100 %.\r\n"
+      "statement": "Webbsidans layout är flexibel och responsiv, alltså följsam till storleken på användarens skärm.",
+      "why": "Webbsidor med en följsam layout underlättar för exempelvis användare som behöver förstora texten i ett gränssnitt och för alla användare som besöker en webbsida med en liten skärm. Användare med nedsatt motorik kan behöva montera fast sin dator, surfplatta eller telefon på exempelvis en rullstol eller ett stativ och därmed sakna möjlighet att vrida på skärmen. ",
+      "howToTest": "Kontrollera att:\r\n- Innehållet kan visas med en godtycklig skärmbredd, från 320 pixlar och uppåt, utan att innehåll eller funktionalitet försvinner.\r\n- Användaren behöver inte skrolla i mer än en riktning, om det inte finns särskilda skäl.\r\n- Gränssnittet fungerar oavsett om användaren visar det i porträtt- eller landskapsläge.\r\n"
     },
     {
       "id": "laso",
-      "name": "Läsordning vid olika skärmstorlekar",
-      "type": "requirement",
-      "wcag": "1.3.2 (A)",
-      "en301549": "9.1.3.2.",
-      "contentType": "",
-      "category": "Flexibilitet och anpassning",
-      "objectType": "web",
-      "statement": "Innehållets ordning på en webbsida är korrekt oberoende av användarens skärmstorlek. Läsordningen påverkas inte av responsiv design och visas alltid så att innehållet är begripligt och logiskt.",
-      "why": "Skärmstorlek ska inte påverka användares möjligheter att ta del av innehåll på en webbsida. En meningsfull läsordning i innehållet underlättar för alla användare som besöker en webbsida med en smartphone eller enheter med såväl mindre som större skärmar.",
-      "howToTest": "1. Läs igenom innehållet på sidan, utan hjälpmedel, på skärmar med olika storlekar, exempelvis dator, läsplatta och smartphone.\r\n\r\n2. Kontrollera att allt innehåll behåller sin logiska ordning så att dess betydelse bevaras, även om delar av innehållet flyttar sig. Var särskilt uppmärksam på faktarutor, tabeller och informationsområden som hänvisar till annat innehåll på samma sida.\r\n"
-    },
-    {
-      "id": "lahj",
-      "name": "Läsordning för hjälpmedel",
+      "name": "Läsordning",
       "type": "requirement",
       "wcag": "1.3.2 (A)",
       "en301549": "9.1.3.2.",
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Innehållets läsordning är logisk och korrekt för användare som navigerar med hjälpmedel. Innehållets ordning i koden överensstämmer med den visuella presentationen. CSS används inte för att ändra innehållets ordning.",
-      "why": "Användare som navigerar med hjälpmedel eller tangentbordsnavigation når innehåll på en webbsida enligt den ordning som innehåll är ordnat i koden. Det är därför viktigt att den stämmer överens med den visuella presentationen för att återges på ett logiskt och begripligt sätt.",
-      "howToTest": "1. Använd en skärmläsare och läs igenom allt innehåll på sidan.\r\n\r\n2. Kontrollera att läsordningen är korrekt och att skärmläsaren läser upp all text på ett logiskt och intuitivt sätt.\r\n\r\n3. Kontrollera också att skärmläsaren läser innehållet i samma ordning som det presenteras visuellt.\r\n"
+      "statement": "- Innehållets läsordning är logisk och korrekt för användare som navigerar med hjälpmedel. \r\n- Innehållets ordning i koden överensstämmer med den visuella presentationen och påverkas inte av responsiv design eller användarens skärmstorlek. \r\n- CSS används inte för att ändra innehållets ordning.\r\n\r\n",
+      "why": "En meningsfull läsordning i innehållet underlättar för alla användare.",
+      "howToTest": "1. Läs igenom innehållet på sidan, med och utan skärmläsare, och på skärmar med olika storlekar.\r\n\r\n2. Kontrollera att läsordningen följer den visuella ordningen och att skärmläsaren läser upp all text på ett logiskt och intuitivt sätt. Var särskilt uppmärksam på faktarutor, tabeller och informationsområden som hänvisar till annat innehåll på samma sida."
     },
     {
       "id": "infg",
@@ -362,9 +308,9 @@
       "contentType": "",
       "category": "Visuell presentation",
       "objectType": "web",
-      "statement": "Färg används inte som det enda sättet att förmedla information till användaren. Färg kompletteras med exempelvis text, ikoner eller annan visuell utformning för att förmedla ett budskap.",
+      "statement": "Färg kompletteras med exempelvis text, ikoner eller annan visuell utformning för att förmedla information till användaren.\r\n\r\nExempel:\r\n- Ett felmeddelande har både röd text och en ikon.\r\n- En länk markeras med både färg och understykning.",
       "why": "Användare med nedsatt färgseende ska kunna ta del av innehållet på en webbsida.",
-      "howToTest": "Gå igenom sidan och identifiera områden där färger används.\r\n\r\nKontrollera följande:\r\n\r\n1. Information som förmedlas med endast färg förmedlas även som text. \r\n\r\n2. Det finns en visuell markering som gör att innehåll i en avvikande färg skiljer sig från övrigt innehåll.\r\n\r\nDetta gör du enklast genom att testa hur sidan ser ut i gråskala. Säkerställ att all information och funktioner fortfarande är tydliga, även utan färger.\r\n"
+      "howToTest": "Säkerställ att ingen information förmedlas med enbart färg. Detta gör du enklast genom att testa hur sidan ser ut i gråskala. Säkerställ att all information och funktioner fortfarande är tydliga, även utan färger.\r\n"
     },
     {
       "id": "txst",
@@ -375,9 +321,9 @@
       "contentType": "",
       "category": "Flexibilitet och anpassning",
       "objectType": "web",
-      "statement": "Användare kan förstora innehållet på en webbsida upp till 200 procent utan att använda hjälpmedel. Förstoringen ska inte orsaka att innehåll försvinner eller att funktionaliteten försämras. Innehållet ska kunna ändras när användaren trycker på CTRL + och CTRL -. Detta omfattar inte zoom-gester (pinch-to-zoom).",
+      "statement": "Användare kan förstora texten på en webbsida upp till 200 procent utan att använda hjälpmedel. Innehåll ska inte försvinna och funktionalitet ska inte försämras. Textstorlek ska normalt användas med relativa enheter som em, rem eller %.",
       "why": "Användare med nedsatt syn ska kunna förstora innehållet på en webbsida.",
-      "howToTest": "Förstora innehållet genom att använda tangentbordet.\r\n\r\nAnvänd följande kortkommandon för att ändra storleken på texten på webbsidan:\r\n\r\n- CTRL och plus (+) för att öka textens storlek\r\n\r\n- CTRL och minus (-) för att minska textens storlek\r\n\r\n- CTRL och 0 för att återställa textens storlek\r\n\r\nNär du ökar eller minskar textens storlek kan du i sidans överkant se hur mycket du har förstorat textstorleken. Informationen visas bara i några sekunder men blir synligt igen varje gång du ändrar textens storlek.\r\n\r\n1. Förstora texten till 200 %.\r\n\r\n2. Kontrollera att texten verkligen har förstorats.\r\n\r\n3. Kontrollera att texten inte klipps av, trunkeras eller döljs jämfört med när texten inte är förstorad.\r\n\r\n4. Kontrollera att textstorleken i stilmallen (CSS) anges i relativa måttenheter. Öppna kodfönstret genom att trycka F12 eller högerklicka på exempelvis en rubrik på sidan och välj \"Inspektera\". Under fliken “Styles” letar du efter egenskaper som innehåller beskrivningen “size”. Egenskaper för storlek ska anges med enheten “em” eller “rem”.\r\n"
+      "howToTest": "1. Förstora texten till 200%. Detta kan göras i webbläsarens inställningar eller i en särskild bookmarklet. Det finns flera sådana bookmarklets, sök på \"bookmarklet 200% text size\" och följ instruktioner för installation och användning.\r\n\r\n2. Kontrollera att texten verkligen har förstorats.\r\n\r\n3. Kontrollera att texten inte klipps av, trunkeras eller döljs jämfört med när texten inte är förstorad."
     },
     {
       "id": "txml",
@@ -390,7 +336,7 @@
       "objectType": "web",
       "statement": "Det går att öka avståndet mellan tecken, rader, stycken och ord utan att innehåll försvinner eller att funktionaliteten försämras. Följande minimikrav gäller:\r\n \r\n- teckenavstånd till minst 0,12 gånger teckensnittets storlek\r\n- avstånd mellan ord till minst 0,16 gånger teckensnittets storlek\r\n- radavstånd till minst 1,5 gånger teckensnittets storlek\r\n- avstånd mellan stycken till minst 2 gånger teckensnittets storlek",
       "why": "Det är särskilt viktigt för användare med dyslexi eller nedsatt syn att kunna justera avstånd i text.",
-      "howToTest": "Det enklaste sättet att testa dessa textförändringar är att använda ett så kallat bokmärke, eller bookmarklet. Använd exempelvis bokmärket “Text spacing bookmarklet” som finns på att hämta på Codepen. Gör så här:\r\n1. Gör en sökning på “Text spacing bookmarklet”.’\r\n\r\n2. Klicka på det första sökresultatet som borde vara hos Codepen.\r\n\r\n3. Inne på webbplatsen Codepen, dra länken \"Text spacing\" till bokmärkesfältet eller högerklicka på länken och välj \"Spara som bokmärke.\" Bokmärket kommer då att läggas till bland dina bokmärken i din webbläsarens bokmärkesfält.\r\n\r\n4. När du vill testa om textavstånd stöds på din sida, välj bokmärket “Text spacing” från ditt bokmärkesfält för att göra textändringarna.\r\n\r\n5. För att återställa, ladda om sidan.\r\n\r\nKontrollera följande och jämför hur texten ser ut utan några ändringar av textavståndet:\r\n- Radavståndet har ökat.\r\n\r\n- Avståndet mellan textstycken har ökat.\r\n\r\n- Avståndet mellan tecken har ökat.\r\n\r\n- Avståndet mellan två ord ökat.\r\n\r\n- Inga objekt på sidan, exempelvis texter, bilder eller knappar, överlappar eller /hamnar bakom något annat objekt på sidan.\r\n\r\n- Text klipps inte av eller trunkeras."
+      "howToTest": "Det enklaste sättet att testa dessa textförändringar är att använda ett så kallat bokmärke, eller bookmarklet. Använd exempelvis bokmärket “Text spacing bookmarklet” som finns på att hämta på Codepen.\r\n\r\nKontrollera följande och jämför hur texten ser ut utan några ändringar av textavståndet:\r\n- Radavståndet har ökat.\r\n\r\n- Avståndet mellan textstycken har ökat.\r\n\r\n- Avståndet mellan tecken har ökat.\r\n\r\n- Avståndet mellan två ord har ökat.\r\n\r\n- Inga objekt på sidan, exempelvis texter, bilder eller knappar, överlappar eller hamnar bakom något annat objekt på sidan.\r\n\r\n- Text klipps inte av eller trunkeras."
     },
     {
       "id": "ngkl",
@@ -399,10 +345,10 @@
       "wcag": "2.5.2 (A)",
       "en301549": "9.2.5.2",
       "contentType": "",
-      "category": "Flexibilitet och anpassning",
+      "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Användaren kan alltid ångra ett påbörjat klick eller ett tryck på en touchskärm genom att flytta musmarkören eller att dra fingret bort från ett objekt. En handling genomförs alltså inte direkt när användaren trycker ner en knapp på sitt pekdon eller trycker ner fingret på skärmen. Handlingen slutförs istället när användaren lyfter sitt finger från sitt pekdon eller från skärmen.",
-      "why": "Möjligheten att kunna ångra ett påbörjat klick eller tryck på en touchskärm underlättar för alla användare som har råkat klicka eller trycka på fel objekt.",
+      "statement": "Användaren kan alltid ångra ett påbörjat klick eller ett tryck på en touchskärm genom att flytta musmarkören eller att dra fingret bort från ett objekt. Handlingen slutförs inte förrän användaren lyfter sitt finger från sitt pekdon eller från skärmen.",
+      "why": "Möjligheten att ångra ett påbörjat klick eller tryck på en touchskärm underlättar för alla användare som har råkat klicka eller trycka på fel objekt.",
       "howToTest": "1. Klicka på ett interaktivt objekt, exempelvis en knapp eller en länk, men håll nere vänster musknapp.\r\n\r\n2. Flytta markören bort från det interaktiva objektet. \r\n\r\n3. Släpp vänster musknapp.\r\n\r\n4. Om testet lyckas ska objektets funktion inte aktiveras. "
     },
     {
@@ -414,9 +360,9 @@
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Det finns alternativ till komplexa fingerrörelser. Funktioner som kräver flera fingrar eller sveprörelser är också möjliga att utföra på enklare sätt med endast ett finger. \r\nTill exempel en karta där användaren kan dra ihop/dra isär för att zooma så finns även +/-knappar som användaren kan klicka på.",
+      "statement": "Det finns alternativ till komplexa fingerrörelser. Funktioner som kräver flera fingrar eller sveprörelser är också möjliga att utföra på enklare sätt med endast ett finger. \r\nPå kartor kan det till exempel finnas knappar med samma funktion som nyp-zoom.",
       "why": "Alla har inte möjlighet att använda flera fingrar samtidigt till exempel på grund av motoriska nedsättningar. Komplexa rörelser är även svårt för ovana användare.",
-      "howToTest": "Kontrollera att funktioner som bygger på gester kan aktiveras på ett alternativt sätt. Exempel är dra-och-släpp, karuseller, zoomfunktioner i kartor och objekt som kan flyttas i sidled för att visa fler funktioner."
+      "howToTest": "Kontrollera att funktioner som bygger på gester kan aktiveras på ett alternativt sätt. Exempel på sådana funktioner är dra-och-släpp, zoomfunktioner och objekt som kan flyttas i sidled för att visa fler funktioner."
     },
     {
       "id": "alro",
@@ -429,7 +375,7 @@
       "objectType": "web",
       "statement": "Det finns alternativ till styrning med handrörelser som aktiverar funktioner genom att användaren skakar, vrider eller rör vid enheten eller viftar framför den. Funktioner kan aktiveras på något annat sätt, exempelvis genom knappar i gränssnittet. Rörelsestyrning ska gå att stänga av för att undvika oavsiktlig aktivering.",
       "why": "Användare kan ha sin enhet monterad på ett stativ eller ha nedsatt motorik vilket hindrar dem från att aktivera funktioner med rörelser. Styrning som bygger på rörelser kan också vara svåra för användare med ofrivilliga rörelser, spasmer eller ryckningar.",
-      "howToTest": "Kontrollera att:\r\n- Funktioner som bygger på rörelser kan aktiveras på ett alternativt sätt. Exempel är att användaren kan tilta en mobil enhet för att gå framåt eller bakåt i ett flöde eller att vifta med handen framför enhetens kamera för att navigera i en karta. Dessa funktioner ska också vara tillgängliga genom exempelvis knappar.\r\n- Rörelsestyrning går stänga av för att undvika oavsiktlig aktivering."
+      "howToTest": "Kontrollera att:\r\n- Funktioner som bygger på rörelser kan aktiveras på ett alternativt sätt.\r\n- Rörelsestyrning går stänga av för att undvika oavsiktlig aktivering."
     },
     {
       "id": "kote",
@@ -440,9 +386,9 @@
       "contentType": "",
       "category": "Visuell presentation",
       "objectType": "web",
-      "statement": "All text har ett kontrastvärde på minst 4,5:1 mot bakgrunden. Det gäller även text i bilder i den mån det förekommer.",
+      "statement": "All text har ett kontrastvärde på minst 4.5:1 mot bakgrunden.",
       "why": "Tillräckliga kontraster är viktigt för att alla användare ska kunna ta del av information på en webbsida, även användare med nedsatt syn eller kontrastseende.",
-      "howToTest": "#### Text mot bakgrund\r\n1. Granska all brödtext, text i bilder och text i komponenter på sidan.\r\n\r\n2. Kontrollera att text presenteras mot bakgrunder med tydlig kontrast till texten.\r\n\r\n3. Om du är osäker, gör följande:\r\n\t- Identifiera textens färg och färgen på bakgrunden där texten är placerad.\r\n    - Kontrollera att kontrasten mellan text och bakgrund är minst 4,5:1.\r\n\r\n#### Text i komponenter\r\nOm texten är i en interaktiv komponent:\r\n1. Kontrollera vilka olika tillstånd som komponenten kan befinna sig i.\r\n\r\n2. För varje tillstånd, gör följande:\r\n\t- Identifiera textens färg\r\n    - Identifiera bakgrundens färg\r\n    - Kontrollera att kontrastförhållandet mellan text och bakgrund är minst 4,5:1.\r\n"
+      "howToTest": "\r\n\r\n#### Text mot bakgrund\r\n1. Granska all brödtext, text i bilder och text i komponenter på sidan.\r\n\r\n2. Kontrollera att text presenteras mot bakgrunder med tydlig kontrast till texten.\r\n\r\n3. Om du är osäker, gör följande:\r\n\t- Identifiera textens färg och färgen på bakgrunden där texten är placerad.\r\n    - Kontrollera att kontrasten mellan text och bakgrund är minst 4,5:1.\r\n\r\n#### Text i komponenter\r\nOm texten är i en interaktiv komponent:\r\n1. Kontrollera vilka olika tillstånd som komponenten kan befinna sig i.\r\n\r\n2. För varje tillstånd, gör följande:\r\n\t- Identifiera textens färg\r\n    - Identifiera bakgrundens färg\r\n    - Kontrollera att kontrastförhållandet mellan text och bakgrund är minst 4,5:1.\r\n"
     },
     {
       "id": "koti",
