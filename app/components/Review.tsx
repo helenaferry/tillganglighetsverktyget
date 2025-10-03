@@ -268,7 +268,7 @@ export default function Review({ reviewId, requirementId }: Props) {
             return (
               <div className="relative">
                 <div
-                  className={`absolute z-1 inset-y-0 left-0 ${showCategoryNav ? 'w-screen sm:w-[17rem]' : 'w-[4rem]'} overflow-y-auto bg-white`}
+                  className={`absolute z-1 inset-y-0 left-0 ${showCategoryNav ? 'w-screen sm:w-[17rem]' : 'w-[0]'} overflow-y-auto bg-white`}
                 >
                   <CategoryNav
                     reviewId={reviewId}
@@ -279,7 +279,7 @@ export default function Review({ reviewId, requirementId }: Props) {
                     onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
                   />
                 </div>
-                <div className={`${showCategoryNav ? 'ml-[17rem]' : 'ml-[4rem]'}`}>
+                <div className="sm:ml-[17rem]">
                   <div className="content-container content-container--largest">
                     {review && (
                       <>
@@ -287,11 +287,24 @@ export default function Review({ reviewId, requirementId }: Props) {
                           category={categoriesWithRequirements.find(
                             (cat) => cat.category === requirement.category,
                           )}
+                          onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
                         />
                         <ReviewRequirement
                           key={requirement.id}
                           requirement={requirement}
                           reviewId={reviewId}
+                          numberInCategory={
+                            categoriesWithRequirements
+                              .find((cat) => cat.category === requirement.category)
+                              ?.requirements.findIndex(
+                                (req) => String(req.id) === String(requirement.id),
+                              ) || 0 + 1
+                          }
+                          totalInCategory={
+                            categoriesWithRequirements.find(
+                              (cat) => cat.category === requirement.category,
+                            )?.requirements.length || 0
+                          }
                         />
                         <PrevNextRequirement
                           reviewId={reviewId}

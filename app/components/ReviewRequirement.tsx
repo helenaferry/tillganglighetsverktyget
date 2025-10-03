@@ -10,9 +10,16 @@ import StatusBadge from './StatusBadge';
 type Props = {
   requirement: Requirement;
   reviewId: string;
+  numberInCategory: number;
+  totalInCategory: number;
 };
 
-export default function ReviewRequirement({ requirement, reviewId }: Props) {
+export default function ReviewRequirement({
+  requirement,
+  reviewId,
+  numberInCategory,
+  totalInCategory,
+}: Props) {
   const { check, isLoading: isCheckLoading } = useCheck(String(reviewId), String(requirement.id));
 
   return (
@@ -22,8 +29,9 @@ export default function ReviewRequirement({ requirement, reviewId }: Props) {
           <div className="border-b-1 md:flex gap-4 justify-between">
             <div className="flex flex-col md:flex-row gap-4">
               <div>
-                {/* TODO */}
-                <p className="text-grayscale-700">Krav n av x</p>
+                <p className="text-grayscale-700">
+                  Krav {numberInCategory} av {totalInCategory}
+                </p>
                 <h3>{requirement.name}</h3>
                 <div className="flex gap-2">
                   <div>

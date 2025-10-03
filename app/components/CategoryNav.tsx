@@ -91,7 +91,9 @@ export default function CategoryNav({
       <DigiTypography>
         <div className="flex justify-between pt-5 px-5">
           {showCategoryNav && <h2>Kravkategorier</h2>}
-          <button onClick={onToggleNav}>{showCategoryNav ? 'Fäll in' : 'Fäll ut'}</button>
+          <button className="block sm:hidden" onClick={onToggleNav}>
+            Stäng
+          </button>
         </div>
         <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'}`}>
           {categories.map((category) => (
