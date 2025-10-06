@@ -36,7 +36,6 @@ export default function ReviewRequirement({
                 <div className="flex gap-2">
                   {requirement.en301549 && (
                     <div>
-                      {requirement.en301549}
                       <strong>EN</strong>
                       {requirement.en301549 &&
                         requirement.en301549.length > 0 &&
