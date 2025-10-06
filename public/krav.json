@@ -386,61 +386,22 @@
       "contentType": "",
       "category": "Visuell presentation",
       "objectType": "web",
-      "statement": "All text har ett kontrastvärde på minst 4.5:1 mot bakgrunden.",
-      "why": "Tillräckliga kontraster är viktigt för att alla användare ska kunna ta del av information på en webbsida, även användare med nedsatt syn eller kontrastseende.",
-      "howToTest": "\r\n\r\n#### Text mot bakgrund\r\n1. Granska all brödtext, text i bilder och text i komponenter på sidan.\r\n\r\n2. Kontrollera att text presenteras mot bakgrunder med tydlig kontrast till texten.\r\n\r\n3. Om du är osäker, gör följande:\r\n\t- Identifiera textens färg och färgen på bakgrunden där texten är placerad.\r\n    - Kontrollera att kontrasten mellan text och bakgrund är minst 4,5:1.\r\n\r\n#### Text i komponenter\r\nOm texten är i en interaktiv komponent:\r\n1. Kontrollera vilka olika tillstånd som komponenten kan befinna sig i.\r\n\r\n2. För varje tillstånd, gör följande:\r\n\t- Identifiera textens färg\r\n    - Identifiera bakgrundens färg\r\n    - Kontrollera att kontrastförhållandet mellan text och bakgrund är minst 4,5:1.\r\n"
+      "statement": "All text har ett kontrastvärde på minst 4,5:1 mot bakgrunden.",
+      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende.",
+      "howToTest": "\r\n\r\n#### Text mot bakgrund\r\n1. Granska all brödtext, text i bilder och text i komponenter på sidan.\r\n\r\n2. Gör följande (kan med fördel granskas med automatiska verktyg):\r\n\t- Identifiera textens färg och färgen på bakgrunden där texten är placerad.\r\n    - Kontrollera att kontrasten mellan text och bakgrund är minst 4,5:1.\r\n\r\n#### Text i komponenter\r\nOm texten är i en interaktiv komponent:\r\n1. Kontrollera vilka olika tillstånd som komponenten kan befinna sig i.\r\n\r\n2. För varje tillstånd, gör följande (kan med fördel granskas med automatiska verktyg):\r\n\t- Identifiera textens färg\r\n    - Identifiera bakgrundens färg\r\n    - Kontrollera att kontrastförhållandet mellan text och bakgrund är minst 4,5:1.\r\n"
     },
     {
       "id": "koti",
-      "name": "Kontrast för standardtillstånd i komponenter",
+      "name": "Kontrast för sådant som inte är text",
       "type": "requirement",
       "wcag": "1.4.11 (AA)",
       "en301549": "9.1.4.11",
       "contentType": "",
       "category": "Visuell presentation",
       "objectType": "web",
-      "statement": "Alla interaktiva komponenter har ett kontrastvärde på minst 3:1 mot bakgrunden eller intilliggande objekt. Komponenter bör också ha tydliga visuella gränser. Kravet på kontraster gäller i komponentens standardtillstånd (default state).",
+      "statement": "Allt som inte är text har ett kontrastvärde på minst 3:1 mot bakgrunden eller intilliggande objekt. Detta gäller exempelvis formulärkomponenter och grafiska objekt. Dessa bör också ha tydliga visuella gränser. Kravet på kontraster gäller såväl i standardtillstånd som i övriga tillstånd, exempelvis focus, hover, selected m.fl.\r\n",
       "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende.",
-      "howToTest": "1. Identifiera sidans alla interaktiva komponenter.\r\n\r\n2. Kontrollera att komponenter är placerade mot bakgrunder med tydlig kontrast till komponenternas ramar eller bakgrundsfärg.\r\n\r\n3. Om du är osäker, gör följande:\r\n\r\n\t- Identifiera färgen i den angränsande bakgrunden.\r\n    - Identifiera komponentens bakgrundsfärg. Om komponenten har samma bakgrund som den angränsande bakgrunden, identifiera färgen på komponentens ram.\r\n    - Kontrollera att kontrastförhållandet mellan komponentens ram och den bakgrund där komponenten är placerad, är minst 3:1.\r\n"
-    },
-    {
-      "id": "kovr",
-      "name": "Kontrast för övriga tillstånd i komponenter",
-      "type": "requirement",
-      "wcag": "1.4.11",
-      "en301549": "9.1.4.11",
-      "contentType": "",
-      "category": "Visuell presentation",
-      "objectType": "web",
-      "statement": "När en komponent är i ett annat tillstånd (state) än standardtillståndet (default) har komponenten ett kontrastvärde på minst 3:1 mot mot bakgrunden eller intilliggande objekt. Exempel på tillstånd: focus, hover, selected, pressed, checked, besökt eller obesökt och expanderad eller ihopfälld.",
-      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende.",
-      "howToTest": "1. För alla interaktiva komponenter på sidan:\r\n\r\n2. Identifiera vilka tillstånd som komponenten kan befinna sig i.\r\n\r\n3. För varje tillstånd:\r\n\t- Ta reda på vad som utmärker tillståndet och identifiera färgen på komponentens ramar i det aktuella tillståndet.\r\n\t- Identifiera färgen på den intilliggande bakgrunden, inuti eller utanför komponenten.\r\n\t- Jämför de bägge färgerna och kontrollera att kontrastförhållandet mellan dem är minst 3:1.\r\n"
-    },
-    {
-      "id": "ftik",
-      "name": "Färger vid ändring av tillstånd i komponenter",
-      "type": "requirement",
-      "wcag": "1.4.11 (AA)",
-      "en301549": "9.1.4.11",
-      "contentType": "",
-      "category": "Visuell presentation",
-      "objectType": "web",
-      "statement": "När en komponent ändrar tillstånd vid fokus eller hover gäller följande: * Oavsett komponentens tillstånd är alltid kontrastvärdet mellan komponentens ramar och bakgrund minst 3:1, eller 4,5:1 för komponentens text mot bakgrund. * Om endast färg framhäver att en komponent har fokus, är kontrastförhållandet mellan komponentens standardtillstånd och dess fokustillstånd minst 3:1.",
-      "why": "Kontraster ska inte bli sämre när en användare sätter fokus på en komponent eller hovrar över den med musmarkö. Om endast färg framhäver att en komponent har fokus, och har gått från ett tillstånd till ett annat, är kontraster viktiga för att användare med nedsatt syn eller färgseende ska kunna uppfatta att komponenten har fokus.",
-      "howToTest": "1. Kontrollera vad som sker när en komponent ändrar status, exempelvis från standardtillstånd till fokuserat tillstånd.\r\n\r\n2. Om ändringen av komponentens tillstånd framhävs med endast färg, mät komponentens färger före och efter att tillståndet har ändrats.\r\n\r\n\t- För att låsa en komponent i ett visst tillstånd, tryck på F12 för att starta webbläsarens utvecklingsverktyg.\r\n    \r\n    - Leta reda på komponentens element i dokumentstrukturen, högerklicka på elementet och välj “Force state”.\r\n\r\n\t- Välj det tillstånd för vilket du vill låsa komponenten för att mäta dess kontrasterna mot bakgrunden. Exempelvis “:focus” eller “:focus-visible” för att låsa komponenten i det tillstånd då användaren har fokus på komponenten med tabbtangenten. \r\n\r\n3. Jämför färgernas kontrastförhållande och kontrollera att det är minst 3:1. \r\n"
-    },
-    {
-      "id": "kigk",
-      "name": "Kontrast för ikoner och grafik",
-      "type": "requirement",
-      "wcag": "1.4.11 (AA)",
-      "en301549": "9.1.4.11",
-      "contentType": "Bilder, ikoner & grafik",
-      "category": "Visuell presentation",
-      "objectType": "web",
-      "statement": "Oavsett komponentens tillstånd är alltid kontrastvärdet mellan komponentens ramar och bakgrund minst 3:1, eller 4,5:1 för komponentens text mot bakgrund.",
-      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende.",
-      "howToTest": "1. Gå igenom sidan och hitta alla grafiska element.\r\n\r\n2. Kontrollera att ikoner presenteras mot bakgrunder med tydliga kontraster till ikonerna.\r\n\r\n3. Om du är osäker och för testning av andra grafiska element, gör följande:\r\n\r\n\t- Ta reda på vilka delar av det grafiska elementet som behövs för att förstå innehållet i symbolen/det grafiska elementet. För varje del:\r\n    \r\n    - Identifiera färgen på det grafiska elementet. (Om elementet består av flera färger, välj den med lägst kontrast.)\r\n\t\r\n    - Identifiera färgen på den intilliggande bakgrunden.\r\n\t\r\n    - Jämför de bägge färgerna och säkerställ att kontrasten mellan dem är minst 3:1.\r\n"
+      "howToTest": "1. Identifiera alla objekt som inte är text, och om dessa kan ha flera tillstånd.\r\n\r\n2. Kontrollera att objekten oavsett tillstånd är placerade mot bakgrunder med minst 3:1 i kontrastvärde gentemot ramar eller bakgrundsfärg. Detta kan med fördel granskas med automatiska verktyg."
     },
     {
       "id": "tebi",
@@ -451,9 +412,9 @@
       "contentType": "Bilder, ikoner & grafik",
       "category": "Alternativ till media",
       "objectType": "web",
-      "statement": "Bilder och ikoner som förmedlar information har ett textalternativ som beskriver bilden eller ikonens budskap. Det textbaserade alternativet ska vara kortfattad och likvärdig med bilden. Det textbaserade alternativet anges i attributet alt.",
-      "why": "Användare med nedsatt syn som navigerar med skärmläsare ska kunna ta del av innehåll som förmedlas med grafik genom att skärmläsaren läser upp det textbaserade alternativet. Användare med både nedsatt syn och hörsel kan läsa textbaserade alternativ i punktskrift.",
-      "howToTest": "1. Kontrollera att alla meningsbärande bilder på webbplatsen eller webbsidan har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Cookies och webbplatsbehörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Ett alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, exempelvis Web Developer. \r\n\r\n2. Kontrollera att bildernas alt-texter är begripliga och att de beskriver syftet med bilderna på webbsidan.\r\n"
+      "statement": "- Bilder och ikoner som förmedlar information har ett textalternativ som beskriver bilden eller ikonens budskap. Det textbaserade alternativet ska vara kortfattat och likvärdigt med bilden. Det textbaserade alternativet anges i attributet alt.\r\n\r\n- Dekorativa eller redundanta bilder och ikoner döljs för hjälpmedel. Med redundanta menas att bilden förmedlar samma information till användaren som en intilliggande text. Dekorativa bilder har tomma alt-attribut vilket får hjälpmedel att ignorera bilderna. Redundanta ikoner som är baserade på vektorgrafik döljs med attributet aria-hidden. Om alt-attributet saknas, och bilden inte döljs på något annat sätt, kan skärmläsare läsa upp bildens filnamn eller sökväg istället, vilket kan uppfattas som störande.",
+      "why": "Användare som navigerar med skärmläsare ska kunna ta del av innehåll som förmedlas med grafik.",
+      "howToTest": "1. Kontrollera att alla meningsbärande bilder har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Sekretess, sökning och tjänster > Webbplatsbehörigheter > Alla behörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, eller granska HTML-koden. \r\n\r\n2. Kontrollera att bildernas alt-texter är begripliga och att de beskriver syftet med bilderna på webbsidan.\r\n\r\n3. Kontrollera att alla bilder som inte är meningsbärande har tomma alt-attribut.\r\n"
     },
     {
       "id": "tekb",
@@ -464,22 +425,9 @@
       "contentType": "Bilder, ikoner & grafik",
       "category": "Alternativ till media",
       "objectType": "web",
-      "statement": "Komplexa bilder, exempelvis kartor och diagram, har ett textbaserat alternativ i attributet alt som övergripande beskriver innehållet. Det finns även en mer utförlig beskrivning som vanlig text, antingen på samma sida och i direkt anslutning till bilden eller som en länk till en annan sida med en mer utförlig beskrivning i text. Exempel: Graf 4: Grafen visar utvecklingen av nystartade företag under det senaste året med en ökning på 10 procent i jämförelse med föregående år.",
-      "why": "Det kan vara svårt att göra kartor och grafer tillgängliga. Det kan vara bättre att flytta ut informationen från kartan och presentera den som vanlig text och låta kartan eller grafen utgöra ett grafiskt komplement, vilket underlättar för användare med dyslexi.",
-      "howToTest": "1. Kontrollera att alla komplexa meningsbärande bilder på webbplatsen eller webbsidan har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder.\r\n\r\n\t- Microsoft Edge: Inställningar > Cookies och webbplatsbehörigheter > Bilder > Inaktivera Visa alla.\r\n\r\n\t- Ett alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, exempelvis Web Developer.\r\n\r\n2. Kontrollera att komplexa bilder som diagram, kartor och organisationsscheman har alt-texter som är begripliga och att de beskriver syftet med bilderna på webbsidan. \r\n "
-    },
-    {
-      "id": "deko",
-      "name": "Dölj dekorativa bilder för hjälpmedel",
-      "type": "requirement",
-      "wcag": "1.1.1 (A)",
-      "en301549": "9.1.1.1",
-      "contentType": "Bilder, ikoner & grafik",
-      "category": "Struktur och språk",
-      "objectType": "web",
-      "statement": "Dekorativa eller redundanta bilder och ikoner döljs för hjälpmedel. Med redundanta menas att bilden förmedlar samma information till användaren som en intilliggande text. Dekorativa bilder har tomma alt-attribut vilket får hjälpmedel att ignorera bilderna. Redundanta ikoner som är baserade på vektorgrafik döljs med attributet aria-hidden.",
-      "why": "Onödig och överflödig information är störande och tröttande för användare. Observera att attributet alt alltid måste finnas i img-element, även om bilden är dekorativ. Om alt-attributet saknas, och bilden inte döljs på något annat sätt, kan skärmläsare läsa upp bildens filnamn eller sökväg istället.",
-      "howToTest": "1. Kontrollera att alla bilder på webbplatsen eller webbsidan som inte är meningsbärande har tomma alt-attribut, alltså att de inte har en förklarande beskrivning i text i attributet alt. Tomma alt-attribut får hjälpmedel att ignorera bilder som är dekorativa. \r\n\r\n\t- Ett sätt att kontrollera hur alt-attributet används är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, exempelvis Web Developer.\r\n    \r\n\t- Ett annat sätt är att granska bilderna i webbläsarens utvecklarverktyg. Högerklicka på bilden och välja “Inspektera” i Google Chrome eller “Granska” i Microsoft Edge. \r\n\r\n2. Om det finns bilder som helt saknar alt-attribut behöver de img-element som utgör bilderna i koden kompletteras med ett alt-attribut som saknar värde. Exempel: `<img src=”bildkälla” alt=””>`.\r\n"
+      "statement": "Komplexa bilder, exempelvis kartor eller diagram, har ett textbaserat alternativ i attributet alt som övergripande beskriver innehållet. Det finns även en mer utförlig beskrivning som vanlig text, antingen på samma sida och i direkt anslutning till bilden eller som en länk till en annan sida. \r\n\r\nExempel på övergripande alt-text: \r\n\"Graf 4: Grafen visar utvecklingen av nystartade företag under det senaste året med en ökning på 10 procent i jämförelse med föregående år.\"",
+      "why": "Användare tar till sig information på olika sätt. Därför är det viktigt att ha informationen både som bild och text.",
+      "howToTest": "1. Kontrollera att alla komplexa meningsbärande bilder på webbplatsen eller webbsidan har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Sekretess, sökning och tjänster > Webbplatsbehörigheter > Alla behörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, eller granska HTML-koden. \r\n\r\n2. Kontrollera att komplexa bilder som diagram, kartor och organisationsscheman har beskrivningar i text med samma information som framgår av bilden. \r\n "
     },
     {
       "id": "telj",
