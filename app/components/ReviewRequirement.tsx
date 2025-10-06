@@ -34,32 +34,31 @@ export default function ReviewRequirement({
                 </p>
                 <h3>{requirement.name}</h3>
                 <div className="flex gap-2">
-                  <div>
-                    <strong>EN</strong>
-                    {requirement.en301549 &&
-                      requirement.en301549.length > 0 &&
-                      requirement.en301549
-                        .split(',')
-                        .map((text, index) => (
-                          <div
-                            className="bg-grayscale-200 rounded-sm my-2 py-2 px-4"
-                            key={index}
-                          >{`${text}`}</div>
+                  {requirement.en301549 && (
+                    <div>
+                      {requirement.en301549}
+                      <strong>EN</strong>
+                      {requirement.en301549 &&
+                        requirement.en301549.length > 0 &&
+                        requirement.en301549.split(',').map((text, index) => (
+                          <div className="bg-grayscale-200 rounded-sm my-2 py-2 px-4" key={index}>
+                            {text}
+                          </div>
                         ))}
-                  </div>
-                  <div>
-                    <strong>WCAG</strong>
-                    {requirement.wcag &&
-                      requirement.wcag.length > 0 &&
-                      requirement.wcag
-                        .split(',')
-                        .map((text, index) => (
-                          <div
-                            className="bg-grayscale-200 rounded-sm my-2 py-2 px-4"
-                            key={index}
-                          >{`${text}`}</div>
+                    </div>
+                  )}
+                  {requirement.wcag && (
+                    <div>
+                      <strong>WCAG</strong>
+                      {requirement.wcag &&
+                        requirement.wcag.length > 0 &&
+                        requirement.wcag.split(',').map((text, index) => (
+                          <div className="bg-grayscale-200 rounded-sm my-2 py-2 px-4" key={index}>
+                            {text}
+                          </div>
                         ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

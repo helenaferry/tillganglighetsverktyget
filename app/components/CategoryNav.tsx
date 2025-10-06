@@ -95,7 +95,7 @@ export default function CategoryNav({
             Stäng
           </button>
         </div>
-        <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'}`}>
+        <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'} sm:block`}>
           {categories.map((category) => (
             <li
               key={category.category}

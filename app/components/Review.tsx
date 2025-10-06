@@ -268,7 +268,7 @@ export default function Review({ reviewId, requirementId }: Props) {
             return (
               <div className="relative">
                 <div
-                  className={`absolute z-1 inset-y-0 left-0 ${showCategoryNav ? 'w-screen sm:w-[17rem]' : 'w-[0]'} overflow-y-auto bg-white`}
+                  className={`absolute z-1 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 sm:w-[17rem] overflow-y-auto bg-white`}
                 >
                   <CategoryNav
                     reviewId={reviewId}

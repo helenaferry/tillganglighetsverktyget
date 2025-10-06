@@ -12,7 +12,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
   return (
     <div className="content-container content-container--white content-container-largest">
       {nextUnhandled && <strong>Nästa ogranskade krav: {nextUnhandled.name}</strong>}
-      <div className="flex gap-4 mt-4">
+      <div className="flex flex-col sm:flex-row gap-4 mt-4">
         {previousUnhandled && (
           <StyledLink
             styleVariant="secondary-button"
