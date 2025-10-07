@@ -44,3 +44,18 @@
 svg {
   @apply !max-w-full !max-h-full;
 }
+
+/* CategoryNav */
+.expand-category {
+  svg {
+    --digi--icon--color: var(--color-sapphire-500);
+  }
+}
+
+.expand-category:hover {
+  @apply cursor-pointer;
+  svg {
+    --digi--icon--color: #fff;
+  }
+}
+/* --- */

@@ -96,73 +96,80 @@ export default function CategoryNav({
           </button>
         </div>
         <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'} sm:block`}>
-          {categories.map((category) => (
-            <li
-              key={category.category}
-              className="border-grayscale-100 border-b first:border-t p-3"
-            >
-              <button
-                type="button"
-                onClick={() => selectCategory(category.category)}
-                aria-controls={category.category}
-                aria-expanded={expandedCategories.includes(category.category)}
-                className="flex justify-between w-full text-left py-1"
+          {categories.map((category) => {
+            const isExpanded = expandedCategories.includes(category.category);
+            return (
+              <li
+                key={category.category}
+                className="border-grayscale-100 border-b first:border-t p-3"
               >
-                <div>
-                  <div className="pr-1">{category.category}</div>
-                  <div className="mb-0">{getCategoryStatus(category.category)}</div>
-                </div>
-                <div>
-                  {expandedCategories.includes(category.category) ? (
-                    <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-leaf-200 p-[0.2rem] rounded-full">
-                      <DigiIconMinus />
+                <button
+                  type="button"
+                  onClick={() => selectCategory(category.category)}
+                  aria-controls={category.category}
+                  aria-expanded={isExpanded}
+                  className="expand-category group flex justify-between w-full text-left py-1"
+                >
+                  <div>
+                    <div
+                      className={`pr-1 group-hover:underline ${isExpanded ? 'font-semibold' : ''}`}
+                    >
+                      {category.category}
                     </div>
-                  ) : (
-                    <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-grayscale-200 p-[0.2rem] rounded-full">
-                      <DigiIconPlus />
-                    </div>
-                  )}
-                </div>
-              </button>
-              <ul
-                id={category.category}
-                className="pt-2"
-                style={{
-                  display: expandedCategories.includes(category.category) ? 'block' : 'none',
-                }}
-              >
-                {category.requirements.map((req) => {
-                  const done =
-                    req.check?.status === Status.PASS ||
-                    req.check?.status === Status.FAIL ||
-                    req.check?.status === Status.IRRELEVANT;
-                  const selected = selectedRequirement === req.id;
-                  return (
-                    <li key={req.id}>
-                      <a
-                        href={`/granskning/${reviewId}/${req.id}/#requirement-top`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          navigate(`/granskning/${reviewId}/${req.id}/#requirement-top`);
-                        }}
-                        className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
+                    <div className="mb-0">{getCategoryStatus(category.category)}</div>
+                  </div>
+                  <div>
+                    {isExpanded ? (
+                      <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-leaf-200 group-hover:bg-stratos-500 p-[0.2rem] rounded-full">
+                        <DigiIconMinus />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-grayscale-200 group-hover:bg-stratos-500 p-[0.2rem] rounded-full">
+                        <DigiIconPlus />
+                      </div>
+                    )}
+                  </div>
+                </button>
+                <ul
+                  id={category.category}
+                  className="pt-2"
+                  style={{
+                    display: isExpanded ? 'block' : 'none',
+                  }}
+                >
+                  {category.requirements.map((req) => {
+                    const done =
+                      req.check?.status === Status.PASS ||
+                      req.check?.status === Status.FAIL ||
+                      req.check?.status === Status.IRRELEVANT;
+                    const selected = selectedRequirement === req.id;
+                    return (
+                      <li key={req.id}>
+                        <a
+                          href={`/granskning/${reviewId}/${req.id}/#requirement-top`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate(`/granskning/${reviewId}/${req.id}/#requirement-top`);
+                          }}
+                          className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
                         bg-${selected ? 'stratos-500' : 'white'}`}
-                      >
-                        <div className="h-full flex items-center">
-                          <StatusIndicator checked={done} active={selected} />
-                        </div>
-                        <div
-                          className={`text-left no-underline hover:underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
                         >
-                          {req.name}
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </li>
-          ))}
+                          <div className="h-full flex items-center">
+                            <StatusIndicator checked={done} active={selected} />
+                          </div>
+                          <div
+                            className={`text-left no-underline hover:underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
+                          >
+                            {req.name}
+                          </div>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            );
+          })}
         </ul>
       </DigiTypography>
     </nav>
