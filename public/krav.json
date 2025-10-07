@@ -490,9 +490,9 @@
       "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "web",
-      "statement": "All förinspelad video har undertexter, så kallade captions. Undertexterna beskriver både tal och annat ljud som behövs för att förstå innehållet som exempelvis ljudeffekter, information om bakgrundsmusik, skratt och vem som pratar. Denna punkt gäller videor som publicerats efter 23 september 2020.",
-      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i videoklipp och filmer. Undertexter är även bra för användare med svenska som andraspråk. De är också bra för de som befinner sig i en miljö där de inte kan ha ljud aktiverat, exempelvis i kollektivtrafiken eller för att de saknar hörlurar.",
-      "howToTest": "- Kontrollera att det på webbsidor som innehåller video, exempelvis filmer, för varje film finns undertexter som användaren själv kan aktivera.\r\n\r\n- I Arbetsförmedlingens mediespelare Screen9 finns undertexter under menyn “Textningsinställningar” i spelarens högra nedre hörn.\r\n\r\n- Menyn beskrivs med en ikon av en pratbubbla med tre små streck.\r\n\r\n- Kontrollera att undertexterna är synkroniserade med ljudet och att de stämmer med filmens innehåll."
+      "statement": "All förinspelad video har undertexter, som beskriver dialogen, samt  andra relevanta ljud om det behövs för att användaren ska kunna ta till sig innehållet. Exempel på andra relevanta ljud är ”en telefon ringer”, ”hunden skäller” eller ”musik spelas”.\r\n\r\nUndantag:\r\n- Undertexter krävs inte för videoinspelningar som är publicerade före 23 september 2020.\r\n- Om inspelningen i sig är ett mediealternativ till text så behöver du inte texta ljudet eftersom innehållet redan finns presenterat i text. Om inspelningen är ett mediealternativ till text måste det framgå tydligt.",
+      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i filmer. Undertexter är även bra för användare med svenska som andraspråk, eller användare som behöver titta på filmen med ljudet avstängt.",
+      "howToTest": "- Kontrollera att det finns undertexter för varje film.\r\n- Kontrollera att undertexterna är synkroniserade med ljudet.\r\n- Kontrollera att undertexterna stämmer med filmens innehåll samt att allt relevant ljud är beskrivet."
     },
     {
       "id": "unvl",
@@ -503,9 +503,10 @@
       "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "web",
-      "statement": "Live-video har undertexter som inkluderar all dialog, men också information om vem som pratar och andra signifikanta ljud.",
-      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i videoklipp och filmer. Undertexter är även bra för användare med svenska som andraspråk. De är också bra för de som befinner sig i en miljö där de inte kan ha ljud aktiverat, exempelvis i kollektivtrafiken eller för att de saknar hörlurar.",
-      "howToTest": "Kontrollera att det på webbsidor som innehåller livevideo finns undertexter som användaren själv kan aktivera."
+      "statement": "Live-video har undertexter som inkluderar all dialog, men också information om andra signifikanta ljud.",
+      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i filmer. Undertexter är även bra för användare med svenska som andraspråk, eller användare som behöver titta på filmen med ljudet avstängt.",
+      "howToTest": "Kontrollera att det på webbsidor som innehåller livevideo finns undertexter.",
+      "comment": "Undantagen i DOS-lagen."
     },
     {
       "id": "syvi",
@@ -516,9 +517,9 @@
       "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "web",
-      "statement": "All förinspelad video har ett extra ljudspår som förklarar det visuella innehållet, så kallad syntolkning. Denna punkt gäller videor som publicerats efter 23 september 2020.",
-      "why": "Användare med nedsatt syn kan med hjälp av syntolkning uppfatta innehåll som presenteras visuellt i videoklipp eller filmer.",
-      "howToTest": "Kontrollera följande: \r\n- Att det på webbsidor som innehåller video, exempelvis filmer, för varje film finns syntolkning av innehåll som presenteras visuellt i filmen.\r\n\r\n- Att användaren själv kan aktivera och avaktivera syntolkning. I de flesta mediespelare finns syntolkning i en separat meny vid spelarens övriga kontroller. \r\n\r\n- Att syntolkningen är synkroniserad med det visuella innehållet och att beskrivningarna stämmer med filmens innehåll.\r\n"
+      "statement": "All förinspelad video har ett extra ljudspår som förklarar det visuella innehållet, så kallad syntolkning. \r\n\r\nUndantag:\r\n- Syntolkning krävs inte för inspelad video som är publicerad före 23 september 2020.\r\n- Video där syntolkning inte behövs eftersom allt som visas visuellt redan beskrivs av de som pratar.",
+      "why": "Användare med nedsatt syn kan med hjälp av syntolkning uppfatta innehåll som presenteras visuellt i filmer.",
+      "howToTest": "- Kontrollera att det finns syntolkning för varje film.\r\n- Kontrollera att syntolkningen är synkroniserad med det visuella innehållet.\r\n- Kontrollera att syntolkningen stämmer med filmens innehåll samt att allt relevant som visas visuellt är beskrivet.\r\n"
     },
     {
       "id": "sela",
@@ -527,37 +528,34 @@
       "wcag": "1.3.1 (A)",
       "en301549": "9.1.3.1",
       "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Alla länkar är korrekt uppmärkta med elementet `<a>` och har ett href-attribut. En länk förflyttar användaren till en ny plats på samma sida eller till en annan sida.",
+      "why": "Korrekt uppmärkta länkar behövs för att användaren ska kunna navigera på webbplatsen, oavsett navigeringsmetod.",
+      "howToTest": "- Kontrollera med webbläsarens utvecklarverktyg att alla länkar utgörs av `<a>`-element med attributet href.\r\n- Kontrollera att länken tar användaren till URL:en som anges i href-attributet."
+    },
+    {
+      "id": "exla",
+      "name": "Externa länkar",
+      "type": "guideline",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Alla länkar är uppmärkta med elementet `<a>` och har ett href-attribut. En länk förflyttar användaren till en ny plats på samma sida eller till en annan sida.",
-      "why": "Användare som navigerar med skärmläsare kan samla alla länkar på en webbsida i en länklista. Utifrån länklistan kan användaren navigera mellan länkar och aktivera länkar. De behöver alltid leda någonstans för att vara meningsfulla för användarna.",
-      "howToTest": "#### Webbläsarens utvecklarverktyg\r\n1. Öppna webbläsarens utvecklarverktyg med F12. Välj fliken “Elements” om den inte redan är vald. \r\n\r\n2. Sätt fokus i den del av webbläsarfönstret där webbsidan visas som den är tänkt att möta användarna, alltså inte i kodvyn.\r\n\r\n3. Använd tabbtangenten för att navigera mellan länkar på webbsidan.\r\n\r\n4. Vid fokus på varje länk, högerklicka på länken och välj “Inspektera” i Chrome eller “Granska” i Edge. Kodvyn kommer då att skrolla fram till den aktuella länken så att du ser den i koden.\r\n\r\n5. Kontrollera att länken utgörs av ett `<a>`-element.\r\n\r\n#### Plugin:et Web Developer för Chrome\r\n1. I plugin:et Web Developer, välja fliken “Information” och välj sedan “Display Link Details”.\r\n\r\n2. Verktyget visar då href-attributen i samtliga länkar på sidan så att de kan granskas visuellt. \r\n\r\n3. Högerklicka på den aktuella länken och välj “Inspektera”.\r\n\r\n4. Kontrollera att länken utgörs av ett `<a>`-element.\r\n\r\n#### Om länkar inte går att nå med tabbtangenten\r\n1. Högerklicka på en länk som inte går att nå med tabbtangenten.\r\n\r\n2. Välj “Inspektera” i Chrome eller “Granska” i Edge.\r\n\r\n3. Kontrollera hur länken ser ut i koden. Om den inte är kodad med ett `<a>`-element kan den behövas kodas om."
+      "statement": "Om en länk leder användaren till en extern sida eller till ett dokument, framgår det tydligt av länkens utformning. Det ska framgå både visuellt och i text.",
+      "why": "Vi vill informera användaren om vad som händer när hen klickar på en länk.",
+      "howToTest": "- Kontrollera att det framgår tydligt för användaren ifall en länk leder till en extern webbplats eller ett dokument.\r\n- Kontrollera att alla länkar till dokument beskriver filtyp och storlek."
     },
     {
       "id": "syla",
-      "name": "Synliga länktexter",
+      "name": "Länktexter",
       "type": "requirement",
       "wcag": "2.4.4 (A)",
       "en301549": "9.2.4.4",
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Syftet med varje länk framgår utan omgivande sammanhang, eller åtminstone tillsammans med texten som föregår länken (i samma stycke, lista, tabellcell eller liknande).\r\nUndantaget är om syftet med länken är oklart även för personer utan funktionsnedsättning.\r\n",
-      "why": "Det behöver vara tydligt för användare vart en länk leder. Länkar utan text försvårar för alla användare.",
-      "howToTest": "1. Gå igenom alla länkar på sidan, inkluderat sådana som leder till andra sidor på samma webbplats, till andra delar av samma sida och länkar till andra webbplatser eller dokument.\r\n\r\n2. Kontrollera att alla länkar har synliga och  tydliga länktexter som är begripliga utanför sitt sammanhang, alltså förklarande i sig själva.\r\n"
-    },
-    {
-      "id": "nala",
-      "name": "Namn för länkar utan text",
-      "type": "requirement",
-      "wcag": "4.1.2 (A)",
-      "en301549": "9.4.1.2",
-      "contentType": "",
-      "category": "Struktur och språk",
-      "objectType": "web",
-      "statement": "Om en länk endast utgörs av en bild, exempelvis en logotyp, ska bildens textalternativ beskriva såväl bilden som länkens mål. Exempel: `alt=\"Arbetsförmedlingens logotyp. Till startsidan.\"`.",
-      "why": "Länkar utan text ska generellt undvikas eftersom de är svåra att tolka. Att klicka på webbplatsens logotyp för att komma till startsidan är ett välkänt designmönster.",
-      "howToTest": "1. Gå igenom sidans alla länkar som inte har någon synlig etikett.\r\n\r\n2. Kontrollera att länkar som saknar synliga etiketter utgör ett godkänt undantag från principen att alla länkar ska ha synlig text. Det kan exempelvis vara länkar i ett gränssnitt för smala skärmar.\r\n\r\n3. Kontrollera att länkar utan synliga etiketter istället har ett namn som hjälpmedel kan komma åt. Använd något av följande tillvägagångssätt:\r\n\t\r\n    - Granska länkarna i koden. Öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller \t\thögerklicka på en länk utan en synlig etikett och välj “Inspektera” i Chrome eller “Granska” i Edge. \t\tKontrollera att elementet för länken innehåller attributet aria-label med ett värde som beskriver \t\t\t\tlänkens mål.<br>\r\n    \t\r\n        Du kan också titta i utvecklingsverktygets tillgänglighetsträd. Välj “Accessibility” i den högra \t\t\t\t\tkolumnen. Under “Computed properties” hittar du egenskapen “Name”. Där ska du kunna se ett \t\t\t\tvärde i attributet aria-label.\r\n\t\r\n    - Testa med skärmläsare. Sätt fokus på en länk och kontrollera att skärmläsaren läser upp länkens \t\tmål."
+      "statement": "Syftet med varje länk framgår utan omgivande sammanhang, eller åtminstone tillsammans med texten som föregår länken (i samma stycke, lista, tabellcell eller liknande).",
+      "why": "Det behöver vara tydligt för användare vart en länk leder. Länkar där textbeskrivning är otydlig eller saknas försvårar för alla användare.",
+      "howToTest": "Kontrollera att alla länkar har synliga och tydliga länktexter.\r\n"
     },
     {
       "id": "sekn",
@@ -566,24 +564,22 @@
       "wcag": "1.3.1 (A)",
       "en301549": "9.1.3.1.",
       "contentType": "",
-      "category": "Inmatning och felhantering",
+      "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Knappar är uppmärkta med elementet `<button>`.",
-      "why": "Användare som navigerar med skärmläsare behöver få information om att ett objekt är en knapp och hur användaren kan interagera med objektet. Genom att använda standardkomponenter inkluderar vi inbyggd funktionalitet i objekt, vilket bidrar till minskad utvecklingstid för våra team.",
-      "howToTest": "#### Webbläsarens utvecklarverktyg\r\n1. Öppna webbläsarens utvecklarverktyg med F12. Välj fliken “Elements” om den inte redan är vald. \r\n\r\n2. Sätt fokus i den del av webbläsarfönstret där webbsidan visas som den är tänkt att möta användarna, alltså inte i kodvyn.\r\n\r\n3. Använd tabbtangenten för att navigera mellan knappar på webbsidan.\r\n\r\n4. Vid fokus på varje knapp, högerklicka på knappen och välj “Inspektera” i Chrome eller “Granska” i Edge. Kodvyn kommer då att skrolla fram till den aktuella knappen så att du ser den i koden.\r\n\r\n5. Kontrollera att knappen utgörs av ett `<button>`-element.\r\n\r\n#### Plugin:et Web Developer för Chrome\r\n1. I plugin:et Web Developer, välja fliken “Forms” och välj sedan “Display Form Details”.\r\n\r\n2. Verktyget visar då information om formulärobjekt på sidan så att de kan granskas visuellt. \r\n\r\n3. Kontrollera att formulärobjekt som ser ut och fungerar som knappar utgörs av `<button>`-element.\r\n\r\n#### Om länkar inte går att nå med tabbtangenten\r\n1. Högerklicka på en knapp som inte går att nå med tabbtangenten.\r\n\r\n2. Välj “Inspektera” i Chrome eller “Granska” i Edge.\r\n\r\n3. Kontrollera hur knappen ser ut i koden. Om den inte är kodad med ett `<button>`-element kan den behöva kodas om."
+      "statement": "Knappar är uppmärkta med elementet `<button>`. En knapp används för att aktivera en funktion.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur. ",
+      "howToTest": "Kontrollera att alla knappar är kodade med `<button>`-element."
     },
     {
       "id": "knte",
       "name": "Knappar med synlig text",
-      "type": "requirement",
-      "wcag": "4.1.2 (A)",
-      "en301549": "9.4.1.2",
+      "type": "guideline",
       "contentType": "",
-      "category": "Inmatning och felhantering",
+      "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Knappar har en synlig text som beskriver knappens syfte. Undantag är knappar i gränssnitt som optimeras för mobila plattformar om utrymmet är begränsat och det finns tydliga ikoner.",
+      "statement": "Knappar har en synlig text som beskriver knappens syfte.",
       "why": "Knappar utan text försvårar för alla användare att uppfatta knapparnas syfte.",
-      "howToTest": "1. Gå igenom sidans alla knappar som användaren kan interagera med.\r\n\r\n2. Kontrollera att knappar har synliga etiketter. Testa gärna med användare för att försäkra er om att beskrivningar av knappar är tydliga.\r\n\r\n3. Om knappar inte har en synliga etiketter, försök i första hand att lägga till en synlig etikett på knapparna.\r\n\r\n4. Om det inte är möjligt att lägga till synliga etiketter, kontrollera att ikoner i knappar är tydliga. Testa med användare för att försäkra er om att knapparnas funktion beskrivs tydligt även utan en etikett."
+      "howToTest": "Kontrollera att knappar har synliga texter. Testa gärna med användare för att försäkra er om att beskrivningar av knappar är tydliga."
     },
     {
       "id": "knut",
@@ -592,11 +588,11 @@
       "wcag": "4.1.2 (A)",
       "en301549": "9.4.1.2",
       "contentType": "",
-      "category": "Inmatning och felhantering",
+      "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Om det finns knappar som saknar en synlig knapptext beskrivs knappars funktion med text i ett attribut som hjälpmedel kommer åt. Exempel: `aria-label=\"Sök på webbplatsen\"`.",
-      "why": "Användare som navigerar med skärmläsare och inte uppfattar knappar visuellt, behöver kunna uppfatta vad knappar har för funktion.",
-      "howToTest": "1. Gå igenom sidans alla knappar som inte har någon synlig etikett.\r\n\r\n2. Kontrollera att knappar som saknar synliga etiketter utgör ett godkänt undantag från principen att alla knappar ska ha synlig text. Det kan exempelvis vara knappar i ett gränssnitt för smala skärmar.\r\n\r\n3. Kontrollera att knappar utan synliga etiketter istället har ett namn som hjälpmedel kan komma åt. Använd något av följande tillvägagångssätt:\r\n\r\n\t- Granska koden. Öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller högerklicka på en knapp som utan en synlig etikett och välj “Inspektera”. Kontrollera att elementet för knappen innehåller attributet aria-label med ett värde som beskriver knappens funktion.<br><br>\r\n    \tDu kan också titta i utvecklingsverktygets tillgänglighetsträd. Välj “Accessibility” i den högra kolumnen. Under “Computed properties” hittar du egenskapen “Name”. Där ska du kunna se värdet som sätts i attributet aria-label.\r\n\r\n\t- Testa med skärmläsare. Sätt fokus på komponenten och kontrollera att skärmläsaren läser upp knappens funktion.\r\n"
+      "statement": "Om det finns knappar som saknar en synlig knapptext beskrivs knappens funktion med text i ett attribut som hjälpmedel kommer åt. Exempel: `aria-label=\"Sök på webbplatsen\"`.",
+      "why": "Användare som inte uppfattar knappar visuellt, behöver förstå vad dessa har för funktion.",
+      "howToTest": "Kontrollera att knappar utan synlig text har ett textalternativ som hjälpmedel kan tolka."
     },
     {
       "id": "seli",
@@ -607,9 +603,9 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Listor märks upp med elementen `<ul>` eller `<ol>`. Listornas innehåll märks upp med elementet `<li>`. För ordnade eller numrerade listor används elementet `<ol>` för att beskriva numrerade steg (1, 2, 3…) och för oordnade eller onumrerade listor används elementet `<ul>` för att beskriva punktlistor.",
-      "why": "Listor behöver vara rätt uppmärkta för att hjälpmedelsanvändare ska kunna tolka dem. Om en lista endast är visuellt utformad är det svårt användare att navigera i dem och att förstå innehållets inbördes relationer.",
-      "howToTest": "#### Granska i webbläsarens utvecklarverktyg\r\n1. Gå igenom numrerade och onumrerade listor i den aktuella tjänsten eller webbsidan. \r\n\r\n2. Högerklicka på det första objektet i listan och välj “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Kontrollera att varje objekt i varje lista omsluts av ett li-element.\r\n\r\n4. Kontrollera också att numrerade listor inleds med elementet ol och att onumrerade listor inleds med elementet ul.\r\n\r\n#### Testa med skärmläsare\r\n1. Starta en skärmläsare, exempelvis skärmläsaren NVDA\r\n\r\n2. Använd tangenten pil ner för att flytta skärmläsarens fokus radvis nedåt på sidan. Navigera fram till sidans första numrerade eller onumrerade lista.\r\n\r\n3. När fokus flyttas in i listan, kontrollera att skärmläsaren annonserar en lista. Skärmläsaren läser då upp något i stil med “lista” följt av antalet listobjekt som listan innehåller.\r\n\r\n4. När fokus flyttas ut ur listan är det förväntade att skärmläsaren annonserar att listan är slut.\r\n"
+      "statement": "Ordnade eller numrerade listor märks upp med elementet `<ol>`. Oordnade listor eller punktlistor märks upp med elementet `<ul>`. Varje listpunkt märks upp med elementet `<li>`.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur.",
+      "howToTest": "1. Kontrollera att numrerade listor inleds med elementet ol och att onumrerade listor inleds med elementet ul.\r\n\r\n2. Kontrollera att varje objekt i varje lista omsluts av ett li-element."
     },
     {
       "id": "seta",
@@ -621,21 +617,19 @@
       "category": "Struktur och språk",
       "objectType": "web",
       "statement": "Tabeller används endast för strukturerad data och är korrekt uppmärkta med elementen `<table>`, `<tr>` för tabellrad, `<th>` för tabellhuvud och `<td>` för dataceller.",
-      "why": "Tabeller behöver vara rätt uppmärkta så att användare med hjälpmedel kan navigera i dem och få dem upplästa på ett korrekt och strukturerat sätt.",
-      "howToTest": "#### Granska i webbläsarens utvecklingsverktyg\r\n1. Gå igenom tabeller i den aktuella tjänsten eller webbsidan. \r\n\r\n2. Högerklicka i den första cellen och välj “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Kontrollera att hela tabellen omsluts av ett table-element.\r\n\r\n4. Kontrollera också att tabellen har tabellrubriker som omsluts av elementet th.\r\n\r\n#### Testa med skärmläsare\r\n1. Starta en skärmläsare, exempelvis skärmläsaren NVDA\r\n\r\n2. Använd tangenten pil ner för att flytta skärmläsarens fokus radvis nedåt på sidan. Navigera fram till en tabell på den aktuella webbsidan.\r\n\r\n3. När fokus flyttas in i tabellen, kontrollera att skärmläsaren annonserar en tabell. Skärmläsaren läser då upp “tabell”. Vissa skärmläsare läser också upp hur många rader och kolumner som tabellen har. \r\n\r\n4. När fokus flyttas ut ur tabellen är det förväntade att skärmläsaren annonserar att tabellen är slut.\r\n\r\n"
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur.",
+      "howToTest": "Kontrollera att alla tabeller:\r\n- Omsluts av ett `<table>`-element.\r\n- Har tabellrubriker som omsluts av elementet`<th>`.\r\n- Har tabellrader som omsluts av elementet `<tr>`.\r\n- Har tabellceller som omsluts av elementet `<td>`.\r\n\r\n\r\n"
     },
     {
       "id": "tave",
       "name": "Tabeller har överskrifter",
-      "type": "requirement",
-      "wcag": "1.3.1 (A)",
-      "en301549": "9.1.3.1",
+      "type": "guideline",
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
       "statement": "Tabeller har en överskrift i elementet `<caption>` som kort beskriver vilken information tabellen innehåller.",
-      "why": "Elementet <caption> hjälper användare som navigerar med hjälpmedel att navigera direkt till tabeller, identifiera dess innehåll och att ta ställning till om innehållet är av intresse.",
-      "howToTest": "#### Granska i webbläsarens utvecklingsverktyg\r\n1. Gå igenom tabeller i den aktuella tjänsten eller webbsidan. \r\n\r\n2. Högerklicka i den första cellen och välj “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Kontrollera att det första elementet efter elementet table är ett caption-element och att det innehåller en beskrivande rubrik till tabellen.\r\n\r\n#### Testa med skärmläsare\r\n1. Starta en skärmläsare, exempelvis skärmläsaren NVDA\r\n\r\n2. Använd tangenten pil ner för att flytta skärmläsarens fokus radvis nedåt på sidan. Navigera fram till en tabell på den aktuella webbsidan.\r\n\r\n3. När fokus flyttas in i tabellen, kontrollera att skärmläsaren annonserar en tabell och tabellens överskrift. Skärmläsaren läser då upp “tabell” följt av innehållet i caption-elementet.\r\n"
+      "why": "Elementet `<caption>` hjälper användare som navigerar med hjälpmedel att navigera direkt till tabeller, identifiera dess innehåll och att ta ställning till om innehållet är av intresse.",
+      "howToTest": "Kontrollera att det första elementet efter elementet table är ett caption-element och att det innehåller en beskrivande rubrik till tabellen.\r\n"
     },
     {
       "id": "naif",
@@ -646,9 +640,9 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Om iframes används beskrivs de med text i attributet title.",
+      "statement": "Om iframes används beskrivs dessa med text i attributet title. Iframes används ofta för att bädda in video eller annat externt innehåll och uppmärks med elementet `<iframe>`.",
       "why": "Användare som navigerar med skärmläsare använder beskrivningen i title-attributet för att uppfatta vad iframe-element innehåller.",
-      "howToTest": "#### Granska i webbläsarens utvecklarverktyg\r\n1. Öppna en webbsida eller en webbtjänst som innehåller en eller flera ramar.\r\n\r\n2. Högerklicka någonstans i det innehåll som läses in från en annan sida och som omsluts av elementet iframe. Klicka på “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Skrolla uppåt i dokumentstrukturen tills du hittar ett iframe-element.\r\n\r\n4. Kontrollera att iframe-elementet har en tydlig beskrivning av ramens innehåll i attributet title.\r\n\r\n#### Testa med skärmläsare\r\n1. Starta en skärmläsare, exempelvis skärmläsaren NVDA.\r\n\r\n2. Använd tabbtangenten för att navigera till ett objekt som ligger så nära innehållet i en ram som möjligt men inte inuti ramen, exempelvis till en länk eller ett formulärfält.\r\n\r\n3. Fortsätt att navigera nedåt i tjänsten eller webbsidan med pil ner för att nå innehållet i ramen.\r\n\r\n4. Kontrollera att skärmläsaren läser upp beskrivningen i iframe-elementets title-attribut när fokus flyttas in till innehållet i ramen.\r\n"
+      "howToTest": "Kontrollera att alla `<iframe>`-element har en tydlig beskrivning av ramens innehåll i attributet title."
     },
     {
       "id": "syko",
@@ -659,9 +653,9 @@
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Den synliga texten som beskriver en komponent överensstämmer med det namn som komponenten har i koden och som hjälpmedel kommer åt. I fall då dessa namn inte kan ha samma innehåll börjar namnet i koden med den synliga texten.",
+      "statement": "Den synliga texten som beskriver en komponent överensstämmer med det namn som komponenten har i koden och som hjälpmedel kommer åt. I de fall då dessa namn inte kan ha samma innehåll börjar namnet i koden med den synliga texten.",
       "why": "Användare som navigerar med röststyrning kan interagera med knappar och funktioner genom att exempelvis säga 'Klicka på Sök'. Om den synliga beskrivningen av en knapp inte motsvarar knappens beskrivning i koden fungerar inte kommandon med röststyrning.",
-      "howToTest": "1. Gå igenom sidans alla komponenter som har synliga etiketter.\r\n\r\n2. Jämför komponenternas synliga etiketter med de namn som komponenterna har i koden. Kontrollera att komponenternas namn i koden är likställt med eller inleds med komponenternas synliga etiketter. Använd något av följande tillvägagångssätt:\r\n\t- Granska knapparna i koden. Öppna webbläsarens utvecklingsverktyg genom att trycka på F12 eller högerklicka på en knapp och välj “Inspektera”. Kontrollera att knappelementet har attributet aria-label som beskriver knappens funktion.<br><br>\r\n\t\tDu kan också titta i utvecklingsverktygets tillgänglighetsträd. Välj Accessibility i den högra kolumnen. Under “Computed properties” hittar du egenskapen “Name”. Där ska du kunna se värdet som sätts i attributet aria-label.\r\n\r\n\t- Testa med skärmläsare. Sätt fokus på komponenten. Kontrollera att den beskrivning som skärmläsaren läser upp inleds på samma på sätt som knappens synliga etikett.\r\n"
+      "howToTest": "1. Gå igenom sidans alla komponenter som har synliga etiketter.\r\n\r\n2. Jämför komponenternas synliga etiketter med de namn som komponenterna har i koden och säkerställ att dessa är samma, eller inleds på samma sätt."
     },
     {
       "id": "grrk",
@@ -672,9 +666,9 @@
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Formulärobjekt som hör ihop grupperas med elementet `<fieldset>`. Varje `<fieldset>` inleds med elementet `<legend>` som beskriver gruppens syfte. Elementen `<fieldset>` och `<legend>` används alltid i grupper med radioknappar och kryssrutor.",
-      "why": "Elementen `<fieldset>` och `<legend>` hjälper användare att förstå hur formulärobjekt hör ihop. De är särskilt viktiga i grupper av radioknappar och kryssrutor eftersom de hjälper användare att förstå vad som efterfrågas och vilka olika alternativ som användaren kan välja mellan. Elementen kan även användas för att gruppera inmatningsfält i långa formulär, exempelvis för att gruppera fält för hem- eller företagsadresser.",
-      "howToTest": "#### Granska kodstruktur för grupperade formulärobjekt ####\r\n1. Gå igenom sidans alla formulärobjekt som är grupperade, det vill säga komponenter i formulär som hör ihop utifrån placering och struktur. Exempel är radioknappar och kryssrutor.\r\n\r\n2. Högerklicka på det första objektet i grupperingen och välj “Inspektera” i Google Chrome eller “Granska” i Microsoft Edge.\r\n\r\n3. I webbläsarens utvecklarverktyg, granska de element som omsluter formulärobjekt som hör ihop, exempelvis radioknappar och kryssrutor.\r\n\r\n4. Kontrollera att grupperingar av formulärobjekt omsluts av elementet fieldset och att det elementet inleds med ett legend-element som beskriver gruppen.\r\n\r\n#### Testa med skärmläsare ####\r\n1. Starta en skärmläsare på din dator, exempelvis skärmläsaren NVDA.\r\n\r\n2. Navigera radvis med pil ner på den aktuella sidan och navigera fram till en grupp av formulär.\r\n\r\n3. Kontrollera att skärmläsaren läser “gruppering” följt av texten i legend-elementet när fokus flyttas in i grupperingen.\r\n\r\n4. Navigera i grupperingen med pil ner och förbi det sista objektet för att lämna grupperingen.\r\n\r\n5. Kontrollera att skärmläsaren läser “lämnar gruppering” när fokus flyttas från det sista formulärobjektet."
+      "statement": "Formulärobjekt, särskilt radioknappar och kryssrutor, som hör ihop grupperas med elementet `<fieldset>`. Varje `<fieldset>` inleds med elementet `<legend>` som beskriver gruppens syfte.",
+      "why": "Saknas denna gruppering för radioknappar eller kryssrutor framgår inte för användare med hjälpmedel vilken fråga som besvaras.",
+      "howToTest": "Kontrollera att grupperingar av formulärobjekt omsluts av elementet fieldset och att det elementet inleds med ett legend-element som beskriver gruppen."
     },
     {
       "id": "auin",
@@ -685,48 +679,22 @@
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Inmatningsfält för personlig information kan kompletteras automatiskt för att hjälpa användaren att fylla i fälten snabbare. Fält som kan fyllas i automatiskt är uppmärkta med attributet autocomplete med ett värde som anger vilken typ av information det handlar om. Exempel på information som lämpar sig bra för automatisk ifyllnad är namn, telefonnummer, hemadress och e-postadress.",
-      "why": "Automatisk ifyllnad av formulär underlättar för användare med kognitiva svårigheter, särskilt användare med dyslexi men även utmattningssyndrom.",
-      "howToTest": "1. Gå igenom alla formulär i tjänsten eller webbsidan.\r\n\r\n2. Högerklicka på ett formulärfält och klicka på “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Kontrollera att samtliga formulärfält där användaren kan mata in personlig information har attributet autocomplete med ett värde som motsvarar det innehåll som användaren kan ange. Exempel är värdet “email” i attributet autocomplete för fält där användaren kan ange en e-postadress. Giltiga värden för attributet autocomplete finns under kapitel 7 i Web Content Accessibility Guidelines (WCAG) 2.1. \r\n\r\n4. Kontrollera också att fält för information som exempelvis e-postadress, telefonnummer, webbadress eller lösenord har en typ för inmatning som motsvarar den information som användaren kan ange. Det anges med attributet type.\r\n"
-    },
-    {
-      "id": "syet",
-      "name": "Synliga etiketter",
-      "type": "requirement",
-      "wcag": "3.3.2 (A)",
-      "en301549": "9.3.3.2",
-      "contentType": "Formulär & inmatningsfält",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "Alla formulärobjekt har synliga etiketter i elementet `<label>`. Placeholdertexter är inte tillräckliga för att beskriva formulärobjekt eftersom de försvinner när användaren börjar skriva i ett fält.",
-      "why": "Synliga etiketter underlättar för alla användare men är särskilt viktigt för användare med kognitiva funktionsnedsättningar, nedsatt minnesförmåga eller inlärningssvårigheter.",
-      "howToTest": "1. Gå igenom och granska alla formulärfält på den aktuella tjänsten eller webbsidan.\r\n\r\n2. Kontrollera att samtliga formulärfält har synliga etiketter som beskriver syftet med varje formulärfält. Etiketter ska inte utgöras av placeholder-texter inuti fälten som försvinner när fältet får fokus.\r\n"
+      "statement": "Inmatningsfält för personlig information kan kompletteras automatiskt för att hjälpa användaren att fylla i fälten snabbare. Fält som kan fyllas i automatiskt är uppmärkta med attributet autocomplete med ett värde som anger vilken typ av information det handlar om.\r\n\r\nSamtliga giltiga värden för attributet autocomplete finns under kapitel 7 i Web Content Accessibility Guidelines (WCAG) 2.1. \r\n\r\nExempel:\r\n- name\r\n- username\r\n- organization\r\n- street-address\r\n- postal-code\r\n- country",
+      "why": "Automatisk ifyllnad av formulär underlättar för alla användare.",
+      "howToTest": "För samtliga formulärfält där användaren kan mata in personlig information kan du antingen:\r\n\r\n- Kontrollera att fälten har attributet autocomplete med ett värde som motsvarar det innehåll som användaren kan ange.\r\n- Testa att fylla i fälten och verifiera att information kan fyllas i automatiskt.\r\n"
     },
     {
       "id": "plet",
-      "name": "Placering av etikett",
+      "name": "Tydliga etiketter",
       "type": "requirement",
-      "wcag": "3.3.2 (A)",
-      "en301549": "9.3.3.2",
+      "wcag": "3.3.2 (A),1.3.1 (A)",
+      "en301549": "9.3.3.2,9.1.3.1",
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Etiketter är placerade så att det är tydligt vilket fält som etiketten beskriver.",
-      "why": "När etiketter är placerade där användaren förväntar sig att de ska vara blir det lättare att förstå formulär och att hitta fälten. Det gör det även lättare för användare som behöver förstora innehållet i formulär.",
-      "howToTest": "1. Gå igenom alla formulär på den aktuella sidan eller i den aktuella tjänsten.\r\n\r\n2. Kontrollera att samtliga formulärobjekt har etiketter.\r\n\r\n3. Kontrollera att formulärobjektens etiketter är placerade i direkt anslutning till formulärobjekten så att det är lätta att uppfatta och att de inte kan förväxlas med andra fält."
-    },
-    {
-      "id": "etft",
-      "name": "Etikett är kopplat till fält",
-      "type": "requirement",
-      "wcag": "1.3.1 (A)",
-      "en301549": "9.1.3.1",
-      "contentType": "Formulär & inmatningsfält",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "En etikett i elementet `<label>` associeras till det fält som etiketten beskriver. Att klicka på etiketten ger samma resultat som att klicka i eller på formulärobjektet. Exempel är att klicka på etiketten till höger om en kryssruta också markerar själva kryssrutan.",
-      "why": "Användare med uppläsande hjälpmedel uppfattar vilken etikett som hör ihop med vilket fält. Klickytor blir dessutom större, vilket hjälper användare som på grund av nedsatt motorik har svårt att klicka direkt på en kryssruta, radioknapp eller i ett fält.",
-      "howToTest": "#### Granska i webbläsarens utvecklarverktyg\r\n1. Gå igenom alla formulärfält i tjänsten eller webbplatsen.\r\n\r\n2. Högerklicka på ett formulärfält och klicka på “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Kontrollera att det finns en association mellan det aktuella formulärfältet och den etikett som beskriver fältets syfte. Om etiketten exempelvis omsluts av ett label-element ska det ha ett for-attribut som refererar till det aktuella formulärfältets id-värde.\r\n\r\n#### Testa med skärmläsare\r\n1. Starta en skärmläsare, exempelvis skärmläsaren NVDA.\r\n\r\n2. Använd tabbtangenten för att navigera mellan formulärfält i tjänsten eller webbplatsen.\r\n\r\n3. Kontrollera att skärmläsaren läser upp den etikett som beskriver syftet med ett formulärfält. Den information som skärmläsaren läser upp ska ha samma innehåll som fältets synliga etikett.\r\n\r\n4. Om en skärmläsare inte läser upp formulärfältets etikett kan det bero på att det saknas en association mellan etiketten och det aktuella fältet. Om det label-element som omsluter formulärfältets etikett saknar ett for-attribut som refererar till formulärfältets id-värde finns ingen association mellan etiketten och fältet.\r\n\r\n"
+      "statement": "- Alla interaktiva formulärkomponenter har synliga etiketter i elementet `<label>`. Placeholdertexter är inte tillräckliga för att beskriva formulärobjekt eftersom de försvinner när användaren börjar skriva i ett fält.\r\n- Etiketter är placerade så att det är tydligt vilket fält etiketten beskriver.\r\n- Varje `<label>` är kopplad i koden till det formulärobjekt som etiketten beskriver. Att klicka på etiketten ger samma resultat som att klicka i eller på formulärobjektet. Exempel: att klicka på etiketten till höger om en kryssruta markerar också själva kryssrutan.",
+      "why": "Synliga etiketter som är placerade där användaren förväntar sig underlättar för alla användare men är särskilt viktigt för användare med kognitiva funktionsnedsättningar, nedsatt minnesförmåga eller inlärningssvårigheter.\r\n\r\nKorrekt koppling mellan etikett och formulärkomponent underlättar för användare med hjälpmedel, samt gör klickytor större och lättare att interagera med.",
+      "howToTest": "- Kontrollera att samtliga formulärkomponenter har synliga etiketter som beskriver syftet och är placerade i direkt anslutning till respektive komponent.\r\n- Kontrollera att samtliga etiketter är kopplade till den aktuella komponenten i koden. Ett `<label>`-element ska ha ett for-attribut som refererar till den aktuella formulärkomponentens id-värde."
     },
     {
       "id": "obft",
@@ -737,22 +705,9 @@
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "I formulär framgår det tydligt vilka fält som är obligatoriska, genom att det står att fält är obligatoriska eller frivilliga i fältens etiketter. Obligatoriska fält har även attributet `required`.",
+      "statement": "I formulär framgår det tydligt vilka fält som är obligatoriska.\r\n\r\nHelst ska det markeras i klartext vilka fält som är obligatoriska eller frivilliga, men behöver detta göras med en symbol ska formuläret inledas med en text som informerar användaren om hur fälten är uppmärkta.\r\n\r\nObligatoriska fält har även attributet `required`.",
       "why": "Tydlig information om obligatoriska eller frivilliga fält hjälper användaren att uppfatta vilka fält som behöver fyllas i för att komma vidare.",
-      "howToTest": "#### Granska i webbläsarens utvecklarverktyg\r\n1. Gå igenom obligatoriska formulärfält i tjänsten eller webbplatsen.\r\n\r\n2. Högerklicka på ett obligatoriskt fält och klicka på “Granska” i Microsoft Edge eller “Inspektera” i Google Chrome.\r\n\r\n3. Kontrollera att obligatoriska fält märks upp med attributet required. Attributet ska inte ha något värde. \r\n\r\n4. Kontrollera också att fält som är uppmärkta med attributet required också visuellt beskrivs som obligatoriska.\r\n\r\n#### Testa med skärmläsare\r\n1. Starta en skärmläsare, exempelvis skärmläsaren NVDA.\r\n\r\n2. Använd tabbtangenten för att navigera mellan formulärfält i tjänsten eller webbplatsen.\r\n\r\n3. Navigera fram till ett obligatoriskt fält.\r\n\r\n4. Kontrollera att skärmläsaren läser upp att fältet är obligatoriskt. Det annonseras genom att skärmläsaren beskriver formulärfältet med “krävs” efter annan information om det aktuella fältet.\r\n\r\n5. Kontrollera också att information som beskriver att formulärfältet är obligatoriskt och som presenteras visuellt, också läses upp av skärmläsaren. \r\n\r\n\tOm en skärmläsare inte läser upp visuellt presenterad information om att ett formulärfält är obligatoriskt kan det bero på att det saknas en association mellan informationen och det aktuella fältet.\r\n"
-    },
-    {
-      "id": "inob",
-      "name": "Information om obligatoriska fält",
-      "type": "requirement",
-      "wcag": "3.3.2 (A)",
-      "en301549": "9.3.3.2",
-      "contentType": "Formulär & inmatningsfält",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "Formulär inleds med en text som informerar användaren om hur obligatoriska eller frivilliga fält markeras. Exempel: \"Alla obligatoriska fält är uppmärkta med (obligatoriskt)”.",
-      "why": "Tydlig information om hur obligatoriska eller frivilliga fält markeras hjälper användaren att uppfatta vilka fält som behöver fyllas i för att komma vidare.",
-      "howToTest": "Kontrollera att formulär som innehåller obligatoriska fält inleds med en information om att det finns obligatoriska fält och hur de i så fall märks ut."
+      "howToTest": "1. Kontrollera att obligatoriska formulärkomponenter både är visuellt uppmärkta och har attributet required. Attributet ska inte ha något värde. \r\n2. Om formulärkomponenterna är uppmärkta med en symbol snarare än text, kontrollera att det finns en inledande förklaring till hur komponenterna är uppmärkta."
     },
     {
       "id": "olfo",
@@ -1439,7 +1394,7 @@
     },
     {
       "id": "prdo",
-      "name": "Tillgänglig produktdokumentation",
+      "name": "Tillgänglig dokumentation",
       "type": "requirement",
       "wcag": "",
       "en301549": "12.1",

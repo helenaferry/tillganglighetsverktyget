@@ -14,7 +14,9 @@ export const RequirementService = {
     if (!Array.isArray(json.data)) {
       throw new Error('Invalid requirements data format');
     }
-    return json.data.filter((req) => req.objectType === objectType);
+    return json.data
+      .filter((req) => req.objectType === objectType)
+      .filter((req) => req.type === 'requirement');
   },
 
   async getAllRequirementCategories(objectType: ObjectType): Promise<string[]> {
