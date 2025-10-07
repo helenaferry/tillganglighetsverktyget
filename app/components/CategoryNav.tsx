@@ -140,10 +140,10 @@ export default function CategoryNav({
                   return (
                     <li key={req.id}>
                       <a
-                        href={`/granskning/${reviewId}/${req.id}`}
+                        href={`/granskning/${reviewId}/${req.id}/#requirement-top`}
                         onClick={(e) => {
                           e.preventDefault();
-                          navigate(`/granskning/${reviewId}/${req.id}`);
+                          navigate(`/granskning/${reviewId}/${req.id}/#requirement-top`);
                         }}
                         className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
                         bg-${selected ? 'stratos-500' : 'white'}`}
