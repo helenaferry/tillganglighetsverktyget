@@ -60,7 +60,7 @@ export default function ReviewRequirement({
             )}
           </div>
         </div>
-        <div className="md:flex my-5 gap-5">
+        <div className="flex flex-col md:flex-row my-5 gap-5">
           <div className="flex-1">
             <RequirementDetails requirement={requirement} />
           </div>
