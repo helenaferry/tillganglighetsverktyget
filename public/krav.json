@@ -712,15 +712,13 @@
     {
       "id": "olfo",
       "name": "Olika format",
-      "type": "requirement",
-      "wcag": "3.3.2 (A)",
-      "en301549": "9.3.3.2",
+      "type": "guideline",
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Användaren kan mata in data i olika format. Datum kan skrivas som “ååmmdd” eller “åå-mm-dd”. Telefonnummer kan skrivas som “+4670…” eller “070…”.",
-      "why": "Användaren ska kunna fylla i information på ett intuitivt och enkelt sätt. Användaren ska inte behöva anpassa sig till krångliga format som bestämts av en databas. En teknik för att korrigera datum som användaren matar in så att det passar ett förväntat format är så kallade regular expressions.",
-      "howToTest": "1. Gå igenom formulärsfält för datum, personnummer, samordningsnummer, organisationsnummer, telefonnummer, e-postadress eller andra särskilda format i tjänsten eller webbsidan.\r\n\r\n2. Kontrollera om det är möjligt att mata in information i olika format i formulärfälten.\r\n\t\r\n    Om ett fält kräver ett särskilt format, kontrollera att det finns information om att det krävs ett särskilt format.\r\n"
+      "statement": "Användaren kan mata in data i olika format. Datum kan skrivas som “ååmmdd” eller “åå-mm-dd”. Telefonnummer kan skrivas som “+4670…” eller “070…”. En teknik för att kontrollera format är så kallade regular expressions.",
+      "why": "Användaren ska kunna fylla i information på ett intuitivt och enkelt sätt. Användaren ska inte behöva anpassa sig till krångliga format som bestämts av en databas.",
+      "howToTest": "1. Gå igenom formulärfält för datum, personnummer, samordningsnummer, organisationsnummer, telefonnummer eller annan information som kan ha olika format.\r\n\r\n2. Kontrollera att det är möjligt att mata in information i olika format i formulärfälten."
     },
     {
       "id": "info",
@@ -733,7 +731,7 @@
       "objectType": "web",
       "statement": "Det framgår tydligt för användaren när det krävs ett särskilt format på den information som ska matas in i ett inmatningsfält.",
       "why": "Tydlig information om särskilda format hjälper användaren att förstå hur information ska fyllas i vilket också hjälper användaren att undvika att göra fel.",
-      "howToTest": "1. Granska inmatningsfält som kräver att användaren matar in information i ett specifikt format. Det kan vara person- eller organisationsnummer, kontonummer, postnummer eller telefonnummer.\r\n\r\n2. Kontrollera att det finns information som beskriver det förväntade formatet på ett tydligt sätt.\r\n\r\n3. Kontrollera att information om format associeras till det aktuella fältet. Exempelvis genom att bädda in informationen i fältets etikett, alltså i elementet label.\r\n\r\n#### Testa med skärmläsare ####\r\n1. Starta en skärmläsare på din dator, exempelvis skärmläsaren NVDA.\r\n\r\n2. Använd tabbtangenten för att navigera till ett fält som kräver ett särskilt format och där det finns instruktioner om hur formatet ska anges.\r\n\r\n3. Kontrollera att skärmläsaren läser instruktioner om format på ett tydligt sätt."
+      "howToTest": "1. Granska inmatningsfält som kräver att användaren matar in information i ett specifikt format. Det kan vara exempelvis person- eller organisationsnummer, kontonummer, postnummer eller telefonnummer.\r\n\r\n2. Kontrollera att det finns information som beskriver det förväntade formatet på ett tydligt sätt.\r\n"
     },
     {
       "id": "beet",
@@ -742,62 +740,35 @@
       "wcag": "2.4.6 (AA)",
       "en301549": "9.2.4.6",
       "contentType": "Formulär & inmatningsfält",
-      "category": "Inmatning och felhantering",
+      "category": "Struktur och språk",
       "objectType": "web",
       "statement": "Etiketter är tydligt formulerade och beskriver den information som efterfrågas.",
-      "why": "Tydliga etiketter hjälper alla användare att fylla i formulär på rätt sätt. Det är extra viktigt för användare med nedsatt inlärningsförmåga eller andra kognitiva eller språkliga svårigheter."
+      "why": "Tydliga etiketter hjälper alla användare att fylla i formulär på rätt sätt. Det är extra viktigt för användare med nedsatt inlärningsförmåga eller andra kognitiva eller språkliga svårigheter.",
+      "howToTest": "Kontrollera att alla inmatningsfält har etiketter som gör det tydligt vad användaren ska fylla i."
     },
     {
       "id": "fedi",
-      "name": "Felhantering med direktvalidering",
+      "name": "Felhantering",
       "type": "requirement",
-      "wcag": "3.3.1 (A)",
-      "en301549": "9.3.3.1",
+      "wcag": "3.3.1 (A),4.1.3 (A)",
+      "en301549": "9.3.3.1,9.4.1.3",
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Vid automatisk validering av inmatningsfält markeras fältet när det uppstår inmatningsfel och felet beskrivs med text för användaren. Inmatningsfält som innehåller fel har attributet `aria-invalid=”true”`.",
-      "why": "Det är viktigt att användare får information om vad som har blivit fel och kan åtgärda felet. Det blir också tydligt för alla användare vilket fält felet gäller.",
-      "howToTest": "#### Navigering med tabbtangenten\r\n1. Identifiera var och när på sidan som det sker någon form av direktvalidering.\r\n\r\n2. Navigera igenom samtliga formulärfält med tabbtangenten, men skicka inte formuläret.\r\n\r\n3. Kontrollera att det inte sker någon validering när användaren tabbar förbi ett fält.\r\n\r\n#### Obligatoriska fält\r\n1. Interagera med formulärfält genom att skriva in något eller genom att göra ett val och radera det sedan.\r\n\r\n2. Lämna fältet och kontrollera att fältet valideras görs.\r\n\r\n#### Felaktig information\r\nGör ett avsiktligt fel i fält där användarens information valideras, exempelvis i fält för e-postadress eller personnummer.\r\n\r\n#### För varje fel som uppstår:\r\n1. Kontrollera att fältet markeras visuellt och att ett felmeddelande visas i text.\r\n\r\n2. Granska koden för fältet och kontrollera att fältet har attributet aria-invalid=”true”.\r\n\r\n3. Kontrollera i koden att felmeddelandet som visas är kopplat till fältet, exempelvis med attributet aria-describedby.\r\n"
-    },
-    {
-      "id": "stfe",
-      "name": "Statusmeddelande om fel vid direktvalidering",
-      "type": "requirement",
-      "wcag": "4.1.3 (A)",
-      "en301549": "9.4.1.3",
-      "contentType": "Formulär & inmatningsfält",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "Användare med skärmläsare får information om fel utan att felmeddelandet får fokus.",
-      "why": "Användare som är fullt seende kan uppfatta felmeddelanden i andra områden än den plats där mus- eller textmarkör befinner sig, och utan att det felmeddelandet stör användaren. Det är viktigt att ge samma möjlighet till användare med nedsatt syn som navigerar med skärmläsare.",
-      "howToTest": "1. Identifiera var och när på sidan som det sker någon form av direktvalidering.\r\n\r\n2. Kontrollera i koden att felmeddelandet har attributet `role=”alert”` eller att det element som felmeddelandet bäddas in i har attributet `aria-live=”assertive”`. Om attributet `role=”alert”` används, innebär det implicit att attributet `aria-live` används eftersom det nedärvs automatiskt till innehåll som märks upp med `role=”alert”`. \r\n\r\n3. Testa med en skärmläsare och återskapa det fel som resulterar i att felmeddelandet visas.\r\n\r\n4. Kontrollera att skärmläsaren läser upp felmeddelandet direkt och avbryter en eventuell pågående uppläsning av något annat.\r\n\r\n5. Kontrollera att fokus är kvar på komponenten där användaren är och inte automatiskt flyttas till felmeddelandet.\r\n"
+      "statement": "- Vid validering av inmatningsfält markeras fält med felaktigt innehåll och felet beskrivs med text för användaren. \r\n- Inmatningsfält som innehåller fel har attributet `aria-invalid=”true”`. \r\n- Användare med skärmläsare får information om fel utan att felmeddelandet får fokus.",
+      "why": "- Det är viktigt att användare får information om att ett fel uppstått och var felet uppstått så att hen kan åtgärda det.\r\n- Användare som är fullt seende kan uppfatta felmeddelanden i andra områden än den plats där mus- eller textmarkör befinner sig, och utan att det felmeddelandet stör användaren. Det är viktigt att ge samma möjlighet till användare med nedsatt syn som navigerar med skärmläsare.",
+      "howToTest": "1. Fyll i formuläret på ett felaktigt sätt. Mata in felaktiga format och hoppa över obligatoriska fält.\r\n2. Kontrollera att felmeddelanden visas antingen direkt eller vid inskick.\r\n\r\nFör varje fel som uppstår:\r\n1. Kontrollera att fältet markeras visuellt och att ett felmeddelande visas i text.\r\n2. Kontrollera att felmeddelandet läses upp av en skärmläsare utan att fokus flyttas.\r\n3. Granska koden för fältet och kontrollera att fältet har attributet aria-invalid=”true”.\r\n4. Kontrollera i koden att felmeddelandet som visas är kopplat till fältet, exempelvis med attributet aria-describedby.\r\n"
     },
     {
       "id": "fein",
       "name": "Felmeddelande med samtliga fel vid inskick",
-      "type": "requirement",
-      "wcag": "3.3.1 (A)",
-      "en301549": "9.3.3.1",
+      "type": "guideline",
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "När en användare försöker skicka in ett formulär som innehåller fel presenteras samtliga fel i en samlad lista längst upp i formuläret.",
+      "statement": "När en användare försöker skicka in ett formulär som innehåller fel presenteras samtliga fel i en samlad lista längst upp i formuläret. Fokus flyttas automatiskt till denna information.",
       "why": "Användaren ges en överblick över samtliga fel i formuläret och kan utifrån den åtgärda felen.",
-      "howToTest": "1. Fyll i ett formulär på ett felaktigt sätt och klicka på “Skicka”.\r\n\r\n2. Kontrollera att varje fält som innehåller fel får en visuell markering och att ett felmeddelande visas vid varje felaktigt fält.\r\n\r\n3. Kontrollera att ett samlingsmeddelande med samtliga felmeddelanden visas längst upp i formuläret.\r\n"
-    },
-    {
-      "id": "mein",
-      "name": "Meddelande om fel vid inskick",
-      "type": "requirement",
-      "wcag": "3.3.1 (A)",
-      "en301549": "9.3.3.1",
-      "contentType": "Formulär & inmatningsfält",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "När användaren försöker skicka in ett formulär som innehåller fel, informeras användaren med ett meddelande som får fokus.",
-      "why": "I det här fallet är felmeddelandet så centralt att fokus behöver flyttas till felmeddelandet. Det kan annars vara svårt för en användare som navigerar med skärmläsare att hitta meddelandet.",
-      "howToTest": "1. Fyll i ett formulär på ett felaktigt sätt och klicka på “Skicka”.\r\n\r\n2. Kontrollera att fokus automatiskt flyttas till rubriken för det felmeddelande som samlar samtliga fel i formuläret.\r\n\r\n3. Testa med en skärmläsare för att kontrollera att skärmläsarens fokus automatiskt flyttas till början av sidan och läser upp rubriken för felmeddelandet.\r\n"
+      "howToTest": "1. Fyll i ett formulär på ett felaktigt sätt och klicka på “Skicka”.\r\n2. Kontrollera att ett samlingsmeddelande med samtliga felmeddelanden visas längst upp i formuläret.\r\n3. Kontrollera att fokus automatiskt flyttas till rubriken för felmeddelandet.\r\n"
     },
     {
       "id": "fgfe",
@@ -808,34 +779,22 @@
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Om det finns kända förslag för korrigering av fel ges användaren sådana förslag, så länge det inte påverkar säkerheten på webbsidan.",
-      "why": "Tydliga förslag vid felhantering hjälper användare att förstå hur de ska korrigera fel som uppstår. Det är extra viktigt för användare med nedsatt inlärningsförmåga, koncentrationssvårigheter och utmattning som kan behöva extra hjälp.",
-      "howToTest": "#### Obligatoriska men tomma fält\r\n1. Försök att skicka in ett formulär utan att fylla i obligatoriska fält.\r\n\r\n2. Kontrollera att felmeddelanden som visas tydligt informerar om att fältet behöver fyllas i och inte får vara tomt.\r\n\r\n3. Testa gärna felmeddelanden med användare från olika målgrupper, inklusive personer med kognitiva funktionsnedsättningar.\r\n\r\n#### Fält som innehåller felaktiga uppgifter\r\n1. Fyll i ett formulär på ett felaktigt sätt.\r\n\r\n2. Kontrollera att felmeddelanden som visas tydligt informerar om vad som är fel och vad användaren ska göra för att rätta till felen.\r\n\r\n3. Testa gärna felmeddelanden med användare från olika målgrupper, inklusive personer med kognitiva funktionsnedsättningar.\r\n"
-    },
-    {
-      "id": "mepo",
-      "name": "Meddelande om positivt resultat",
-      "type": "requirement",
-      "wcag": "4.1.3 (A)",
-      "en301549": "9.4.1.3",
-      "category": "Inmatning och felhantering",
-      "objectType": "web",
-      "statement": "Användare som navigerar med skärmläsare får information vid positivt eller förväntat resultat, utan att meddelandet får fokus. Exempel är när användarens påbörjade arbete har sparats eller när användaren har skickat ett formulär. Information om positivt resultat gäller när kontexten inte ändras, alltså att användaren skickas till en ny sida som bekräftar att arbete sparats eller att ett formulär har skickats.",
-      "why": "Tydlig återkoppling om ett positivt resultat gör att användare blir medvetna om viktiga förändringar i innehållet på en webbsida på ett sätt som inte stör deras pågående arbete.",
-      "howToTest": "1. Identifiera alla meddelanden som informerar användaren om ett positivt, förväntat eller informativt resultat som inte är kritiskt.\r\n\r\n2. För varje meddelande, kontrollera att det element i koden som innehåller meddelandet har attributet `role=\"status\"` eller `aria-live=”polite”`. Om meddelandet är uppmärkt med attributet `role=”status”` behöver inte `aria-live=”polite”` läggas till eftersom det nedärvs implicit till områden med `role=”status”`.\r\n\r\n3. Testa med en skärmläsare och återskapa meddelanden genom att utföra en uppgift som ger ett positivt resultat.\r\n\r\n4. Kontrollera att skärmläsaren läser upp meddelandet för användaren utan att avbryta en redan pågående uppläsning av annat innehåll. Skärmläsaren ska läsa meddelandet när den pågående uppläsningen är klar.\r\n\r\n5. Kontrollera att fokus är kvar vid den komponent där användaren hade fokus då uppgiften utfördes och inte flyttas till ett meddelande om positivt resultat.\r\n"
+      "statement": "När fel upptäcks automatiskt bör förslag på korrekt inmatning presenteras om det är möjligt.\r\n\r\nExempel:\r\n- Fyll i endast siffror.\r\n- Välj ett datum i framtiden.\r\n\r\nUndantag:\r\n- Detta behöver inte ske om det på något vis äventyrar säkerheten på webbplatsen.",
+      "why": "Tydliga förslag vid felhantering hjälper alla användare att förstå hur de ska korrigera fel som uppstår.",
+      "howToTest": "1. Försök att skicka in ett formulär som innehåller fel, exempelvis fel format eller tomma obligatoriska fält.\r\n\r\n2. Kontrollera att felmeddelanden som visas tydligt informerar om hur felet ska korrigeras."
     },
     {
       "id": "indy",
-      "name": "Innehåll som förändras dynamiskt",
+      "name": "Statusmeddelanden",
       "type": "requirement",
       "wcag": "4.1.3 (A)",
       "en301549": "9.4.1.3",
       "contentType": "",
       "category": "Inmatning och felhantering",
       "objectType": "web",
-      "statement": "Användare som navigerar med skärmläsare får information om innehåll som uppdateras dynamiskt, utan att innehållet får fokus. Exempel är vid presentation av antalet träffar i en sökning, antalet sparade jobb eller att ett jobb har sparats.",
-      "why": "Tydlig återkoppling om att innehåll har uppdaterats gör att användare blir medvetna om viktiga förändringar i innehållet på en webbsida på ett sätt som inte stör deras pågående arbete.",
-      "howToTest": "1. Identifiera innehåll på sidan som förändras när användaren gör någonting och som informerar användaren om sidans status.\r\n\r\n2. För varje förändring, kontrollera att det element i koden som innehåller information om sidans status har attributet `role=“status”` eller `aria-live=”polite”`. Om meddelandet är uppmärkt med attributet `role=”status”` behöver inte `aria-live=”polite”` läggas till eftersom det nedärvs implicit till områden med `role=”status”`.\r\n\r\n3. Testa med en skärmläsare och utför en uppgift som resulterar i att information ändras.\r\n\r\n4. Kontrollera att skärmläsaren läser upp informationen, inklusive förändringen, för användaren utan att avbryta en pågående uppläsning av innehåll. Skärmläsaren ska läsa meddelandet när den pågående uppläsningen är klar.\r\n\r\n5. Kontrollera att användaren får ta del av all relevant informationen. Exempel: “3 sparade annonser” istället för enbart “3”.\r\n\r\n6. Kontrollera att fokus är kvar vid den komponent där användaren där användaren hade fokus då uppgiften utfördes och inte flyttas till meddelandet om sidans status.\r\n"
+      "statement": "Statusmeddelanden ger information om dynamiska uppdateringar på sidan. Exempel:\r\n- Någonting sparas.\r\n- Antalet träffar i ett sökresultat eller i en filtering.\r\n- Ett formulär har skickats in.\r\n\r\nSkärmläsare läser upp denna typ av meddelanden utan att fokus flyttas.",
+      "why": "Information som förmedlas till seende användare ska skärmläsaranvändare också få ta del av.",
+      "howToTest": "Testa antingen genom att använda en skärmläsare eller genom att granska koden.\r\n\r\nGranska koden:\r\n- För varje förändring, kontrollera att det element i koden som innehåller information om sidans status har antingen attributet `role=“status”` eller `aria-live=”polite”` (inte båda).\r\n\r\nSkärmläsare: \r\n- Kontrollera att skärmläsaren läser upp informationen, inklusive förändringen, för användaren utan att avbryta en pågående uppläsning av innehåll. Skärmläsaren ska läsa meddelandet när den pågående uppläsningen är klar.\r\n- Kontrollera också att användaren får ta del av all relevant information. Exempel: “3 sparade annonser” istället för enbart “3”.\r\n- Kontrollera att fokus är kvar vid den komponent där användaren hade fokus då uppgiften utfördes och inte flyttas till meddelandet om sidans status."
     },
     {
       "id": "uppt",
@@ -846,35 +805,22 @@
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Användare som navigerar med skärmläsare får information om att systemet är upptaget, utan att meddelandet får fokus. Exempel är information om att sökresultat uppdateras eller att information hämtas från en databas.",
-      "why": "Tydlig återkoppling om att ett system arbetar gör att användare blir medvetna om viktiga förändringar i innehållet på en webbsida på ett sätt som inte stör deras pågående arbete.",
-      "howToTest": "1. Identifiera situationer då systemet kan vara upptaget eller när användaren behöver vänta på att innehåll ska hämtas.\r\n\r\n2. Kontrollera att meddelanden om att systemet är upptaget läses upp av skärmläsare utan att avbryta en pågående uppläsning och utan att fokus flyttas till meddelanden om att systemet arbetar.\r\n\r\n3. När systemet inte längre är upptaget eller när innehåll har laddats in på sidan, kontrollera att information om vad som har skett kan uppfattas av skärmläsare. Kontrollera att båda eller ett av följande alternativ är uppfyllt.\r\n\r\n\t- Skärmläsaren läser upp ett visuellt dolt meddelande som lagts till dynamiskt i dokumentstrukturen och som informerar användaren om att systemet har arbetat klart, eller att innehåll har laddats in på sidan.\r\n\r\n\t- Skärmläsaren läser upp ett visuellt synligt meddelande som lagts till på sidan dynamiskt och som informerar användaren om att systemet har arbetat klart, eller att innehåll har laddats in på sidan.\r\n\r\n4. Kontrollera att även meddelanden om att systemet har arbetat klart läses upp av skärmläsare utan att avbryta en pågående uppläsning av annat innehåll och utan att fokus flyttas till meddelandet.\r\n"
+      "statement": "Om det finns meddelanden om upptaget system, exempelvis laddningsindikatorer, ska användare som navigerar med skärmläsare få samma information som en seende användare. Detta ska ske utan att meddelandet får fokus.",
+      "why": "Information som förmedlas till seende användare ska skärmläsaranvändare också få ta del av.",
+      "howToTest": "1. Kontrollera att meddelanden om att systemet är upptaget läses upp av skärmläsare. Detta ska ske utan att avbryta en pågående uppläsning och utan att fokus flyttas till meddelandet om att systemet arbetar.\r\n\r\n2. När systemet inte längre är upptaget eller när innehåll har laddats in på sidan, kontrollera att information om vad som har skett kan uppfattas av skärmläsare."
     },
     {
       "id": "roko",
-      "name": "Roll för komponent",
-      "type": "requirement",
-      "wcag": "4.1.2 (A)",
-      "en301549": "9.4.1.2",
-      "contentType": "",
-      "category": "Struktur och språk",
-      "objectType": "web",
-      "statement": "Komponenter som inte är baserade på standardelement i html har attributet role som gör det möjligt för hjälpmedel att tolka komponenter på rätt sätt.",
-      "why": "Attributet role informerar hjälpmedel, exempelvis skärmläsare, om hur komponenten ska tolkas och hur användaren ska interagera med den. Om en komponent saknar attributet role förstår inte hjälpmedel vad en komponent är, vilket försvårar interaktionen för användaren.",
-      "howToTest": "#### För egenkodade komponenter och komponenter som inte är standardkomponenter i HTML\r\n1. Testa med en skärmläsare och navigera dig fram till komponenten med tabbtangenten.\r\n\r\n2. Kontrollera att skärmläsaren läser upp den roll som komponenten har och att rollen beskriver komponenten korrekt. Exempel: En komponent som ser ut och fungerar som en knapp beskrivs som en knapp av skärmläsaren. \r\n\r\n3. Använd kortkommandon i skärmläsaren för att ta fram skärmläsarens elementlista över olika typer av  element. I listan över formulärobjekt ska du kunna se vilka komponenter som skärmläsaren uppfattar som knappar och formulär. Kontrollera att den roll som knappen har i listan stämmer överens med komponentens funktion och beskriver den korrekt.\r\n\r\n#### För övriga interaktiva komponenter\r\n1. Öppna utvecklingsverktyget i din webbläsare med F12.\r\n\r\n2. Kontrollera att semantisk HTML används om det är möjligt. Exempel: Elementet `<button>` används för knappar som inte ligger i formulär.\r\n\r\n3. Kontrollera också att koden inte innehåller onödig redundans, exempelvis att attribut inte finns i dubbel uppsättning.\r\n"
-    },
-    {
-      "id": "tiko",
-      "name": "Tillstånd för komponent",
+      "name": "Komponenters roll och tillstånd",
       "type": "requirement",
       "wcag": "4.1.2 (A)",
       "en301549": "9.4.1.2",
       "contentType": "",
       "category": "Navigation och interaktion",
       "objectType": "web",
-      "statement": "Om en användare kan ändra tillstånd, egenskap eller värde i en komponent ska det värdet även återges på ett sätt som hjälpmedel, exempelvis skärmläsare, kan plocka upp. Ett exempel är att en komponent kan fällas ut och ihop. En sådan komponent ska ha attributet aria-expanded.",
-      "why": "Tillstånd, värden och egenskaper i komponenter behöver vara kompatibla med hjälpmedel för att alla användare ska kunna använda dem och ges en jämlik användarupplevelse.",
-      "howToTest": "1. Identifiera alla komponenter på sidan som kan ändras, exempelvis kryssrutor som kan kryssas eller inmatningsfält där användaren där användaren kan skriva in text.\r\n\r\n2. Testa med en skärmläsare. Navigera till varje komponent som du tidigare har identifierat och prova att ändra den med tangentbordet.\r\n\r\n3. Kontrollera att skärmläsaren tydligt informerar om förändringen. Exempelvis att skärmläsaren läser ”kryssruta markerad”.\r\n\r\n4. Kontrollera också följande:\r\n\t- Obligatoriska tillstånd och egenskaper för en typ av komponent omfattas\r\n\t\r\n    - Otillåtna tillstånd och egenskaper omfattas inte\r\n\t\r\n    - Tillstånd och egenskaper uppdateras och visar det aktuella tillståndet när komponenten ändras.\r\n"
+      "statement": "- Komponenter är antingen baserade på standardelement i html eller förses med attributet role som gör det möjligt för hjälpmedel att tolka komponenter på rätt sätt.\r\n- Om en användare kan ändra tillstånd, egenskap eller värde i en komponent ska det värdet även återges på ett sätt som hjälpmedel kan plocka upp. Ett exempel är att en komponent kan fällas ut och ihop. En sådan komponent ska ha attributet aria-expanded satt till `true`eller `false` samt aria-controls med hänvisning till den expanderbara ytan.",
+      "why": "Om en komponent varken är ett standardelement eller har attributet role förstår inte hjälpmedel vad komponenten är, vilket försvårar interaktionen för användaren.",
+      "howToTest": "- Kontrollera att komponenter antingen använder standardelement i HTML eller har attributet role angivet.\t\r\n- Kontrollera att tillstånd och egenskaper uppdateras och visar det aktuella tillståndet när komponenten ändras."
     },
     {
       "id": "osds",
@@ -885,8 +831,8 @@
       "category": "Struktur och språk",
       "objectType": "web",
       "statement": "Innehåll som döljs för seende användare ska även döljas för skärmläsare. Exempel är innehåll som döljs i en utfällbar yta som enbart ska vara synligt när användaren valt att visa innehållet. Använd attributet `aria-hidden=\"true\"`.",
-      "why": "Användare som navigerar med skärmläsare ska inte behöva ta del av innehåll som döljs visuellt. Innehåll ska presenteras på samma sätt för alla användare, oavsett om användare kan se innehållet.",
-      "howToTest": "För att kontrollera om det finns dolda delar på sidan som inte döljs i koden, gör så här:\r\n1. Identifiera innehåll som ska vara synligt respektive dolt på sidan. Det kan exempelvis vara innehåll i expanderbara ytor, stängda menyer eller innehåll i flikar som inte har öppnats.\r\n\r\n2. Kontrollera att innehållet är dolt visuellt och i dokumentstrukturen.\r\n\r\n3. Testa med en skärmläsare och navigera dig fram till komponenten närmast före det dolda innehållet, exempelvis en menyknapp för en meny som är stängd.\r\n\r\n4. Navigera nedåt med piltangenterna eller tabbtangenten och kontrollera att skärmläsaren inte läser upp innehåll som är visuellt dolt på skärmen och att dessa delar inte heller går att komma åt med tabbtangenten.\r\n\r\n5. Gå igenom hela sidan med skärmläsare för att kontrollera att det inte finns något ytterligare innehåll som enbart döljs visuellt men inte för skärmläsare.\r\n"
+      "why": "Innehåll ska presenteras på samma sätt för alla användare, oavsett om användaren kan se innehållet eller inte.",
+      "howToTest": "1. Kontrollera att innehåll som är dolt visuellt också är dolt i dokumentstrukturen.\r\n\r\n2. Testa med en skärmläsare och navigera dig fram till komponenten närmast före det dolda innehållet, exempelvis en menyknapp för en meny som är stängd.\r\n\r\n3. Navigera nedåt med piltangenterna eller tabbtangenten och kontrollera att skärmläsaren inte läser upp innehåll som är visuellt dolt på skärmen och att dessa delar inte heller går att komma åt med tabbtangenten.\r\n"
     },
     {
       "id": "html",
