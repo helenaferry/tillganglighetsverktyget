@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
-import Review from '~/components/Review';
+import ReviewRequirement from '~/components/ReviewRequirement';
+import ReviewRequirements from '~/components/ReviewRequirements';
 
 export function meta() {
   return [
@@ -12,5 +13,13 @@ export function meta() {
 export default function ReviewPage() {
   const { id, reqId } = useParams<{ id: string; reqId?: string }>();
 
-  return <Review reviewId={String(id)} requirementId={reqId} />;
+  return (
+    <div>
+      {id && reqId ? (
+        <ReviewRequirement reviewId={String(id)} requirementId={reqId} />
+      ) : (
+        <ReviewRequirements reviewId={String(id)} />
+      )}
+    </div>
+  );
 }

@@ -16,7 +16,7 @@ export default function CategoryOverview({ category, onToggleCategoryNav }: Prop
   const percentageChecked = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
   return (
     <>
-      <a id="requirement-top" />
+      <a id="krav" />
       <div className="content-container content-container--white content-container--largest mb-8">
         <DigiTypography>
           <div className="absolute sm:hidden -left-2">

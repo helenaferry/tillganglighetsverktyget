@@ -16,7 +16,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
         {previousUnhandled && (
           <StyledLink
             styleVariant="secondary-button"
-            to={`/granskning/${reviewId}/${previousUnhandled.id}`}
+            to={`/granskning/${reviewId}/${previousUnhandled.id}#krav`}
             text="Föregående ogranskade krav"
             ariaLabel={`Föregående ogranskade krav: ${previousUnhandled.name}`}
           />
@@ -25,7 +25,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
         {nextUnhandled && (
           <StyledLink
             styleVariant="primary-button"
-            to={`/granskning/${reviewId}/${nextUnhandled.id}`}
+            to={`/granskning/${reviewId}/${nextUnhandled.id}#krav`}
             text="Nästa ogranskade krav"
             ariaLabel={`Nästa ogranskade krav: ${nextUnhandled.name}`}
           />

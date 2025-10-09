@@ -155,10 +155,10 @@ export default function CategoryNav({
                     return (
                       <li key={req.id}>
                         <a
-                          href={`/granskning/${reviewId}/${req.id}/#requirement-top`}
+                          href={`/granskning/${reviewId}/${req.id}/#krav`}
                           onClick={(e) => {
                             e.preventDefault();
-                            navigate(`/granskning/${reviewId}/${req.id}/#requirement-top`);
+                            navigate(`/granskning/${reviewId}/${req.id}/#krav`);
                           }}
                           className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
                         bg-${selected ? 'stratos-500' : 'white'}`}
