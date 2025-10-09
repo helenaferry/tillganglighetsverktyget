@@ -29,12 +29,7 @@ export default function ExportReviewPage() {
   const { id, type } = useParams<{ id: string; type: 'redogorelse' | 'uppgifter' }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
-  const { data: requirementsWeb, isLoading: requirementsWebLoading } = useRequirements(
-    ObjectType.WEB,
-  );
-  const { data: requirementsDoc, isLoading: requirementsDocLoading } = useRequirements(
-    ObjectType.DOCUMENT,
-  );
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
   const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
     ObjectType.WEB,
   );
@@ -43,8 +38,8 @@ export default function ExportReviewPage() {
   );
   const requirements = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string)
-      ? requirementsDoc
-      : requirementsWeb;
+      ? requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || []
+      : requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
   }, [review]);
   const categories = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string) ? categoriesDoc : categoriesWeb;
@@ -52,8 +47,7 @@ export default function ExportReviewPage() {
   const loading =
     reviewLoading ||
     checksLoading ||
-    requirementsWebLoading ||
-    requirementsDocLoading ||
+    requirementsAllLoading ||
     categoriesWebLoading ||
     categoriesDocLoading;
   return (

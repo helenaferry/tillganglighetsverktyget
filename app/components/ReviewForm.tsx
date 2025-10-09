@@ -30,7 +30,7 @@ type Props = {
 
 export function ReviewForm({ reviewId }: Props) {
   const { data: applications, isLoading: isLoadingApplications } = useApplications();
-  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements(ObjectType.WEB);
+  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements();
   const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
     ObjectType.WEB,
   );

@@ -34,26 +34,21 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
   const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
   const { check, isLoading: isCheckLoading } = useCheck(String(reviewId), String(requirementId));
-  const { data: requirementsWeb, isLoading: requirementsWebLoading } = useRequirements(
-    ObjectType.WEB,
-  );
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
   const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
     ObjectType.WEB,
-  );
-
-  const { data: requirementsDoc, isLoading: requirementsDocLoading } = useRequirements(
-    ObjectType.DOCUMENT,
   );
   const { data: categoriesDoc, isLoading: categoriesDocLoading } = useRequirementCategories(
     ObjectType.DOCUMENT,
   );
 
   const requirements = useMemo(() => {
+    const reqs = requirementsAll ?? [];
     if (review?.objectType === ObjectType.DOCUMENT) {
-      return requirementsDoc;
+      return reqs.filter((req) => req.objectType === ObjectType.DOCUMENT);
     }
-    return requirementsWeb;
-  }, [review, requirementsWeb, requirementsDoc]);
+    return reqs.filter((req) => req.objectType === ObjectType.WEB);
+  }, [review, requirementsAll]);
 
   const categories = useMemo(() => {
     if (review?.objectType === ObjectType.DOCUMENT) {
@@ -65,9 +60,8 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   const loading =
     reviewLoading ||
     checksLoading ||
-    requirementsWebLoading ||
+    requirementsAllLoading ||
     categoriesWebLoading ||
-    requirementsDocLoading ||
     categoriesDocLoading;
 
   const [showCategoryNav, setShowCategoryNav] = useState(() =>

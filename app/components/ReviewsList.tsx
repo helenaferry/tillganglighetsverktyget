@@ -19,6 +19,7 @@ import { useRequirements } from '~/hooks/useRequirementData';
 import { useDeleteReview, useReviews } from '~/hooks/useReviewData';
 
 import { StyledLink } from './StyledLink';
+import { useMemo } from 'react';
 
 export function ReviewsList() {
   const {
@@ -29,19 +30,22 @@ export function ReviewsList() {
   } = useReviews();
   const deleteReview = useDeleteReview();
   const {
-    data: requirements,
-    isLoading: requirementsLoading,
-    isFetched: requirementsFetched,
-  } = useRequirements(ObjectType.WEB);
-  const {
-    data: requirementsDoc,
-    isLoading: isLoadingDoc,
-    isFetched: isFetchedDoc,
-  } = useRequirements(ObjectType.DOCUMENT);
-  const requirementsCount = requirements?.length || 0;
-  const requirementsDocCount = requirementsDoc?.length || 0;
-  const loading = reviewsLoading || requirementsLoading || isLoadingDoc;
-  const fetched = reviewsFetched && requirementsFetched && isFetchedDoc;
+    data: requirementsAll,
+    isLoading: requirementsAllLoading,
+    isFetched: requirementsAllFetched,
+  } = useRequirements();
+
+  const requirementsWeb = useMemo(() => {
+    return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
+  }, [requirementsAll]);
+  const requirementsDoc = useMemo(() => {
+    return requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || [];
+  }, [requirementsAll]);
+  const requirementsCount = requirementsWeb.length;
+  const requirementsDocCount = requirementsDoc.length;
+
+  const loading = reviewsLoading || requirementsAllLoading;
+  const fetched = reviewsFetched && requirementsAllFetched;
   const navigate = useNavigate();
   return (
     <div className="content-container content-container--largest">

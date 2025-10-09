@@ -34,21 +34,15 @@ export function meta() {
 }
 
 export default function RequirementsPage() {
-  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements(ObjectType.WEB);
-  const { data: requirementsDoc, isLoading: isLoadingRequirementsDoc } = useRequirements(
-    ObjectType.DOCUMENT,
-  );
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
+
   const { data: categories, isLoading: isLoadingCategories } = useRequirementCategories(
     ObjectType.WEB,
   );
   const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
     ObjectType.WEB,
   );
-  const isLoading =
-    isLoadingRequirements ||
-    isLoadingRequirementsDoc ||
-    isLoadingCategories ||
-    isLoadingContentTypes;
+  const isLoading = requirementsAllLoading || isLoadingCategories || isLoadingContentTypes;
 
   const prefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
@@ -61,7 +55,7 @@ export default function RequirementsPage() {
 
   const hasRequirementAdditions = useMemo(() => {
     return requirementAdditions.items.length > 0;
-  }, [requirements, requirementAdditions]);
+  }, [requirementsAll, requirementAdditions]);
 
   const [showObjectType, setShowObjectType] = useState<ObjectType>(ObjectType.WEB);
   const [filterFreeText, setFilterFreeText] = useState('');
@@ -70,8 +64,10 @@ export default function RequirementsPage() {
   const [filterPrefill, setFilterPrefill] = useState<string[]>([]);
   const [filterHasAdditions, setFilterHasAdditions] = useState<string[]>([]);
   const selectedRequirements = useMemo(() => {
-    return showObjectType === ObjectType.WEB ? requirements : requirementsDoc;
-  }, [showObjectType, requirements, requirementsDoc]);
+    return showObjectType === ObjectType.WEB
+      ? requirementsAll?.filter((req) => req.objectType === ObjectType.WEB)
+      : requirementsAll?.filter((req) => req.objectType === ObjectType.DOCUMENT);
+  }, [showObjectType, requirementsAll]);
 
   const filteredRequirements = useMemo(() => {
     if (!selectedRequirements) return [];
@@ -97,7 +93,7 @@ export default function RequirementsPage() {
       return true;
     });
   }, [
-    requirements,
+    requirementsAll,
     filterCategories,
     filterFreeText,
     filterContentTypes,
@@ -106,7 +102,7 @@ export default function RequirementsPage() {
     prefillRequirements,
     requirementAdditions,
   ]);
-  if (!requirements) return null;
+  if (!requirementsAll) return null;
   return (
     <DigiTypography>
       <div className="content-container">
@@ -274,9 +270,7 @@ export default function RequirementsPage() {
                     <tr>
                       <th>
                         Krav - Visar {filteredRequirements.length} av{' '}
-                        {showObjectType === ObjectType.WEB
-                          ? requirements.length
-                          : requirementsDoc?.length}{' '}
+                        {selectedRequirements?.length || 0}
                       </th>
                       <th>Kategori</th>
                       <th>Innehållstyp</th>

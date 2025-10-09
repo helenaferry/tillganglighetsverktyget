@@ -4,10 +4,10 @@ import { RequirementService } from '~/data/requirementService';
 import type { ObjectType, Requirement } from '~/data/types';
 
 // All requirements
-export function useRequirements(objectType: ObjectType): UseQueryResult<Requirement[], Error> {
+export function useRequirements(): UseQueryResult<Requirement[], Error> {
   return useQuery<Requirement[], Error>({
-    queryKey: ['requirements', objectType],
-    queryFn: () => RequirementService.getAllRequirements(objectType),
+    queryKey: ['requirements'],
+    queryFn: () => RequirementService.getAllRequirements(),
   });
 }
 
