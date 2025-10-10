@@ -27,7 +27,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
 
   return (
     <form id="requirement-form">
-      <DigiFormFieldset afForm="requirement-form" afLegend="Kravet är">
+      <DigiFormFieldset afForm="requirement-form" afLegend="Status för krav">
         <DigiFormRadiogroup
           afName="fulfillment"
           onAfOnGroupChange={(e: CustomEvent) => {
@@ -44,7 +44,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
             };
             upsertCheck.mutate(input, {
               onError: (err) => {
-                console.error('Could not save check:', err);
+                console.error('Fel vid sparande:', err);
               },
             });
           }}
@@ -84,7 +84,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
           };
           upsertCheck.mutate(input, {
             onError: (err) => {
-              console.error('Could not save check:', err);
+              console.error('Fel vid sparande:', err);
             },
           });
         }}
