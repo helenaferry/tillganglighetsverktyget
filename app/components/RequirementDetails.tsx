@@ -12,6 +12,9 @@ export default function RequirementDetails({ requirement }: Props) {
   const requirementAdditions = JSON.parse(
     import.meta.env.VITE_REQUIREMENT_ADDITIONS || '{}',
   ) as RequirementAdditionsSetting;
+
+  const addition = requirementAdditions.items.find((item) => item.id === requirement.id);
+
   return (
     <div>
       {requirement.statement && (
@@ -26,12 +29,10 @@ export default function RequirementDetails({ requirement }: Props) {
           <ReactMarkdown>{requirement.why}</ReactMarkdown>
         </div>
       )}
-      {requirementAdditions.items.find((item) => item.id === requirement.id) && (
+      {addition && (
         <div className="mt-4">
           <h4>{requirementAdditions.heading}</h4>
-          <ReactMarkdown>
-            {requirementAdditions.items.find((item) => item.id === requirement.id)?.text || ''}
-          </ReactMarkdown>
+          <ReactMarkdown>{addition?.text}</ReactMarkdown>
         </div>
       )}
       {requirement.howToTest && (

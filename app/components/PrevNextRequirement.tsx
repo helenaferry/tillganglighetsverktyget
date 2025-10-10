@@ -10,7 +10,7 @@ interface Props {
 
 export default function PrevNextRequirement({ reviewId, nextUnhandled, previousUnhandled }: Props) {
   return (
-    <div className="content-container content-container--white content-container-largest">
+    <div className="content-container content-container--white content-container--largest">
       {nextUnhandled && <strong>Nästa ogranskade krav: {nextUnhandled.name}</strong>}
       <div className="flex flex-col sm:flex-row gap-4 mt-4">
         {previousUnhandled && (

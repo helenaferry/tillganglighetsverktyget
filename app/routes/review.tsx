@@ -1,25 +1,16 @@
 import { useParams } from 'react-router-dom';
 
 import ReviewRequirement from '~/components/ReviewRequirement';
-import ReviewRequirements from '~/components/ReviewRequirements';
 
 export function meta() {
   return [
-    { title: 'Tillgänglighetsverktyget: Granskning' },
-    { name: 'description', content: 'Granskning' },
+    { title: 'Granska tillgänglighet: Granskningsvy' },
+    { name: 'description', content: 'Granskningsvy' },
   ];
 }
 
 export default function ReviewPage() {
-  const { id, reqId } = useParams<{ id: string; reqId?: string }>();
+  const { id, reqId } = useParams<{ id: string; reqId: string }>();
 
-  return (
-    <div>
-      {id && reqId ? (
-        <ReviewRequirement reviewId={String(id)} requirementId={reqId} />
-      ) : (
-        <ReviewRequirements reviewId={String(id)} />
-      )}
-    </div>
-  );
+  return <ReviewRequirement key={reqId} reviewId={String(id)} requirementId={String(reqId)} />;
 }

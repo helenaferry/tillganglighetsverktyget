@@ -11,6 +11,7 @@ import {
   DigiTable,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ObjectType } from '~/data/types';
@@ -19,7 +20,6 @@ import { useRequirements } from '~/hooks/useRequirementData';
 import { useDeleteReview, useReviews } from '~/hooks/useReviewData';
 
 import { StyledLink } from './StyledLink';
-import { useMemo } from 'react';
 
 export function ReviewsList() {
   const {

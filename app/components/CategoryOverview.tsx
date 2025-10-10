@@ -15,9 +15,11 @@ export default function CategoryOverview({ category, onToggleCategoryNav }: Prop
   const totalCount = category?.requirements.length;
   const percentageChecked = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
   return (
-    <>
-      <a id="krav" />
-      <div className="content-container content-container--white content-container--largest mb-8">
+    <div>
+      <div
+        className="content-container content-container--white content-container--largest mb-8"
+        id="krav"
+      >
         <DigiTypography>
           <div className="absolute sm:hidden -left-2">
             <DigiButton
@@ -44,6 +46,6 @@ export default function CategoryOverview({ category, onToggleCategoryNav }: Prop
           </div>
         </DigiTypography>
       </div>
-    </>
+    </div>
   );
 }

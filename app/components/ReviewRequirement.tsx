@@ -8,7 +8,7 @@ import {
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import CategoryNav from '~/components/CategoryNav';
 import { StyledLink } from '~/components/StyledLink';
@@ -24,6 +24,7 @@ import PrevNextRequirement from './PrevNextRequirement';
 import RequirementDetails from './RequirementDetails';
 import RequirementForm from './RequirementForm';
 import StatusBadge from './StatusBadge';
+import { useLocation } from 'react-router-dom';
 
 interface Props {
   reviewId: string;
@@ -52,9 +53,9 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
 
   const categories = useMemo(() => {
     if (review?.objectType === ObjectType.DOCUMENT) {
-      return categoriesDoc;
+      return categoriesDoc ?? [];
     }
-    return categoriesWeb;
+    return categoriesWeb ?? [];
   }, [review, categoriesWeb, categoriesDoc]);
 
   const loading =
@@ -69,7 +70,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   );
 
   const categoriesWithRequirements = useMemo(() => {
-    if (!categories || !requirements) return [];
+    if (!categories.length || !requirements.length) return [];
     return categories.map((category) => ({
       category,
       requirements: requirements
@@ -82,7 +83,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   }, [categories, requirements, checks]);
 
   const requirementsWithChecks = useMemo(() => {
-    if (!requirements || !checks) return [];
+    if (!requirements.length || !checks) return [];
     return requirements.map((req) => {
       const check = checks?.find((check) => String(check.requirement) === String(req.id));
       return { ...req, check };
@@ -164,180 +165,188 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   const [requirement, setRequirement] = useState<RequirementWithCheck | null>(null);
 
   const numberInCategory =
-    categoriesWithRequirements
+    (categoriesWithRequirements
       .find((cat) => cat.category === requirement?.category)
-      ?.requirements.findIndex((req) => String(req.id) === String(requirementId)) || 0 + 1;
+      ?.requirements.findIndex((req) => String(req.id) === String(requirementId)) ?? -1) + 1;
 
   const totalInCategory =
     categoriesWithRequirements.find((cat) => cat.category === requirement?.category)?.requirements
-      .length || 0;
+      .length ?? 0;
 
   useEffect(() => {
     const requirement = requirements?.find((req) => String(req.id) === requirementId);
     setRequirement(requirement || null);
   }, [requirements, requirementId]);
 
+  const mainRef = useRef<HTMLElement>(null);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (requirement && location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'auto' });
+      }
+    }
+  }, [requirement, location.hash]);
+
   return (
     <div className="grid">
-      {loading && (
-        <DigiLoaderSkeleton
-          className="m-5"
-          afVariation={LoaderSkeletonVariation.SECTION}
-          afCount={4}
-        ></DigiLoaderSkeleton>
-      )}
       <div className="bg-white">
         <DigiTypography>
-          {review && (
-            <div className="lg:flex justify-between mb-4 bg-white p-5">
-              <div>
-                <Breadcrumbs
-                  currentPage={
-                    requirementId
-                      ? requirements?.find((req) => String(req.id) === String(requirementId))
-                          ?.name || 'Krav'
-                      : review.title || 'Granskning'
-                  }
-                  pages={
-                    requirementId
-                      ? [
-                          { title: 'Granskningar', href: '/' },
-                          {
-                            title: review?.title || 'Granskning',
-                            href: `/granskning/${review?.id}`,
-                          },
-                        ]
-                      : [{ title: 'Granskningar', href: '/' }]
-                  }
-                />
-                <DigiTypographyHeadingJumbo
-                  className="wrap-anywhere"
-                  afText={review?.title || 'Granskning'}
-                  afLevel={TypographyHeadingJumboLevel.H1}
-                  afVariation={TypographyHeadingJumboVariation.PRIMARY}
-                ></DigiTypographyHeadingJumbo>
-                <strong>Granskning startades {formatDate(review?.created_at)}</strong>
-              </div>
-              <div className="hidden lg:block basis-[14rem] shrink-0 relative">
-                {numberDone > 0 && (
-                  <div className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
-                    <div>
-                      <span className="block text-center text-[2.5rem]">
-                        {requirements && requirements.length
-                          ? formatPercentage(numberDone / requirements.length)
-                          : '0%'}
-                      </span>
-                      <span className="block text-center">K L A R T</span>
+          {loading ? (
+            <div className="m-5">
+              <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} afCount={4} />
+            </div>
+          ) : (
+            review && (
+              <div className="lg:flex justify-between mb-4 bg-white p-5">
+                <div>
+                  <Breadcrumbs
+                    currentPage={
+                      requirements?.find((req) => String(req.id) === String(requirementId))?.name ||
+                      'Krav'
+                    }
+                    pages={[
+                      { title: 'Granskningar', href: '/' },
+                      {
+                        title: review?.title || 'Granskning',
+                        href: `/granskning/${review?.id}`,
+                      },
+                    ]}
+                  />
+                  <DigiTypographyHeadingJumbo
+                    className="wrap-anywhere"
+                    afText={review?.title || 'Granskning'}
+                    afLevel={TypographyHeadingJumboLevel.H1}
+                    afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                  />
+                  <strong>Granskning startades {formatDate(review?.created_at)}</strong>
+                </div>
+                <div className="hidden lg:block basis-[14rem] shrink-0 relative">
+                  {numberDone > 0 && (
+                    <div className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
+                      <div>
+                        <span className="block text-center text-[2.5rem]">
+                          {requirements && requirements.length
+                            ? formatPercentage(numberDone / requirements.length)
+                            : '0%'}
+                        </span>
+                        <span className="block text-center" aria-label="Klart">
+                          K L A R T
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                )}
-                <div className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
-                  <div>
-                    <span className="block text-center leading-none">BARA</span>
-                    <span className="block text-center text-[2rem] leading-none">
-                      {(requirements ? requirements.length - numberDone : 0) || 0}
-                    </span>
-                    <span className="block text-center leading-none">KVAR!</span>
+                  )}
+                  <div className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
+                    <div>
+                      <span className="block text-center leading-none">BARA</span>
+                      <span className="block text-center text-[2rem] leading-none">
+                        {(requirements ? requirements.length - numberDone : 0) || 0}
+                      </span>
+                      <span className="block text-center leading-none">KVAR!</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )
           )}
         </DigiTypography>
       </div>
-      {(() => {
-        if (requirement && reviewId) {
-          return (
-            <div className="relative">
-              <div
-                className={`absolute z-1 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 sm:w-[17rem] overflow-y-auto bg-white`}
-              >
-                <CategoryNav
+      <div className="relative">
+        <div
+          className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 sm:w-[17rem] overflow-y-auto bg-white`}
+        >
+          {requirement ? (
+            <CategoryNav
+              reviewId={reviewId}
+              categories={categoriesWithRequirements ?? []}
+              selectedCategory={requirement?.category ?? ''}
+              selectedRequirement={requirementId}
+              showCategoryNav={showCategoryNav}
+              onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+            />
+          ) : (
+            <nav></nav>
+          )}
+        </div>
+        <main className="sm:ml-[17rem]" ref={mainRef} tabIndex={-1}>
+          <div className="content-container content-container--largest">
+            {requirement ? (
+              <div>
+                <CategoryOverview
+                  category={
+                    categoriesWithRequirements.find(
+                      (cat) => cat.category === requirement?.category,
+                    ) ?? { category: requirement?.category ?? '', requirements: [] }
+                  }
+                  onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
+                />
+                <div className="content-container content-container--white content-container--largest">
+                  <DigiTypography>
+                    <div className="border-b-1 border-grayscale-400 pb-5">
+                      <p className="text-grayscale-700">
+                        Krav {numberInCategory} av {totalInCategory}
+                      </p>
+                      <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
+                        <h3>{requirement.name}</h3>
+                        <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
+                      </div>
+                      <h4 className="!mt-4">Lagkrav och riktlinjer</h4>
+                      <div className="flex flex-wrap gap-2 mt-2 mb-4">
+                        {requirement.en301549 &&
+                          requirement.en301549.length > 0 &&
+                          requirement.en301549.split(',').map((text) => (
+                            <div
+                              className="bg-grayscale-200 rounded-sm py-2 px-4"
+                              key={text.trim()}
+                            >
+                              {`EN ${text}`}
+                            </div>
+                          ))}
+                        {requirement.wcag &&
+                          requirement.wcag.length > 0 &&
+                          requirement.wcag.split(',').map((text) => (
+                            <div
+                              className="bg-grayscale-200 rounded-sm py-2 px-4"
+                              key={text.trim()}
+                            >
+                              {`WCAG ${text}`}
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                    <div className="flex flex-col md:flex-row my-5 gap-5">
+                      <div className="flex-1">
+                        <RequirementDetails requirement={requirement} />
+                      </div>
+                      <div className="flex-1">
+                        <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
+                      </div>
+                    </div>
+                  </DigiTypography>
+                </div>
+                <PrevNextRequirement
                   reviewId={reviewId}
-                  categories={categoriesWithRequirements}
-                  selectedCategory={requirement.category}
-                  selectedRequirement={requirementId}
-                  showCategoryNav={showCategoryNav}
-                  onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+                  nextUnhandled={nextUnhandledRequirement(requirementId)}
+                  previousUnhandled={previousUnhandledRequirement(requirementId)}
                 />
               </div>
-              <div className="sm:ml-[17rem]">
-                <div className="content-container content-container--largest">
-                  {review && (
-                    <>
-                      <CategoryOverview
-                        category={categoriesWithRequirements.find(
-                          (cat) => cat.category === requirement.category,
-                        )}
-                        onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
-                      />
-                      <div className="content-container content-container--white content-container--largest">
-                        <DigiTypography>
-                          <div className="border-b-1 border-grayscale-400 pb-5">
-                            <p className="text-grayscale-700">
-                              Krav {numberInCategory} av {totalInCategory}
-                            </p>
-                            <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
-                              <h3>{requirement.name}</h3>
-                              <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
-                            </div>
-                            <h4 className="!mt-4">Lagkrav och riktlinjer</h4>
-                            <div className="flex flex-wrap gap-2 mt-2 mb-4">
-                              {requirement.en301549 &&
-                                requirement.en301549.length > 0 &&
-                                requirement.en301549.split(',').map((text, index) => (
-                                  <div
-                                    className="bg-grayscale-200 rounded-sm py-2 px-4"
-                                    key={index}
-                                  >
-                                    {`EN ${text}`}
-                                  </div>
-                                ))}
-                              {requirement.wcag &&
-                                requirement.wcag.length > 0 &&
-                                requirement.wcag.split(',').map((text, index) => (
-                                  <div
-                                    className="bg-grayscale-200 rounded-sm py-2 px-4"
-                                    key={index}
-                                  >
-                                    {`WCAG ${text}`}
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                          <div className="flex flex-col md:flex-row my-5 gap-5">
-                            <div className="flex-1">
-                              <RequirementDetails requirement={requirement} />
-                            </div>
-                            <div className="flex-1">
-                              <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
-                            </div>
-                          </div>
-                        </DigiTypography>
-                      </div>
-                      <PrevNextRequirement
-                        reviewId={reviewId}
-                        nextUnhandled={nextUnhandledRequirement(requirementId)}
-                        previousUnhandled={previousUnhandledRequirement(requirementId)}
-                      />
-                    </>
-                  )}
-                </div>
+            ) : (
+              <div className="content-container content-container--white content-container--largest p-5">
+                <DigiTypography>
+                  <p>Krav med id {requirementId} hittades inte.</p>
+                  <StyledLink
+                    to={`/granskning/${reviewId}`}
+                    text="Tillbaka till granskningsöversikten"
+                  />
+                </DigiTypography>
               </div>
-            </div>
-          );
-        } else {
-          return (
-            <div className="content-container content-container--white content-container--largest p-5">
-              <p>Krav med id {requirementId} hittades inte.</p>
-              <StyledLink
-                to={`/granskning/${reviewId}`}
-                text="Tillbaka till granskningsöversikten"
-              />
-            </div>
-          );
-        }
-      })()}
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
