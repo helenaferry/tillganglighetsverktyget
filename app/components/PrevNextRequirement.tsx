@@ -1,7 +1,8 @@
+import { DigiTypography } from '@digi/arbetsformedlingen-react';
+
 import type { Requirement } from '~/data/types';
 
 import { StyledLink } from './StyledLink';
-import { DigiTypography } from '@digi/arbetsformedlingen-react';
 
 interface Props {
   reviewId: string;
