@@ -1,4 +1,8 @@
-import { type DigiLinkButtonCustomEvent, type DigiLinkCustomEvent } from '@digi/arbetsformedlingen';
+import {
+  type DigiLinkButtonCustomEvent,
+  type DigiLinkCustomEvent,
+  LinkButtonSize,
+} from '@digi/arbetsformedlingen';
 import { DigiLink, DigiLinkButton } from '@digi/arbetsformedlingen-react';
 import { useNavigate } from 'react-router';
 
@@ -33,7 +37,12 @@ export function StyledLink({ to, text, ariaLabel, styleVariant = 'link', onClick
   switch (styleVariant) {
     case 'link-button':
       return (
-        <DigiLinkButton afHref={to} afOverrideLink={true} onAfOnClick={handleClick}>
+        <DigiLinkButton
+          afHref={to}
+          afOverrideLink={true}
+          onAfOnClick={handleClick}
+          afSize={LinkButtonSize.MEDIUMLARGE}
+        >
           {text}
         </DigiLinkButton>
       );

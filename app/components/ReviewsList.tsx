@@ -5,20 +5,20 @@ import {
 } from '@digi/arbetsformedlingen';
 import {
   DigiButton,
-  DigiIconEdit,
-  DigiIconTrash,
+  DigiIconPen,
   DigiLoaderSkeleton,
-  DigiTable,
+  DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ObjectType } from '~/data/types';
-import { formatDate, formatDateAndTime } from '~/formattingHelpers';
+import { formatDate } from '~/formattingHelpers';
 import { useRequirements } from '~/hooks/useRequirementData';
-import { useDeleteReview, useReviews } from '~/hooks/useReviewData';
+import { useReviews } from '~/hooks/useReviewData';
 
+import { CardsOrTable } from './CardsOrTable';
 import { StyledLink } from './StyledLink';
 
 export function ReviewsList() {
@@ -28,122 +28,80 @@ export function ReviewsList() {
     error: reviewsError,
     isFetched: reviewsFetched,
   } = useReviews();
-  const deleteReview = useDeleteReview();
   const {
     data: requirementsAll,
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
   } = useRequirements();
 
-  const requirementsWeb = useMemo(() => {
+  const requirements = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
   }, [requirementsAll]);
-  const requirementsDoc = useMemo(() => {
-    return requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || [];
-  }, [requirementsAll]);
-  const requirementsCount = requirementsWeb.length;
-  const requirementsDocCount = requirementsDoc.length;
+  const requirementsCount = requirements.length;
 
   const loading = reviewsLoading || requirementsAllLoading;
   const fetched = reviewsFetched && requirementsAllFetched;
   const navigate = useNavigate();
   return (
-    <div className="content-container content-container--largest">
-      <DigiTypographyHeadingJumbo
-        afText="Granskningar"
-        afLevel={TypographyHeadingJumboLevel.H1}
-        afVariation={TypographyHeadingJumboVariation.PRIMARY}
-      ></DigiTypographyHeadingJumbo>
-      {loading && (
-        <DigiLoaderSkeleton
-          afVariation={LoaderSkeletonVariation.SECTION}
-          afCount={4}
-        ></DigiLoaderSkeleton>
-      )}
-      {reviewsError && <p>Fel vid hämtning av granskningar</p>}
-      {(fetched && !reviews) || (reviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
-      {fetched && reviews && (
-        <div className="content-container content-container--white">
-          <DigiTable>
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Titel</th>
-                  <th scope="col">Granskningsobjekt</th>
-                  <th scope="col">Skapad</th>
-                  <th>Godkända</th>
-                  <th>Underkända</th>
-                  <th>Ej granskade</th>
-                  <th>Senaste uppdatering</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {reviews.map((review) => (
-                  <tr key={review.id}>
-                    <td>
-                      <StyledLink
-                        to={`/granskning/${review.id}`}
-                        text={review.title || 'Granskning'}
-                      />
-                    </td>
-                    <td>{review.application?.name}</td>
-                    <td>{formatDate(review.created_at)}</td>
-                    <td>{review.passCount}</td>
-                    <td>{review.failCount}</td>
-                    <td>
-                      {review.objectType === ObjectType.DOCUMENT
-                        ? requirementsDocCount -
-                          review.irrelevantCount -
-                          review.passCount -
-                          review.failCount
-                        : requirementsCount -
-                          review.irrelevantCount -
-                          review.passCount -
-                          review.failCount}
-                    </td>
-                    <td>{formatDateAndTime(review.latestUpdate)}</td>
-                    <td>
-                      <DigiButton
-                        afType="button"
-                        afVariation="function"
-                        afAriaLabel={'Redigera granskning ' + review.title}
-                        onClick={() => {
-                          navigate(`/granskning/${review.id}/redigera`);
-                        }}
-                      >
-                        <DigiIconEdit slot="icon" />
-                      </DigiButton>
-                    </td>
-                    <td>
-                      <DigiButton
-                        afType="button"
-                        afVariation="function"
-                        afAriaLabel={'Ta bort granskning ' + review.title}
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              'Är du säker på att du vill ta bort denna granskning? Du kan inte ångra dig!',
-                            )
-                          ) {
-                            deleteReview.mutate(review.id);
-                          }
-                        }}
-                      >
-                        <DigiIconTrash slot="icon" />
-                      </DigiButton>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            {deleteReview.isError && <span style={{ color: 'red' }}>Fel vid borttagning</span>}
-            {deleteReview.isSuccess && <span style={{ color: 'green' }}>Borttagen!</span>}
-          </DigiTable>
+    <DigiTypography>
+      <div className="bg-white p-5 pt-12">
+        <DigiTypographyHeadingJumbo
+          afText="Granskningar"
+          afLevel={TypographyHeadingJumboLevel.H1}
+          afVariation={TypographyHeadingJumboVariation.PRIMARY}
+        ></DigiTypographyHeadingJumbo>
+        <p>
+          <strong>Här hittar du samtliga granskningar.</strong>
+        </p>
+      </div>
+      <div className="m-5">
+        {loading && (
+          <DigiLoaderSkeleton
+            afVariation={LoaderSkeletonVariation.SECTION}
+            afCount={4}
+          ></DigiLoaderSkeleton>
+        )}
+        {reviewsError && <p>Fel vid hämtning av granskningar</p>}
+        {(fetched && !reviews) || (reviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
+        <div className="my-4">
+          <StyledLink
+            to="/granskning/skapa"
+            text="Skapa ny granskning"
+            styleVariant="link-button"
+          />
         </div>
-      )}
-      <StyledLink to="/granskning/skapa" text="Skapa ny granskning" styleVariant="link-button" />
-    </div>
+        {fetched && reviews && (
+          <div className="content-container content-container--largest content-container--white">
+            <CardsOrTable
+              headings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskade krav', '']}
+              rows={reviews
+                .filter((review) => review.objectType !== ObjectType.DOCUMENT)
+                .map((review) => [
+                  <StyledLink
+                    key={`granskning-${review.id}`}
+                    to={`/granskning/${review.id}`}
+                    text={review.title || 'Granskning'}
+                  />,
+                  formatDate(review.created_at),
+                  formatDate(review.latestUpdate),
+                  `${review.passCount + review.failCount + review.irrelevantCount} / ${requirementsCount}`,
+                  <DigiButton
+                    key={`edit-review-${review.id}`}
+                    afType="button"
+                    afVariation="function"
+                    afAriaLabel={'Redigera granskning ' + review.title}
+                    onClick={() => {
+                      navigate(`/granskning/${review.id}/redigera`);
+                    }}
+                  >
+                    Ändra uppgifter
+                    <DigiIconPen slot="icon" />
+                  </DigiButton>,
+                ])}
+            />
+          </div>
+        )}
+      </div>
+    </DigiTypography>
   );
 }
