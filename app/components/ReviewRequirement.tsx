@@ -9,6 +9,7 @@ import {
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import CategoryNav from '~/components/CategoryNav';
 import { StyledLink } from '~/components/StyledLink';
@@ -24,7 +25,6 @@ import PrevNextRequirement from './PrevNextRequirement';
 import RequirementDetails from './RequirementDetails';
 import RequirementForm from './RequirementForm';
 import StatusBadge from './StatusBadge';
-import { useLocation } from 'react-router-dom';
 
 interface Props {
   reviewId: string;
