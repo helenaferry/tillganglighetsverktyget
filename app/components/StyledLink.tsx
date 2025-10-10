@@ -43,7 +43,7 @@ export function StyledLink({ to, text, ariaLabel, styleVariant = 'link', onClick
           href={to}
           aria-label={ariaLabel}
           onClick={handleAnchorClick}
-          className="bg-stratos-500 border-2 border-stratos-500 text-white font-bold cursor-pointer
+          className="bg-stratos-500 border-2 border-stratos-500 !text-white !no-underline text-center sm:text-left !font-bold cursor-pointer
           font-(family-name:--digi--typography-meta--font-family)
           hover:bg-[var(--digi--color--background--inverted-6)]
           hover:border-[var(--digi--color--background--inverted-6)]
@@ -60,7 +60,7 @@ export function StyledLink({ to, text, ariaLabel, styleVariant = 'link', onClick
           href={to}
           aria-label={ariaLabel}
           onClick={handleAnchorClick}
-          className="bg-white border-2 border-stratos-500 font-bold cursor-pointer
+          className="bg-white border-2 border-stratos-500 !text-stratos-500 !no-underline text-center sm:text-left !font-bold cursor-pointer
           font-(family-name:--digi--typography-meta--font-family)
           hover:bg-[var(--digi--color--background--inverted-5)]
           p-[var(--digi--button--padding--medium)] 
