@@ -28,6 +28,7 @@ import { useLocation } from 'react-router-dom';
 
 import type { Route } from './+types/root';
 import { ClientOnly } from './clientOnly';
+import SkipLink from './components/SkipLink';
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="grid">
         <ClientOnly>
+          <SkipLink />
           <DigiHeader afSystemName="Granska tillgänglighet">
             <Link
               slot="header-logo"
