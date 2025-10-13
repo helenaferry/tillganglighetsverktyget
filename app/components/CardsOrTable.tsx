@@ -47,63 +47,63 @@ export function CardsOrTable({ headings, rows, defaultItemsPerPage = 0, filters 
 
   return (
     <div className="w-full">
+      {filters && filters.length > 0 && (
+        <form className="md:flex md:gap-4">
+          {filters &&
+            filters.map((filter, index) => (
+              <div className="md:w-1/4" key={index}>
+                {filter.type === 'freeText' && (
+                  <DigiFormInput
+                    afLabel={filter.label}
+                    onAfOnInput={(e) => {
+                      filter.onChange(e);
+                    }}
+                  />
+                )}
+                {filter.type === 'select' && filter.options && filter.options.length > 1 && (
+                  <DigiFormSelectFilter
+                    afFilterButtonTextLabel={filter.label}
+                    afFilterButtonText="Visa alla"
+                    afName="Sök"
+                    afSubmitButtonText="Filtrera"
+                    afMultipleItems={true}
+                    sortAlphabetically={false}
+                    afListItems={filter.options}
+                    onAfOnSubmitFilters={(e) => {
+                      filter.onChange(e);
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          <DigiContextMenu
+            afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
+            afMenuPosition="left-bottom"
+            afMenuItems={[
+              { id: 5, title: '5' },
+              { id: 10, title: '10' },
+              { id: 20, title: '20' },
+              { id: 50, title: '50' },
+              { id: 0, title: 'Alla' },
+            ]}
+            onAfChangeItem={(e) => {
+              if (e.detail.item.id === 0) {
+                setPageSize(0);
+                setPaginationStart(1);
+                setPaginationEnd(rows.length);
+                setCurrentPage(1);
+              } else {
+                setPageSize(Number(e.detail.item.id));
+                setPaginationStart(1);
+                setPaginationEnd(Number(e.detail.item.id));
+                setCurrentPage(1);
+              }
+            }}
+          ></DigiContextMenu>
+        </form>
+      )}
+      <p role="status">Totalt {rows.length} st</p>
       <div className="hidden lg:block">
-        {filters && filters.length > 0 && (
-          <form className="md:flex md:gap-4">
-            {filters &&
-              filters.map((filter, index) => (
-                <div className="md:w-1/4" key={index}>
-                  {filter.type === 'freeText' && (
-                    <DigiFormInput
-                      afLabel={filter.label}
-                      onAfOnInput={(e) => {
-                        filter.onChange(e);
-                      }}
-                    />
-                  )}
-                  {filter.type === 'select' && filter.options && filter.options.length > 1 && (
-                    <DigiFormSelectFilter
-                      afFilterButtonTextLabel={filter.label}
-                      afFilterButtonText="Visa alla"
-                      afName="Sök"
-                      afSubmitButtonText="Filtrera"
-                      afMultipleItems={true}
-                      sortAlphabetically={false}
-                      afListItems={filter.options}
-                      onAfOnSubmitFilters={(e) => {
-                        filter.onChange(e);
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
-            <DigiContextMenu
-              afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
-              afMenuPosition="left-bottom"
-              afMenuItems={[
-                { id: 5, title: '5' },
-                { id: 10, title: '10' },
-                { id: 20, title: '20' },
-                { id: 50, title: '50' },
-                { id: 0, title: 'Alla' },
-              ]}
-              onAfChangeItem={(e) => {
-                if (e.detail.item.id === 0) {
-                  setPageSize(0);
-                  setPaginationStart(1);
-                  setPaginationEnd(rows.length);
-                  setCurrentPage(1);
-                } else {
-                  setPageSize(Number(e.detail.item.id));
-                  setPaginationStart(1);
-                  setPaginationEnd(Number(e.detail.item.id));
-                  setCurrentPage(1);
-                }
-              }}
-            ></DigiContextMenu>
-          </form>
-        )}
-        <p role="status">Totalt {rows.length} st</p>
         <DigiTable afSize={TableSize.MEDIUM}>
           <table aria-rowcount={rows.length}>
             <thead>
