@@ -4,10 +4,7 @@ import {
   TypographyHeadingJumboVariation,
 } from '@digi/arbetsformedlingen';
 import {
-  DigiFormInput,
-  DigiFormSelectFilter,
   DigiLoaderSkeleton,
-  DigiTable,
   DigiTag,
   DigiTypography,
   DigiTypographyHeadingJumbo,
@@ -21,6 +18,7 @@ import { useRequirementCategories, useRequirements } from '~/hooks/useRequiremen
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 import Breadcrumbs from './Breadcrumbs';
+import { CardsOrTable } from './CardsOrTable';
 import StatusBadge from './StatusBadge';
 
 interface Props {
@@ -133,46 +131,50 @@ export default function ReviewRequirements({ reviewId }: Props) {
           <div className="content-container content-container--white content-container--largest">
             <div>
               {review && (
-                <>
-                  <div className="md:flex md:gap-4 p-5">
-                    <div className="md:w-1/4">
-                      <DigiFormInput
-                        afLabel="Sök"
-                        value={filterFreeText}
-                        onAfOnInput={(e) => setFilterFreeText(e.detail.target.value)}
-                      />
-                    </div>
-                    <div className="md:w-1/4">
-                      <DigiFormSelectFilter
-                        afFilterButtonTextLabel="Kategori"
-                        afFilterButtonText="Visa alla"
-                        afName="Sök kategori"
-                        afSubmitButtonText="Filtrera"
-                        afMultipleItems={true}
-                        sortAlphabetically={false}
-                        afListItems={
+                <div className="container">
+                  <CardsOrTable
+                    headings={['Krav', 'Kategori', 'Status']}
+                    rows={filteredRequirements.map((req) => [
+                      <StyledLink
+                        key={req.id}
+                        to={'/granskning/' + review.id + '/' + req.id}
+                        text={req.name}
+                      />,
+                      <DigiTag
+                        key={req.id + '-tag'}
+                        afText={req.category}
+                        afNoIcon={true}
+                        onAfOnClick={() => setFilterCategories([req.category])}
+                      />,
+                      <StatusBadge key={req.id + '-status'} status={req.check?.status} />,
+                    ])}
+                    filters={[
+                      {
+                        type: 'freeText',
+                        label: 'Sök på krav',
+                        onChange: (e) => {
+                          setFilterFreeText(e.detail.target.value);
+                        },
+                      },
+                      {
+                        type: 'select',
+                        label: 'Filtrera på kategori',
+                        options:
                           categories?.map((cat: string) => ({
                             label: cat,
                             value: cat,
                             selected: filterCategories.includes(cat),
-                          })) || []
-                        }
-                        onAfOnSubmitFilters={(e) => {
+                          })) || [],
+                        onChange: (e) => {
                           setFilterCategories(
                             e.detail.map((item: { value: string }) => item.value),
                           );
-                        }}
-                      />
-                    </div>
-                    <div className="md:w-1/4">
-                      <DigiFormSelectFilter
-                        afFilterButtonTextLabel="Status"
-                        afFilterButtonText="Visa alla"
-                        afName="Sök status"
-                        afSubmitButtonText="Filtrera"
-                        afMultipleItems={true}
-                        sortAlphabetically={false}
-                        afListItems={[
+                        },
+                      },
+                      {
+                        type: 'select',
+                        label: 'Filtrera på status',
+                        options: [
                           {
                             label: 'Godkänt',
                             value: Status.PASS.toString(),
@@ -193,51 +195,17 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             value: Status.IRRELEVANT.toString(),
                             selected: filterStatus.includes(Status.IRRELEVANT),
                           },
-                        ]}
-                        onAfOnSubmitFilters={(e) => {
+                        ],
+                        onChange: (e) => {
                           setFilterStatus(
                             e.detail.map((item: { value: string }) => Number(item.value) as Status),
                           );
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="container">
-                    <DigiTable>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th scope="col">Krav - visar {filteredRequirements.length}</th>
-                            <th scope="col">Kategori</th>
-                            <th scope="col">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredRequirements.map((req) => (
-                            <tr key={req.id}>
-                              <td>
-                                <StyledLink
-                                  to={'/granskning/' + review.id + '/' + req.id}
-                                  text={req.name}
-                                />
-                              </td>
-                              <td>
-                                <DigiTag
-                                  afText={req.category}
-                                  afNoIcon={true}
-                                  onAfOnClick={() => setFilterCategories([req.category])}
-                                />
-                              </td>
-                              <td>
-                                <StatusBadge status={req.check?.status} />
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </DigiTable>
-                  </div>
-                </>
+                        },
+                      },
+                    ]}
+                    itemsPerPage={20}
+                  />
+                </div>
               )}
             </div>
           </div>
