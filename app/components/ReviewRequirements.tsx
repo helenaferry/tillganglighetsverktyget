@@ -203,7 +203,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         },
                       },
                     ]}
-                    itemsPerPage={20}
+                    defaultItemsPerPage={0}
                   />
                 </div>
               )}

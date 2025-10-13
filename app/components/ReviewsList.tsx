@@ -165,7 +165,7 @@ export function ReviewsList() {
                   },
                 },
               ]}
-              itemsPerPage={4}
+              defaultItemsPerPage={4}
             />
           </div>
         )}
