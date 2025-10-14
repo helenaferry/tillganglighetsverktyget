@@ -1015,16 +1015,16 @@
     },
     {
       "id": "allv",
-      "name": "Alternativ till ljud- och videobaserade tjänster",
+      "name": "Alternativ till ljudbaserade tjänster",
       "type": "requirement",
       "wcag": "",
       "en301549": "6.4",
       "contentType": "Videosamtal",
       "category": "Video- och röstsamtal",
       "objectType": "web",
-      "statement": "som innehåller röstmeddelanden eller telefonsvarare, automatisk telefonist eller interaktiva svarsfunktioner, ska erbjuda sätt att komma åt informationen och använda funktionerna utan att använda hörsel eller tal.",
-      "why": "",
-      "howToTest": ""
+      "statement": "Tjänster som innehåller röstmeddelanden eller telefonsvarare, automatisk telefonist eller interaktiva svarsfunktioner, ska erbjuda sätt att komma åt informationen och använda funktionerna utan att använda hörsel eller tal.",
+      "why": "Personer med nedsatt hörsel- eller talförmåga ska ges möjlighet att använda dessa tjänster.",
+      "howToTest": "Kontrollera att det finns alternativ till talsvar och liknande.\r\n"
     },
     {
       "id": "fvup",
@@ -1093,14 +1093,14 @@
     },
     {
       "id": "alvt",
-      "name": "Alternativ till ljud- och videobaserade tjänster",
+      "name": "Alternativ till videobaserade tjänster",
       "type": "requirement",
       "wcag": "",
       "en301549": "6.6",
       "contentType": "Videosamtal",
       "category": "Video- och röstsamtal",
       "objectType": "web",
-      "statement": "som innehåller videobaserad realtidskommunikation bör även erbjuda en lösning som gör det möjligt för personen att ta del av informationen och använda dessa funktioner utan att använda hörsel, tal eller syn.",
+      "statement": "Tjänster som innehåller videobaserad realtidskommunikation bör även erbjuda en lösning som gör det möjligt för personen att ta del av informationen och använda dessa funktioner utan att använda hörsel, tal eller syn.",
       "why": "",
       "howToTest": ""
     },
@@ -1230,9 +1230,9 @@
       "contentType": "",
       "category": "Flexibilitet och anpassning",
       "objectType": "web",
-      "statement": "Användargränssnittet ska följa användarens inställningar för:\r\n- mått\r\n- färg\r\n- kontrast\r\n- typsnitt\r\n- textstorlek\r\n- fokusmarkör\r\n\r\nWebbplatsen kan ha egna inställningar för att styra dessa egenskaper, så länge det dessutom finns ett läge där webbplatsen följer systeminställningarna, även om systeminställningarna är mer begränsande.",
-      "why": "",
-      "howToTest": ""
+      "statement": "Användargränssnittet ska följa användarens inställningar för:\r\n- mått\r\n- färg\r\n- kontrast\r\n- typsnitt\r\n- textstorlek\r\n- fokusmarkör\r\n\r\nDet är möjligt att ha egna inställningar för att styra dessa egenskaper på webbplatsen, så länge det också finns ett läge där webbplatsen följer systeminställningarna.",
+      "why": "Det finns systeminställningar som underlättar för en del användare och det är viktigt att dessa respekteras.",
+      "howToTest": "Ändra punkterna ovan i systeminställningarna och kontrollera att tjänsten följer inställningarna. Byt till exempel mellan mörkt och ljust läge, ändra textstorlek m.m.\r\n"
     },
     {
       "id": "frti",
@@ -1295,22 +1295,9 @@
       "contentType": "",
       "category": "Dokumentation och support",
       "objectType": "web",
-      "statement": "Produktdokumentation, till exempel tillgänglighetsredogörelse eller hjälpsidor, som medföljer tjänsten, oavsett om den tillhandahålls separat eller är integrerad i tjänsten, ska lista och förklara hur en person använder tjänstens funktioner för tillgänglighet och kompatibilitet. Dessa funktioner inkluderar inbyggda funktioner för tillgänglighet samt funktioner som är kompatibla med hjälpmedelsteknik. Produktdokumentation som medföljer tjänsten ska göras tillgänglig i minst ett av följande elektroniska format: 1.\tEtt webbformat som uppfyller kraven i EN 301 549 kapitel 9 2.\tEtt icke-webbformat som uppfyller kraven i EN 301 549 kapitel 10. När tillgänglighetsredogörelsen är en del av webbplatsen ska den också vara tillgänglig enligt kraven i EN 301 549.",
-      "why": "",
-      "howToTest": ""
-    },
-    {
-      "id": "supp",
-      "name": "Tillgängliga supporttjänster",
-      "type": "requirement",
-      "wcag": "",
-      "en301549": "12.2.1",
-      "contentType": "",
-      "category": "Dokumentation och support",
-      "objectType": "web",
-      "statement": "Med supporttjänster avses till exempel, men inte enbart:\r\n\r\n- kundservice\r\n- helpdesk\r\n- callcenter\r\n- teknisk support\r\n- tolkningstjänster\r\n- tjänster för utbildning/självhjälp",
-      "why": "",
-      "howToTest": ""
+      "statement": "Produktdokumentation, till exempel tillgänglighetsredogörelse eller hjälpsidor, ska ha en lista med funktioner för tillgänglighet. Den ska också förklara för användaren hur hen kan använda funktionerna. Detta gäller både inbyggda funktioner och funktioner som är avsedda för hjälpmedelsteknik. Produktdokumentation ska vara i ett elektroniskt format som uppfyller tillgänglighetskraven. ",
+      "why": "Användaren ska lätt kunna ta reda på vilka funktioner som finns och hur de används.",
+      "howToTest": "Kontrollera att produktdokumentationen beskriver hur man använder eventuella tillgänglighets- och kompatibilitetsfunktioner."
     },
     {
       "id": "suin",
@@ -1321,9 +1308,9 @@
       "contentType": "",
       "category": "Dokumentation och support",
       "objectType": "web",
-      "statement": "Supporttjänster ska kunna ge information om i vilken omfattning deras produkt eller tjänst uppfyller aktuella krav på digital tillgänglighet, förutsatt att denna information finns dokumenterad. Detta omfattar såväl funktioner för tillgänglighet inbyggda i den egna produkten eller tjänsten som kompatibilitet med olika typer av hjälpmedel.",
-      "why": "",
-      "howToTest": ""
+      "statement": "Supporttjänster ska kunna informera om deras produkt eller tjänst uppfyller tillgänglighetskrav, om detta finns dokumenterat, samt ge vägledning till mer tillgängliga alternativ för personer som upplever problem.\r\n\r\nMed supporttjänster avses till exempel, men inte enbart:\r\n\r\n- kundservice\r\n- helpdesk\r\n- callcenter\r\n- teknisk support\r\n- tjänster för utbildning/självhjälp",
+      "why": "Vi behöver underlätta för användare att hitta tillgängliga alternativ.",
+      "howToTest": "Kontrollera att supportpersonal har tillgång till relevant material."
     },
     {
       "id": "suko",
@@ -1334,9 +1321,9 @@
       "contentType": "",
       "category": "Dokumentation och support",
       "objectType": "web",
-      "statement": "Supporttjänster ska erbjuda personer med funktionsnedsättning möjlighet att kommunicera på ett sätt som är anpassat till personens behov. Detta kan antingen göras genom att personen kommunicerar direkt med supporten, eller via en tjänst som tillhandahålls av tredje part.",
-      "why": "",
-      "howToTest": ""
+      "statement": "Supporttjänster ska göra det möjligt för personer med funktionsnedsättning att kommunicera utifrån sina egna behov. Kommunikationen kan ske antingen direkt med supporten, eller via en tredjepartstjänst som exempelvis teckentolkning. ",
+      "why": "Vi vill inte exkludera användare från våra supporttjänster.",
+      "howToTest": "Kontrollera att det går att kommunicera med supporttjänsten på olika sätt, exempelvis röstsamtal eller texttelefon."
     },
     {
       "id": "sudo",
@@ -1347,9 +1334,9 @@
       "contentType": "",
       "category": "Dokumentation och support",
       "objectType": "web",
-      "statement": "Dokumentation som tillhandahålls av en supportjänst ska erbjudas antingen i form av en tillgänglig webbplats eller som ett tillgängligt dokument. Utöver, men inte istället för, dessa två format, går det även bra att erbjuda informationen i andra tillgängliga format.",
-      "why": "",
-      "howToTest": ""
+      "statement": "Dokumentation som tillhandahålls av en supporttjänst ska erbjudas antingen i form av en tillgänglig webbsida eller som ett tillgängligt dokument.",
+      "why": "Vi vill att alla användare ska kunna ta del av dokumentationen.",
+      "howToTest": "Granska dokumentationen och kontrollera att den uppfyller alla relevanta tillgänglighetskrav."
     },
     {
       "id": "doctxt",

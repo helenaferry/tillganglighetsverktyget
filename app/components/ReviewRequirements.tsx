@@ -5,7 +5,6 @@ import {
 } from '@digi/arbetsformedlingen';
 import {
   DigiLoaderSkeleton,
-  DigiTag,
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
@@ -128,7 +127,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
       </div>
       {review && (
         <div className="content-container content-container--largest">
-          <div className="content-container content-container--white content-container--largest">
+          <div className="content-container content-container--white content-container--largest min-h-[40rem]">
             <div>
               {review && (
                 <div className="container">
@@ -140,12 +139,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         to={'/granskning/' + review.id + '/' + req.id}
                         text={req.name}
                       />,
-                      <DigiTag
-                        key={req.id + '-tag'}
-                        afText={req.category}
-                        afNoIcon={true}
-                        onAfOnClick={() => setFilterCategories([req.category])}
-                      />,
+                      <span key={req.id + '-category'}>{req.category}</span>,
                       <StatusBadge key={req.id + '-status'} status={req.check?.status} />,
                     ])}
                     filters={[
@@ -161,14 +155,11 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         label: 'Filtrera på kategori',
                         options:
                           categories?.map((cat: string) => ({
+                            id: cat,
                             label: cat,
-                            value: cat,
-                            selected: filterCategories.includes(cat),
                           })) || [],
                         onChange: (e) => {
-                          setFilterCategories(
-                            e.detail.map((item: { value: string }) => item.value),
-                          );
+                          setFilterCategories(e.detail.checked);
                         },
                       },
                       {
@@ -177,33 +168,28 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         options: [
                           {
                             label: 'Godkänt',
-                            value: Status.PASS.toString(),
-                            selected: filterStatus.includes(Status.PASS),
+                            id: Status.PASS.toString(),
                           },
                           {
                             label: 'Underkänt',
-                            value: Status.FAIL.toString(),
-                            selected: filterStatus.includes(Status.FAIL),
+                            id: Status.FAIL.toString(),
                           },
                           {
                             label: 'Ej bedömt',
-                            value: Status.NOT_ASSESSED.toString(),
-                            selected: filterStatus.includes(Status.NOT_ASSESSED),
+                            id: Status.NOT_ASSESSED.toString(),
                           },
                           {
                             label: 'Ej relevant',
-                            value: Status.IRRELEVANT.toString(),
-                            selected: filterStatus.includes(Status.IRRELEVANT),
+                            id: Status.IRRELEVANT.toString(),
                           },
                         ],
                         onChange: (e) => {
                           setFilterStatus(
-                            e.detail.map((item: { value: string }) => Number(item.value) as Status),
+                            e.detail.checked.map((item: string) => Number(item) as Status),
                           );
                         },
                       },
                     ]}
-                    defaultItemsPerPage={0}
                   />
                 </div>
               )}

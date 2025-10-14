@@ -1,5 +1,4 @@
 import {
-  type IListItem,
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
@@ -11,7 +10,7 @@ import {
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ObjectType } from '~/data/types';
@@ -36,40 +35,14 @@ export function ReviewsList() {
   } = useRequirements();
 
   const [filterFreeText, setFilterFreeText] = useState('');
-  const [yearFilterOptions, setYearFilterOptions] = useState<IListItem[]>([]);
-  const [selectedYearFilterOptions, setSelectedYearFilterOptions] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (reviews) {
-      const years = Array.from(
-        new Set(
-          reviews
-            .map((review) => {
-              return review.created_at ? new Date(review.created_at).getFullYear().toString() : '';
-            })
-            .filter((year) => year !== ''),
-        ),
-      ).sort((a, b) => parseInt(b) - parseInt(a));
-      setYearFilterOptions(years.map((year) => ({ value: year, label: year })));
-    } else {
-      setYearFilterOptions([]);
-    }
-  }, [reviews]);
 
   const filteredReviews = useMemo(() => {
     let result =
       reviews?.filter(
         (review) => review.title?.toLowerCase().includes(filterFreeText.toLowerCase()) || false,
       ) || [];
-    if (selectedYearFilterOptions.length > 0) {
-      result = result.filter(
-        (review) =>
-          review.created_at &&
-          selectedYearFilterOptions.includes(new Date(review.created_at).getFullYear().toString()),
-      );
-    }
     return result;
-  }, [reviews, filterFreeText, selectedYearFilterOptions]);
+  }, [reviews, filterFreeText]);
 
   const requirements = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
@@ -151,21 +124,8 @@ export function ReviewsList() {
                     setFilterFreeText(e.detail.target.value);
                   },
                 },
-                {
-                  type: 'select',
-                  label: 'Filtrera på årtal skapad',
-                  options: yearFilterOptions,
-                  onChange: (e) => {
-                    const values = e.detail as IListItem[];
-                    const selectedValues = values
-                      .filter((item) => item.selected)
-                      .map((item) => item.value)
-                      .filter((value): value is string => value !== undefined);
-                    setSelectedYearFilterOptions(selectedValues);
-                  },
-                },
               ]}
-              defaultItemsPerPage={4}
+              defaultItemsPerPage={10}
             />
           </div>
         )}

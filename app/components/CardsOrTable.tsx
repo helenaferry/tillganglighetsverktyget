@@ -1,8 +1,13 @@
-import { type IListItem, TableSize } from '@digi/arbetsformedlingen';
+import {
+  type FormFilterItem,
+  FormInputSearchVariation,
+  FormInputType,
+  TableSize,
+} from '@digi/arbetsformedlingen';
 import {
   DigiContextMenu,
-  DigiFormInput,
-  DigiFormSelectFilter,
+  DigiFormFilter,
+  DigiFormInputSearch,
   DigiNavigationPagination,
   DigiTable,
 } from '@digi/arbetsformedlingen-react';
@@ -11,7 +16,7 @@ import { type ReactNode, useMemo, useState } from 'react';
 interface FilterProps {
   type: 'freeText' | 'select';
   label: string;
-  options?: IListItem[];
+  options?: FormFilterItem[];
   onChange: (e: CustomEvent) => void;
 }
 
@@ -26,7 +31,7 @@ interface Props {
 {
   /* TODO enum för kravstatusar? Har olika */
 }
-export function CardsOrTable({ headings, rows, defaultItemsPerPage = 0, filters }: Props) {
+export function CardsOrTable({ headings, rows, defaultItemsPerPage = -1, filters }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationStart, setPaginationStart] = useState(1);
   const [paginationEnd, setPaginationEnd] = useState(defaultItemsPerPage);
@@ -37,7 +42,7 @@ export function CardsOrTable({ headings, rows, defaultItemsPerPage = 0, filters 
   }, [rows]);
 
   const paginatedRows = useMemo(() => {
-    if (!pageSize) return rowsWithPosInSet;
+    if (!pageSize || pageSize <= 0) return rowsWithPosInSet;
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
     setPaginationStart(start + 1);
@@ -48,58 +53,69 @@ export function CardsOrTable({ headings, rows, defaultItemsPerPage = 0, filters 
   return (
     <div className="w-full">
       {filters && filters.length > 0 && (
-        <form className="md:flex md:gap-4">
-          {filters &&
-            filters.map((filter, index) => (
-              <div className="md:w-1/4" key={index}>
-                {filter.type === 'freeText' && (
-                  <DigiFormInput
-                    afLabel={filter.label}
-                    onAfOnInput={(e) => {
-                      filter.onChange(e);
-                    }}
-                  />
-                )}
-                {filter.type === 'select' && filter.options && filter.options.length > 1 && (
-                  <DigiFormSelectFilter
-                    afFilterButtonTextLabel={filter.label}
-                    afFilterButtonText="Visa alla"
-                    afName="Sök"
-                    afSubmitButtonText="Filtrera"
-                    afMultipleItems={true}
-                    sortAlphabetically={false}
-                    afListItems={filter.options}
-                    onAfOnSubmitFilters={(e) => {
-                      filter.onChange(e);
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-          <DigiContextMenu
-            afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
-            afMenuPosition="left-bottom"
-            afMenuItems={[
-              { id: 5, title: '5' },
-              { id: 10, title: '10' },
-              { id: 20, title: '20' },
-              { id: 50, title: '50' },
-              { id: 0, title: 'Alla' },
-            ]}
-            onAfChangeItem={(e) => {
-              if (e.detail.item.id === 0) {
-                setPageSize(0);
-                setPaginationStart(1);
-                setPaginationEnd(rows.length);
-                setCurrentPage(1);
-              } else {
-                setPageSize(Number(e.detail.item.id));
-                setPaginationStart(1);
-                setPaginationEnd(Number(e.detail.item.id));
-                setCurrentPage(1);
-              }
-            }}
-          ></DigiContextMenu>
+        <form
+          className="cards-or-table__filters md:flex md:gap-4 justify-between"
+          aria-label="Sök och filtrera"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="md:flex md:gap-4 items-end">
+            {filters &&
+              filters.map((filter, index) => (
+                <div key={index}>
+                  {filter.type === 'freeText' && (
+                    <DigiFormInputSearch
+                      afLabel={filter.label}
+                      afVariation={FormInputSearchVariation.MEDIUM}
+                      afType={FormInputType.SEARCH}
+                      afHideButton={true}
+                      onAfOnInput={(e) => {
+                        filter.onChange(e);
+                      }}
+                    ></DigiFormInputSearch>
+                  )}
+                  {filter.type === 'select' && filter.options && filter.options.length > 1 && (
+                    <div key={index} className="mb-[0.3rem]">
+                      <DigiFormFilter
+                        afFilterButtonText={filter.label}
+                        afSubmitButtonText="Filtrera"
+                        afListItems={filter.options}
+                        onAfSubmitFilter={(e) => {
+                          filter.onChange(e);
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
+          {pageSize > -1 && (
+            <div>
+              <DigiContextMenu
+                afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
+                afMenuPosition="left-bottom"
+                afMenuItems={[
+                  { id: 5, title: '5' },
+                  { id: 10, title: '10' },
+                  { id: 20, title: '20' },
+                  { id: 50, title: '50' },
+                  { id: 0, title: 'Alla' },
+                ]}
+                onAfChangeItem={(e) => {
+                  if (e.detail.item.id === 0) {
+                    setPageSize(0);
+                    setPaginationStart(1);
+                    setPaginationEnd(rows.length);
+                    setCurrentPage(1);
+                  } else {
+                    setPageSize(Number(e.detail.item.id));
+                    setPaginationStart(1);
+                    setPaginationEnd(Number(e.detail.item.id));
+                    setCurrentPage(1);
+                  }
+                }}
+              ></DigiContextMenu>
+            </div>
+          )}
         </form>
       )}
       <p role="status">Totalt {rows.length} st</p>

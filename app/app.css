@@ -60,3 +60,9 @@ svg {
   }
 }
 /* --- */
+
+.cards-or-table__filters {
+  [type='search'] {
+    @apply min-w-[20rem];
+  }
+}
