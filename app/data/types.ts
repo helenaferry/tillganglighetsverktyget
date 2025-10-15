@@ -30,6 +30,13 @@ export enum Status {
   NOT_ASSESSED, //3
 }
 
+export enum StatusText {
+  FAIL = 'Underkänt',
+  PASS = 'Godkänt',
+  IRRELEVANT = 'Irrelevant',
+  NOT_ASSESSED = 'Ej granskat',
+}
+
 // Database types
 import type { Database } from '~/data/supabase-types';
 

@@ -7,7 +7,7 @@ import {
 } from '@digi/arbetsformedlingen-react';
 import { useEffect, useState } from 'react';
 
-import { Status, type UpsertCheckInput } from '~/data/types';
+import { Status, StatusText, type UpsertCheckInput } from '~/data/types';
 import { useCheck, useDeleteCheck, useUpsertCheck } from '~/hooks/useReviewData';
 
 type Props = {
@@ -51,22 +51,22 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
         >
           <DigiFormRadiobutton
             value={Status.NOT_ASSESSED.toString()}
-            afLabel="Ej granskat"
+            afLabel={StatusText.NOT_ASSESSED}
             afChecked={!check || check.status === Status.NOT_ASSESSED}
           />
           <DigiFormRadiobutton
             value={Status.PASS.toString()}
-            afLabel="Godkänt"
+            afLabel={StatusText.PASS}
             afChecked={check?.status === Status.PASS}
           />
           <DigiFormRadiobutton
             value={Status.FAIL.toString()}
-            afLabel="Underkänt"
+            afLabel={StatusText.FAIL}
             afChecked={check?.status === Status.FAIL}
           />
           <DigiFormRadiobutton
             value={Status.IRRELEVANT.toString()}
-            afLabel="Irrelevant"
+            afLabel={StatusText.IRRELEVANT}
             afChecked={check?.status === Status.IRRELEVANT}
           />
         </DigiFormRadiogroup>

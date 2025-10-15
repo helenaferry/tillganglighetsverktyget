@@ -2,12 +2,14 @@ import {
   type FormFilterItem,
   FormInputSearchVariation,
   FormInputType,
+  LinkVariation,
   TableSize,
 } from '@digi/arbetsformedlingen';
 import {
   DigiContextMenu,
   DigiFormFilter,
   DigiFormInputSearch,
+  DigiLinkInternal,
   DigiNavigationPagination,
   DigiTable,
 } from '@digi/arbetsformedlingen-react';
@@ -20,9 +22,16 @@ interface FilterProps {
   onChange: (e: CustomEvent) => void;
 }
 
+interface RowWithId {
+  id: string | number;
+  posInSet: number;
+  content: ReactNode[];
+}
+
 interface Props {
   headings: ReactNode[];
-  rows: ReactNode[][];
+  rows: RowWithId[];
+  totalItems: number;
   defaultItemsPerPage?: number;
   searchLabel?: string;
   filters?: FilterProps[];
@@ -31,37 +40,39 @@ interface Props {
 {
   /* TODO enum för kravstatusar? Har olika */
 }
-export function CardsOrTable({ headings, rows, defaultItemsPerPage = -1, filters }: Props) {
+export function CardsOrTable({
+  headings,
+  rows,
+  totalItems,
+  defaultItemsPerPage = -1,
+  filters,
+}: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationStart, setPaginationStart] = useState(1);
   const [paginationEnd, setPaginationEnd] = useState(defaultItemsPerPage);
   const [pageSize, setPageSize] = useState(defaultItemsPerPage);
 
-  const rowsWithPosInSet = useMemo(() => {
-    return rows.map((row, index) => ({ content: row, posInSet: index + 1 }));
-  }, [rows]);
-
   const paginatedRows = useMemo(() => {
-    if (!pageSize || pageSize <= 0) return rowsWithPosInSet;
+    if (!pageSize || pageSize <= 0) return rows;
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
     setPaginationStart(start + 1);
     setPaginationEnd(end > rows.length ? rows.length : end);
-    return rowsWithPosInSet.slice(start, end);
+    return rows.slice(start, end);
   }, [rows, pageSize, currentPage]);
 
   return (
     <div className="w-full">
       {filters && filters.length > 0 && (
         <form
-          className="cards-or-table__filters md:flex md:gap-4 justify-between"
+          className="cards-or-table__filters flex flex-col lg:flex-row gap-4 justify-between"
           aria-label="Sök och filtrera"
           onSubmit={(e) => e.preventDefault()}
         >
-          <div className="md:flex md:gap-4 items-end">
+          <div className="flex flex-col lg:flex-row gap-4 lg:items-end">
             {filters &&
-              filters.map((filter, index) => (
-                <div key={index}>
+              filters.map((filter) => (
+                <div key={filter.label}>
                   {filter.type === 'freeText' && (
                     <DigiFormInputSearch
                       afLabel={filter.label}
@@ -74,7 +85,7 @@ export function CardsOrTable({ headings, rows, defaultItemsPerPage = -1, filters
                     ></DigiFormInputSearch>
                   )}
                   {filter.type === 'select' && filter.options && filter.options.length > 1 && (
-                    <div key={index} className="mb-[0.3rem]">
+                    <div key={filter.label} className="mb-[0.3rem]">
                       <DigiFormFilter
                         afFilterButtonText={filter.label}
                         afSubmitButtonText="Filtrera"
@@ -118,22 +129,32 @@ export function CardsOrTable({ headings, rows, defaultItemsPerPage = -1, filters
           )}
         </form>
       )}
-      <p role="status">Totalt {rows.length} st</p>
       <div className="hidden lg:block">
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          Visar {rows.length} av {totalItems} {headings[0]}
+        </div>
         <DigiTable afSize={TableSize.MEDIUM}>
-          <table aria-rowcount={rows.length}>
+          <table aria-rowcount={rows.length} className="mt-6">
             <thead>
               <tr>
-                {headings.map((heading, index) => (
-                  <th key={index}>{heading}</th>
-                ))}
+                {headings.map((heading, index) =>
+                  index === 0 ? (
+                    <th scope="col" key={index} aria-label={heading as string}>
+                      Visar {rows.length} av {totalItems} {heading}
+                    </th>
+                  ) : (
+                    <th scope="col" key={index}>
+                      {heading}
+                    </th>
+                  ),
+                )}
               </tr>
             </thead>
             <tbody>
-              {paginatedRows.map((row, rowIndex) => (
-                <tr key={rowIndex} aria-rowindex={row.posInSet}>
+              {paginatedRows.map((row) => (
+                <tr key={row.id} aria-rowindex={row.posInSet}>
                   {row.content.map((cell, cellIndex) => (
-                    <td key={cellIndex}>{cell}</td>
+                    <td key={`${row.id}-${cellIndex}`}>{cell}</td>
                   ))}
                 </tr>
               ))}
@@ -142,24 +163,33 @@ export function CardsOrTable({ headings, rows, defaultItemsPerPage = -1, filters
         </DigiTable>
       </div>
       <div className="lg:hidden space-y-4">
-        {paginatedRows.map((row, rowIndex) => (
-          <div
-            key={rowIndex}
-            aria-setsize={rows.length}
-            aria-posinset={row.posInSet}
-            className="border-b-1"
-          >
-            <p>{row.content[0]}</p>
-            {row.content.slice(1).map((cell, cellIndex) => (
-              <div key={cellIndex + 1} className="mb-2">
-                {headings[cellIndex + 1] && (
-                  <span className="font-bold">{headings[cellIndex + 1]}: </span>
-                )}
-                <span>{cell}</span>
-              </div>
-            ))}
-          </div>
-        ))}
+        <div role="alert" className="font-bold mt-4">
+          Visar {rows.length} av {totalItems} {headings[0]}
+        </div>
+        <div className="border-t-1 mt-6">
+          {paginatedRows.map((row) => (
+            <div
+              key={row.id}
+              aria-setsize={rows.length}
+              aria-posinset={row.posInSet}
+              className="border-b-1 py-4"
+            >
+              <p className="my-4!">
+                <DigiLinkInternal afHref="#" afVariation={LinkVariation.SMALL}>
+                  {row.content[0]}
+                </DigiLinkInternal>
+              </p>
+              {row.content.slice(1).map((cell, cellIndex) => (
+                <div key={`${row.id}-cell-${cellIndex + 1}`} className="mb-2">
+                  {headings[cellIndex + 1] && (
+                    <div className="font-bold mb-0">{headings[cellIndex + 1]}: </div>
+                  )}
+                  <div>{cell}</div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
       {pageSize > 0 && rows.length > pageSize && (
         <div className="mt-10">

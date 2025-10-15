@@ -43,7 +43,7 @@
 }
 
 svg {
-  @apply !max-w-full !max-h-full;
+  @apply !max-w-full !max-h-full min-w-[var(--digi--icon--width)];
 }
 
 /* CategoryNav */
@@ -63,6 +63,16 @@ svg {
 
 .cards-or-table__filters {
   [type='search'] {
-    @apply min-w-[20rem];
+    @apply md:min-w-[20rem];
   }
+  .digi-button {
+    @apply justify-self-stretch !justify-center;
+  }
+  .digi-form-filter__dropdown {
+    @apply w-full;
+  }
+}
+
+.sc-digi-link {
+  @apply max-w-full wrap-anywhere;
 }

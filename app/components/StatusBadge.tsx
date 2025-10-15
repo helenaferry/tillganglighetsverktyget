@@ -1,7 +1,7 @@
 import { BadgeStatusSize, BadgeStatusType, BadgeStatusVariation } from '@digi/arbetsformedlingen';
 import { DigiBadgeStatus } from '@digi/arbetsformedlingen-react';
 
-import { Status } from '~/data/types';
+import { Status, StatusText } from '~/data/types';
 
 type Props = {
   status?: number | undefined | null;
@@ -11,13 +11,13 @@ type Props = {
 const getStatusText = (status: Status) => {
   switch (status) {
     case Status.FAIL:
-      return 'Underkänt';
+      return StatusText.FAIL;
     case Status.IRRELEVANT:
-      return 'Irrelevant';
+      return StatusText.IRRELEVANT;
     case Status.PASS:
-      return 'Godkänt';
+      return StatusText.PASS;
     case Status.NOT_ASSESSED:
-      return 'Ej granskat';
+      return StatusText.NOT_ASSESSED;
     default:
       return '';
   }

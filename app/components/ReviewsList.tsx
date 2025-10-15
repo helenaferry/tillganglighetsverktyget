@@ -23,7 +23,7 @@ import { StyledLink } from './StyledLink';
 
 export function ReviewsList() {
   const {
-    data: reviews,
+    data: reviewsAll,
     isLoading: reviewsLoading,
     error: reviewsError,
     isFetched: reviewsFetched,
@@ -36,8 +36,12 @@ export function ReviewsList() {
 
   const [filterFreeText, setFilterFreeText] = useState('');
 
+  const reviews = useMemo(() => {
+    return reviewsAll?.filter((review) => review.objectType !== ObjectType.DOCUMENT);
+  }, [reviewsAll]);
+
   const filteredReviews = useMemo(() => {
-    let result =
+    const result =
       reviews?.filter(
         (review) => review.title?.toLowerCase().includes(filterFreeText.toLowerCase()) || false,
       ) || [];
@@ -84,38 +88,43 @@ export function ReviewsList() {
         {fetched && filteredReviews && (
           <div className="content-container content-container--largest content-container--white">
             <CardsOrTable
-              headings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskade krav', '']}
-              rows={filteredReviews
-                .filter((review) => review.objectType !== ObjectType.DOCUMENT)
-                .map((review) => [
-                  <StyledLink
-                    key={`granskning-${review.id}`}
-                    to={`/granskning/${review.id}`}
-                    text={review.title || 'Granskning'}
-                  />,
-                  <p className="whitespace-nowrap" key={`created-at-${review.id}`}>
-                    {formatDate(review.created_at)}
-                  </p>,
-                  <p className="whitespace-nowrap" key={`latest-update-${review.id}`}>
-                    {formatDate(review.latestUpdate)}
-                  </p>,
-                  <p
-                    className="whitespace-nowrap"
-                    key={`requirements-count-${review.id}`}
-                  >{`${review.passCount + review.failCount + review.irrelevantCount} / ${requirementsCount}`}</p>,
-                  <DigiButton
-                    key={`edit-review-${review.id}`}
-                    afType="button"
-                    afVariation="function"
-                    afAriaLabel={'Redigera granskning ' + review.title}
-                    onClick={() => {
-                      navigate(`/granskning/${review.id}/redigera`);
-                    }}
-                  >
-                    Ändra uppgifter
-                    <DigiIconPen slot="icon" />
-                  </DigiButton>,
-                ])}
+              headings={['granskningar', 'Skapad', 'Uppdaterad', 'Granskade krav', '']}
+              rows={filteredReviews.map((review) => {
+                return {
+                  id: review.id,
+                  posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
+                  content: [
+                    <StyledLink
+                      key={`granskning-${review.id}`}
+                      to={`/granskning/${review.id}`}
+                      text={review.title || 'Granskning'}
+                    />,
+                    <p className="whitespace-nowrap" key={`created-at-${review.id}`}>
+                      {formatDate(review.created_at)}
+                    </p>,
+                    <p className="whitespace-nowrap" key={`latest-update-${review.id}`}>
+                      {formatDate(review.latestUpdate)}
+                    </p>,
+                    <p
+                      className="whitespace-nowrap"
+                      key={`requirements-count-${review.id}`}
+                    >{`${review.passCount + review.failCount + review.irrelevantCount} / ${requirementsCount}`}</p>,
+                    <DigiButton
+                      key={`edit-review-${review.id}`}
+                      afType="button"
+                      afVariation="function"
+                      afAriaLabel={'Redigera granskning ' + review.title}
+                      onClick={() => {
+                        navigate(`/granskning/${review.id}/redigera`);
+                      }}
+                    >
+                      Ändra uppgifter
+                      <DigiIconPen slot="icon" />
+                    </DigiButton>,
+                  ],
+                };
+              })}
+              totalItems={reviews?.length || 0}
               filters={[
                 {
                   type: 'freeText',

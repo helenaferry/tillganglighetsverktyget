@@ -11,7 +11,7 @@ import {
 import { useMemo, useState } from 'react';
 
 import { StyledLink } from '~/components/StyledLink';
-import { ObjectType, Status } from '~/data/types';
+import { ObjectType, Status, StatusText } from '~/data/types';
 import { formatDate } from '~/formattingHelpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
@@ -132,16 +132,25 @@ export default function ReviewRequirements({ reviewId }: Props) {
               {review && (
                 <div className="container">
                   <CardsOrTable
-                    headings={['Krav', 'Kategori', 'Status']}
-                    rows={filteredRequirements.map((req) => [
-                      <StyledLink
-                        key={req.id}
-                        to={'/granskning/' + review.id + '/' + req.id}
-                        text={req.name}
-                      />,
-                      <span key={req.id + '-category'}>{req.category}</span>,
-                      <StatusBadge key={req.id + '-status'} status={req.check?.status} />,
-                    ])}
+                    headings={['krav', 'Kravkategori', 'Bedömningsstatus']}
+                    rows={filteredRequirements.map((req) => {
+                      return {
+                        id: req.id,
+                        posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
+                        content: [
+                          <StyledLink
+                            key={req.id}
+                            to={'/granskning/' + review.id + '/' + req.id}
+                            text={req.name}
+                          />,
+                          <span key={req.id + '-category'}>{req.category}</span>,
+                          <div className="mt-2 md:mt-0" key={req.id + '-status'}>
+                            <StatusBadge status={req.check?.status} />
+                          </div>,
+                        ],
+                      };
+                    })}
+                    totalItems={requirements.length}
                     filters={[
                       {
                         type: 'freeText',
@@ -152,7 +161,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       },
                       {
                         type: 'select',
-                        label: 'Filtrera på kategori',
+                        label: 'Kravkategorier',
                         options:
                           categories?.map((cat: string) => ({
                             id: cat,
@@ -164,22 +173,22 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       },
                       {
                         type: 'select',
-                        label: 'Filtrera på status',
+                        label: 'Bedömningsstatus',
                         options: [
                           {
-                            label: 'Godkänt',
+                            label: StatusText.PASS,
                             id: Status.PASS.toString(),
                           },
                           {
-                            label: 'Underkänt',
+                            label: StatusText.FAIL,
                             id: Status.FAIL.toString(),
                           },
                           {
-                            label: 'Ej bedömt',
+                            label: StatusText.NOT_ASSESSED,
                             id: Status.NOT_ASSESSED.toString(),
                           },
                           {
-                            label: 'Ej relevant',
+                            label: StatusText.IRRELEVANT,
                             id: Status.IRRELEVANT.toString(),
                           },
                         ],
