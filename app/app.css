@@ -89,7 +89,7 @@ svg {
 }
 
 .sort-button .sc-digi-icon-caret-up-h,
-.sc-digi-icon-caret-down-h {
+.sort-button .sc-digi-icon-caret-down-h {
   @apply min-h-0;
 }
 
