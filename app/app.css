@@ -94,5 +94,5 @@ svg {
 }
 
 .digi-link-button__text {
-  @apply !whitespace-normal !sm:whitespace-nowrap;
+  @apply !whitespace-normal sm:!whitespace-nowrap;
 }
