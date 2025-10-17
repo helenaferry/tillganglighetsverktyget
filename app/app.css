@@ -61,6 +61,15 @@ svg {
 }
 /* --- */
 
+.cards-or-table {
+  .digi-button--variation-function {
+    @apply !p-0;
+  }
+  .sc-digi-link {
+    @apply max-w-full wrap-anywhere;
+  }
+}
+
 .cards-or-table__filters {
   [type='search'] {
     @apply md:min-w-[20rem];
@@ -73,6 +82,17 @@ svg {
   }
 }
 
-.sc-digi-link {
-  @apply max-w-full wrap-anywhere;
+.sort-button--active {
+  svg {
+    --digi--icon--color: var(--color-sapphire-500);
+  }
+}
+
+.sort-button .sc-digi-icon-caret-up-h,
+.sc-digi-icon-caret-down-h {
+  @apply min-h-0;
+}
+
+.digi-link-button__text {
+  @apply !whitespace-normal !sm:whitespace-nowrap;
 }
