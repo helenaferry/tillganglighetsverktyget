@@ -19,6 +19,7 @@ import { useRequirements } from '~/hooks/useRequirementData';
 import { useReviews } from '~/hooks/useReviewData';
 
 import { CardsOrTable } from './CardsOrTable';
+import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
 
 export function ReviewsList() {
@@ -34,19 +35,68 @@ export function ReviewsList() {
     isFetched: requirementsAllFetched,
   } = useRequirements();
 
+  enum SortBy {
+    REVIEW = 0,
+    CREATED = 1,
+    UPDATED = 2,
+    REVIEWED = 3,
+  }
+
   const [filterFreeText, setFilterFreeText] = useState('');
+  const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
+  const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('descending');
+
+  const setSort = (field: SortBy | undefined) => {
+    if (field === sortBy) {
+      setSortDirection(sortDirection === 'ascending' ? 'descending' : 'ascending');
+    } else {
+      setSortBy(field);
+      setSortDirection('descending');
+    }
+  };
 
   const reviews = useMemo(() => {
     return reviewsAll?.filter((review) => review.objectType !== ObjectType.DOCUMENT);
   }, [reviewsAll]);
 
   const filteredReviews = useMemo(() => {
-    const result =
-      reviews?.filter(
+    let result = reviews || [];
+    if (filterFreeText) {
+      result = result.filter(
         (review) => review.title?.toLowerCase().includes(filterFreeText.toLowerCase()) || false,
-      ) || [];
-    return result;
-  }, [reviews, filterFreeText]);
+      );
+    }
+    return [...result].sort((a, b) => {
+      if (sortBy === SortBy.CREATED && sortDirection === 'ascending') {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      } else if (sortBy === SortBy.CREATED && sortDirection === 'descending') {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      } else if (sortBy === SortBy.UPDATED && sortDirection === 'ascending') {
+        return new Date(a.latestUpdate).getTime() - new Date(b.latestUpdate).getTime();
+      } else if (sortBy === SortBy.UPDATED && sortDirection === 'descending') {
+        return new Date(b.latestUpdate).getTime() - new Date(a.latestUpdate).getTime();
+      } else if (sortBy === SortBy.REVIEWED && sortDirection === 'ascending') {
+        return (
+          a.passCount +
+          a.failCount +
+          a.irrelevantCount -
+          (b.passCount + b.failCount + b.irrelevantCount)
+        );
+      } else if (sortBy === SortBy.REVIEWED && sortDirection === 'descending') {
+        return (
+          b.passCount +
+          b.failCount +
+          b.irrelevantCount -
+          (a.passCount + a.failCount + a.irrelevantCount)
+        );
+      } else if (sortBy === SortBy.REVIEW && sortDirection === 'ascending') {
+        return a.title && b.title ? a.title.localeCompare(b.title) : 0;
+      } else if (sortBy === SortBy.REVIEW && sortDirection === 'descending') {
+        return a.title && b.title ? b.title.localeCompare(a.title) : 0;
+      }
+      return 0;
+    });
+  }, [reviews, filterFreeText, sortBy, sortDirection]);
 
   const requirements = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
@@ -88,35 +138,69 @@ export function ReviewsList() {
         {fetched && filteredReviews && (
           <div className="content-container content-container--largest content-container--white">
             <CardsOrTable
-              headings={['granskningar', 'Skapad', 'Uppdaterad', 'Granskade krav', '']}
+              headings={[
+                <SortButton
+                  buttonText="Granskningsnamn"
+                  sortBy={SortBy.REVIEW}
+                  active={sortBy === SortBy.REVIEW}
+                  sortDirection={sortDirection}
+                  onSortChange={setSort}
+                  key="Granskningsnamn"
+                />,
+                <SortButton
+                  buttonText="Skapad"
+                  sortBy={SortBy.CREATED}
+                  active={sortBy === SortBy.CREATED}
+                  sortDirection={sortDirection}
+                  onSortChange={setSort}
+                  key="Skapad"
+                />,
+                <SortButton
+                  buttonText="Uppdaterad"
+                  sortBy={SortBy.UPDATED}
+                  active={sortBy === SortBy.UPDATED}
+                  sortDirection={sortDirection}
+                  onSortChange={setSort}
+                  key="Uppdaterad"
+                />,
+                <SortButton
+                  buttonText="Status"
+                  sortBy={SortBy.REVIEWED}
+                  active={sortBy === SortBy.REVIEWED}
+                  sortDirection={sortDirection}
+                  onSortChange={setSort}
+                  key="Status"
+                />,
+                '',
+              ]}
+              cardsHeadings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Status', '']}
               rows={filteredReviews.map((review) => {
                 return {
                   id: review.id,
                   posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
                   content: [
                     <StyledLink
-                      key={`granskning-${review.id}`}
                       to={`/granskning/${review.id}`}
                       text={review.title || 'Granskning'}
+                      key={`title-${review.id}`}
                     />,
-                    <p className="whitespace-nowrap" key={`created-at-${review.id}`}>
+                    <p className="whitespace-nowrap" key={`created-${review.id}`}>
                       {formatDate(review.created_at)}
                     </p>,
-                    <p className="whitespace-nowrap" key={`latest-update-${review.id}`}>
+                    <p className="whitespace-nowrap" key={`updated-${review.id}`}>
                       {formatDate(review.latestUpdate)}
                     </p>,
-                    <p
-                      className="whitespace-nowrap"
-                      key={`requirements-count-${review.id}`}
-                    >{`${review.passCount + review.failCount + review.irrelevantCount} / ${requirementsCount}`}</p>,
+                    <p className="whitespace-nowrap" key={`status-${review.id}`}>
+                      {`${review.passCount + review.failCount + review.irrelevantCount} / ${requirementsCount}`}
+                    </p>,
                     <DigiButton
-                      key={`edit-review-${review.id}`}
                       afType="button"
                       afVariation="function"
                       afAriaLabel={'Redigera granskning ' + review.title}
                       onClick={() => {
                         navigate(`/granskning/${review.id}/redigera`);
                       }}
+                      key={`edit-${review.id}`}
                     >
                       Ändra uppgifter
                       <DigiIconPen slot="icon" />
@@ -124,17 +208,26 @@ export function ReviewsList() {
                   ],
                 };
               })}
+              itemsName="granskningar"
               totalItems={reviews?.length || 0}
               filters={[
                 {
                   type: 'freeText',
                   label: 'Sök på granskningsnamn',
                   onChange: (e) => {
-                    setFilterFreeText(e.detail.target.value);
+                    setFilterFreeText(e.detail);
                   },
                 },
               ]}
               defaultItemsPerPage={10}
+              sortedByThIndex={sortBy}
+              sortDirection={sortDirection}
+              displayHeadingsAboveCards={true}
+              resetChoices={() => {
+                setFilterFreeText('');
+                setSort(undefined);
+              }}
+              choicesMade={filterFreeText.length > 0 || sortBy !== undefined}
             />
           </div>
         )}

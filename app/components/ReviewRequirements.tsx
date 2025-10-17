@@ -18,6 +18,7 @@ import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 import Breadcrumbs from './Breadcrumbs';
 import { CardsOrTable } from './CardsOrTable';
+import { SortButton } from './SortButton';
 import StatusBadge from './StatusBadge';
 
 interface Props {
@@ -66,10 +67,19 @@ export default function ReviewRequirements({ reviewId }: Props) {
     });
   }, [requirements, checks]);
 
+  enum SortBy {
+    REQUIREMENT = 0,
+    CATEGORY = 1,
+    STATUS = 2,
+  }
+
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<Status[]>([]);
   const [filterFreeText, setFilterFreeText] = useState<string>('');
-  const filteredRequirements = requirementsWithChecks?.filter((req) => {
+  const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
+  const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('descending');
+
+  /*const filteredRequirements = requirementsWithChecks?.filter((req) => {
     const filters = [
       filterCategories.length === 0 ? true : filterCategories.includes(req.category),
       filterStatus.length === 0
@@ -80,7 +90,70 @@ export default function ReviewRequirements({ reviewId }: Props) {
         : req.name.toLowerCase().includes(filterFreeText.toLowerCase()),
     ];
     return filters.every(Boolean);
-  });
+  });*/
+
+  const filteredRequirements = useMemo(() => {
+    let result = requirementsWithChecks || [];
+    if (filterCategories.length > 0) {
+      result = result.filter((req) => filterCategories.includes(req.category));
+    }
+    if (filterStatus.length > 0) {
+      result = result.filter((req) =>
+        filterStatus.includes(req.check?.status ?? Status.NOT_ASSESSED),
+      );
+    }
+    if (filterFreeText && filterFreeText.length > 0) {
+      result = result.filter((req) =>
+        req.name.toLowerCase().includes(filterFreeText.toLowerCase()),
+      );
+    }
+    if (sortBy !== undefined) {
+      result = [...result].sort((a, b) => {
+        if (sortBy === SortBy.REQUIREMENT && sortDirection === 'ascending') {
+          return a.name.localeCompare(b.name);
+        } else if (sortBy === SortBy.REQUIREMENT && sortDirection === 'descending') {
+          return b.name.localeCompare(a.name);
+        } else if (sortBy === SortBy.CATEGORY && sortDirection === 'ascending') {
+          return a.category.localeCompare(b.category);
+        } else if (sortBy === SortBy.CATEGORY && sortDirection === 'descending') {
+          return b.category.localeCompare(a.category);
+        } else if (sortBy === SortBy.STATUS && sortDirection === 'ascending') {
+          return (
+            (a.check?.status ?? Status.NOT_ASSESSED) - (b.check?.status ?? Status.NOT_ASSESSED)
+          );
+        } else if (sortBy === SortBy.STATUS && sortDirection === 'descending') {
+          return (
+            (b.check?.status ?? Status.NOT_ASSESSED) - (a.check?.status ?? Status.NOT_ASSESSED)
+          );
+        }
+        return 0;
+      });
+    }
+    return result;
+  }, [
+    requirementsWithChecks,
+    filterCategories,
+    filterStatus,
+    filterFreeText,
+    sortBy,
+    sortDirection,
+  ]);
+
+  const setSort = (field: SortBy | undefined) => {
+    if (field === sortBy) {
+      setSortDirection(sortDirection === 'ascending' ? 'descending' : 'ascending');
+    } else {
+      setSortBy(field);
+      setSortDirection('descending');
+    }
+  };
+
+  const clearAll = () => {
+    setFilterCategories([]);
+    setFilterStatus([]);
+    setFilterFreeText('');
+    setSort(undefined);
+  };
 
   return (
     <div className="grid">
@@ -132,7 +205,33 @@ export default function ReviewRequirements({ reviewId }: Props) {
               {review && (
                 <div className="container">
                   <CardsOrTable
-                    headings={['krav', 'Kravkategori', 'Bedömningsstatus']}
+                    headings={[
+                      <SortButton
+                        buttonText="Krav"
+                        sortBy={SortBy.REQUIREMENT}
+                        active={sortBy === SortBy.REQUIREMENT}
+                        sortDirection={sortDirection}
+                        onSortChange={setSort}
+                        key="Krav"
+                      />,
+                      <SortButton
+                        buttonText="Kravkategori"
+                        sortBy={SortBy.CATEGORY}
+                        active={sortBy === SortBy.CATEGORY}
+                        sortDirection={sortDirection}
+                        onSortChange={setSort}
+                        key="Kravkategori"
+                      />,
+                      <SortButton
+                        buttonText="Bedömningsstatus"
+                        sortBy={SortBy.STATUS}
+                        active={sortBy === SortBy.STATUS}
+                        sortDirection={sortDirection}
+                        onSortChange={setSort}
+                        key="Bedömningsstatus"
+                      />,
+                    ]}
+                    cardsHeadings={['Krav', 'Kravkategori', 'Bedömningsstatus']}
                     rows={filteredRequirements.map((req) => {
                       return {
                         id: req.id,
@@ -143,7 +242,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             to={'/granskning/' + review.id + '/' + req.id}
                             text={req.name}
                           />,
-                          <span key={req.id + '-category'}>{req.category}</span>,
+                          <span key={req.id + '-category'} className="whitespace-nowrap">
+                            {req.category}
+                          </span>,
                           <div className="mt-2 md:mt-0" key={req.id + '-status'}>
                             <StatusBadge status={req.check?.status} />
                           </div>,
@@ -151,12 +252,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       };
                     })}
                     totalItems={requirements.length}
+                    itemsName="krav"
                     filters={[
                       {
                         type: 'freeText',
                         label: 'Sök på krav',
                         onChange: (e) => {
-                          setFilterFreeText(e.detail.target.value);
+                          setFilterFreeText(e.detail);
                         },
                       },
                       {
@@ -199,6 +301,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         },
                       },
                     ]}
+                    resetChoices={clearAll}
+                    choicesMade={
+                      filterCategories.length > 0 ||
+                      filterStatus.length > 0 ||
+                      filterFreeText.length > 0 ||
+                      sortBy !== undefined
+                    }
                   />
                 </div>
               )}
