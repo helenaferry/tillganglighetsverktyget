@@ -2,11 +2,10 @@ import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tan
 
 import { ReviewService } from '~/data/reviewService';
 import type {
-  Application,
   Check,
   PrefillRequirementSetting,
+  Review,
   ReviewSummary,
-  ReviewWithApplication,
   UpsertCheckInput,
 } from '~/data/types';
 
@@ -20,10 +19,10 @@ export function useReviews(): UseQueryResult<ReviewSummary[], Error> {
 
 // Get a single review by ID
 export function useReviewById(reviewId: string): {
-  review?: ReviewWithApplication;
+  review?: Review;
   isLoading: boolean;
 } {
-  const { data: reviewData, isLoading } = useQuery<ReviewWithApplication, Error>({
+  const { data: reviewData, isLoading } = useQuery<Review, Error>({
     queryKey: ['review', reviewId],
     queryFn: () => ReviewService.getReviewById(reviewId),
     enabled: !!reviewId && reviewId !== 'undefined',
@@ -137,21 +136,12 @@ export function usePrefillRequirements() {
   });
 }
 
-// All applications
-export function useApplications(): UseQueryResult<Application[], Error> {
-  return useQuery<Application[], Error>({
-    queryKey: ['applications'],
-    queryFn: () => ReviewService.getApplications(),
-  });
-}
-
 // Update or add review
 export function useUpsertReview() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (input: {
       title: string;
-      application: string;
       id?: string;
       excludedContentTypes: string[];
       selectedPrefillIds: string;

@@ -1,12 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
 import {
-  type Application,
   type Check,
   type PrefillRequirementSetting,
   type Review,
   type ReviewSummary,
-  type ReviewWithApplication,
   Status,
 } from './types';
 const supabaseUrl = import.meta.env.VITE_DATABASE_URL;
@@ -17,7 +15,7 @@ export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
     const { data: reviews, error: reviewError } = await supabase
       .from('reviews')
-      .select('*, application(*)')
+      .select('*')
       .order('created_at', { ascending: false });
     if (reviewError) throw reviewError;
 
@@ -48,14 +46,14 @@ export const ReviewService = {
     });
   },
 
-  async getReviewById(reviewId: string): Promise<ReviewWithApplication> {
+  async getReviewById(reviewId: string): Promise<Review> {
     const { data, error } = await supabase
       .from('reviews')
-      .select('*, application(*)')
+      .select('*')
       .eq('id', Number(reviewId))
       .single();
     if (error) throw error;
-    return data as ReviewWithApplication;
+    return data as Review;
   },
 
   async getChecksForReview(reviewId: string): Promise<Check[]> {
@@ -188,27 +186,19 @@ export const ReviewService = {
     return results;
   },
 
-  async getApplications(): Promise<Application[]> {
-    const { data, error } = await supabase.from('applications').select('*');
-    if (error) throw error;
-    return data as Application[];
-  },
-
   async upsertReview(input: {
     title: string;
-    application: string;
     id?: string;
     excludedContentTypes: string[];
     selectedPrefillIds: string;
     objectType: string;
   }): Promise<Review> {
-    const { title, application, id, excludedContentTypes, selectedPrefillIds, objectType } = input;
+    const { title, id, excludedContentTypes, selectedPrefillIds, objectType } = input;
     if (id) {
       const { data, error } = await supabase
         .from('reviews')
         .update({
           title,
-          application,
           excludedContentTypes: excludedContentTypes.join(';'),
           selectedPrefillIds,
           objectType,
@@ -222,7 +212,6 @@ export const ReviewService = {
         .from('reviews')
         .insert({
           title,
-          application,
           excludedContentTypes: excludedContentTypes.join(';'),
           selectedPrefillIds,
           objectType,

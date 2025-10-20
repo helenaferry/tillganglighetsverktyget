@@ -5,6 +5,7 @@ import {
 import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
 
 import { ReviewForm } from '~/components/ReviewForm';
+import Breadcrumbs from '~/components/Breadcrumbs';
 
 export function meta() {
   return [
@@ -16,7 +17,11 @@ export function meta() {
 export default function AddReviewPage() {
   return (
     <DigiTypography>
-      <div className="content-container">
+      <div className="content-container content-container--white content-container--nomargin">
+        <Breadcrumbs
+          pages={[{ title: 'Granskningar', href: '/' }]}
+          currentPage="Skapa ny granskning"
+        />
         <DigiTypographyHeadingJumbo
           afText="Skapa ny granskning"
           afLevel={TypographyHeadingJumboLevel.H1}

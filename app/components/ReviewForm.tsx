@@ -1,13 +1,9 @@
-import { DialogSize, LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
+import { LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
 import {
   DigiButton,
-  DigiDialog,
   DigiFormCheckbox,
   DigiFormFieldset,
   DigiFormInput,
-  DigiFormRadiobutton,
-  DigiFormRadiogroup,
-  DigiFormSelectFilter,
   DigiLoaderSkeleton,
 } from '@digi/arbetsformedlingen-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -16,7 +12,6 @@ import type { PrefillRequirementSetting } from '~/data/types';
 import { ObjectType } from '~/data/types';
 import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
 import {
-  useApplications,
   useDisableChecks,
   useEnableChecks,
   usePrefillRequirements,
@@ -29,14 +24,12 @@ type Props = {
 };
 
 export function ReviewForm({ reviewId }: Props) {
-  const { data: applications, isLoading: isLoadingApplications } = useApplications();
   const { data: requirements, isLoading: isLoadingRequirements } = useRequirements();
   const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
     ObjectType.WEB,
   );
   const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
-  const loading =
-    isLoadingApplications || isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
+  const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
   const allPrefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
   ) as PrefillRequirementSetting[];
@@ -47,11 +40,9 @@ export function ReviewForm({ reviewId }: Props) {
   const prefillChecks = usePrefillRequirements();
 
   const [title, setTitle] = useState<string>('');
-  const [application, setApplication] = useState<string>('');
   const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
   const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
-  const [showDocumentInfo, setShowDocumentInfo] = useState<boolean>(false);
 
   const prefillRequirements = useMemo(() => {
     if (!objectType || !requirements) return [];
@@ -72,7 +63,6 @@ export function ReviewForm({ reviewId }: Props) {
   useEffect(() => {
     if (review) {
       setTitle(review.title || '');
-      setApplication(String(review.application.id) || '');
       setExcludedContentTypes(review.excludedContentTypes?.split(';') || []);
       setSelectedPrefills(
         prefillRequirements.filter((p) =>
@@ -99,10 +89,10 @@ export function ReviewForm({ reviewId }: Props) {
     // Check if excluded content types differ from current review's excluded content types
     const currentExcludedContentTypes = review?.excludedContentTypes?.split(';') || [];
     const addedTypes = excludedContentTypes.filter(
-      (type) => !currentExcludedContentTypes.includes(type),
+      (type: string) => !currentExcludedContentTypes.includes(type),
     );
     const removedTypes = currentExcludedContentTypes.filter(
-      (type) => !excludedContentTypes.includes(type),
+      (type: string) => !excludedContentTypes.includes(type),
     );
 
     // Check if selected prefill requirements differ from current review's selected prefill requirements
@@ -111,14 +101,13 @@ export function ReviewForm({ reviewId }: Props) {
       (prefill) => !currentSelectedPrefillIds.includes(prefill.id),
     );
     const removedPrefills = currentSelectedPrefillIds.filter(
-      (id) => !selectedPrefills.some((prefill) => prefill.id === id),
+      (id: string) => !selectedPrefills.some((prefill) => prefill.id === id),
     );
 
     upsertReview.mutate(
       {
         id: reviewId,
         title,
-        application,
         excludedContentTypes,
         selectedPrefillIds: selectedPrefills.map((p) => p.id).join(';'),
         objectType: objectType ?? ObjectType.WEB,
@@ -137,7 +126,7 @@ export function ReviewForm({ reviewId }: Props) {
           addedPrefills.forEach((prefill) => {
             prefillChecks.mutate({ reviewId: reviewId, prefill });
           });
-          removedPrefills.forEach((prefillId) => {
+          removedPrefills.forEach((prefillId: string) => {
             const prefill = prefillRequirements.find((p) => p.id === prefillId);
             if (prefill) {
               const reqIds = prefill.prefillRequirements.map((r) => r.id);
@@ -156,7 +145,7 @@ export function ReviewForm({ reviewId }: Props) {
   };
 
   return (
-    <div className="content-container content-container--white content-container--largest">
+    <div>
       {loading && (
         <DigiLoaderSkeleton
           afVariation={LoaderSkeletonVariation.SECTION}
@@ -164,7 +153,8 @@ export function ReviewForm({ reviewId }: Props) {
         ></DigiLoaderSkeleton>
       )}
       {!loading && (!reviewId || review) && (
-        <form id="review-form" className="content-container" onSubmit={handleSubmit}>
+        <form id="review-form" onSubmit={handleSubmit}>
+          {/* Disable option to choose between web and document for now 
           <DigiFormFieldset afForm="review-form" afLegend="Typ av granskningsobjekt" afName="typ">
             <DigiFormRadiogroup afName="type">
               <DigiFormRadiobutton
@@ -221,36 +211,22 @@ export function ReviewForm({ reviewId }: Props) {
               signaturer, kryptering, lösenordsskydd och vattenstämplar när de presenteras för
               användaren.
             </p>
-          </DigiDialog>
+          </DigiDialog>*/}
           <p>
             <DigiFormInput
-              afLabel="Rubrik"
+              afLabel="Namn på granskning"
+              afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
               afValue={title}
               onAfOnInput={(e) => setTitle(e.detail.target.value)}
             />
           </p>
-          <p>
-            <DigiFormSelectFilter
-              afFilterButtonText="Välj granskningsobjekt"
-              afFilterButtonTextLabel="Granskningsobjekt"
-              afName="Granskningsobjekt"
-              afListItems={
-                applications?.map((app) => ({
-                  value: String(app.id),
-                  label: app.name ?? '',
-                  selected: String(app.id) === application,
-                })) ?? []
-              }
-              onAfOnSelect={(e) => setApplication(e.detail[0].value)}
-            />
-          </p>
           {objectType === ObjectType.WEB && (
             <div>
-              <h2>Förifyll irrelevanta krav</h2>
+              <h2>Vad innehåller din tjänst?</h2>
               <p>
-                Den totala mängden krav är stor och för att minska arbetsbelastningen är det viktigt
-                att förifylla irrelevanta krav. Bocka för innehållstyper som saknas i
-                granskningsobjektet, så markeras relaterade krav automatiskt som irrelevanta.
+                Svara på några frågor om vad din tjänst innehåller. Dina svar hjälper dig att
+                granska relevanta krav. Du kan ändå se kraven och ändra bedömningen vid behov
+                senare.
               </p>
               <DigiFormFieldset
                 afForm="review-form"
@@ -273,6 +249,7 @@ export function ReviewForm({ reviewId }: Props) {
             </div>
           )}
 
+          {/* Disable prefill selection for now
           {prefillRequirements.find(
             (prefill: PrefillRequirementSetting) => prefill.automatic === 'false',
           ) && (
@@ -295,7 +272,7 @@ export function ReviewForm({ reviewId }: Props) {
                   ></DigiFormCheckbox>
                 ))}
             </DigiFormFieldset>
-          )}
+          )}*/}
 
           <DigiButton afType="submit">Spara</DigiButton>
           {upsertReview.isError && <p>Fel vid sparande</p>}

@@ -9,10 +9,10 @@ import {
 import { DigiFormInput } from '@digi/arbetsformedlingen-react';
 import { useState } from 'react';
 
-import { type Check, type Requirement, type ReviewWithApplication, Status } from '~/data/types';
+import { type Check, type Requirement, type Review, Status } from '~/data/types';
 
 type Props = {
-  review: ReviewWithApplication;
+  review: Review;
   checks?: Check[];
   requirements: Requirement[];
 };

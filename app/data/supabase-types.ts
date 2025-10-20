@@ -14,27 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      applications: {
-        Row: {
-          appId: string | null
-          created_at: string
-          id: number
-          name: string | null
-        }
-        Insert: {
-          appId?: string | null
-          created_at?: string
-          id?: number
-          name?: string | null
-        }
-        Update: {
-          appId?: string | null
-          created_at?: string
-          id?: number
-          name?: string | null
-        }
-        Relationships: []
-      }
       checks: {
         Row: {
           comment: string | null
@@ -75,7 +54,6 @@ export type Database = {
       }
       reviews: {
         Row: {
-          application: number | null
           created_at: string
           excludedContentTypes: string | null
           id: number
@@ -84,7 +62,6 @@ export type Database = {
           title: string | null
         }
         Insert: {
-          application?: number | null
           created_at?: string
           excludedContentTypes?: string | null
           id?: number
@@ -93,7 +70,6 @@ export type Database = {
           title?: string | null
         }
         Update: {
-          application?: number | null
           created_at?: string
           excludedContentTypes?: string | null
           id?: number
@@ -101,15 +77,7 @@ export type Database = {
           selectedPrefillIds?: string | null
           title?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "reviews_application_fkey"
-            columns: ["application"]
-            isOneToOne: false
-            referencedRelation: "applications"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {

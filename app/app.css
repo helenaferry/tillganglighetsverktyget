@@ -26,6 +26,10 @@
   @apply bg-white my-6;
 }
 
+.content-container--nomargin {
+  @apply m-0;
+}
+
 .content-container--largest {
   @apply w-full min-[87.5rem]:max-w-[87.5rem]; /* [var(--digi--container-width--largest)] */
 }
