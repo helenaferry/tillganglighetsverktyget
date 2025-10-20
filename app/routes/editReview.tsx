@@ -4,8 +4,8 @@ import {
 } from '@digi/arbetsformedlingen';
 import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
 import { useParams } from 'react-router-dom';
-import Breadcrumbs from '~/components/Breadcrumbs';
 
+import Breadcrumbs from '~/components/Breadcrumbs';
 import { ReviewForm } from '~/components/ReviewForm';
 
 export function meta() {

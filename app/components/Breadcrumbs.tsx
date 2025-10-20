@@ -15,8 +15,12 @@ export default function Breadcrumbs({ currentPage, pages }: Props) {
   return (
     <div className="mb-4">
       <DigiNavigationBreadcrumbs afCurrentPage={currentPage}>
-        {pages?.map((page) => (
-          <a key={page.href} href={page.href} onClick={(e) => handleClick(e, page.href)}>
+        {pages?.map((page, index) => (
+          <a
+            key={`${page.href}-${index}`}
+            href={page.href}
+            onClick={(e) => handleClick(e, page.href)}
+          >
             {page.title}
           </a>
         ))}

@@ -297,20 +297,20 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       <div className="flex flex-wrap gap-2 mt-2 mb-4">
                         {requirement.en301549 &&
                           requirement.en301549.length > 0 &&
-                          requirement.en301549.split(',').map((text) => (
+                          requirement.en301549.split(',').map((text, index) => (
                             <div
                               className="bg-grayscale-200 rounded-sm py-2 px-4"
-                              key={text.trim()}
+                              key={`en-${requirement.id}-${text.trim()}-${index}`}
                             >
                               {`EN ${text}`}
                             </div>
                           ))}
                         {requirement.wcag &&
                           requirement.wcag.length > 0 &&
-                          requirement.wcag.split(',').map((text) => (
+                          requirement.wcag.split(',').map((text, index) => (
                             <div
                               className="bg-grayscale-200 rounded-sm py-2 px-4"
-                              key={text.trim()}
+                              key={`wcag-${requirement.id}-${text.trim()}-${index}`}
                             >
                               {`WCAG ${text}`}
                             </div>

@@ -181,7 +181,7 @@ export function CardsOrTable({
                 {headings.map((heading, index) => (
                   <th
                     scope="col"
-                    key={index}
+                    key={`${index}-${headings.length}`}
                     aria-label={
                       cardsHeadings && typeof cardsHeadings[index] === 'string'
                         ? (cardsHeadings[index] as string)
@@ -234,7 +234,7 @@ export function CardsOrTable({
             <div>
               {headings.map((heading, index) => (
                 <div
-                  key={index}
+                  key={`hac-${index}-${headings.length}`}
                   aria-label={
                     cardsHeadings && typeof cardsHeadings[index] === 'string'
                       ? (cardsHeadings[index] as string)

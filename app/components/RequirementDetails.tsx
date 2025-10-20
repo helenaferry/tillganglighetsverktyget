@@ -20,19 +20,25 @@ export default function RequirementDetails({ requirement }: Props) {
       {requirement.statement && (
         <div>
           <h4>Beskrivning</h4>
-          <ReactMarkdown>{requirement.statement}</ReactMarkdown>
+          <div>
+            <ReactMarkdown>{requirement.statement || ''}</ReactMarkdown>
+          </div>
         </div>
       )}
       {requirement.why && (
         <div className="mt-4">
           <h4>Varför är detta viktigt?</h4>
-          <ReactMarkdown>{requirement.why}</ReactMarkdown>
+          <div>
+            <ReactMarkdown>{requirement.why || ''}</ReactMarkdown>
+          </div>
         </div>
       )}
       {addition && (
         <div className="mt-4">
           <h4>{requirementAdditions.heading}</h4>
-          <ReactMarkdown>{addition?.text}</ReactMarkdown>
+          <div>
+            <ReactMarkdown>{addition?.text || ''}</ReactMarkdown>
+          </div>
         </div>
       )}
       {requirement.howToTest && (
@@ -40,7 +46,9 @@ export default function RequirementDetails({ requirement }: Props) {
           afHeading="Hur du kan testa"
           afHeadingLevel={ExpandableAccordionHeaderLevel.H4}
         >
-          <ReactMarkdown>{requirement.howToTest}</ReactMarkdown>
+          <div>
+            <ReactMarkdown>{requirement.howToTest || ''}</ReactMarkdown>
+          </div>
         </DigiExpandableAccordion>
       )}
     </div>

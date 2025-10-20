@@ -4,8 +4,8 @@ import {
 } from '@digi/arbetsformedlingen';
 import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
 
-import { ReviewForm } from '~/components/ReviewForm';
 import Breadcrumbs from '~/components/Breadcrumbs';
+import { ReviewForm } from '~/components/ReviewForm';
 
 export function meta() {
   return [
