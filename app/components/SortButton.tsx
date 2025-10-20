@@ -12,7 +12,7 @@ export function SortButton({ buttonText, sortBy, active, sortDirection, onSortCh
   return (
     <button
       onClick={() => onSortChange(sortBy)}
-      className={`sort-button py-2 sm:py-0 ${active ? 'sort-button--active' : ''} w-full flex gap-2 border-transparent ${active ? 'text-sapphire-500 !border-b-0' : '!border-b-1'} hover:underline cursor-pointer`}
+      className={`sort-button py-1 lg:py-0 ${active ? 'sort-button--active' : ''} w-full flex gap-2 border-transparent ${active ? 'text-sapphire-500 !border-b-0' : '!border-b-1'} hover:underline cursor-pointer`}
       aria-label={`Sortera ${active ? (sortDirection === 'ascending' ? 'fallande' : 'stigande') : 'fallande'}`}
       aria-pressed={active}
       type="button"
@@ -34,11 +34,4 @@ export function SortButton({ buttonText, sortBy, active, sortDirection, onSortCh
       </div>
     </button>
   );
-}
-{
-  /* TODO:   
-    - nollställa paginering vid sortering
-    - sortering i kortvyn
-    - alternativ till fetstil på aktiv sortering
-    */
 }

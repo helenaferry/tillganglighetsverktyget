@@ -7,7 +7,6 @@ type Props = {
   status?: number | undefined | null;
 };
 
-// TODO proper i18n?
 const getStatusText = (status: Status) => {
   switch (status) {
     case Status.FAIL:

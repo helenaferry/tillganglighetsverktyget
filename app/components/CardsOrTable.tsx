@@ -249,7 +249,7 @@ export function CardsOrTable({
           )}
         </fieldset>
         <ul
-          className="!list-none border-t-1 mt-6"
+          className="!list-none border-t-1 mt-6 !p-0"
           aria-label={
             pageSize > 0 && rows.length > pageSize
               ? `Sida ${currentPage} av ${Math.ceil(rows.length / pageSize)}`
