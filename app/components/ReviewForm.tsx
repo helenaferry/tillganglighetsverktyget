@@ -57,6 +57,7 @@ export function ReviewForm({ reviewId }: Props) {
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
+  const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
 
   /*const prefillRequirements = useMemo(() => {
     if (!objectType || !requirements) return [];
@@ -166,6 +167,7 @@ export function ReviewForm({ reviewId }: Props) {
             .forEach((prefill) => {
               prefillChecks.mutate({ reviewId: reviewId, prefill });
             });*/
+          navigate(`/granskning/${review.id}`);
         },
       },
     );
@@ -368,13 +370,33 @@ export function ReviewForm({ reviewId }: Props) {
           </p>
 
           <div className="flex gap-4 mb-6">
-            <DigiButton afVariation={ButtonVariation.SECONDARY} afType="button">
+            <DigiButton
+              afVariation={ButtonVariation.SECONDARY}
+              afType="button"
+              onAfOnClick={() => {
+                setShowAbortConfirmation(true);
+              }}
+            >
               Avbryt
             </DigiButton>
             <DigiButton afType="submit">Starta granskning</DigiButton>
           </div>
           {upsertReview.isError && <p>Fel vid sparande</p>}
           {upsertReview.isSuccess && <p>Sparad!</p>}
+
+          <DigiDialog
+            afSize={DialogSize.MEDIUM}
+            afShowDialog={showAbortConfirmation}
+            afHeading={`Vill du verkligen avbryta utan att spara dina ändringar?`}
+            afPrimaryButtonText="Ja, avbryt"
+            afSecondaryButtonText="Nej, stanna kvar"
+            onAfOnClose={() => setShowAbortConfirmation(false)}
+            onAfSecondaryButtonClick={() => setShowAbortConfirmation(false)}
+            onAfPrimaryButtonClick={() => {
+              setShowAbortConfirmation(false);
+              navigate('/');
+            }}
+          ></DigiDialog>
 
           <DigiDialog
             afSize={DialogSize.MEDIUM}
