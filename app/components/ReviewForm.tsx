@@ -14,7 +14,7 @@ import {
   DigiIconTrash,
   DigiLoaderSkeleton,
 } from '@digi/arbetsformedlingen-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 // import type { PrefillRequirementSetting } from '~/data/types';
@@ -34,7 +34,7 @@ type Props = {
 };
 
 export function ReviewForm({ reviewId }: Props) {
-  const { data: requirements, isLoading: isLoadingRequirements } = useRequirements();
+  const { data: allRequirements, isLoading: isLoadingRequirements } = useRequirements();
   const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
     ObjectType.WEB,
   );
@@ -58,6 +58,14 @@ export function ReviewForm({ reviewId }: Props) {
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
+
+  const requirements = useMemo(() => {
+    return allRequirements?.filter((r) => r.objectType === objectType) || [];
+  }, [allRequirements, objectType]);
+
+  const toBeReviewedRequirements = useMemo(() => {
+    return requirements?.filter((r) => !excludedContentTypes.includes(r.contentType)) || [];
+  }, [requirements, excludedContentTypes]);
 
   /*const prefillRequirements = useMemo(() => {
     if (!objectType || !requirements) return [];
@@ -365,8 +373,9 @@ export function ReviewForm({ reviewId }: Props) {
             </DigiFormFieldset>
           )}*/}
 
-          <p className="bg-[#DDF1FC] p-4 !mt-6 mb-4">
-            <span className="text-4xl font-semibold">STOR</span> Här ska det stå grejer
+          <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4" role="status">
+            <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}
+            {requirements?.length} <span className="font-semibold">krav att granska</span>
           </p>
 
           <div className="flex gap-4 mb-6">
