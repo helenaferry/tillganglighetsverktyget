@@ -1,20 +1,30 @@
-import { LoaderSkeletonVariation } from '@digi/arbetsformedlingen';
+import {
+  ButtonSize,
+  ButtonVariation,
+  DialogSize,
+  LoaderSkeletonVariation,
+} from '@digi/arbetsformedlingen';
 import {
   DigiButton,
-  DigiFormCheckbox,
+  DigiDialog,
   DigiFormFieldset,
   DigiFormInput,
+  DigiFormRadiobutton,
+  DigiFormRadiogroup,
+  DigiIconTrash,
   DigiLoaderSkeleton,
 } from '@digi/arbetsformedlingen-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
-import type { PrefillRequirementSetting } from '~/data/types';
+// import type { PrefillRequirementSetting } from '~/data/types';
 import { ObjectType } from '~/data/types';
 import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
 import {
+  useDeleteReview,
   useDisableChecks,
   useEnableChecks,
-  usePrefillRequirements,
+  // usePrefillRequirements,
   useReviewById,
   useUpsertReview,
 } from '~/hooks/useReviewData';
@@ -30,21 +40,25 @@ export function ReviewForm({ reviewId }: Props) {
   );
   const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
   const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
-  const allPrefillRequirements = JSON.parse(
+  /*const allPrefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
-  ) as PrefillRequirementSetting[];
+  ) as PrefillRequirementSetting[];*/
 
   const disableChecks = useDisableChecks();
   const enableChecks = useEnableChecks();
   const upsertReview = useUpsertReview();
-  const prefillChecks = usePrefillRequirements();
+  // const prefillChecks = usePrefillRequirements();
+  const deleteReview = useDeleteReview();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState<string>('');
   const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
-  const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
+  // const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
-  const prefillRequirements = useMemo(() => {
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
+
+  /*const prefillRequirements = useMemo(() => {
     if (!objectType || !requirements) return [];
     return allPrefillRequirements
       .map((setting) => {
@@ -58,29 +72,39 @@ export function ReviewForm({ reviewId }: Props) {
         };
       })
       .filter((setting) => setting.prefillRequirements.length > 0);
-  }, [objectType, requirements, allPrefillRequirements]);
+  }, [objectType, requirements, allPrefillRequirements]);*/
 
   useEffect(() => {
     if (review) {
       setTitle(review.title || '');
       setExcludedContentTypes(review.excludedContentTypes?.split(';') || []);
-      setSelectedPrefills(
-        prefillRequirements.filter((p) =>
-          review.selectedPrefillIds?.split(';').includes(String(p.id)),
-        ) || [],
-      );
+      // setSelectedPrefills(
+      //   prefillRequirements.filter((p) =>
+      //     review.selectedPrefillIds?.split(';').includes(String(p.id)),
+      //   ) || [],
+      // );
       setObjectType((review.objectType as ObjectType) || ObjectType.WEB);
     }
   }, [review]);
 
-  const handleContentChange = (e: CustomEvent) => {
-    const selected = e.detail.target.value;
-    const checked = e.detail.target.checked;
-    if (checked) {
-      setExcludedContentTypes((prev) => [...prev, selected]);
+  const handleContentChange = (contentType: string, included: string) => {
+    const excluded = included == 'false';
+    if (excluded) {
+      if (excludedContentTypes.includes(contentType)) return;
+      setExcludedContentTypes((prev) => [...prev, contentType]);
     } else {
-      setExcludedContentTypes((prev) => prev.filter((type) => type !== selected));
+      setExcludedContentTypes((prev) => prev.filter((type) => type !== contentType));
     }
+  };
+
+  const handleDeleteReview = () => {
+    if (!reviewId) return;
+    deleteReview.mutate(Number(reviewId), {
+      onSuccess: () => {
+        setShowDeleteConfirmation(false);
+        navigate('/');
+      },
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -95,6 +119,8 @@ export function ReviewForm({ reviewId }: Props) {
       (type: string) => !excludedContentTypes.includes(type),
     );
 
+    {
+      /*
     // Check if selected prefill requirements differ from current review's selected prefill requirements
     const currentSelectedPrefillIds = review?.selectedPrefillIds?.split(';') || [];
     const addedPrefills = selectedPrefills.filter(
@@ -102,14 +128,15 @@ export function ReviewForm({ reviewId }: Props) {
     );
     const removedPrefills = currentSelectedPrefillIds.filter(
       (id: string) => !selectedPrefills.some((prefill) => prefill.id === id),
-    );
+    );*/
+    }
 
     upsertReview.mutate(
       {
         id: reviewId,
         title,
         excludedContentTypes,
-        selectedPrefillIds: selectedPrefills.map((p) => p.id).join(';'),
+        selectedPrefillIds: '', // selectedPrefills.map((p) => p.id).join(';'),
         objectType: objectType ?? ObjectType.WEB,
       },
       {
@@ -123,7 +150,7 @@ export function ReviewForm({ reviewId }: Props) {
             ?.filter((req) => removedTypes.includes(req.contentType))
             .map((req) => req.id);
           enableChecks.mutate({ reviewId: reviewId, requirements: requirementsToEnable || [] });
-          addedPrefills.forEach((prefill) => {
+          /*addedPrefills.forEach((prefill) => {
             prefillChecks.mutate({ reviewId: reviewId, prefill });
           });
           removedPrefills.forEach((prefillId: string) => {
@@ -138,11 +165,38 @@ export function ReviewForm({ reviewId }: Props) {
             .filter((prefill) => prefill.automatic === 'true')
             .forEach((prefill) => {
               prefillChecks.mutate({ reviewId: reviewId, prefill });
-            });
+            });*/
         },
       },
     );
   };
+
+  const contentCategoryQuestions = [
+    {
+      contentCategory: 'Bilder, ikoner & grafik',
+      question: 'Innehåller tjänsten bilder, ikoner eller grafik?',
+    },
+    {
+      contentCategory: 'Formulär & inmatningsfält',
+      question: 'Innehåller tjänsten formulär eller inmatningsfält?',
+    },
+    {
+      contentCategory: 'Mediaspelare Ljud',
+      question: 'Innehåller tjänsten ljud?',
+    },
+    {
+      contentCategory: 'Mediaspelare Video',
+      question: 'Innehåller tjänsten video eller filmer?',
+    },
+    {
+      contentCategory: 'Videosamtal',
+      question: 'Innehåller tjänsten röst- och videosamtal?',
+    },
+    {
+      contentCategory: 'Innehållsskapande',
+      question: 'Tillhandahåller tjänsten publiceringsverktyg för användaren?',
+    },
+  ];
 
   return (
     <div>
@@ -212,14 +266,29 @@ export function ReviewForm({ reviewId }: Props) {
               användaren.
             </p>
           </DigiDialog>*/}
-          <p>
-            <DigiFormInput
-              afLabel="Namn på granskning"
-              afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
-              afValue={title}
-              onAfOnInput={(e) => setTitle(e.detail.target.value)}
-            />
-          </p>
+          <div className="sm:flex justify-between">
+            <div className="max-w-[24rem] my-8">
+              <DigiFormInput
+                afLabel="Namn på granskning"
+                afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
+                afValue={title}
+                onAfOnInput={(e) => setTitle(e.detail.target.value)}
+              />
+            </div>
+            <div className="sm:mt-6 mb-6">
+              {review && (
+                <DigiButton
+                  afSize={ButtonSize.MEDIUM}
+                  afVariation={ButtonVariation.SECONDARY}
+                  afFullWidth={false}
+                  onAfOnClick={() => setShowDeleteConfirmation(true)}
+                >
+                  <DigiIconTrash slot="icon-secondary" />
+                  Radera denna granskning
+                </DigiButton>
+              )}
+            </div>
+          </div>
           {objectType === ObjectType.WEB && (
             <div>
               <h2>Vad innehåller din tjänst?</h2>
@@ -228,26 +297,46 @@ export function ReviewForm({ reviewId }: Props) {
                 granska relevanta krav. Du kan ändå se kraven och ändra bedömningen vid behov
                 senare.
               </p>
-              <DigiFormFieldset
-                afForm="review-form"
-                afLegend="Vänligen välj de innehållstyper som inte är relevanta för granskningsobjektet"
-                afName="content"
-              >
-                {contentTypes &&
-                  contentTypes.map((contentType) => (
-                    <DigiFormCheckbox
-                      key={contentType}
-                      afValue={contentType}
-                      afChecked={excludedContentTypes.includes(contentType)}
-                      onAfOnChange={(e) => {
-                        handleContentChange(e);
-                      }}
-                      afLabel={contentType}
-                    ></DigiFormCheckbox>
-                  ))}
-              </DigiFormFieldset>
+
+              {contentTypes &&
+                contentTypes.map((contentType) => {
+                  const questionText =
+                    contentCategoryQuestions.find((q) => q.contentCategory === contentType)
+                      ?.question || contentType;
+                  return (
+                    <div className="mb-4" key={`fieldset-${contentType}`}>
+                      <DigiFormFieldset
+                        afForm="review-form"
+                        afLegend={questionText}
+                        afName={`fieldset-${contentType}`}
+                      >
+                        <DigiFormRadiogroup
+                          afName={`radiogroup-${contentType}`}
+                          key={contentType}
+                          onAfOnGroupChange={(e) => {
+                            const value = (e.target as HTMLInputElement)?.value;
+                            handleContentChange(contentType, value);
+                          }}
+                        >
+                          <DigiFormRadiobutton
+                            afLabel="Ja"
+                            afValue="true"
+                            afChecked={excludedContentTypes.includes(contentType) ? false : true}
+                          ></DigiFormRadiobutton>
+                          <DigiFormRadiobutton
+                            afLabel="Nej"
+                            afValue="false"
+                            afChecked={excludedContentTypes.includes(contentType) ? true : false}
+                          ></DigiFormRadiobutton>
+                        </DigiFormRadiogroup>
+                      </DigiFormFieldset>
+                    </div>
+                  );
+                })}
             </div>
           )}
+
+          {/* TODO Bring back auto prefill?!! */}
 
           {/* Disable prefill selection for now
           {prefillRequirements.find(
@@ -274,9 +363,37 @@ export function ReviewForm({ reviewId }: Props) {
             </DigiFormFieldset>
           )}*/}
 
-          <DigiButton afType="submit">Spara</DigiButton>
+          <p className="bg-[#DDF1FC] p-4 !mt-6 mb-4">
+            <span className="text-4xl font-semibold">STOR</span> Här ska det stå grejer
+          </p>
+
+          <div className="flex gap-4 mb-6">
+            <DigiButton afVariation={ButtonVariation.SECONDARY} afType="button">
+              Avbryt
+            </DigiButton>
+            <DigiButton afType="submit">Starta granskning</DigiButton>
+          </div>
           {upsertReview.isError && <p>Fel vid sparande</p>}
           {upsertReview.isSuccess && <p>Sparad!</p>}
+
+          <DigiDialog
+            afSize={DialogSize.MEDIUM}
+            afShowDialog={showDeleteConfirmation && review !== undefined}
+            afHeading={`Vill du verkligen ta bort granskningen?`}
+            afPrimaryButtonText="Ja, ta bort"
+            afSecondaryButtonText="Nej, avbryt"
+            onAfOnClose={() => setShowDeleteConfirmation(false)}
+            onAfSecondaryButtonClick={() => setShowDeleteConfirmation(false)}
+            onAfPrimaryButtonClick={handleDeleteReview}
+          >
+            <p>
+              <strong>Vald granskning:</strong> {review?.title}
+            </p>
+            <p>
+              All information, inklusive eventuella granskade krav, kommer att tas bort och kan inte
+              återställas.
+            </p>
+          </DigiDialog>
         </form>
       )}
     </div>

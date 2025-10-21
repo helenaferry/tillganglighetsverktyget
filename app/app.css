@@ -100,3 +100,10 @@ svg {
 .digi-link-button__text {
   @apply !whitespace-normal sm:!whitespace-nowrap;
 }
+
+#review-form .sc-digi-form-radiogroup {
+  @apply flex;
+  label {
+    @apply mr-8;
+  }
+}
