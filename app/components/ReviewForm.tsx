@@ -11,6 +11,7 @@ import {
 import {
   DigiButton,
   DigiDialog,
+  DigiFormCheckbox,
   DigiFormFieldset,
   DigiFormInput,
   DigiFormRadiobutton,
@@ -23,7 +24,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { ObjectType, type PrefillRequirement } from '~/data/types';
+import { ObjectType, type PrefillRequirement, type PrefillRequirementSetting } from '~/data/types';
 import contentTypeTexts from '~/helpers/contentTypeTexts';
 import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
 import {
@@ -45,9 +46,9 @@ export function ReviewForm({ reviewId }: Props) {
   );
   const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
   const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
-  /*const allPrefillRequirements = JSON.parse(
+  const allPrefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
-  ) as PrefillRequirementSetting[];*/
+  ) as PrefillRequirementSetting[];
 
   const enableChecks = useEnableChecks();
   const upsertReview = useUpsertReview();
@@ -57,7 +58,7 @@ export function ReviewForm({ reviewId }: Props) {
 
   const [title, setTitle] = useState<string>('');
   const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
-  // const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
+  const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
@@ -71,10 +72,6 @@ export function ReviewForm({ reviewId }: Props) {
   const requirements = useMemo(() => {
     return allRequirements?.filter((r) => r.objectType === objectType) || [];
   }, [allRequirements, objectType]);
-
-  const toBeReviewedRequirements = useMemo(() => {
-    return requirements?.filter((r) => !excludedContentTypes.includes(r.contentType)) || [];
-  }, [requirements, excludedContentTypes]);
 
   const contentTypePrefills: PrefillRequirement[] = useMemo(() => {
     return excludedContentTypes
@@ -92,13 +89,15 @@ export function ReviewForm({ reviewId }: Props) {
       .filter(Boolean) as unknown as PrefillRequirement[];
   }, [requirements, excludedContentTypes]);
 
-  /*const prefillRequirements = useMemo(() => {
+  const prefillRequirements = useMemo(() => {
     if (!objectType || !requirements) return [];
     return allPrefillRequirements
       .map((setting) => {
         const filteredPrefills = setting.prefillRequirements.filter((prefill) => {
-          const req = requirements.find((r) => r.id === prefill.id);
-          return req && req.objectType === objectType;
+          const req = requirements.find(
+            (r) => prefill.ids.includes(r.id) && r.objectType === objectType,
+          );
+          return req;
         });
         return {
           ...setting,
@@ -106,7 +105,83 @@ export function ReviewForm({ reviewId }: Props) {
         };
       })
       .filter((setting) => setting.prefillRequirements.length > 0);
-  }, [objectType, requirements, allPrefillRequirements]);*/
+  }, [objectType, requirements, allPrefillRequirements]);
+  {
+    /*
+  const selectedPrefillRequirements = useMemo(() => {
+    const selectedIds = selectedPrefills.flatMap((p) =>
+      p.prefillRequirements.flatMap((r) => r.ids),
+    );
+    return prefillRequirements
+      .map((setting) => {
+        const filteredPrefills = setting.prefillRequirements.filter((prefill) => {
+          const req = requirements.find(
+            (r) =>
+              prefill.ids.some((id) => selectedIds.includes(id)) && r.objectType === objectType,
+          );
+          return req;
+        });
+        return {
+          ...setting,
+          prefillRequirements: filteredPrefills,
+        };
+      })
+      .filter((setting) => setting.prefillRequirements.length > 0);
+  }, [selectedPrefills, prefillRequirements, requirements, objectType]);*/
+  }
+
+  const automaticPrefills = useMemo(() => {
+    return prefillRequirements.filter(
+      (prefill: PrefillRequirementSetting) => prefill.automatic === 'true',
+    );
+  }, [prefillRequirements]);
+
+  const numberAutomaticPrefillRequirements = useMemo(() => {
+    return automaticPrefills.flatMap((p) => p.prefillRequirements).flatMap((p) => p.ids).length;
+  }, [automaticPrefills]);
+
+  const toBeReviewedRequirements = useMemo(() => {
+    const selectedPrefillIds = selectedPrefills.flatMap((p) =>
+      p.prefillRequirements.flatMap((r) => r.ids),
+    );
+    const autoPrefillIds = automaticPrefills
+      .flatMap((p) => p.prefillRequirements)
+      .flatMap((r) => r.ids);
+    return (
+      requirements
+        ?.filter((r) => !excludedContentTypes.includes(r.contentType))
+        .filter((r) => !selectedPrefillIds.includes(r.id) && !autoPrefillIds.includes(r.id)) || []
+    );
+  }, [requirements, excludedContentTypes, selectedPrefills, automaticPrefills]);
+
+  const activePrefills = useMemo(() => {
+    // Use an object to ensure later entries overwrite earlier ones for the same id
+    const active: Record<string, PrefillRequirement> = {};
+
+    // First, find prefills for content types
+    contentTypePrefills.forEach((p) => {
+      p.ids.forEach((id) => {
+        active[id] = { ids: [id], status: p.status, comment: p.comment };
+      });
+    });
+    // Second, find user selected prefills - these override content type prefills
+    selectedPrefills.forEach((prefillSetting) => {
+      prefillSetting.prefillRequirements.forEach((prefill) => {
+        prefill.ids.forEach((id) => {
+          active[id] = { ids: [id], status: prefill.status, comment: prefill.comment };
+        });
+      });
+    });
+    // Third, find automatic prefills - these override both content type and user selected prefills
+    automaticPrefills.forEach((prefillSetting) => {
+      prefillSetting.prefillRequirements.forEach((prefill) => {
+        prefill.ids.forEach((id) => {
+          active[id] = { ids: [id], status: prefill.status, comment: prefill.comment };
+        });
+      });
+    });
+    return Object.values(active);
+  }, [contentTypePrefills, selectedPrefills, automaticPrefills]);
 
   useEffect(() => {
     if (review) {
@@ -114,11 +189,13 @@ export function ReviewForm({ reviewId }: Props) {
       setExcludedContentTypes(
         (review.excludedContentTypes?.split(';').filter((s) => s !== '') as string[]) || [],
       );
-      // setSelectedPrefills(
-      //   prefillRequirements.filter((p) =>
-      //     review.selectedPrefillIds?.split(';').includes(String(p.id)),
-      //   ) || [],
-      // );
+      setSelectedPrefills(
+        prefillRequirements.filter((p) =>
+          (review.selectedPrefillIds?.split(';').filter((s) => s !== '') as string[]).includes(
+            String(p.id),
+          ),
+        ) || [],
+      );
       setObjectType((review.objectType as ObjectType) || ObjectType.WEB);
     }
   }, [review]);
@@ -164,89 +241,86 @@ export function ReviewForm({ reviewId }: Props) {
 
     setSaving(true);
 
-    // Check if user has removed any excluded content types
-    const currentExcludedContentTypes = review?.excludedContentTypes?.split(';') || [];
-    const removedTypes = currentExcludedContentTypes
-      .filter((type: string) => !excludedContentTypes.includes(type))
-      .filter((type: string) => type !== '');
-    const hasTypesToRemove = removedTypes.length > 0;
-    const hasContentTypePrefills = contentTypePrefills.length > 0;
+    // If updating, check if any prefills should be removed
+    let removePrefillsForRequirements: string[] = [];
+    if (review) {
+      // Check removed excluded content types
+      const removedExcludedContentTypes =
+        (review?.excludedContentTypes?.split(';').filter((s) => s !== '') ?? []).filter(
+          (type) => !excludedContentTypes.includes(type),
+        ) || [];
 
-    {
-      /*
-            // Check if selected prefill requirements differ from current review's selected prefill requirements
-            const currentSelectedPrefillIds = review?.selectedPrefillIds?.split(';') || [];
-            const addedPrefills = selectedPrefills.filter(
-              (prefill) => !currentSelectedPrefillIds.includes(prefill.id),
+      removePrefillsForRequirements = requirements
+        ?.filter((r) => removedExcludedContentTypes.includes(r.contentType))
+        .map((r) => r.id);
+
+      // Check removed selected prefills
+      const removedSelectedPrefills = prefillRequirements.filter((prefill) =>
+        (review?.selectedPrefillIds?.split(';').filter((s) => s !== '') ?? [])
+          .filter((id) => !selectedPrefills.some((p) => p.id === id))
+          .includes(prefill.id),
+      );
+
+      removedSelectedPrefills.forEach((prefillSetting) => {
+        if (requirements) {
+          prefillSetting.prefillRequirements.forEach((prefill) => {
+            removePrefillsForRequirements.push(
+              ...requirements.filter((r) => prefill.ids.includes(r.id)).map((r) => r.id),
             );
-            const removedPrefills = currentSelectedPrefillIds.filter(
-              (id: string) => !selectedPrefills.some((prefill) => prefill.id === id),
-            );*/
-    }
+          });
+        }
+      });
 
+      // Remove any ids that are being set by activePrefills
+      removePrefillsForRequirements = removePrefillsForRequirements.filter(
+        (id) => !activePrefills.some((p) => p.ids.includes(id)),
+      );
+    }
     upsertReview.mutate(
       {
         id: reviewId,
         title,
         excludedContentTypes,
-        selectedPrefillIds: '', // selectedPrefills.map((p) => p.id).join(';'),
+        selectedPrefillIds: selectedPrefills.map((p) => p.id).join(';'),
         objectType: objectType ?? ObjectType.WEB,
       },
       {
         onSuccess: (review) => {
           const reviewId = review.id;
 
-          if (removedTypes.length > 0 || contentTypePrefills.length > 0) {
-            setSavingText('Förifyller krav baserat på dina val');
-          } else {
-            setSavingText('Sparar information om granskningen');
-            setSaving(false);
-          }
+          let activePrefillsSuccess = activePrefills.length === 0;
+          let removePrefillsSuccess = removePrefillsForRequirements.length === 0;
 
-          // enableChecks deletes checks if they have status irrelevant, otherwise leaves them be:
-          if (hasTypesToRemove) {
-            const requirementsToEnable = requirements
-              ?.filter((req) => removedTypes.includes(req.contentType))
-              .map((req) => req.id);
-            enableChecks.mutate({ reviewId: reviewId, requirements: requirementsToEnable || [] });
-          }
+          if (activePrefills.length > 0) {
+            setSavingText('Förifyller krav automatiskt');
 
-          // Prefill checks based on content types
-          if (hasContentTypePrefills) {
             prefillChecks.mutate(
               {
                 reviewId: reviewId,
-                prefills: contentTypePrefills,
+                prefills: activePrefills,
               },
               {
                 onSuccess: () => {
-                  setSaving(false);
-                  navigate(`/granskning/${review.id}`);
+                  activePrefillsSuccess = true;
+                  runIfSuccess(activePrefillsSuccess && removePrefillsSuccess, reviewId);
                 },
               },
             );
           }
 
-          /*addedPrefills.forEach((prefill) => {
-            prefillChecks.mutate({ reviewId: reviewId, prefill });
-          });
-          removedPrefills.forEach((prefillId: string) => {
-            const prefill = prefillRequirements.find((p) => p.id === prefillId);
-            if (prefill) {
-              const reqIds = prefill.prefillRequirements.map((r) => r.id);
-              enableChecks.mutate({ reviewId: reviewId, requirements: reqIds });
-            }
-          });
-          // Automatic prefill requirements
-          prefillRequirements
-            .filter((prefill) => prefill.automatic === 'true')
-            .forEach((prefill) => {
-              prefillChecks.mutate({ reviewId: reviewId, prefill });
-            });*/
-
-          if (!hasTypesToRemove && !hasContentTypePrefills) {
-            setSaving(false);
-            navigate(`/granskning/${review.id}`);
+          if (removePrefillsForRequirements.length > 0) {
+            enableChecks.mutate(
+              {
+                reviewId: reviewId,
+                requirements: removePrefillsForRequirements,
+              },
+              {
+                onSuccess: () => {
+                  removePrefillsSuccess = true;
+                  runIfSuccess(activePrefillsSuccess && removePrefillsSuccess, reviewId);
+                },
+              },
+            );
           }
         },
         onError: () => {
@@ -254,6 +328,14 @@ export function ReviewForm({ reviewId }: Props) {
         },
       },
     );
+  };
+
+  const runIfSuccess = (success: boolean, reviewId: number) => {
+    if (success) {
+      setSaving(false);
+      setSavingText('Sparar information om granskningen');
+      navigate(`/granskning/${reviewId}`);
+    }
   };
 
   return (
@@ -366,6 +448,14 @@ export function ReviewForm({ reviewId }: Props) {
                 senare.
               </p>
 
+              {review && (
+                <p className="mt-4">
+                  <strong>Obs!</strong> Om du ändrar tidigare gjorda val för en påbörjad granskning,
+                  var medveten om att det kan påverka krav som redan har granskats. Alla krav med
+                  irrelevant innehållstyp kommer att markeras som irrelevanta oavsett nuvarande
+                  status.
+                </p>
+              )}
               {contentTypes &&
                 contentTypes.map((contentType) => {
                   const questionText =
@@ -404,9 +494,6 @@ export function ReviewForm({ reviewId }: Props) {
             </div>
           )}
 
-          {/* TODO Bring back auto prefill?!! */}
-
-          {/* Disable prefill selection for now
           {prefillRequirements.find(
             (prefill: PrefillRequirementSetting) => prefill.automatic === 'false',
           ) && (
@@ -429,11 +516,14 @@ export function ReviewForm({ reviewId }: Props) {
                   ></DigiFormCheckbox>
                 ))}
             </DigiFormFieldset>
-          )}*/}
+          )}
 
           <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4" role="status">
             <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}
             {requirements?.length} <span className="font-semibold">krav att granska</span>
+            <span className="block">
+              {numberAutomaticPrefillRequirements} krav hanteras automatiskt av din organisation.
+            </span>
           </p>
 
           <div className="flex gap-4 mb-6">
