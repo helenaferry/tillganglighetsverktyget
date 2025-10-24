@@ -18,6 +18,7 @@ import {
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@digi/arbetsformedlingen-react';
+import React from 'react';
 import { useMemo, useState } from 'react';
 
 import RequirementDetails from '~/components/RequirementDetails';
@@ -86,7 +87,7 @@ export default function RequirementsPage() {
         const found = prefillRequirements.some(
           (item) =>
             filterPrefill.includes(String(item.id)) &&
-            item.prefillRequirements.some((r) => r.id === req.id),
+            item.prefillRequirements.some((r) => r.ids.includes(req.id)),
         );
         if (!found) return false;
       }
@@ -280,8 +281,8 @@ export default function RequirementsPage() {
                   </thead>
                   <tbody>
                     {filteredRequirements.map((req) => (
-                      <>
-                        <tr key={req.id}>
+                      <React.Fragment key={req.id}>
+                        <tr>
                           <td className="max-w-[20rem] overflow-hidden">
                             <DigiButton
                               afVariation={ButtonVariation.FUNCTION}
@@ -309,17 +310,19 @@ export default function RequirementsPage() {
                           <td>{req.contentType}</td>
                           <td>
                             {prefillRequirements.map((item) => {
-                              return item.prefillRequirements.find((r) => r.id === req.id)
+                              return item.prefillRequirements.find((r) => r.ids.includes(req.id))
                                 ? item.automatic === 'true'
                                   ? 'Automatisk-' +
                                     item.id +
                                     ' ' +
-                                    item.prefillRequirements.find((r) => r.id === req.id)?.status +
+                                    item.prefillRequirements.find((r) => r.ids.includes(req.id))
+                                      ?.status +
                                     ' '
                                   : 'Valbar-' +
                                     item.id +
                                     ' ' +
-                                    item.prefillRequirements.find((r) => r.id === req.id)?.status +
+                                    item.prefillRequirements.find((r) => r.ids.includes(req.id))
+                                      ?.status +
                                     ' '
                                 : '';
                             })}
@@ -344,7 +347,7 @@ export default function RequirementsPage() {
                             </td>
                           </tr>
                         )}
-                      </>
+                      </React.Fragment>
                     ))}
                   </tbody>
                 </table>

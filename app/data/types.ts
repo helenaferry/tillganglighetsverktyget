@@ -65,7 +65,7 @@ export type Category = {
 
 export type PrefillRequirement = {
   status: string;
-  id: string;
+  ids: string[];
   comment: string;
 };
 

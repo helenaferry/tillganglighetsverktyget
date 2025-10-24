@@ -2,7 +2,11 @@ import {
   ButtonSize,
   ButtonVariation,
   DialogSize,
+  FormInputValidation,
   LoaderSkeletonVariation,
+  LoaderSpinnerSize,
+  NotificationAlertSize,
+  NotificationAlertVariation,
 } from '@digi/arbetsformedlingen';
 import {
   DigiButton,
@@ -13,18 +17,19 @@ import {
   DigiFormRadiogroup,
   DigiIconTrash,
   DigiLoaderSkeleton,
+  DigiLoaderSpinner,
+  DigiNotificationAlert,
 } from '@digi/arbetsformedlingen-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-// import type { PrefillRequirementSetting } from '~/data/types';
-import { ObjectType } from '~/data/types';
+import { ObjectType, type PrefillRequirement } from '~/data/types';
+import contentTypeTexts from '~/helpers/contentTypeTexts';
 import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
 import {
   useDeleteReview,
-  useDisableChecks,
   useEnableChecks,
-  // usePrefillRequirements, // TODO Maybe use for category prefills?
+  usePrefillRequirements,
   useReviewById,
   useUpsertReview,
 } from '~/hooks/useReviewData';
@@ -44,10 +49,9 @@ export function ReviewForm({ reviewId }: Props) {
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
   ) as PrefillRequirementSetting[];*/
 
-  const disableChecks = useDisableChecks();
   const enableChecks = useEnableChecks();
   const upsertReview = useUpsertReview();
-  // const prefillChecks = usePrefillRequirements();
+  const prefillChecks = usePrefillRequirements();
   const deleteReview = useDeleteReview();
   const navigate = useNavigate();
 
@@ -58,6 +62,11 @@ export function ReviewForm({ reviewId }: Props) {
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
+  const [saving, setSaving] = useState<boolean>(false);
+  const [savingText, setSavingText] = useState<string>('Sparar information om granskningen');
+  const [nameValidation, setNameValidation] = useState<FormInputValidation>(
+    FormInputValidation.NEUTRAL,
+  );
 
   const requirements = useMemo(() => {
     return allRequirements?.filter((r) => r.objectType === objectType) || [];
@@ -65,6 +74,22 @@ export function ReviewForm({ reviewId }: Props) {
 
   const toBeReviewedRequirements = useMemo(() => {
     return requirements?.filter((r) => !excludedContentTypes.includes(r.contentType)) || [];
+  }, [requirements, excludedContentTypes]);
+
+  const contentTypePrefills: PrefillRequirement[] = useMemo(() => {
+    return excludedContentTypes
+      .map((contentType) => {
+        const req = requirements.filter((r) => r.contentType === contentType);
+        if (req.length > 0) {
+          return {
+            ids: req.map((r) => r.id),
+            status: 'IRRELEVANT',
+            comment: contentTypeTexts.find((q) => q.contentType === contentType)?.prefillComment,
+          };
+        }
+        return undefined;
+      })
+      .filter(Boolean) as unknown as PrefillRequirement[];
   }, [requirements, excludedContentTypes]);
 
   /*const prefillRequirements = useMemo(() => {
@@ -86,7 +111,9 @@ export function ReviewForm({ reviewId }: Props) {
   useEffect(() => {
     if (review) {
       setTitle(review.title || '');
-      setExcludedContentTypes(review.excludedContentTypes?.split(';') || []);
+      setExcludedContentTypes(
+        (review.excludedContentTypes?.split(';').filter((s) => s !== '') as string[]) || [],
+      );
       // setSelectedPrefills(
       //   prefillRequirements.filter((p) =>
       //     review.selectedPrefillIds?.split(';').includes(String(p.id)),
@@ -95,6 +122,14 @@ export function ReviewForm({ reviewId }: Props) {
       setObjectType((review.objectType as ObjectType) || ObjectType.WEB);
     }
   }, [review]);
+
+  useEffect(() => {
+    if (saving) {
+      document.querySelector('body')?.classList.add('overflow-hidden');
+    } else {
+      document.querySelector('body')?.classList.remove('overflow-hidden');
+    }
+  }, [saving]);
 
   const handleContentChange = (contentType: string, included: string) => {
     const excluded = included == 'false';
@@ -118,26 +153,35 @@ export function ReviewForm({ reviewId }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const isValid = form.checkValidity();
+    const nameField = form.querySelector('#reviewName') as HTMLInputElement;
+    if (!nameField.validity.valid) {
+      setNameValidation(FormInputValidation.ERROR);
+      nameField.focus();
+    }
+    if (!isValid) return;
 
-    // Check if excluded content types differ from current review's excluded content types
+    setSaving(true);
+
+    // Check if user has removed any excluded content types
     const currentExcludedContentTypes = review?.excludedContentTypes?.split(';') || [];
-    const addedTypes = excludedContentTypes.filter(
-      (type: string) => !currentExcludedContentTypes.includes(type),
-    );
-    const removedTypes = currentExcludedContentTypes.filter(
-      (type: string) => !excludedContentTypes.includes(type),
-    );
+    const removedTypes = currentExcludedContentTypes
+      .filter((type: string) => !excludedContentTypes.includes(type))
+      .filter((type: string) => type !== '');
+    const hasTypesToRemove = removedTypes.length > 0;
+    const hasContentTypePrefills = contentTypePrefills.length > 0;
 
     {
       /*
-    // Check if selected prefill requirements differ from current review's selected prefill requirements
-    const currentSelectedPrefillIds = review?.selectedPrefillIds?.split(';') || [];
-    const addedPrefills = selectedPrefills.filter(
-      (prefill) => !currentSelectedPrefillIds.includes(prefill.id),
-    );
-    const removedPrefills = currentSelectedPrefillIds.filter(
-      (id: string) => !selectedPrefills.some((prefill) => prefill.id === id),
-    );*/
+            // Check if selected prefill requirements differ from current review's selected prefill requirements
+            const currentSelectedPrefillIds = review?.selectedPrefillIds?.split(';') || [];
+            const addedPrefills = selectedPrefills.filter(
+              (prefill) => !currentSelectedPrefillIds.includes(prefill.id),
+            );
+            const removedPrefills = currentSelectedPrefillIds.filter(
+              (id: string) => !selectedPrefills.some((prefill) => prefill.id === id),
+            );*/
     }
 
     upsertReview.mutate(
@@ -151,14 +195,38 @@ export function ReviewForm({ reviewId }: Props) {
       {
         onSuccess: (review) => {
           const reviewId = review.id;
-          const requirementsToDisable = requirements
-            ?.filter((req) => addedTypes.includes(req.contentType))
-            .map((req) => req.id);
-          disableChecks.mutate({ reviewId: reviewId, requirements: requirementsToDisable || [] });
-          const requirementsToEnable = requirements
-            ?.filter((req) => removedTypes.includes(req.contentType))
-            .map((req) => req.id);
-          enableChecks.mutate({ reviewId: reviewId, requirements: requirementsToEnable || [] });
+
+          if (removedTypes.length > 0 || contentTypePrefills.length > 0) {
+            setSavingText('Förifyller krav baserat på dina val');
+          } else {
+            setSavingText('Sparar information om granskningen');
+            setSaving(false);
+          }
+
+          // enableChecks deletes checks if they have status irrelevant, otherwise leaves them be:
+          if (hasTypesToRemove) {
+            const requirementsToEnable = requirements
+              ?.filter((req) => removedTypes.includes(req.contentType))
+              .map((req) => req.id);
+            enableChecks.mutate({ reviewId: reviewId, requirements: requirementsToEnable || [] });
+          }
+
+          // Prefill checks based on content types
+          if (hasContentTypePrefills) {
+            prefillChecks.mutate(
+              {
+                reviewId: reviewId,
+                prefills: contentTypePrefills,
+              },
+              {
+                onSuccess: () => {
+                  setSaving(false);
+                  navigate(`/granskning/${review.id}`);
+                },
+              },
+            );
+          }
+
           /*addedPrefills.forEach((prefill) => {
             prefillChecks.mutate({ reviewId: reviewId, prefill });
           });
@@ -175,38 +243,18 @@ export function ReviewForm({ reviewId }: Props) {
             .forEach((prefill) => {
               prefillChecks.mutate({ reviewId: reviewId, prefill });
             });*/
-          navigate(`/granskning/${review.id}`);
+
+          if (!hasTypesToRemove && !hasContentTypePrefills) {
+            setSaving(false);
+            navigate(`/granskning/${review.id}`);
+          }
+        },
+        onError: () => {
+          setSaving(false);
         },
       },
     );
   };
-
-  const contentCategoryQuestions = [
-    {
-      contentCategory: 'Bilder, ikoner & grafik',
-      question: 'Innehåller tjänsten bilder, ikoner eller grafik?',
-    },
-    {
-      contentCategory: 'Formulär & inmatningsfält',
-      question: 'Innehåller tjänsten formulär eller inmatningsfält?',
-    },
-    {
-      contentCategory: 'Mediaspelare Ljud',
-      question: 'Innehåller tjänsten ljud?',
-    },
-    {
-      contentCategory: 'Mediaspelare Video',
-      question: 'Innehåller tjänsten video eller filmer?',
-    },
-    {
-      contentCategory: 'Videosamtal',
-      question: 'Innehåller tjänsten röst- och videosamtal?',
-    },
-    {
-      contentCategory: 'Innehållsskapande',
-      question: 'Tillhandahåller tjänsten publiceringsverktyg för användaren?',
-    },
-  ];
 
   return (
     <div>
@@ -217,7 +265,7 @@ export function ReviewForm({ reviewId }: Props) {
         ></DigiLoaderSkeleton>
       )}
       {!loading && (!reviewId || review) && (
-        <form id="review-form" onSubmit={handleSubmit}>
+        <form id="review-form" onSubmit={handleSubmit} noValidate>
           {/* Disable option to choose between web and document for now 
           <DigiFormFieldset afForm="review-form" afLegend="Typ av granskningsobjekt" afName="typ">
             <DigiFormRadiogroup afName="type">
@@ -279,10 +327,20 @@ export function ReviewForm({ reviewId }: Props) {
           <div className="sm:flex justify-between">
             <div className="max-w-[24rem] my-8">
               <DigiFormInput
+                afId="reviewName"
                 afLabel="Namn på granskning"
                 afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
                 afValue={title}
-                onAfOnInput={(e) => setTitle(e.detail.target.value)}
+                onAfOnInput={(e) => {
+                  const value = e.detail.target.value;
+                  if (value.trim().length > 0) {
+                    setNameValidation(FormInputValidation.NEUTRAL);
+                  }
+                  setTitle(value);
+                }}
+                afRequired={true}
+                afValidationText="Ange ett namn för granskningen"
+                afValidation={nameValidation}
               />
             </div>
             <div className="sm:mt-6 mb-6">
@@ -311,8 +369,8 @@ export function ReviewForm({ reviewId }: Props) {
               {contentTypes &&
                 contentTypes.map((contentType) => {
                   const questionText =
-                    contentCategoryQuestions.find((q) => q.contentCategory === contentType)
-                      ?.question || contentType;
+                    contentTypeTexts.find((q) => q.contentType === contentType)?.question ||
+                    contentType;
                   return (
                     <div className="mb-4" key={`fieldset-${contentType}`}>
                       <DigiFormFieldset
@@ -388,10 +446,19 @@ export function ReviewForm({ reviewId }: Props) {
             >
               Avbryt
             </DigiButton>
-            <DigiButton afType="submit">Starta granskning</DigiButton>
+            <DigiButton afType="submit">
+              {review ? 'Ändra uppgifter' : 'Starta granskning'}
+            </DigiButton>
           </div>
-          {upsertReview.isError && <p>Fel vid sparande</p>}
-          {upsertReview.isSuccess && <p>Sparad!</p>}
+          {upsertReview.isError && (
+            <DigiNotificationAlert
+              afSize={NotificationAlertSize.LARGE}
+              afVariation={NotificationAlertVariation.DANGER}
+              afHeading="Fel vid sparande"
+            >
+              Det gick inte att spara granskningen. Försök igen senare.
+            </DigiNotificationAlert>
+          )}
 
           <DigiDialog
             afSize={DialogSize.MEDIUM}
@@ -426,6 +493,11 @@ export function ReviewForm({ reviewId }: Props) {
             </p>
           </DigiDialog>
         </form>
+      )}
+      {saving && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40">
+          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText={savingText} />
+        </div>
       )}
     </div>
   );

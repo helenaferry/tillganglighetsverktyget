@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 import {
   type Check,
-  type PrefillRequirementSetting,
+  type PrefillRequirement,
   type Review,
   type ReviewSummary,
   Status,
@@ -137,50 +137,51 @@ export const ReviewService = {
     if (error) throw error;
   },
 
-  async prefillChecks(reviewId: number, prefill: PrefillRequirementSetting): Promise<Check[]> {
+  async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
     const results: Check[] = [];
-    for (const prefillReq of prefill.prefillRequirements) {
-      const requirementId = prefillReq.id;
-      let status: Status;
-      switch (prefillReq.status) {
-        case 'PASS':
-          status = Status.PASS;
-          break;
-        case 'FAIL':
-          status = Status.FAIL;
-          break;
-        case 'IRRELEVANT':
-          status = Status.IRRELEVANT;
-          break;
-        default:
-          status = Status.NOT_ASSESSED;
-      }
-      const comment = prefillReq.comment || '';
+    for (const prefillReq of prefills) {
+      for (const requirementId of prefillReq.ids) {
+        let status: Status;
+        switch (prefillReq.status) {
+          case 'PASS':
+            status = Status.PASS;
+            break;
+          case 'FAIL':
+            status = Status.FAIL;
+            break;
+          case 'IRRELEVANT':
+            status = Status.IRRELEVANT;
+            break;
+          default:
+            status = Status.NOT_ASSESSED;
+        }
+        const comment = prefillReq.comment || '';
 
-      // Check if a check already exists
-      const { data: existing, error: findError } = await supabase
-        .from('checks')
-        .select('*')
-        .eq('review', Number(reviewId))
-        .eq('requirement', requirementId);
-      if (findError) throw findError;
-      if (existing && existing.length > 0) {
-        // Update existing check
-        const { data: updated, error: updateError } = await supabase
+        // Check if a check already exists
+        const { data: existing, error: findError } = await supabase
           .from('checks')
-          .update({ status, comment })
-          .eq('id', existing[0].id)
-          .select();
-        if (updateError) throw updateError;
-        if (updated && updated.length > 0) results.push(updated[0] as Check);
-      } else {
-        // Insert new check
-        const { data: inserted, error: insertError } = await supabase
-          .from('checks')
-          .insert({ review: Number(reviewId), requirement: requirementId, status, comment })
-          .select();
-        if (insertError) throw insertError;
-        if (inserted && inserted.length > 0) results.push(inserted[0] as Check);
+          .select('*')
+          .eq('review', Number(reviewId))
+          .eq('requirement', requirementId);
+        if (findError) throw findError;
+        if (existing && existing.length > 0) {
+          // Update existing check
+          const { data: updated, error: updateError } = await supabase
+            .from('checks')
+            .update({ status, comment })
+            .eq('id', existing[0].id)
+            .select();
+          if (updateError) throw updateError;
+          if (updated && updated.length > 0) results.push(updated[0] as Check);
+        } else {
+          // Insert new check
+          const { data: inserted, error: insertError } = await supabase
+            .from('checks')
+            .insert({ review: Number(reviewId), requirement: requirementId, status, comment })
+            .select();
+          if (insertError) throw insertError;
+          if (inserted && inserted.length > 0) results.push(inserted[0] as Check);
+        }
       }
     }
     return results;

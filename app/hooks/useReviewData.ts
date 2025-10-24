@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tan
 import { ReviewService } from '~/data/reviewService';
 import type {
   Check,
-  PrefillRequirementSetting,
+  PrefillRequirement,
   Review,
   ReviewSummary,
   UpsertCheckInput,
@@ -124,10 +124,9 @@ export function useEnableChecks() {
 // Prefill requirements
 export function usePrefillRequirements() {
   const queryClient = useQueryClient();
-
-  return useMutation<void, Error, { reviewId: number; prefill: PrefillRequirementSetting }>({
-    mutationFn: async ({ reviewId, prefill }) => {
-      await ReviewService.prefillChecks(reviewId, prefill);
+  return useMutation<void, Error, { reviewId: number; prefills: PrefillRequirement[] }>({
+    mutationFn: async ({ reviewId, prefills }) => {
+      await ReviewService.prefillChecks(reviewId, prefills);
     },
     onSuccess: (_, { reviewId }) => {
       queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
