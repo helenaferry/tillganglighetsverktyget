@@ -77,6 +77,7 @@ export function useUpsertCheck() {
     onSuccess: (_newCheck, input) => {
       queryClient.invalidateQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['checks', String(input.reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['review', String(input.reviewId)] });
     },
   });
@@ -89,7 +90,24 @@ export function useDeleteCheck() {
   return useMutation<boolean, Error, string>({
     mutationFn: (checkId) => ReviewService.deleteCheck(checkId),
     onSuccess: (_, checkId) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['checks', checkId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+// Delete multiple checks for a review
+export function useDeleteChecksForReview() {
+  const queryClient = useQueryClient();
+
+  return useMutation<boolean, Error, { reviewId: number; requirementIds: string[] }>({
+    mutationFn: ({ reviewId, requirementIds }) =>
+      ReviewService.deleteChecks(reviewId, requirementIds),
+    onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['review', String(reviewId)] });
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
   });
@@ -102,8 +120,10 @@ export function useDisableChecks() {
   return useMutation<Check[], Error, { reviewId: number; requirements: string[] }>({
     mutationFn: ({ reviewId, requirements }) => ReviewService.disableChecks(reviewId, requirements),
     onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
       queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
   });
 }
@@ -115,8 +135,10 @@ export function useEnableChecks() {
   return useMutation<void, Error, { reviewId: number; requirements: string[] }>({
     mutationFn: ({ reviewId, requirements }) => ReviewService.enableChecks(reviewId, requirements),
     onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
       queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
   });
 }
@@ -129,8 +151,10 @@ export function usePrefillRequirements() {
       await ReviewService.prefillChecks(reviewId, prefills);
     },
     onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
       queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
     },
   });
 }
@@ -148,8 +172,10 @@ export function useUpsertReview() {
     }) => ReviewService.upsertReview(input),
     onSuccess: (_newReview, input) => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['check'] });
       if (input.id) {
         queryClient.invalidateQueries({ queryKey: ['review', String(input.id)] });
+        queryClient.invalidateQueries({ queryKey: ['checks', input.id] });
       }
     },
   });
@@ -166,6 +192,7 @@ export function useDeleteReview() {
       await ReviewService.deleteReview(reviewId);
     },
     onSuccess: (_, reviewId) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['review', String(reviewId)] });
       queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });

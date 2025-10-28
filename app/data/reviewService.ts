@@ -13,10 +13,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
-    const { data: reviews, error: reviewError } = await supabase
-      .from('reviews')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data: reviews, error: reviewError } = await supabase.from('reviews').select('*');
     if (reviewError) throw reviewError;
 
     // Get all checks for all reviews
@@ -112,6 +109,19 @@ export const ReviewService = {
     return true;
   },
 
+  async deleteChecks(reviewId: number, requirementIds: string[]): Promise<boolean> {
+    const { error } = await supabase
+      .from('checks')
+      .delete()
+      .eq('review', Number(reviewId))
+      .in(
+        'requirement',
+        requirementIds.map((r) => r),
+      );
+    if (error) throw error;
+    return true;
+  },
+
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
     const inserts = requirements.map((requirement) => ({
       review: Number(reviewId),
@@ -125,6 +135,7 @@ export const ReviewService = {
   },
 
   async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
+    console.log('Enabling checks for reviewId:', reviewId, 'requirements:', requirements);
     const { error } = await supabase
       .from('checks')
       .delete()
@@ -138,7 +149,8 @@ export const ReviewService = {
   },
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
-    const results: Check[] = [];
+    // 1. Gather all requirement IDs and their intended status/comment
+    const toPrefill: Array<{ requirement: string; status: Status; comment: string }> = [];
     for (const prefillReq of prefills) {
       for (const requirementId of prefillReq.ids) {
         let status: Status;
@@ -155,36 +167,66 @@ export const ReviewService = {
           default:
             status = Status.NOT_ASSESSED;
         }
-        const comment = prefillReq.comment || '';
-
-        // Check if a check already exists
-        const { data: existing, error: findError } = await supabase
-          .from('checks')
-          .select('*')
-          .eq('review', Number(reviewId))
-          .eq('requirement', requirementId);
-        if (findError) throw findError;
-        if (existing && existing.length > 0) {
-          // Update existing check
-          const { data: updated, error: updateError } = await supabase
-            .from('checks')
-            .update({ status, comment })
-            .eq('id', existing[0].id)
-            .select();
-          if (updateError) throw updateError;
-          if (updated && updated.length > 0) results.push(updated[0] as Check);
-        } else {
-          // Insert new check
-          const { data: inserted, error: insertError } = await supabase
-            .from('checks')
-            .insert({ review: Number(reviewId), requirement: requirementId, status, comment })
-            .select();
-          if (insertError) throw insertError;
-          if (inserted && inserted.length > 0) results.push(inserted[0] as Check);
-        }
+        toPrefill.push({ requirement: requirementId, status, comment: prefillReq.comment || '' });
       }
     }
-    return results;
+
+    // 2. Fetch all existing checks for this review in one go
+    const { data: existingChecks, error: fetchError } = await supabase
+      .from('checks')
+      .select('id, requirement')
+      .eq('review', Number(reviewId));
+    if (fetchError) throw fetchError;
+    const existingMap = new Map<string, number>(); // requirementId -> checkId
+    for (const check of existingChecks ?? []) {
+      existingMap.set(check.requirement, check.id);
+    }
+
+    // 3. Split into updates and inserts
+    const updates: Array<{ id: number; status: Status; comment: string }> = [];
+    const inserts: Array<{ review: number; requirement: string; status: Status; comment: string }> =
+      [];
+    for (const item of toPrefill) {
+      const checkId = existingMap.get(item.requirement);
+      if (checkId) {
+        updates.push({ id: checkId, status: item.status, comment: item.comment });
+      } else {
+        inserts.push({
+          review: Number(reviewId),
+          requirement: item.requirement,
+          status: item.status,
+          comment: item.comment,
+        });
+      }
+    }
+
+    // 4. Bulk insert new checks
+    let inserted: Check[] = [];
+    if (inserts.length > 0) {
+      const { data, error } = await supabase.from('checks').insert(inserts).select();
+      if (error) throw error;
+      inserted = data as Check[];
+    }
+
+    // 5. Parallelize updates (Supabase doesn't support bulk update, so update one by one)
+    const updated: Check[] = [];
+    if (updates.length > 0) {
+      const updatePromises = updates.map((u) =>
+        supabase
+          .from('checks')
+          .update({ status: u.status, comment: u.comment })
+          .eq('id', u.id)
+          .select(),
+      );
+      const updateResults = await Promise.all(updatePromises);
+      for (const res of updateResults) {
+        if (res.error) throw res.error;
+        if (res.data && res.data.length > 0) updated.push(res.data[0] as Check);
+      }
+    }
+
+    // 6. Return all affected checks
+    return [...inserted, ...updated];
   },
 
   async upsertReview(input: {

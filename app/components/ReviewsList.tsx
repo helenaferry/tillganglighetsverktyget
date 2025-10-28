@@ -56,7 +56,11 @@ export function ReviewsList() {
   };
 
   const reviews = useMemo(() => {
-    return reviewsAll?.filter((review) => review.objectType !== ObjectType.DOCUMENT);
+    return reviewsAll
+      ?.filter((review) => review.objectType !== ObjectType.DOCUMENT)
+      .sort((a, b) => {
+        return new Date(b.latestUpdate).getTime() - new Date(a.latestUpdate).getTime();
+      });
   }, [reviewsAll]);
 
   const filteredReviews = useMemo(() => {

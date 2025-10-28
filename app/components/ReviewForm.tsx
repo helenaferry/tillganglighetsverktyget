@@ -28,8 +28,8 @@ import { ObjectType, type PrefillRequirement, type PrefillRequirementSetting } f
 import contentTypeTexts from '~/helpers/contentTypeTexts';
 import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
 import {
+  useDeleteChecksForReview,
   useDeleteReview,
-  useEnableChecks,
   usePrefillRequirements,
   useReviewById,
   useUpsertReview,
@@ -50,9 +50,9 @@ export function ReviewForm({ reviewId }: Props) {
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
   ) as PrefillRequirementSetting[];
 
-  const enableChecks = useEnableChecks();
   const upsertReview = useUpsertReview();
   const prefillChecks = usePrefillRequirements();
+  const deleteChecks = useDeleteChecksForReview();
   const deleteReview = useDeleteReview();
   const navigate = useNavigate();
 
@@ -64,7 +64,6 @@ export function ReviewForm({ reviewId }: Props) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
-  const [savingText, setSavingText] = useState<string>('Sparar information om granskningen');
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
   );
@@ -130,21 +129,22 @@ export function ReviewForm({ reviewId }: Props) {
   }, [selectedPrefills, prefillRequirements, requirements, objectType]);*/
   }
 
-  const automaticPrefills = useMemo(() => {
+  const automaticPrefillSettings = useMemo(() => {
     return prefillRequirements.filter(
       (prefill: PrefillRequirementSetting) => prefill.automatic === 'true',
     );
   }, [prefillRequirements]);
 
   const numberAutomaticPrefillRequirements = useMemo(() => {
-    return automaticPrefills.flatMap((p) => p.prefillRequirements).flatMap((p) => p.ids).length;
-  }, [automaticPrefills]);
+    return automaticPrefillSettings.flatMap((p) => p.prefillRequirements).flatMap((p) => p.ids)
+      .length;
+  }, [automaticPrefillSettings]);
 
   const toBeReviewedRequirements = useMemo(() => {
     const selectedPrefillIds = selectedPrefills.flatMap((p) =>
       p.prefillRequirements.flatMap((r) => r.ids),
     );
-    const autoPrefillIds = automaticPrefills
+    const autoPrefillIds = automaticPrefillSettings
       .flatMap((p) => p.prefillRequirements)
       .flatMap((r) => r.ids);
     return (
@@ -152,7 +152,7 @@ export function ReviewForm({ reviewId }: Props) {
         ?.filter((r) => !excludedContentTypes.includes(r.contentType))
         .filter((r) => !selectedPrefillIds.includes(r.id) && !autoPrefillIds.includes(r.id)) || []
     );
-  }, [requirements, excludedContentTypes, selectedPrefills, automaticPrefills]);
+  }, [requirements, excludedContentTypes, selectedPrefills, automaticPrefillSettings]);
 
   const activePrefills = useMemo(() => {
     // Use an object to ensure later entries overwrite earlier ones for the same id
@@ -173,7 +173,7 @@ export function ReviewForm({ reviewId }: Props) {
       });
     });
     // Third, find automatic prefills - these override both content type and user selected prefills
-    automaticPrefills.forEach((prefillSetting) => {
+    automaticPrefillSettings.forEach((prefillSetting) => {
       prefillSetting.prefillRequirements.forEach((prefill) => {
         prefill.ids.forEach((id) => {
           active[id] = { ids: [id], status: prefill.status, comment: prefill.comment };
@@ -181,7 +181,7 @@ export function ReviewForm({ reviewId }: Props) {
       });
     });
     return Object.values(active);
-  }, [contentTypePrefills, selectedPrefills, automaticPrefills]);
+  }, [contentTypePrefills, selectedPrefills, automaticPrefillSettings]);
 
   useEffect(() => {
     if (review) {
@@ -292,8 +292,6 @@ export function ReviewForm({ reviewId }: Props) {
           let removePrefillsSuccess = removePrefillsForRequirements.length === 0;
 
           if (activePrefills.length > 0) {
-            setSavingText('Förifyller krav automatiskt');
-
             prefillChecks.mutate(
               {
                 reviewId: reviewId,
@@ -309,10 +307,10 @@ export function ReviewForm({ reviewId }: Props) {
           }
 
           if (removePrefillsForRequirements.length > 0) {
-            enableChecks.mutate(
+            deleteChecks.mutate(
               {
                 reviewId: reviewId,
-                requirements: removePrefillsForRequirements,
+                requirementIds: removePrefillsForRequirements,
               },
               {
                 onSuccess: () => {
@@ -333,7 +331,6 @@ export function ReviewForm({ reviewId }: Props) {
   const runIfSuccess = (success: boolean, reviewId: number) => {
     if (success) {
       setSaving(false);
-      setSavingText('Sparar information om granskningen');
       navigate(`/granskning/${reviewId}`);
     }
   };
@@ -586,7 +583,7 @@ export function ReviewForm({ reviewId }: Props) {
       )}
       {saving && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40">
-          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText={savingText} />
+          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText="Sparar" />
         </div>
       )}
     </div>
