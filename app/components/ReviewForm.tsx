@@ -12,7 +12,6 @@ import {
 import {
   DigiButton,
   DigiDialog,
-  DigiFormCheckbox,
   DigiFormFieldset,
   DigiFormInput,
   DigiFormRadiobutton,
