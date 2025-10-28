@@ -1,5 +1,5 @@
-import { ButtonSize, ButtonVariation } from '@digi/arbetsformedlingen';
-import { DigiButton, DigiIconArrowRight, DigiTypography } from '@digi/arbetsformedlingen-react';
+import { ButtonSize, ButtonVariation } from '@designsystem-se/af';
+import { DigiButton, DigiIconArrowRight, DigiTypography } from '@designsystem-se/af-react';
 
 import { type Category } from '~/data/types';
 import { numberChecked } from '~/helpers';

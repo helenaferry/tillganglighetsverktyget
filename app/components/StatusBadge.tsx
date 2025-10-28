@@ -1,5 +1,5 @@
-import { BadgeStatusSize, BadgeStatusType, BadgeStatusVariation } from '@digi/arbetsformedlingen';
-import { DigiBadgeStatus } from '@digi/arbetsformedlingen-react';
+import { BadgeStatusSize, BadgeStatusType, BadgeStatusVariation } from '@designsystem-se/af';
+import { DigiBadgeStatus } from '@designsystem-se/af-react';
 
 import { Status, StatusText } from '~/data/types';
 
@@ -54,7 +54,7 @@ const getBadge = (status: Status) => {
     case Status.NOT_ASSESSED:
       return (
         <DigiBadgeStatus
-          afType={BadgeStatusType.PROMPT}
+          afType={BadgeStatusType.MISSING}
           afVariation={BadgeStatusVariation.SECONDARY}
           afText={getStatusText(Status.NOT_ASSESSED)}
           afSize={BadgeStatusSize.LARGE}

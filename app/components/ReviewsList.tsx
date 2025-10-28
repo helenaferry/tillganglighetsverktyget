@@ -2,14 +2,14 @@ import {
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
-} from '@digi/arbetsformedlingen';
+} from '@designsystem-se/af';
 import {
   DigiButton,
   DigiIconPen,
   DigiLoaderSkeleton,
   DigiTypography,
   DigiTypographyHeadingJumbo,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 

@@ -1,5 +1,5 @@
-import { ExpandableAccordionHeaderLevel } from '@digi/arbetsformedlingen';
-import { DigiExpandableAccordion } from '@digi/arbetsformedlingen-react';
+import { ExpandableAccordionHeaderLevel } from '@designsystem-se/af';
+import { DigiExpandableAccordion } from '@designsystem-se/af-react';
 import ReactMarkdown from 'react-markdown';
 
 import type { Requirement, RequirementAdditionsSetting } from '~/data/types';

@@ -8,7 +8,7 @@ import {
   LoaderSpinnerSize,
   NotificationAlertSize,
   NotificationAlertVariation,
-} from '@digi/arbetsformedlingen';
+} from '@designsystem-se/af';
 import {
   DigiButton,
   DigiDialog,
@@ -21,7 +21,7 @@ import {
   DigiLoaderSkeleton,
   DigiLoaderSpinner,
   DigiNotificationAlert,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 

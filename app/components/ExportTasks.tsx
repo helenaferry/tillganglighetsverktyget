@@ -1,12 +1,12 @@
-import { NotificationAlertSize, NotificationAlertVariation } from '@digi/arbetsformedlingen';
+import { NotificationAlertSize, NotificationAlertVariation } from '@designsystem-se/af';
 import {
   DigiButton,
   DigiFormCheckbox,
   DigiFormFieldset,
   DigiFormTextarea,
   DigiNotificationAlert,
-} from '@digi/arbetsformedlingen-react';
-import { DigiFormInput } from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
+import { DigiFormInput } from '@designsystem-se/af-react';
 import { useState } from 'react';
 
 import { type Check, type Requirement, type Review, Status } from '~/data/types';

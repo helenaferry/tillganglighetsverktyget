@@ -1,10 +1,10 @@
-import { FormTextareaVariation } from '@digi/arbetsformedlingen';
+import { FormTextareaVariation } from '@designsystem-se/af';
 import {
   DigiFormFieldset,
   DigiFormRadiobutton,
   DigiFormRadiogroup,
   DigiFormTextarea,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
 
 import { Status, StatusText, type UpsertCheckInput } from '~/data/types';

@@ -1,4 +1,4 @@
-import { DigiIconCaretDown, DigiIconCaretUp } from '@digi/arbetsformedlingen-react';
+import { DigiIconCaretDown, DigiIconCaretUp } from '@designsystem-se/af-react';
 
 type Props = {
   buttonText: string;

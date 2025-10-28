@@ -3,7 +3,7 @@ import {
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
-} from '@digi/arbetsformedlingen';
+} from '@designsystem-se/af';
 import {
   DigiButton,
   DigiFormFieldset,
@@ -17,7 +17,7 @@ import {
   DigiTable,
   DigiTypography,
   DigiTypographyHeadingJumbo,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import React from 'react';
 import { useMemo, useState } from 'react';
 

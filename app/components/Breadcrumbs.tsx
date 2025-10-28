@@ -1,4 +1,4 @@
-import { DigiNavigationBreadcrumbs } from '@digi/arbetsformedlingen-react';
+import { DigiNavigationBreadcrumbs } from '@designsystem-se/af-react';
 import { useNavigate } from 'react-router';
 
 type Props = {

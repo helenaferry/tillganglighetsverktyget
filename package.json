@@ -13,8 +13,8 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@digi/arbetsformedlingen": "^31.0.0",
-    "@digi/arbetsformedlingen-react": "^31.0.0",
+    "@designsystem-se/af": "^32.4.0",
+    "@designsystem-se/af-react": "^32.4.0",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
     "@supabase/supabase-js": "^2.56.0",

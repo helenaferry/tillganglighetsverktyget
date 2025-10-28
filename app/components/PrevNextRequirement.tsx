@@ -1,4 +1,4 @@
-import { DigiTypography } from '@digi/arbetsformedlingen-react';
+import { DigiTypography } from '@designsystem-se/af-react';
 
 import type { Requirement } from '~/data/types';
 

@@ -3,7 +3,7 @@ import {
   FormInputSearchVariation,
   FormInputType,
   TableSize,
-} from '@digi/arbetsformedlingen';
+} from '@designsystem-se/af';
 import {
   DigiContextMenu,
   DigiFormFilter,
@@ -11,7 +11,7 @@ import {
   DigiLinkInternal,
   DigiNavigationPagination,
   DigiTable,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import { type ReactNode, useMemo, useState } from 'react';
 
 interface FilterProps {

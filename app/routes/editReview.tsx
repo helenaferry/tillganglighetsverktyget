@@ -1,8 +1,5 @@
-import {
-  TypographyHeadingJumboLevel,
-  TypographyHeadingJumboVariation,
-} from '@digi/arbetsformedlingen';
-import { DigiTypography, DigiTypographyHeadingJumbo } from '@digi/arbetsformedlingen-react';
+import { TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from '@designsystem-se/af';
+import { DigiTypography, DigiTypographyHeadingJumbo } from '@designsystem-se/af-react';
 import { useParams } from 'react-router-dom';
 
 import Breadcrumbs from '~/components/Breadcrumbs';

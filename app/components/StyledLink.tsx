@@ -2,8 +2,8 @@ import {
   type DigiLinkButtonCustomEvent,
   type DigiLinkCustomEvent,
   LinkButtonSize,
-} from '@digi/arbetsformedlingen';
-import { DigiLink, DigiLinkButton } from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af';
+import { DigiLink, DigiLinkButton } from '@designsystem-se/af-react';
 import { useNavigate } from 'react-router';
 
 type Props = {

@@ -5,7 +5,7 @@ export const links: LinksFunction = () => [
 ];
 import './app.css';
 
-import { LogoColor, LogoVariation } from '@digi/arbetsformedlingen';
+import { LogoColor, LogoVariation } from '@designsystem-se/af';
 import {
   DigiFooter,
   DigiHeader,
@@ -13,7 +13,7 @@ import {
   DigiHeaderNavigationItem,
   DigiLogo,
   DigiTypography,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   isRouteErrorResponse,

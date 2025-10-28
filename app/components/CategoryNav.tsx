@@ -1,4 +1,4 @@
-import { ButtonSize, ButtonVariation } from '@digi/arbetsformedlingen';
+import { ButtonSize, ButtonVariation } from '@designsystem-se/af';
 import {
   DigiButton,
   DigiIconCheck,
@@ -6,7 +6,7 @@ import {
   DigiIconPlus,
   DigiIconX,
   DigiTypography,
-} from '@digi/arbetsformedlingen-react';
+} from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
