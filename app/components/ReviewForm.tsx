@@ -3,6 +3,7 @@ import {
   ButtonVariation,
   DialogSize,
   FormInputValidation,
+  FormValidationMessageVariation,
   LoaderSkeletonVariation,
   LoaderSpinnerSize,
   NotificationAlertSize,
@@ -16,6 +17,7 @@ import {
   DigiFormInput,
   DigiFormRadiobutton,
   DigiFormRadiogroup,
+  DigiFormValidationMessage,
   DigiIconTrash,
   DigiLoaderSkeleton,
   DigiLoaderSpinner,
@@ -63,6 +65,8 @@ export function ReviewForm({ reviewId }: Props) {
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
+  const [showRemovePrefillConfirmation, setShowRemovePrefillConfirmation] =
+    useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
@@ -105,29 +109,6 @@ export function ReviewForm({ reviewId }: Props) {
       })
       .filter((setting) => setting.prefillRequirements.length > 0);
   }, [objectType, requirements, allPrefillRequirements]);
-  {
-    /*
-  const selectedPrefillRequirements = useMemo(() => {
-    const selectedIds = selectedPrefills.flatMap((p) =>
-      p.prefillRequirements.flatMap((r) => r.ids),
-    );
-    return prefillRequirements
-      .map((setting) => {
-        const filteredPrefills = setting.prefillRequirements.filter((prefill) => {
-          const req = requirements.find(
-            (r) =>
-              prefill.ids.some((id) => selectedIds.includes(id)) && r.objectType === objectType,
-          );
-          return req;
-        });
-        return {
-          ...setting,
-          prefillRequirements: filteredPrefills,
-        };
-      })
-      .filter((setting) => setting.prefillRequirements.length > 0);
-  }, [selectedPrefills, prefillRequirements, requirements, objectType]);*/
-  }
 
   const automaticPrefillSettings = useMemo(() => {
     return prefillRequirements.filter(
@@ -440,9 +421,8 @@ export function ReviewForm({ reviewId }: Props) {
             <div>
               <h2>Vad innehåller din tjänst?</h2>
               <p>
-                Svara på några frågor om vad din tjänst innehåller. Dina svar hjälper dig att
-                granska relevanta krav. Du kan ändå se kraven och ändra bedömningen vid behov
-                senare.
+                Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då
+                som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.
               </p>
 
               {review && (
@@ -491,29 +471,58 @@ export function ReviewForm({ reviewId }: Props) {
             </div>
           )}
 
-          {prefillRequirements.find(
-            (prefill: PrefillRequirementSetting) => prefill.automatic === 'false',
-          ) && (
-            <DigiFormFieldset afForm="review-form" afLegend="Andra förutsättningar" afName="other">
-              {prefillRequirements
-                .filter((prefill: PrefillRequirementSetting) => prefill.automatic === 'false')
-                .map((prefill: PrefillRequirementSetting) => (
-                  <DigiFormCheckbox
+          {prefillRequirements
+            .filter((prefill: PrefillRequirementSetting) => prefill.automatic === 'false')
+            .map((prefill: PrefillRequirementSetting) => (
+              <div key={prefill.id}>
+                {prefill.heading && <h2>{prefill.heading}</h2>}
+                {prefill.description && <p>{prefill.description}</p>}
+                <DigiFormFieldset
+                  afForm="review-form"
+                  afLegend={prefill.activateText || ''}
+                  afName={`fieldset-${prefill.id}`}
+                >
+                  <DigiFormRadiogroup
+                    afName={`radiogroup-${prefill.id}`}
                     key={prefill.id}
-                    afValue="digi"
-                    checked={selectedPrefills.some((p) => p.id === prefill.id)}
-                    onAfOnChange={(e) => {
-                      if (e.detail.target.checked) {
+                    onAfOnGroupChange={(e) => {
+                      const value = (e.target as HTMLInputElement)?.value;
+                      if (value === 'true') {
+                        setShowRemovePrefillConfirmation(false);
                         setSelectedPrefills([...selectedPrefills, prefill]);
                       } else {
+                        if (review) {
+                          setShowRemovePrefillConfirmation(true);
+                        }
                         setSelectedPrefills(selectedPrefills.filter((p) => p.id !== prefill.id));
                       }
                     }}
-                    afLabel={prefill.activateText}
-                  ></DigiFormCheckbox>
-                ))}
-            </DigiFormFieldset>
-          )}
+                  >
+                    <DigiFormRadiobutton
+                      afLabel="Ja"
+                      afValue="true"
+                      afChecked={selectedPrefills.some((p) => p.id === prefill.id)}
+                    ></DigiFormRadiobutton>
+                    <DigiFormRadiobutton
+                      afLabel="Nej"
+                      afValue="false"
+                      afChecked={!selectedPrefills.some((p) => p.id === prefill.id)}
+                      afAriaDescribedby="prefill-warning-message"
+                    ></DigiFormRadiobutton>
+                  </DigiFormRadiogroup>
+                  <div role="alert" id="prefill-warning-message">
+                    {showRemovePrefillConfirmation && (
+                      <DigiFormValidationMessage
+                        afVariation={FormValidationMessageVariation.WARNING}
+                      >
+                        Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer
+                        status för alla krav relaterade till detta val att nollställas.
+                      </DigiFormValidationMessage>
+                    )}
+                  </div>
+                </DigiFormFieldset>
+              </div>
+            ))}
 
           <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4" role="status">
             <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}

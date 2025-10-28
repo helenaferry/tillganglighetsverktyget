@@ -72,6 +72,8 @@ export type PrefillRequirement = {
 export type PrefillRequirementSetting = {
   id: string;
   automatic: string;
+  heading?: string;
+  description?: string;
   activateText?: string;
   prefillRequirements: PrefillRequirement[];
 };
