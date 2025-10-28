@@ -2,6 +2,7 @@ import {
   type DigiLinkButtonCustomEvent,
   type DigiLinkCustomEvent,
   LinkButtonSize,
+  LinkButtonVariation,
 } from '@designsystem-se/af';
 import { DigiLink, DigiLinkButton } from '@designsystem-se/af-react';
 import { useNavigate } from 'react-router';
@@ -10,7 +11,12 @@ type Props = {
   to: string;
   text: string;
   ariaLabel?: string;
-  styleVariant?: 'link-button' | 'primary-button' | 'secondary-button' | 'link';
+  styleVariant?:
+    | 'link-button'
+    | 'link-button-secondary'
+    | 'primary-button'
+    | 'secondary-button'
+    | 'link';
   onClick?: (event: CustomEvent) => void;
 };
 
@@ -36,12 +42,18 @@ export function StyledLink({ to, text, ariaLabel, styleVariant = 'link', onClick
 
   switch (styleVariant) {
     case 'link-button':
+    case 'link-button-secondary':
       return (
         <DigiLinkButton
           afHref={to}
           afOverrideLink={true}
           onAfOnClick={handleClick}
           afSize={LinkButtonSize.MEDIUMLARGE}
+          afVariation={
+            styleVariant === 'link-button'
+              ? LinkButtonVariation.PRIMARY
+              : LinkButtonVariation.SECONDARY
+          }
         >
           {text}
         </DigiLinkButton>

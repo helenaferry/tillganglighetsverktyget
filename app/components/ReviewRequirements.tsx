@@ -184,13 +184,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 <div className="flex flex-col md:flex-row gap-4 my-4">
                   <StyledLink
                     to={`/granskning/${review.id}/export/redogorelse`}
-                    text="Sammanställ brister"
-                    styleVariant="link-button"
+                    text="Sammanställ underkända krav"
+                    styleVariant="link-button-secondary"
                   />
                   <StyledLink
                     to={`/granskning/${review.id}/export/uppgifter`}
                     text="Exportera uppgifter (.csv)"
-                    styleVariant="link-button"
+                    styleVariant="link-button-secondary"
                   />
                 </div>
               </div>
