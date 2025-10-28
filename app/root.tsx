@@ -32,6 +32,8 @@ import SkipLink from './components/SkipLink';
 
 const queryClient = new QueryClient();
 
+const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   return (
@@ -45,12 +47,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="grid">
         <ClientOnly>
           <SkipLink />
-          <DigiHeader afSystemName="Granska tillgänglighet">
-            <Link
-              slot="header-logo"
-              aria-label="Startsida för Granska tillgänglighet"
-              to="/"
-            ></Link>
+          <DigiHeader afSystemName={applicationTitle}>
+            <Link slot="header-logo" aria-label={`Startsida för ${applicationTitle}`} to="/"></Link>
             <div slot="header-navigation">
               <DigiHeaderNavigation
                 afCloseButtonText="Stäng"
