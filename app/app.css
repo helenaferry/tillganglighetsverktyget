@@ -98,7 +98,7 @@ svg {
 }
 
 .digi-link-button__text {
-  @apply !whitespace-normal sm:!whitespace-nowrap;
+  @apply !whitespace-normal text-[0.9rem] sm:text-[1rem] sm:!whitespace-nowrap;
 }
 
 #review-form .sc-digi-form-radiogroup {
@@ -106,4 +106,8 @@ svg {
   label {
     @apply mr-8;
   }
+}
+
+.sc-digi-link-button-s:hover > a {
+  @apply !underline;
 }

@@ -33,6 +33,15 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
               ariaLabel={`Nästa ogranskade krav: ${nextUnhandled.name}`}
             />
           )}
+
+          {!nextUnhandled && !previousUnhandled && (
+            <StyledLink
+              to={`/granskning/${reviewId}/export/redogorelse`}
+              text="Sammanställ underkända krav"
+              styleVariant="link-button-secondary"
+              hideIcon
+            />
+          )}
         </div>
       </DigiTypography>
     </div>

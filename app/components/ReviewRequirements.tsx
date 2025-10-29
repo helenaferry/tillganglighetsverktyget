@@ -1,10 +1,13 @@
 import {
   LoaderSkeletonVariation,
+  NotificationAlertSize,
+  NotificationAlertVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@designsystem-se/af';
 import {
   DigiLoaderSkeleton,
+  DigiNotificationAlert,
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
@@ -20,6 +23,8 @@ import Breadcrumbs from './Breadcrumbs';
 import { CardsOrTable } from './CardsOrTable';
 import { SortButton } from './SortButton';
 import StatusBadge from './StatusBadge';
+import { numberChecked, percentageChecked, numberPerStatus } from '~/helpers';
+import ProgressBar from './ProgressBar';
 
 interface Props {
   reviewId: string;
@@ -67,6 +72,23 @@ export default function ReviewRequirements({ reviewId }: Props) {
     });
   }, [requirements, checks]);
 
+  const firstUncheckedId = useMemo(() => {
+    const categoriesInOrder = new Set<string>();
+    for (const req of requirements) {
+      categoriesInOrder.add(req.category);
+    }
+    for (const category of categoriesInOrder) {
+      const reqInCategory = requirementsWithChecks.find(
+        (req) =>
+          req.category === category && (!req.check || req.check.status === Status.NOT_ASSESSED),
+      );
+      if (reqInCategory) {
+        return reqInCategory.id;
+      }
+    }
+    return null;
+  }, [requirements, checks]);
+
   enum SortBy {
     REQUIREMENT = 0,
     CATEGORY = 1,
@@ -78,19 +100,6 @@ export default function ReviewRequirements({ reviewId }: Props) {
   const [filterFreeText, setFilterFreeText] = useState<string>('');
   const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
   const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('descending');
-
-  /*const filteredRequirements = requirementsWithChecks?.filter((req) => {
-    const filters = [
-      filterCategories.length === 0 ? true : filterCategories.includes(req.category),
-      filterStatus.length === 0
-        ? true
-        : filterStatus.includes(req.check?.status ?? Status.NOT_ASSESSED),
-      filterFreeText && filterFreeText.length === 0
-        ? true
-        : req.name.toLowerCase().includes(filterFreeText.toLowerCase()),
-    ];
-    return filters.every(Boolean);
-  });*/
 
   const filteredRequirements = useMemo(() => {
     let result = requirementsWithChecks || [];
@@ -180,19 +189,6 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   afVariation={TypographyHeadingJumboVariation.PRIMARY}
                 ></DigiTypographyHeadingJumbo>
                 <strong>Granskning startades {formatDate(review?.created_at)}</strong>
-
-                <div className="flex flex-col md:flex-row gap-4 my-4">
-                  <StyledLink
-                    to={`/granskning/${review.id}/export/redogorelse`}
-                    text="Sammanställ underkända krav"
-                    styleVariant="link-button-secondary"
-                  />
-                  <StyledLink
-                    to={`/granskning/${review.id}/export/uppgifter`}
-                    text="Exportera uppgifter (.csv)"
-                    styleVariant="link-button-secondary"
-                  />
-                </div>
               </div>
             </div>
           )}
@@ -200,6 +196,68 @@ export default function ReviewRequirements({ reviewId }: Props) {
       </div>
       {review && (
         <div className="content-container content-container--largest">
+          {percentageChecked(requirementsWithChecks) === 100 && (
+            <div className="mb-5" role="alert">
+              <DigiNotificationAlert
+                afSize={NotificationAlertSize.LARGE}
+                afVariation={NotificationAlertVariation.SUCCESS}
+                afHeading="Hurra, granskningen är klar!"
+              >
+                <div className="mt-6 mb-4">
+                  <StyledLink
+                    to={`/granskning/${review.id}/export/redogorelse`}
+                    text="Sammanställ underkända krav"
+                    styleVariant="link-button-secondary"
+                    hideIcon
+                  />
+                </div>
+              </DigiNotificationAlert>
+            </div>
+          )}
+          <div className="content-container content-container--white content-container--largest content-container--nomargin mb-5">
+            <div className="flex flex-col sm:flex-row mb-6">
+              <div className="flex flex-col items-center basis-1/4">
+                <p className="text-2xl">
+                  {numberPerStatus(requirementsWithChecks).notAssessedCount}
+                </p>
+                <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
+              </div>
+              <div className="flex flex-col items-center basis-1/4">
+                <p className="text-2xl">{numberPerStatus(requirementsWithChecks).passCount}</p>
+                <StatusBadge status={Status.PASS} plural noMinWidth />
+              </div>
+              <div className="flex flex-col items-center basis-1/4">
+                <p className="text-2xl">{numberPerStatus(requirementsWithChecks).failCount}</p>
+                <StatusBadge status={Status.FAIL} plural noMinWidth />
+              </div>
+              <div className="flex flex-col items-center basis-1/4">
+                <p className="text-2xl">
+                  {numberPerStatus(requirementsWithChecks).irrelevantCount}
+                </p>
+                <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
+              </div>
+            </div>
+            <ProgressBar
+              progress={percentageChecked(requirementsWithChecks)}
+              text={`${numberChecked(requirementsWithChecks)} av ${requirementsWithChecks.length} krav granskade`}
+            />
+            <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
+              {firstUncheckedId && (
+                <StyledLink
+                  to={`/granskning/${review.id}/${firstUncheckedId}`}
+                  text="Granska tillgänglighet"
+                  styleVariant="link-button"
+                  hideIcon
+                />
+              )}
+              <StyledLink
+                to={`/granskning/${review.id}/export/redogorelse`}
+                text="Sammanställ underkända krav"
+                styleVariant="link-button-secondary"
+                hideIcon
+              />
+            </div>
+          </div>
           <div className="content-container content-container--white content-container--largest min-h-[40rem]">
             <div>
               {review && (

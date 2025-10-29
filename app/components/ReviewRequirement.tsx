@@ -1,10 +1,13 @@
 import {
   LoaderSkeletonVariation,
+  NotificationAlertSize,
+  NotificationAlertVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@designsystem-se/af';
 import {
   DigiLoaderSkeleton,
+  DigiNotificationAlert,
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
@@ -15,7 +18,7 @@ import CategoryNav from '~/components/CategoryNav';
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
 import { formatDate, formatPercentage } from '~/formattingHelpers';
-import { numberChecked } from '~/helpers';
+import { numberChecked, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useCheck, useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
@@ -275,6 +278,24 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
           <div className="content-container content-container--largest">
             {requirement ? (
               <div>
+                {percentageChecked(requirementsWithChecks) === 100 && (
+                  <div className="mb-5" role="alert">
+                    <DigiNotificationAlert
+                      afSize={NotificationAlertSize.LARGE}
+                      afVariation={NotificationAlertVariation.SUCCESS}
+                      afHeading="Hurra, granskningen är klar!"
+                    >
+                      <div className="mt-6 mb-4">
+                        <StyledLink
+                          to={`/granskning/${reviewId}/export/redogorelse`}
+                          text="Sammanställ underkända krav"
+                          styleVariant="link-button-secondary"
+                          hideIcon
+                        />
+                      </div>
+                    </DigiNotificationAlert>
+                  </div>
+                )}
                 <CategoryOverview
                   category={
                     categoriesWithRequirements.find(

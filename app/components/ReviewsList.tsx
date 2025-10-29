@@ -59,7 +59,7 @@ export function ReviewsList() {
     return reviewsAll
       ?.filter((review) => review.objectType !== ObjectType.DOCUMENT)
       .sort((a, b) => {
-        return new Date(b.latestUpdate).getTime() - new Date(a.latestUpdate).getTime();
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       });
   }, [reviewsAll]);
 
@@ -80,19 +80,9 @@ export function ReviewsList() {
       } else if (sortBy === SortBy.UPDATED && sortDirection === 'descending') {
         return new Date(b.latestUpdate).getTime() - new Date(a.latestUpdate).getTime();
       } else if (sortBy === SortBy.REVIEWED && sortDirection === 'ascending') {
-        return (
-          a.passCount +
-          a.failCount +
-          a.irrelevantCount -
-          (b.passCount + b.failCount + b.irrelevantCount)
-        );
+        return a.reviewedCount - b.reviewedCount;
       } else if (sortBy === SortBy.REVIEWED && sortDirection === 'descending') {
-        return (
-          b.passCount +
-          b.failCount +
-          b.irrelevantCount -
-          (a.passCount + a.failCount + a.irrelevantCount)
-        );
+        return b.reviewedCount - a.reviewedCount;
       } else if (sortBy === SortBy.REVIEW && sortDirection === 'ascending') {
         return a.title && b.title ? a.title.localeCompare(b.title) : 0;
       } else if (sortBy === SortBy.REVIEW && sortDirection === 'descending') {
@@ -195,7 +185,7 @@ export function ReviewsList() {
                       {formatDate(review.latestUpdate)}
                     </p>,
                     <p className="whitespace-nowrap" key={`status-${review.id}`}>
-                      {`${review.passCount + review.failCount + review.irrelevantCount} / ${requirementsCount}`}
+                      {`${review.reviewedCount} / ${requirementsCount}`}
                     </p>,
                     <DigiButton
                       afType="button"

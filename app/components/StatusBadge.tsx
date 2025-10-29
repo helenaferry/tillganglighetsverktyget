@@ -1,35 +1,37 @@
 import { BadgeStatusSize, BadgeStatusType, BadgeStatusVariation } from '@designsystem-se/af';
 import { DigiBadgeStatus } from '@designsystem-se/af-react';
 
-import { Status, StatusText } from '~/data/types';
+import { Status, StatusText, StatusTextPlural } from '~/data/types';
 
 type Props = {
   status?: number | undefined | null;
+  plural?: boolean;
+  noMinWidth?: boolean;
 };
 
-const getStatusText = (status: Status) => {
+const getStatusText = (status: Status, plural?: boolean) => {
   switch (status) {
     case Status.FAIL:
-      return StatusText.FAIL;
+      return plural ? StatusTextPlural.FAIL : StatusText.FAIL;
     case Status.IRRELEVANT:
-      return StatusText.IRRELEVANT;
+      return plural ? StatusTextPlural.IRRELEVANT : StatusText.IRRELEVANT;
     case Status.PASS:
-      return StatusText.PASS;
+      return plural ? StatusTextPlural.PASS : StatusText.PASS;
     case Status.NOT_ASSESSED:
-      return StatusText.NOT_ASSESSED;
+      return plural ? StatusTextPlural.NOT_ASSESSED : StatusText.NOT_ASSESSED;
     default:
       return '';
   }
 };
 
-const getBadge = (status: Status) => {
+const getBadge = (status: Status, plural?: boolean) => {
   switch (status) {
     case Status.FAIL:
       return (
         <DigiBadgeStatus
           afType={BadgeStatusType.DENIED}
           afVariation={BadgeStatusVariation.SECONDARY}
-          afText={getStatusText(Status.FAIL)}
+          afText={getStatusText(Status.FAIL, plural)}
           afSize={BadgeStatusSize.LARGE}
         />
       );
@@ -38,7 +40,7 @@ const getBadge = (status: Status) => {
         <DigiBadgeStatus
           afType={BadgeStatusType.NEUTRAL}
           afVariation={BadgeStatusVariation.SECONDARY}
-          afText={getStatusText(Status.IRRELEVANT)}
+          afText={getStatusText(Status.IRRELEVANT, plural)}
           afSize={BadgeStatusSize.LARGE}
         />
       );
@@ -47,7 +49,7 @@ const getBadge = (status: Status) => {
         <DigiBadgeStatus
           afType={BadgeStatusType.APPROVED}
           afVariation={BadgeStatusVariation.SECONDARY}
-          afText={getStatusText(Status.PASS)}
+          afText={getStatusText(Status.PASS, plural)}
           afSize={BadgeStatusSize.LARGE}
         />
       );
@@ -56,14 +58,14 @@ const getBadge = (status: Status) => {
         <DigiBadgeStatus
           afType={BadgeStatusType.MISSING}
           afVariation={BadgeStatusVariation.SECONDARY}
-          afText={getStatusText(Status.NOT_ASSESSED)}
+          afText={getStatusText(Status.NOT_ASSESSED, plural)}
           afSize={BadgeStatusSize.LARGE}
         />
       );
   }
 };
 
-export default function StatusBadge({ status }: Props) {
+export default function StatusBadge({ status, plural, noMinWidth }: Props) {
   const enumStatus = typeof status === 'number' ? (status as Status) : Status.NOT_ASSESSED;
-  return <div className="min-w-[6rem]">{getBadge(enumStatus)}</div>;
+  return <div className={noMinWidth ? '' : 'min-w-[6rem]'}>{getBadge(enumStatus, plural)}</div>;
 }

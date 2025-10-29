@@ -16,31 +16,37 @@ export const ReviewService = {
     const { data: reviews, error: reviewError } = await supabase.from('reviews').select('*');
     if (reviewError) throw reviewError;
 
-    // Get all checks for all reviews
-    const { data: checks, error: checksError } = await supabase
-      .from('checks')
-      .select('review, status, updated_at');
-    if (checksError) throw checksError;
+    const summaries = await Promise.all(
+      (reviews as ReviewSummary[]).map(async (review) => {
+        const reviewChecks = await supabase
+          .from('checks')
+          .select('*')
+          .eq('review', review.id)
+          .then(({ data, error }) => {
+            if (error) throw error;
+            return data as Check[];
+          });
+        const times = reviewChecks
+          .map((c: Check) =>
+            c.updated_at && !isNaN(new Date(c.updated_at).getTime())
+              ? new Date(c.updated_at).getTime()
+              : null,
+          )
+          .filter((t: number | null) => t !== null);
+        const latestUpdate =
+          times.length > 0 ? new Date(Math.max(...times)).toISOString() : review.created_at;
 
-    return (reviews as ReviewSummary[]).map((review) => {
-      const reviewChecks = (checks as Check[]).filter((c: Check) => c.review === review.id);
-      const times = reviewChecks
-        .map((c: Check) =>
-          c.updated_at && !isNaN(new Date(c.updated_at).getTime())
-            ? new Date(c.updated_at).getTime()
-            : null,
-        )
-        .filter((t: number | null) => t !== null);
-      const latestUpdate =
-        times.length > 0 ? new Date(Math.max(...times)).toISOString() : review.created_at;
-      return {
-        ...review,
-        latestUpdate,
-        passCount: reviewChecks.filter((c: Check) => c.status === Status.PASS).length,
-        failCount: reviewChecks.filter((c: Check) => c.status === Status.FAIL).length,
-        irrelevantCount: reviewChecks.filter((c: Check) => c.status === Status.IRRELEVANT).length,
-      };
-    });
+        return {
+          ...review,
+          latestUpdate,
+          reviewedCount: reviewChecks.filter((c: Check) => c.status !== Status.NOT_ASSESSED).length,
+          passCount: reviewChecks.filter((c: Check) => c.status === Status.PASS).length,
+          failCount: reviewChecks.filter((c: Check) => c.status === Status.FAIL).length,
+          irrelevantCount: reviewChecks.filter((c: Check) => c.status === Status.IRRELEVANT).length,
+        };
+      }),
+    );
+    return summaries;
   },
 
   async getReviewById(reviewId: string): Promise<Review> {

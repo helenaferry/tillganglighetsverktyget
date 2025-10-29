@@ -427,9 +427,9 @@ export function ReviewForm({ reviewId }: Props) {
               {review && (
                 <p className="mt-4">
                   <strong>Obs!</strong> Om du ändrar tidigare gjorda val för en påbörjad granskning,
-                  var medveten om att det kan påverka krav som redan har granskats. Alla krav med
-                  irrelevant innehållstyp kommer att markeras som irrelevanta oavsett nuvarande
-                  status.
+                  var medveten om att det kan påverka krav som redan har granskats. Alla krav du
+                  markerar med irrelevant innehållstyp kommer att ändras till irrelevanta oavsett
+                  nuvarande status.
                 </p>
               )}
               {contentTypes &&

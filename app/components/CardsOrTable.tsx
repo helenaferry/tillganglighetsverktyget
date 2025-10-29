@@ -103,6 +103,7 @@ export function CardsOrTable({
                       afVariation={FormInputSearchVariation.MEDIUM}
                       afType={FormInputType.SEARCH}
                       afValue={searchTerm}
+                      afButtonText="Sök"
                       onAfOnSubmitSearch={(e) => {
                         setSearchTerm(e.detail);
                         filter.onChange(e);

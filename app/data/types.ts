@@ -37,6 +37,13 @@ export enum StatusText {
   NOT_ASSESSED = 'Ej granskat',
 }
 
+export enum StatusTextPlural {
+  FAIL = 'Underkända',
+  PASS = 'Godkända',
+  IRRELEVANT = 'Irrelevanta',
+  NOT_ASSESSED = 'Ej granskade',
+}
+
 // Database types
 import type { Database } from '~/data/supabase-types';
 
@@ -45,6 +52,7 @@ export type Check = Database['public']['Tables']['checks']['Row'];
 
 export type ReviewSummary = Review & {
   latestUpdate: string;
+  reviewedCount: number;
   passCount: number;
   failCount: number;
   irrelevantCount: number;

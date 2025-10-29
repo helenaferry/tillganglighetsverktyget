@@ -3,6 +3,7 @@ import { DigiButton, DigiIconArrowRight, DigiTypography } from '@designsystem-se
 
 import { type Category } from '~/data/types';
 import { numberChecked } from '~/helpers';
+import ProgressBar from './ProgressBar';
 
 type Props = {
   category?: Category;
@@ -32,17 +33,13 @@ export default function CategoryOverview({ category, onToggleCategoryNav }: Prop
               <DigiIconArrowRight slot="icon-secondary" />
             </DigiButton>
           </div>
+
           <div className="pt-14 sm:pt-0">
             <h2>{category?.category}</h2>
-            <strong>
-              {checkedCount} av {totalCount} krav granskade i denna kategori
-            </strong>
-            <div className="relative h-[1rem] w-full mt-2 bg-grayscale-200 border-stratos-500 border-r-2">
-              <div
-                className="absolute top-0 left-0 h-[1rem] bg-stratos-500"
-                style={{ width: `${percentageChecked}%` }}
-              ></div>
-            </div>
+            <ProgressBar
+              progress={percentageChecked}
+              text={`${checkedCount} av ${totalCount} krav granskade i denna kategori`}
+            />
           </div>
         </DigiTypography>
       </div>

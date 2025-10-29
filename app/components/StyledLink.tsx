@@ -17,10 +17,18 @@ type Props = {
     | 'primary-button'
     | 'secondary-button'
     | 'link';
+  hideIcon?: boolean;
   onClick?: (event: CustomEvent) => void;
 };
 
-export function StyledLink({ to, text, ariaLabel, styleVariant = 'link', onClick }: Props) {
+export function StyledLink({
+  to,
+  text,
+  ariaLabel,
+  styleVariant = 'link',
+  hideIcon,
+  onClick,
+}: Props) {
   const navigate = useNavigate();
 
   const handleClick = (
@@ -48,12 +56,13 @@ export function StyledLink({ to, text, ariaLabel, styleVariant = 'link', onClick
           afHref={to}
           afOverrideLink={true}
           onAfOnClick={handleClick}
-          afSize={LinkButtonSize.MEDIUMLARGE}
+          afSize={LinkButtonSize.MEDIUM}
           afVariation={
             styleVariant === 'link-button'
               ? LinkButtonVariation.PRIMARY
               : LinkButtonVariation.SECONDARY
           }
+          afHideIcon={hideIcon}
         >
           {text}
         </DigiLinkButton>

@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from '~/components/Breadcrumbs';
 import CreateStatement from '~/components/CreateStatement';
 import ExportTasks from '~/components/ExportTasks';
+import { StyledLink } from '~/components/StyledLink';
 import { ObjectType } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
@@ -72,15 +73,25 @@ export default function ExportReviewPage() {
               afLevel={TypographyHeadingJumboLevel.H1}
               afVariation={TypographyHeadingJumboVariation.PRIMARY}
             ></DigiTypographyHeadingJumbo>
+
             {type === 'uppgifter' ? (
               <ExportTasks review={review} checks={checks} requirements={requirements} />
             ) : (
-              <CreateStatement
-                review={review}
-                checks={checks}
-                requirements={requirements}
-                categories={categories || []}
-              />
+              <div>
+                {' '}
+                <StyledLink
+                  to={`/granskning/${review.id}/export/uppgifter`}
+                  text="Exportera uppgifter (.csv)"
+                  styleVariant="link-button-secondary"
+                  hideIcon
+                />
+                <CreateStatement
+                  review={review}
+                  checks={checks}
+                  requirements={requirements}
+                  categories={categories || []}
+                />
+              </div>
             )}
           </>
         )}
