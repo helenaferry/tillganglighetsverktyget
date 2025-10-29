@@ -289,7 +289,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                         <StyledLink
                           to={`/granskning/${reviewId}/export/redogorelse`}
                           text="Sammanställ underkända krav"
-                          styleVariant="link-button-secondary"
+                          styleVariant="link-button"
                           hideIcon
                         />
                       </div>
