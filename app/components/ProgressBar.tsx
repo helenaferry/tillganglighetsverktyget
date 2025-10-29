@@ -14,7 +14,7 @@ export default function ProgressBar({ progress, text }: Props) {
       <div className="relative w-full h-6" aria-hidden="true">
         <div className="absolute top-0 left-0 h-full w-full border-dashed border-2 border-grayscale-700 rounded" />
         <div
-          className="absolute top-0 left-0 h-full bg-stratos-500 rounded-l transition-all duration-500"
+          className={`absolute top-0 left-0 h-full bg-stratos-500 rounded-l transition-all duration-500 ${progress === 100 ? 'rounded-r' : ''}`}
           style={{ width: `${progress}%` }}
         />
       </div>
