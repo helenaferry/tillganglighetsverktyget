@@ -16,15 +16,15 @@ import { useMemo, useState } from 'react';
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, Status, StatusText } from '~/data/types';
 import { formatDate } from '~/formattingHelpers';
+import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 import Breadcrumbs from './Breadcrumbs';
 import { CardsOrTable } from './CardsOrTable';
+import ProgressBar from './ProgressBar';
 import { SortButton } from './SortButton';
 import StatusBadge from './StatusBadge';
-import { numberChecked, percentageChecked, numberPerStatus } from '~/helpers';
-import ProgressBar from './ProgressBar';
 
 interface Props {
   reviewId: string;

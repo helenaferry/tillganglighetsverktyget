@@ -3,6 +3,7 @@ import { DigiButton, DigiIconArrowRight, DigiTypography } from '@designsystem-se
 
 import { type Category } from '~/data/types';
 import { numberChecked } from '~/helpers';
+
 import ProgressBar from './ProgressBar';
 
 type Props = {
