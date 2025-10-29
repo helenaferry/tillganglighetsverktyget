@@ -31,7 +31,7 @@ const contentTypeTexts = [
   },
   {
     contentType: 'Innehållsskapande',
-    question: 'Tillhandahåller tjänsten publiceringsverktyg för användaren?',
+    question: 'Innehåller tjänsten möjlighet att publicera innehåll eller lämna kommentar?',
     prefillComment:
       'Kravet har förifyllts som irrelevant eftersom tjänsten enligt granskningskonfigurationen saknar publiceringsverktyg.',
   },
