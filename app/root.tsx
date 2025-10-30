@@ -5,37 +5,25 @@ export const links: LinksFunction = () => [
 ];
 import './app.css';
 
-import { LogoColor, LogoVariation } from '@designsystem-se/af';
-import {
-  DigiFooter,
-  DigiHeader,
-  DigiHeaderNavigation,
-  DigiHeaderNavigationItem,
-  DigiLogo,
-  DigiTypography,
-} from '@designsystem-se/af-react';
+import { DigiTypography } from '@designsystem-se/af-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import { useLocation } from 'react-router-dom';
 
 import type { Route } from './+types/root';
 import { ClientOnly } from './clientOnly';
-import SkipLink from './components/SkipLink';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 const queryClient = new QueryClient();
 
-const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
-
 export function Layout({ children }: { children: React.ReactNode }) {
-  const location = useLocation();
   return (
     <html lang="sv">
       <head>
@@ -46,37 +34,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="grid">
         <ClientOnly>
-          <SkipLink />
-          <DigiHeader afSystemName={applicationTitle}>
-            <Link slot="header-logo" aria-label={`Startsida för ${applicationTitle}`} to="/"></Link>
-            <div slot="header-navigation">
-              <DigiHeaderNavigation
-                afCloseButtonText="Stäng"
-                afCloseButtonAriaLabel="Stäng meny"
-                afNavAriaLabel="Huvudmeny"
-              >
-                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/'}>
-                  <Link to="/">Granskningar</Link>
-                </DigiHeaderNavigationItem>
-                <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
-                  <Link to="/krav">Krav</Link>
-                </DigiHeaderNavigationItem>
-              </DigiHeaderNavigation>
-            </div>
-          </DigiHeader>
+          <Header />
           <QueryClientProvider client={queryClient}>
             <div className="bg-[var(--digi--grayscale-100)]">{children}</div>
           </QueryClientProvider>
-          <DigiFooter>
-            <div slot="content-bottom-left">
-              <Link to="https://www.arbetsformedlingen.se">
-                <DigiLogo
-                  afVariation={LogoVariation.LARGE}
-                  afColor={LogoColor.SECONDARY}
-                ></DigiLogo>
-              </Link>
-            </div>
-          </DigiFooter>
+          <Footer />
         </ClientOnly>
         <ScrollRestoration />
         <Scripts />
