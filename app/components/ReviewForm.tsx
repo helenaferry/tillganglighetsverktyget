@@ -70,6 +70,7 @@ export function ReviewForm({ reviewId }: Props) {
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
   );
+  const [prefillsUpdated, setPrefillsUpdated] = useState<boolean>(reviewId ? false : true);
 
   const requirements = useMemo(() => {
     return allRequirements?.filter((r) => r.objectType === objectType) || [];
@@ -189,6 +190,7 @@ export function ReviewForm({ reviewId }: Props) {
   }, [saving]);
 
   const handleContentChange = (contentType: string, included: string) => {
+    setPrefillsUpdated(true);
     const excluded = included == 'false';
     if (excluded) {
       if (excludedContentTypes.includes(contentType)) return;
@@ -266,6 +268,10 @@ export function ReviewForm({ reviewId }: Props) {
       },
       {
         onSuccess: (review) => {
+          if (!prefillsUpdated) {
+            runIfSuccess(true, review.id);
+            return;
+          }
           const reviewId = review.id;
 
           let activePrefillsSuccess = activePrefills.length === 0;
@@ -383,38 +389,23 @@ export function ReviewForm({ reviewId }: Props) {
               användaren.
             </p>
           </DigiDialog>*/}
-          <div className="sm:flex justify-between">
-            <div className="max-w-[24rem] my-8">
-              <DigiFormInput
-                afId="reviewName"
-                afLabel="Namn på granskning"
-                afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
-                afValue={title}
-                onAfOnInput={(e) => {
-                  const value = e.detail.target.value;
-                  if (value.trim().length > 0) {
-                    setNameValidation(FormInputValidation.NEUTRAL);
-                  }
-                  setTitle(value);
-                }}
-                afRequired={true}
-                afValidationText="Ange ett namn för granskningen"
-                afValidation={nameValidation}
-              />
-            </div>
-            <div className="sm:mt-6 mb-6">
-              {review && (
-                <DigiButton
-                  afSize={ButtonSize.MEDIUM}
-                  afVariation={ButtonVariation.SECONDARY}
-                  afFullWidth={false}
-                  onAfOnClick={() => setShowDeleteConfirmation(true)}
-                >
-                  <DigiIconTrash slot="icon-secondary" />
-                  Radera denna granskning
-                </DigiButton>
-              )}
-            </div>
+          <div className="max-w-[24rem] my-8">
+            <DigiFormInput
+              afId="reviewName"
+              afLabel="Namn på granskning"
+              afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
+              afValue={title}
+              onAfOnInput={(e) => {
+                const value = e.detail.target.value;
+                if (value.trim().length > 0) {
+                  setNameValidation(FormInputValidation.NEUTRAL);
+                }
+                setTitle(value);
+              }}
+              afRequired={true}
+              afValidationText="Ange ett namn för granskningen"
+              afValidation={nameValidation}
+            />
           </div>
           {objectType === ObjectType.WEB && (
             <div>
@@ -485,6 +476,7 @@ export function ReviewForm({ reviewId }: Props) {
                     afName={`radiogroup-${prefill.id}`}
                     key={prefill.id}
                     onAfOnGroupChange={(e) => {
+                      setPrefillsUpdated(true);
                       const value = (e.target as HTMLInputElement)?.value;
                       if (value === 'true') {
                         setShowRemovePrefillConfirmation(false);
@@ -542,8 +534,19 @@ export function ReviewForm({ reviewId }: Props) {
               Avbryt
             </DigiButton>
             <DigiButton afType="submit">
-              {review ? 'Ändra uppgifter' : 'Starta granskning'}
+              {review ? 'Spara ändring' : 'Starta granskning'}
             </DigiButton>
+            {review && (
+              <DigiButton
+                afSize={ButtonSize.MEDIUM}
+                afVariation={ButtonVariation.FUNCTION}
+                afFullWidth={false}
+                onAfOnClick={() => setShowDeleteConfirmation(true)}
+              >
+                <DigiIconTrash slot="icon" />
+                Radera granskning
+              </DigiButton>
+            )}
           </div>
           {upsertReview.isError && (
             <DigiNotificationAlert
