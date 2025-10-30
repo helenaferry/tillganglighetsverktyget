@@ -13,13 +13,13 @@ export default function Footer() {
         <DigiFooterCard>
           <ul>
             <li>
-              <a href="/">Alla granskningar</a>
+              <Link to="/">Alla granskningar</Link>
             </li>
             <li>
-              <a href="/granskning/skapa">Skapa ny granskning</a>
+              <Link to="/granskning/skapa">Skapa ny granskning</Link>
             </li>
             <li>
-              <a href="/krav">Krav</a>
+              <Link to="/krav">Krav</Link>
             </li>
             <li>
               <a
