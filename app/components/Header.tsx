@@ -15,7 +15,8 @@ export default function Header() {
     import.meta.env.VITE_APPLICATION_TITLE,
   );
   const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
-  const logoUrl = import.meta.env.VITE_LOGO_URL || '/logo.svg'; //'https://placehold.co/100x30?text=Din+logotyp+h%C3%A4r';
+  const logoUrl =
+    import.meta.env.VITE_LOGO_URL || 'https://placehold.co/100x30?text=Din+logotyp+h%C3%A4r';
   const logoWidth = import.meta.env.VITE_LOGO_WIDTH || 'auto';
   const logoHeight = import.meta.env.VITE_LOGO_HEIGHT || '3rem';
 
