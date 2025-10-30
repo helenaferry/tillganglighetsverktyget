@@ -38,7 +38,7 @@ export default function Header() {
             </Link>
           </div>
           <div className="flex items-center justify-end md:hidden" style={{ minWidth: '0' }}>
-            <DigiNavigationSidebarButton afAriaLabel="Meny" />
+            <DigiNavigationSidebarButton afAriaLabel="Öppna meny" />
           </div>
         </div>
         <DigiHeaderNavigation
