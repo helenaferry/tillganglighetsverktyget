@@ -70,7 +70,12 @@ export function ReviewForm({ reviewId }: Props) {
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
   );
-  const [prefillsUpdated, setPrefillsUpdated] = useState<boolean>(reviewId ? false : true);
+  const [contentTypePrefillsUpdated, setContentTypePrefillsUpdated] = useState<boolean>(
+    reviewId ? false : true,
+  );
+  const [configPrefillsUpdated, setConfigPrefillsUpdated] = useState<boolean>(
+    reviewId ? false : true,
+  );
 
   const requirements = useMemo(() => {
     return allRequirements?.filter((r) => r.objectType === objectType) || [];
@@ -139,12 +144,14 @@ export function ReviewForm({ reviewId }: Props) {
     // Use an object to ensure later entries overwrite earlier ones for the same id
     const active: Record<string, PrefillRequirement> = {};
 
-    // First, find prefills for content types
-    contentTypePrefills.forEach((p) => {
-      p.ids.forEach((id) => {
-        active[id] = { ids: [id], status: p.status, comment: p.comment };
+    // First, find prefills for content types - IF these have been changed
+    if (contentTypePrefillsUpdated) {
+      contentTypePrefills.forEach((p) => {
+        p.ids.forEach((id) => {
+          active[id] = { ids: [id], status: p.status, comment: p.comment };
+        });
       });
-    });
+    }
     // Second, find user selected prefills - these override content type prefills
     selectedPrefills.forEach((prefillSetting) => {
       prefillSetting.prefillRequirements.forEach((prefill) => {
@@ -190,7 +197,7 @@ export function ReviewForm({ reviewId }: Props) {
   }, [saving]);
 
   const handleContentChange = (contentType: string, included: string) => {
-    setPrefillsUpdated(true);
+    setContentTypePrefillsUpdated(true);
     const excluded = included == 'false';
     if (excluded) {
       if (excludedContentTypes.includes(contentType)) return;
@@ -268,7 +275,8 @@ export function ReviewForm({ reviewId }: Props) {
       },
       {
         onSuccess: (review) => {
-          if (!prefillsUpdated) {
+          // If no prefills were changed, we're done.
+          if (!configPrefillsUpdated && !contentTypePrefillsUpdated) {
             runIfSuccess(true, review.id);
             return;
           }
@@ -464,7 +472,7 @@ export function ReviewForm({ reviewId }: Props) {
           {prefillRequirements
             .filter((prefill: PrefillRequirementSetting) => prefill.automatic === 'false')
             .map((prefill: PrefillRequirementSetting) => (
-              <div key={prefill.id}>
+              <div key={prefill.id} className="mb-4">
                 {prefill.heading && <h2>{prefill.heading}</h2>}
                 {prefill.description && <p>{prefill.description}</p>}
                 <DigiFormFieldset
@@ -476,7 +484,7 @@ export function ReviewForm({ reviewId }: Props) {
                     afName={`radiogroup-${prefill.id}`}
                     key={prefill.id}
                     onAfOnGroupChange={(e) => {
-                      setPrefillsUpdated(true);
+                      setConfigPrefillsUpdated(true);
                       const value = (e.target as HTMLInputElement)?.value;
                       if (value === 'true') {
                         setShowRemovePrefillConfirmation(false);
@@ -501,19 +509,18 @@ export function ReviewForm({ reviewId }: Props) {
                       afAriaDescribedby="prefill-warning-message"
                     ></DigiFormRadiobutton>
                   </DigiFormRadiogroup>
-                  <div role="alert" id="prefill-warning-message">
-                    {showRemovePrefillConfirmation && (
-                      <DigiFormValidationMessage
-                        afVariation={FormValidationMessageVariation.WARNING}
-                      >
-                        Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer
-                        status för alla krav relaterade till detta val att nollställas.
-                      </DigiFormValidationMessage>
-                    )}
-                  </div>
                 </DigiFormFieldset>
               </div>
             ))}
+
+          <div role="alert" id="prefill-warning-message">
+            {showRemovePrefillConfirmation && (
+              <DigiFormValidationMessage afVariation={FormValidationMessageVariation.WARNING}>
+                Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer status
+                för alla krav relaterade till detta val att nollställas.
+              </DigiFormValidationMessage>
+            )}
+          </div>
 
           <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4" role="status">
             <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}
