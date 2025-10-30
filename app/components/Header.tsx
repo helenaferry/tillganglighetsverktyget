@@ -9,11 +9,6 @@ import { Link } from 'react-router';
 import SkipLink from './SkipLink';
 
 export default function Header() {
-  console.log(
-    'VITE_LOGO_URL:',
-    import.meta.env.VITE_LOGO_URL,
-    import.meta.env.VITE_APPLICATION_TITLE,
-  );
   const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
   const logoUrl =
     import.meta.env.VITE_LOGO_URL || 'https://placehold.co/100x30?text=Din+logotyp+h%C3%A4r';
