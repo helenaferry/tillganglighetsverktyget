@@ -12,8 +12,8 @@ export default function Header() {
   const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
   const logoUrl =
     import.meta.env.VITE_LOGO_URL || 'https://placehold.co/100x30?text=Din+logotyp+h%C3%A4r';
-  const logoWidth = import.meta.env.VITE_LOGO_WIDTH || '3.5rem';
-  const logoHeight = import.meta.env.VITE_LOGO_HEIGHT || 'auto';
+  const logoWidth = import.meta.env.VITE_LOGO_WIDTH || 'auto';
+  const logoHeight = import.meta.env.VITE_LOGO_HEIGHT || '3rem';
 
   return (
     <header className="bg-white">
