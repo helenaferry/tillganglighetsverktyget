@@ -89,7 +89,10 @@ export function ReviewForm({ reviewId }: Props) {
           return {
             ids: req.map((r) => r.id),
             status: 'IRRELEVANT',
-            comment: contentTypeTexts.find((q) => q.contentType === contentType)?.prefillComment,
+            comment:
+              contentTypeTexts.find((q) => q.contentType === contentType)?.prefillComment ||
+              'Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: ' +
+                contentType,
           };
         }
         return undefined;

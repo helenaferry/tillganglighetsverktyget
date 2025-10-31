@@ -19,7 +19,7 @@ export default function CategoryOverview({ category, onToggleCategoryNav }: Prop
   return (
     <div>
       <div
-        className="content-container content-container--white content-container--largest mb-8"
+        className="content-container content-container--white content-container--nomargin"
         id="krav"
       >
         <DigiTypography>

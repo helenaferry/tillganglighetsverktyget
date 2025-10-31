@@ -30,8 +30,10 @@ import {
   useRequirements,
 } from '~/hooks/useRequirementData';
 
+const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+
 export function meta() {
-  return [{ title: 'Tillgänglighetsverktyget: Krav' }, { name: 'description', content: 'Krav' }];
+  return [{ title: `${applicationTitle}: Krav` }, { name: 'description', content: 'Krav' }];
 }
 
 export default function RequirementsPage() {

@@ -5,9 +5,11 @@ import { useParams } from 'react-router-dom';
 import Breadcrumbs from '~/components/Breadcrumbs';
 import { ReviewForm } from '~/components/ReviewForm';
 
+const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+
 export function meta() {
   return [
-    { title: 'Tillgänglighetsverktyget: Ändra granskningsuppgifter' },
+    { title: `${applicationTitle}: Ändra granskningsuppgifter` },
     { name: 'description', content: 'Ändra granskningsuppgifter' },
   ];
 }

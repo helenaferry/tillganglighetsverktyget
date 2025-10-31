@@ -6,19 +6,17 @@ import {
 } from '@designsystem-se/af-react';
 import { Link } from 'react-router';
 
+import { envVars } from '~/helpers';
+
 import SkipLink from './SkipLink';
 
 export default function Header() {
-  const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
-  const logoUrl =
-    import.meta.env.VITE_LOGO_URL || 'https://placehold.co/100x30?text=Din+logotyp+h%C3%A4r';
-  const logoWidth = import.meta.env.VITE_LOGO_WIDTH || 'auto';
-  const logoHeight = import.meta.env.VITE_LOGO_HEIGHT || '3rem';
+  const { applicationTitle, logoUrl, logoWidth, logoHeight } = envVars();
 
   return (
     <header className="bg-white">
       <DigiTypography>
-        <div className="grid grid-cols-[1fr_5rem] md:grid-cols-1 w-full">
+        <div className="grid grid-cols-[1fr_5rem] md:grid-cols-1 w-full  border-b-1 border-b-grayscale-200">
           <div className="min-w-0">
             <SkipLink />
             <Link

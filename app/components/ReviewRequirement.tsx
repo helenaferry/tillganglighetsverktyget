@@ -18,7 +18,7 @@ import CategoryNav from '~/components/CategoryNav';
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
 import { formatDate, formatPercentage } from '~/formattingHelpers';
-import { numberChecked, percentageChecked } from '~/helpers';
+import { numberChecked, numberRemaining, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useCheck, useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
@@ -92,11 +92,6 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
       return { ...req, check };
     });
   }, [requirements, checks]);
-
-  const numberDone = useMemo(() => {
-    if (!checks) return 0;
-    return numberChecked(requirementsWithChecks);
-  }, [checks]);
 
   const nextUnhandledRequirement = (currentId: string) => {
     const currentRequirement = requirementsWithChecks.find((req) => String(req.id) === currentId);
@@ -196,15 +191,15 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
 
   return (
     <div className="grid">
-      <div className="bg-white">
+      <div className="content-container content-container--nomargin content-container--white">
         <DigiTypography>
           {loading ? (
-            <div className="m-5">
+            <div>
               <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} afCount={4} />
             </div>
           ) : (
             review && (
-              <div className="lg:flex justify-between mb-4 bg-white p-5">
+              <div className="lg:flex justify-between content-container content-container--white content-container--nomargin content-container--nopadding">
                 <div>
                   <Breadcrumbs
                     currentPage={
@@ -228,12 +223,14 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                   <strong>Granskning startades {formatDate(review?.created_at)}</strong>
                 </div>
                 <div className="hidden lg:block basis-[14rem] shrink-0 relative">
-                  {numberDone > 0 && (
+                  {numberChecked(requirementsWithChecks) > 0 && (
                     <div className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
                       <div>
                         <span className="block text-center text-[2.5rem]">
                           {requirements && requirements.length
-                            ? formatPercentage(numberDone / requirements.length)
+                            ? formatPercentage(
+                                numberChecked(requirementsWithChecks) / requirements.length,
+                              )
                             : '0%'}
                         </span>
                         <span className="block text-center" aria-label="Klart">
@@ -242,15 +239,18 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       </div>
                     </div>
                   )}
-                  <div className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
-                    <div>
-                      <span className="block text-center leading-none">BARA</span>
-                      <span className="block text-center text-[2rem] leading-none">
-                        {(requirements ? requirements.length - numberDone : 0) || 0}
-                      </span>
-                      <span className="block text-center leading-none">KVAR!</span>
-                    </div>
-                  </div>
+                  {numberRemaining(requirementsWithChecks) > 0 &&
+                    numberChecked(requirementsWithChecks) > 0 && (
+                      <div className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
+                        <div>
+                          <span className="block text-center leading-none">BARA</span>
+                          <span className="block text-center text-[2rem] leading-none">
+                            {numberRemaining(requirementsWithChecks) || 0}
+                          </span>
+                          <span className="block text-center leading-none">KVAR!</span>
+                        </div>
+                      </div>
+                    )}
                 </div>
               </div>
             )
@@ -275,7 +275,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
           )}
         </div>
         <main className="sm:ml-[17rem]" ref={mainRef} tabIndex={-1}>
-          <div className="content-container content-container--largest">
+          <div className="content-container content-container--largest content-container--nomargin">
             {requirement ? (
               <div>
                 {percentageChecked(requirementsWithChecks) === 100 && (
@@ -287,7 +287,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                     >
                       <div className="mt-6 mb-4">
                         <StyledLink
-                          to={`/granskning/${reviewId}/export/redogorelse`}
+                          to={`/granskning/${reviewId}/underkanda-krav`}
                           text="Sammanställ underkända krav"
                           styleVariant="link-button"
                           hideIcon
@@ -304,7 +304,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                   }
                   onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
                 />
-                <div className="content-container content-container--white content-container--largest">
+                <div className="content-container content-container--white content-container--ymargin">
                   <DigiTypography>
                     <div className="border-b-1 border-grayscale-400 pb-5">
                       <p className="text-grayscale-700">
@@ -355,7 +355,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                 />
               </div>
             ) : (
-              <div className="content-container content-container--white content-container--largest p-5">
+              <div className="content-container content-container--white">
                 <DigiTypography>
                   <p>Krav med id {requirementId} hittades inte.</p>
                   <StyledLink

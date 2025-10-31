@@ -19,7 +19,7 @@
 }
 
 .content-container {
-  @apply p-6 w-full max-w-screen overflow-x-auto;
+  @apply p-6 w-full max-w-screen overflow-x-auto m-5;
 }
 
 .content-container--white {
@@ -28,6 +28,26 @@
 
 .content-container--nomargin {
   @apply m-0;
+}
+
+.content-container--ymargin {
+  @apply mx-0 my-5;
+}
+
+.content-container--xmargin {
+  @apply my-0 mx-5;
+}
+
+.content-container--nopadding {
+  @apply p-0;
+}
+
+.content-container--xpadding {
+  @apply px-5 py-0;
+}
+
+.content-container--ypadding {
+  @apply py-5 px-0;
 }
 
 .content-container--largest {
@@ -76,7 +96,10 @@ svg {
 
 .cards-or-table__filters {
   [type='search'] {
-    @apply md:min-w-[20rem];
+    @apply w-full max-w-[8.5rem] sm:max-w-0 sm:min-w-[20rem];
+  }
+  .digi-form-input-search button {
+    @apply h-[2.5rem];
   }
   .digi-button {
     @apply justify-self-stretch !justify-center;

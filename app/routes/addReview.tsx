@@ -4,9 +4,11 @@ import { DigiTypography, DigiTypographyHeadingJumbo } from '@designsystem-se/af-
 import Breadcrumbs from '~/components/Breadcrumbs';
 import { ReviewForm } from '~/components/ReviewForm';
 
+const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+
 export function meta() {
   return [
-    { title: 'Tillgänglighetsverktyget: Skapa ny granskning' },
+    { title: `${applicationTitle}: Skapa ny granskning` },
     { name: 'description', content: 'Skapa ny granskning' },
   ];
 }

@@ -15,7 +15,6 @@ import { useMemo, useState } from 'react';
 
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, Status, StatusText } from '~/data/types';
-import { formatDate } from '~/formattingHelpers';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
@@ -165,7 +164,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
   };
 
   return (
-    <div className="grid">
+    <div className="">
       {loading && (
         <DigiLoaderSkeleton
           className="m-5"
@@ -173,10 +172,10 @@ export default function ReviewRequirements({ reviewId }: Props) {
           afCount={4}
         ></DigiLoaderSkeleton>
       )}
-      <div className="bg-white">
+      <div className="content-container content-container--white content-container--nomargin">
         <DigiTypography>
           {review && (
-            <div className="lg:flex justify-between mb-4 bg-white p-5">
+            <div className="lg:flex justify-between">
               <div>
                 <Breadcrumbs
                   currentPage={review.title || 'Granskning'}
@@ -184,18 +183,21 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 />
                 <DigiTypographyHeadingJumbo
                   className="wrap-anywhere"
-                  afText={review?.title || 'Granskning'}
+                  afText={`Kravöversikt ${review?.title}`}
                   afLevel={TypographyHeadingJumboLevel.H1}
                   afVariation={TypographyHeadingJumboVariation.PRIMARY}
                 ></DigiTypographyHeadingJumbo>
-                <strong>Granskning startades {formatDate(review?.created_at)}</strong>
+                <p className="!font-semibold">
+                  Här är en översikt över alla krav för granskningen. Du kan söka eller filtrera
+                  fram specifika krav. Du kan också se status för granskningen.
+                </p>
               </div>
             </div>
           )}
         </DigiTypography>
       </div>
       {review && (
-        <div className="content-container content-container--largest">
+        <div className="content-container content-container--nomargin content-container--largest">
           {percentageChecked(requirementsWithChecks) === 100 && (
             <div className="mb-5" role="alert">
               <DigiNotificationAlert
@@ -205,7 +207,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
               >
                 <div className="mt-6 mb-4">
                   <StyledLink
-                    to={`/granskning/${review.id}/export/redogorelse`}
+                    to={`/granskning/${review.id}/underkanda-krav`}
                     text="Sammanställ underkända krav"
                     styleVariant="link-button"
                     hideIcon
@@ -251,14 +253,14 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 />
               )}
               <StyledLink
-                to={`/granskning/${review.id}/export/redogorelse`}
+                to={`/granskning/${review.id}/underkanda-krav`}
                 text="Sammanställ underkända krav"
                 styleVariant="link-button-secondary"
                 hideIcon
               />
             </div>
           </div>
-          <div className="content-container content-container--white content-container--largest min-h-[40rem]">
+          <div className="content-container content-container--white content-container--ymargin content-container--largest min-h-[40rem]">
             <div>
               {review && (
                 <div className="container">

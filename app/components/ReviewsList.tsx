@@ -102,7 +102,7 @@ export function ReviewsList() {
   const navigate = useNavigate();
   return (
     <DigiTypography>
-      <div className="bg-white p-5 pt-12">
+      <div className="content-container content-container--white content-container--nomargin pt-12">
         <DigiTypographyHeadingJumbo
           afText="Granskningar"
           afLevel={TypographyHeadingJumboLevel.H1}
@@ -112,7 +112,7 @@ export function ReviewsList() {
           <strong>Här hittar du samtliga granskningar.</strong>
         </p>
       </div>
-      <div className="m-5">
+      <div className="content-container content-container--nomargin">
         {loading && (
           <DigiLoaderSkeleton
             afVariation={LoaderSkeletonVariation.SECTION}
@@ -122,7 +122,7 @@ export function ReviewsList() {
         {reviewsError && <p>Fel vid hämtning av granskningar</p>}
         {(fetched && !filteredReviews) ||
           (filteredReviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
-        <div className="my-4">
+        <div>
           <StyledLink
             to="/granskning/skapa"
             text="Skapa ny granskning"
@@ -130,7 +130,7 @@ export function ReviewsList() {
           />
         </div>
         {fetched && filteredReviews && (
-          <div className="content-container content-container--largest content-container--white">
+          <div className="content-container content-container--ymargin content-container--largest content-container--white">
             <CardsOrTable
               headings={[
                 <SortButton

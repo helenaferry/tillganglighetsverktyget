@@ -12,7 +12,7 @@ interface Props {
 
 export default function PrevNextRequirement({ reviewId, nextUnhandled, previousUnhandled }: Props) {
   return (
-    <div className="content-container content-container--white content-container--largest">
+    <div className="content-container content-container--white content-container--ymargin">
       <DigiTypography>
         <h4>{nextUnhandled ? nextUnhandled.name : ''}</h4>
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
@@ -36,7 +36,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
 
           {!nextUnhandled && !previousUnhandled && (
             <StyledLink
-              to={`/granskning/${reviewId}/export/redogorelse`}
+              to={`/granskning/${reviewId}/underkanda-krav`}
               text="Sammanställ underkända krav"
               styleVariant="link-button-secondary"
               hideIcon

@@ -125,8 +125,7 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
           <h2>Välj vilka krav som ska exporteras</h2>
           <p>
             Du kan välja vilka krav som ska exporteras genom att markera dem nedan. Ändrar du
-            kommentaren här kommer den inte sparas i tillgänglighetsverktyget utan endast användas i
-            exporten.
+            kommentaren här kommer den inte sparas här utan endast användas i exporten.
           </p>
           <p>
             <DigiButton afType="button" onAfOnClick={handleToggleAll}>
@@ -167,7 +166,7 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
                   }}
                 />
                 <DigiFormTextarea
-                  afLabel="Kommentar (ändringar sparas inte i tillgänglighetsverktyget)"
+                  afLabel="Kommentar (ändringar sparas endast i exporten)"
                   afName={`comment-${check.id}`}
                   afValue={check.comment ?? ''}
                   onAfOnInput={(e) => {
