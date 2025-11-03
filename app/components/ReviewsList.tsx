@@ -109,7 +109,11 @@ export function ReviewsList() {
           afVariation={TypographyHeadingJumboVariation.PRIMARY}
         ></DigiTypographyHeadingJumbo>
         <p>
-          <strong>Här hittar du samtliga granskningar.</strong>
+          <strong>
+            Här visas alla granskningar som har gjorts. Starta en ny granskning för att självskatta
+            tillgängligheten i din tjänst. Du kan när som helst återuppta en påbörjad granskning
+            genom att klicka på den i listan.
+          </strong>
         </p>
       </div>
       <div className="content-container content-container--nomargin">

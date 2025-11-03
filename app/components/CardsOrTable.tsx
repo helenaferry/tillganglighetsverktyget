@@ -1,13 +1,16 @@
 import {
+  ButtonVariation,
   type FormFilterItem,
   FormInputSearchVariation,
   FormInputType,
   TableSize,
 } from '@designsystem-se/af';
 import {
+  DigiButton,
   DigiContextMenu,
   DigiFormFilter,
   DigiFormInputSearch,
+  DigiIconRedo,
   DigiLinkInternal,
   DigiNavigationPagination,
   DigiTable,
@@ -125,58 +128,63 @@ export function CardsOrTable({
                 </div>
               ))}
           </div>
-          {pageSize > -1 && (
-            <div>
-              <DigiContextMenu
-                afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
-                afMenuPosition="left-bottom"
-                afMenuItems={[
-                  { id: 5, title: '5' },
-                  { id: 10, title: '10' },
-                  { id: 20, title: '20' },
-                  { id: 50, title: '50' },
-                  { id: 0, title: 'Alla' },
-                ]}
-                onAfChangeItem={(e) => {
-                  if (e.detail.item.id === 0) {
-                    setPageSize(0);
-                    setPaginationStart(1);
-                    setPaginationEnd(rows.length);
-                    setCurrentPage(1);
-                    setPaginationKey(paginationKey + 1);
-                  } else {
-                    setPageSize(Number(e.detail.item.id));
-                    setPaginationStart(1);
-                    setPaginationEnd(Number(e.detail.item.id));
-                    setCurrentPage(1);
-                    setPaginationKey(paginationKey + 1);
-                  }
-                }}
-              ></DigiContextMenu>
-            </div>
-          )}
         </form>
       )}
+
+      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-6 mb-4">
+        <div className="flex flex-col md:flex-row md:items-center">
+          <span className="font-bold" aria-live="polite" aria-atomic="true">
+            {rows.length} av {totalItems} {itemsName}{' '}
+          </span>
+          {choicesMade && (
+            <span className="inline-flex md:ml-4">
+              <DigiButton
+                afVariation={ButtonVariation.FUNCTION}
+                onAfOnClick={reset}
+                afFullWidth={false}
+              >
+                Rensa dina val
+                <DigiIconRedo slot="icon" />
+              </DigiButton>
+            </span>
+          )}
+        </div>
+        {pageSize > -1 && (
+          <div>
+            <DigiContextMenu
+              afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
+              afMenuPosition="left-bottom"
+              afMenuItems={[
+                { id: 5, title: '5' },
+                { id: 10, title: '10' },
+                { id: 20, title: '20' },
+                { id: 50, title: '50' },
+                { id: 0, title: 'Alla' },
+              ]}
+              onAfChangeItem={(e) => {
+                if (e.detail.item.id === 0) {
+                  setPageSize(0);
+                  setPaginationStart(1);
+                  setPaginationEnd(rows.length);
+                  setCurrentPage(1);
+                  setPaginationKey(paginationKey + 1);
+                } else {
+                  setPageSize(Number(e.detail.item.id));
+                  setPaginationStart(1);
+                  setPaginationEnd(Number(e.detail.item.id));
+                  setCurrentPage(1);
+                  setPaginationKey(paginationKey + 1);
+                }
+              }}
+            ></DigiContextMenu>
+          </div>
+        )}
+      </div>
+
       <div className="hidden lg:block">
         <DigiTable afSize={TableSize.MEDIUM}>
           <table aria-rowcount={rows.length} className="mt-6">
-            <caption className="text-left mb-4 mx-3" aria-live="polite" aria-atomic="true">
-              <span className="font-bold">
-                Visar {rows.length} av {totalItems} {itemsName}{' '}
-              </span>
-              {choicesMade && (
-                <span>
-                  -{' '}
-                  <button
-                    type="button"
-                    className="text-sapphire-500 hover:underline"
-                    onClick={reset}
-                  >
-                    Rensa dina val
-                  </button>
-                </span>
-              )}
-            </caption>
+            <caption className="sr-only">Tabell med {itemsName}</caption>
             <thead>
               <tr>
                 {headings.map((heading, index) => (
@@ -216,19 +224,6 @@ export function CardsOrTable({
       </div>
       {/* Cards view */}
       <div className="lg:hidden space-y-4">
-        <div role="alert" className="mt-4">
-          <span className="font-bold" id="list-description">
-            Visar {rows.length} av {totalItems} {itemsName}{' '}
-          </span>
-          {choicesMade && (
-            <span>
-              -{' '}
-              <button type="button" className="text-sapphire-500 hover:underline" onClick={reset}>
-                Rensa dina val
-              </button>
-            </span>
-          )}
-        </div>
         <fieldset>
           <legend className="font-bold mb-2">Sortera på:</legend>
           {displayHeadingsAboveCards && (

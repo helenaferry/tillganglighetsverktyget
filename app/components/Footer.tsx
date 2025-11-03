@@ -46,7 +46,7 @@ export default function Footer() {
             style={{ width: logoWidth, height: logoHeight }}
             className="border-r-2 border-r-white pr-4"
           />
-          <span className="font-bold text-base w-full max-w-full break-words hyphens-auto">
+          <span className="font-bold text-base text-white w-full max-w-full break-words hyphens-auto">
             {applicationTitle}
           </span>
         </Link>
