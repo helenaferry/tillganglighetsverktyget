@@ -14,7 +14,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
   return (
     <div className="content-container content-container--white content-container--ymargin">
       <DigiTypography>
-        <h4>{nextUnhandled ? nextUnhandled.name : ''}</h4>
+        <h4>{nextUnhandled ? 'Nästa ogranskade krav: ' + nextUnhandled.name : ''}</h4>
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
           {previousUnhandled && (
             <StyledLink

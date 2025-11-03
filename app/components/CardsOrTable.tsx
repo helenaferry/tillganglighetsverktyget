@@ -35,6 +35,7 @@ interface Props {
   cardsHeadings?: ReactNode[];
   rows: RowWithId[];
   itemsName?: string;
+  itemsNameSingular?: string;
   totalItems: number;
   defaultItemsPerPage?: number;
   searchLabel?: string;
@@ -51,6 +52,7 @@ export function CardsOrTable({
   cardsHeadings,
   rows,
   itemsName = 'objekt',
+  itemsNameSingular = itemsName,
   totalItems,
   defaultItemsPerPage = -1,
   filters,
@@ -87,6 +89,14 @@ export function CardsOrTable({
       resetChoices();
     }
   };
+
+  const hitsText = useMemo(() => {
+    if (rows.length === 1) {
+      return `1 ${itemsNameSingular} ${totalItems > 1 ? 'hittades' : ''}`;
+    } else {
+      return `${rows.length} ${itemsName} ${totalItems > rows.length ? 'hittades' : ''}`;
+    }
+  }, [rows]);
 
   return (
     <div className="cards-or-table w-full">
@@ -131,10 +141,10 @@ export function CardsOrTable({
         </form>
       )}
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-6 mb-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4 mb-0">
         <div className="flex flex-col md:flex-row md:items-center">
           <span className="font-bold" aria-live="polite" aria-atomic="true">
-            {rows.length} av {totalItems} {itemsName}{' '}
+            {hitsText}
           </span>
           {choicesMade && (
             <span className="inline-flex md:ml-4">

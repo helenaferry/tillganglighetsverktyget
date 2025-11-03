@@ -223,31 +223,37 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                   <strong>Granskning startades {formatDate(review?.created_at)}</strong>
                 </div>
                 <div className="hidden lg:block basis-[14rem] shrink-0 relative">
-                  {numberChecked(requirementsWithChecks) > 0 && (
-                    <div className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full">
-                      <div>
-                        <span className="block text-center text-[2.5rem]">
-                          {requirements && requirements.length
-                            ? formatPercentage(
-                                numberChecked(requirementsWithChecks) / requirements.length,
-                              )
-                            : '0%'}
-                        </span>
-                        <span className="block text-center" aria-label="Klart">
-                          K L A R T
-                        </span>
+                  {requirements &&
+                    requirements.length &&
+                    numberChecked(requirementsWithChecks) > 0 && (
+                      <div
+                        className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full"
+                        aria-label={`${formatPercentage(
+                          numberChecked(requirementsWithChecks) / requirements.length,
+                        )} klart`}
+                      >
+                        <div aria-hidden="true">
+                          <span className="block text-center text-[2.5rem]">
+                            {formatPercentage(
+                              numberChecked(requirementsWithChecks) / requirements.length,
+                            )}
+                          </span>
+                          <span className="block text-center">K L A R T</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                   {numberRemaining(requirementsWithChecks) > 0 &&
                     numberChecked(requirementsWithChecks) > 0 && (
-                      <div className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full">
-                        <div>
+                      <div
+                        className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full"
+                        aria-label={`Bara ${numberRemaining(requirementsWithChecks)} kvar!`}
+                      >
+                        <div aria-hidden="true">
                           <span className="block text-center leading-none">BARA</span>
                           <span className="block text-center text-[2rem] leading-none">
                             {numberRemaining(requirementsWithChecks) || 0}
                           </span>
-                          <span className="block text-center leading-none">KVAR!</span>
+                          <span className="block text-center leading-none"> KVAR!</span>
                         </div>
                       </div>
                     )}

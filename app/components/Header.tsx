@@ -9,9 +9,11 @@ import { Link } from 'react-router';
 import { envVars } from '~/helpers';
 
 import SkipLink from './SkipLink';
+import { useLocation } from 'react-router-dom';
 
 export default function Header() {
   const { applicationTitle, logoUrl, logoWidth, logoHeight } = envVars();
+  const location = useLocation();
 
   return (
     <header className="bg-white">

@@ -162,16 +162,16 @@ export function ReviewsList() {
                   key="Uppdaterad"
                 />,
                 <SortButton
-                  buttonText="Status"
+                  buttonText="Granskat"
                   sortBy={SortBy.REVIEWED}
                   active={sortBy === SortBy.REVIEWED}
                   sortDirection={sortDirection}
                   onSortChange={setSort}
-                  key="Status"
+                  key="Granskat"
                 />,
                 '',
               ]}
-              cardsHeadings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Status', '']}
+              cardsHeadings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskat', '']}
               rows={filteredReviews.map((review) => {
                 return {
                   id: review.id,
@@ -189,12 +189,12 @@ export function ReviewsList() {
                       {formatDate(review.latestUpdate)}
                     </p>,
                     <p className="whitespace-nowrap" key={`status-${review.id}`}>
-                      {`${review.reviewedCount} / ${requirementsCount}`}
+                      {`${review.reviewedCount} av ${requirementsCount}`}
                     </p>,
                     <DigiButton
                       afType="button"
                       afVariation="function"
-                      afAriaLabel={'Redigera granskning ' + review.title}
+                      afAriaLabel={'Ändra uppgifter för granskning: ' + review.title}
                       onClick={() => {
                         navigate(`/granskning/${review.id}/redigera`);
                       }}
@@ -207,6 +207,7 @@ export function ReviewsList() {
                 };
               })}
               itemsName="granskningar"
+              itemsNameSingular="granskning"
               totalItems={reviews?.length || 0}
               filters={[
                 {

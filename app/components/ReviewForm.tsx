@@ -541,9 +541,7 @@ export function ReviewForm({ reviewId }: Props) {
             >
               Avbryt
             </DigiButton>
-            <DigiButton afType="submit">
-              {review ? 'Spara ändring' : 'Starta granskning'}
-            </DigiButton>
+            <DigiButton afType="submit">{review ? 'Spara ändring' : 'Skapa granskning'}</DigiButton>
             {review && (
               <DigiButton
                 afSize={ButtonSize.MEDIUM}
