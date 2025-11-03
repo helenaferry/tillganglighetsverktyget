@@ -5,11 +5,11 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { Link } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 import { envVars } from '~/helpers';
 
 import SkipLink from './SkipLink';
-import { useLocation } from 'react-router-dom';
 
 export default function Header() {
   const { applicationTitle, logoUrl, logoWidth, logoHeight } = envVars();
