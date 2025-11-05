@@ -1,10 +1,12 @@
 import {
+  ErrorPageStatusCodes,
   LoaderSkeletonVariation,
   TypographyHeadingJumboLevel,
   TypographyHeadingJumboVariation,
 } from '@designsystem-se/af';
 import {
   DigiLoaderSkeleton,
+  DigiNotificationErrorPage,
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
@@ -35,11 +37,19 @@ export default function ExportReviewPage() {
   }, [review]);
   const loading = reviewLoading || checksLoading || requirementsAllLoading;
   return (
-    <DigiTypography>
-      <div>
-        {loading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
-        {!loading && review && checks && requirements && (
-          <>
+    <main>
+      {loading && (
+        <div className="content-container">
+          <DigiLoaderSkeleton
+            className="m-5"
+            afVariation={LoaderSkeletonVariation.SECTION}
+            afCount={4}
+          ></DigiLoaderSkeleton>
+        </div>
+      )}
+      {!loading && review && checks && requirements && (
+        <DigiTypography>
+          <div className="content-container content-container--nomargin content-container--white">
             <Breadcrumbs
               pages={[
                 { title: 'Granskningar', href: '/' },
@@ -54,10 +64,21 @@ export default function ExportReviewPage() {
               afVariation={TypographyHeadingJumboVariation.PRIMARY}
             ></DigiTypographyHeadingJumbo>
 
-            <ExportTasks review={review} checks={checks} requirements={requirements} />
-          </>
-        )}
-      </div>
-    </DigiTypography>
+            <p className="pt-8">
+              <b>Granskning:</b> {review.title}
+            </p>
+          </div>
+          <ExportTasks review={review} checks={checks} requirements={requirements} />
+        </DigiTypography>
+      )}
+      {!loading && !review && (
+        <DigiNotificationErrorPage afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}>
+          <p slot="bodytext">
+            Granskningen med id &quot;{id}&quot; kunde inte hittas. Den kan ha tagits bort, eller så
+            har ett oväntat fel uppstått.
+          </p>
+        </DigiNotificationErrorPage>
+      )}
+    </main>
   );
 }
