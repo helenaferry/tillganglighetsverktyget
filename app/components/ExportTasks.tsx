@@ -1,7 +1,7 @@
 import {
+  ButtonVariation,
   NotificationAlertSize,
   NotificationAlertVariation,
-  ButtonVariation,
 } from '@designsystem-se/af';
 import {
   DigiButton,
