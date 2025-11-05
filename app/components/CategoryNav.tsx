@@ -8,9 +8,10 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { type Category, Status } from '~/data/types';
+
+import { StyledLink } from './StyledLink';
 
 type Props = {
   reviewId: string;
@@ -54,7 +55,6 @@ export default function CategoryNav({
   showCategoryNav,
   onToggleNav,
 }: Props) {
-  const navigate = useNavigate();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([selectedCategory]);
 
   useEffect(() => {
@@ -162,12 +162,10 @@ export default function CategoryNav({
                         const selected = selectedRequirement === req.id;
                         return (
                           <li key={req.id}>
-                            <a
-                              href={`/granskning/${reviewId}/${req.id}/#krav`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                navigate(`/granskning/${reviewId}/${req.id}/#krav`);
-                              }}
+                            <StyledLink
+                              to={`/granskning/${reviewId}/${req.id}/#krav`}
+                              overrideLink={true}
+                              styleVariant="plain"
                               className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
                         bg-${selected ? 'stratos-500' : 'white'}`}
                             >
@@ -179,7 +177,7 @@ export default function CategoryNav({
                               >
                                 {req.name}
                               </div>
-                            </a>
+                            </StyledLink>
                           </li>
                         );
                       })

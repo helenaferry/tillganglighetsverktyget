@@ -127,11 +127,9 @@ export function ReviewsList() {
         {(fetched && !filteredReviews) ||
           (filteredReviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
         <div>
-          <StyledLink
-            to="/granskning/skapa"
-            text="Skapa ny granskning"
-            styleVariant="link-button"
-          />
+          <StyledLink to="/granskning/skapa" styleVariant="link-button">
+            Skapa ny granskning
+          </StyledLink>
         </div>
         {fetched && filteredReviews && (
           <div className="content-container content-container--ymargin content-container--largest content-container--white">
@@ -177,11 +175,9 @@ export function ReviewsList() {
                   id: review.id,
                   posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
                   content: [
-                    <StyledLink
-                      to={`/granskning/${review.id}`}
-                      text={review.title || 'Granskning'}
-                      key={`title-${review.id}`}
-                    />,
+                    <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
+                      {review.title || 'Granskning'}
+                    </StyledLink>,
                     <p className="whitespace-nowrap" key={`created-${review.id}`}>
                       {formatDate(review.created_at)}
                     </p>,

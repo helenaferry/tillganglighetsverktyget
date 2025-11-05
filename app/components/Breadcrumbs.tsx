@@ -14,7 +14,7 @@ export default function Breadcrumbs({ currentPage, pages }: Props) {
   };
   return (
     <div className="mb-4">
-      <DigiNavigationBreadcrumbs afCurrentPage={currentPage}>
+      <DigiNavigationBreadcrumbs afCurrentPage={currentPage} afAriaLabel="Brödsmulor">
         {pages?.map((page, index) => (
           <a
             key={`${page.href}-${index}`}

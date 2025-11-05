@@ -88,12 +88,9 @@ export default function FailedPage() {
           </div>
 
           <div className="content-container content-container--nomargin">
-            <StyledLink
-              to={`/granskning/${review.id}/export`}
-              text="Exportera uppgifter till Jira"
-              styleVariant="link-button"
-              hideIcon
-            />
+            <StyledLink to={`/granskning/${review.id}/export`} styleVariant="link-button" hideIcon>
+              Exportera uppgifter till Jira
+            </StyledLink>
           </div>
 
           <CreateStatement

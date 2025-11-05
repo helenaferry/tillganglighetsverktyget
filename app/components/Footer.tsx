@@ -1,7 +1,8 @@
 import { DigiFooter, DigiFooterCard } from '@designsystem-se/af-react';
-import { Link } from 'react-router';
 
 import { envVars } from '~/helpers';
+
+import { StyledLink } from './StyledLink';
 
 export default function Footer() {
   const { applicationTitle, logoUrl, logoWidth, logoHeight } = envVars();
@@ -12,30 +13,31 @@ export default function Footer() {
         <DigiFooterCard>
           <ul>
             <li>
-              <Link to="/">Alla granskningar</Link>
+              <StyledLink to="/">Alla granskningar</StyledLink>
             </li>
             <li>
-              <Link to="/granskning/skapa">Skapa ny granskning</Link>
+              <StyledLink to="/granskning/skapa">Skapa ny granskning</StyledLink>
             </li>
             <li>
-              <Link to="/krav">Krav</Link>
+              <StyledLink to="/krav">Krav</StyledLink>
             </li>
             <li>
-              <a
-                href="#"
+              <StyledLink
+                to="#"
+                overrideLink={true}
                 onClick={(e) => {
                   e.preventDefault();
                   alert('Kommer ...');
                 }}
               >
                 Tillgänglighetsredogörelse
-              </a>
+              </StyledLink>
             </li>
           </ul>
         </DigiFooterCard>
       </div>
       <div slot="content-bottom-left">
-        <Link
+        <StyledLink
           aria-label={`Startsida för ${applicationTitle}`}
           to="/"
           className="flex gap-4 pb-5 items-center text-white hover:text-white visited:!text-white !no-underline"
@@ -49,7 +51,7 @@ export default function Footer() {
           <span className="font-bold text-base text-white w-full max-w-full break-words hyphens-auto">
             {applicationTitle}
           </span>
-        </Link>
+        </StyledLink>
       </div>
     </DigiFooter>
   );

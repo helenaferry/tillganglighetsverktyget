@@ -208,10 +208,11 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 <div className="mt-6 mb-4">
                   <StyledLink
                     to={`/granskning/${review.id}/underkanda-krav`}
-                    text="Sammanställ underkända krav"
                     styleVariant="link-button"
                     hideIcon
-                  />
+                  >
+                    Sammanställ underkända krav
+                  </StyledLink>
                 </div>
               </DigiNotificationAlert>
             </div>
@@ -247,17 +248,19 @@ export default function ReviewRequirements({ reviewId }: Props) {
               {firstUncheckedId && (
                 <StyledLink
                   to={`/granskning/${review.id}/${firstUncheckedId}`}
-                  text="Granska tillgänglighet"
                   styleVariant="link-button"
                   hideIcon
-                />
+                >
+                  Granska tillgänglighet
+                </StyledLink>
               )}
               <StyledLink
                 to={`/granskning/${review.id}/underkanda-krav`}
-                text="Sammanställ underkända krav"
                 styleVariant="link-button-secondary"
                 hideIcon
-              />
+              >
+                Sammanställ underkända krav
+              </StyledLink>
             </div>
           </div>
           <div className="content-container content-container--white content-container--ymargin content-container--largest min-h-[40rem]">
@@ -297,11 +300,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         id: req.id,
                         posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
                         content: [
-                          <StyledLink
-                            key={req.id}
-                            to={'/granskning/' + review.id + '/' + req.id}
-                            text={req.name}
-                          />,
+                          <StyledLink key={req.id} to={'/granskning/' + review.id + '/' + req.id}>
+                            {req.name}
+                          </StyledLink>,
                           <span key={req.id + '-category'} className="whitespace-nowrap">
                             {req.category}
                           </span>,

@@ -294,10 +294,11 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       <div className="mt-6 mb-4">
                         <StyledLink
                           to={`/granskning/${reviewId}/underkanda-krav`}
-                          text="Sammanställ underkända krav"
                           styleVariant="link-button"
                           hideIcon
-                        />
+                        >
+                          Sammanställ underkända krav
+                        </StyledLink>
                       </div>
                     </DigiNotificationAlert>
                   </div>
@@ -317,7 +318,13 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                         Krav {numberInCategory} av {totalInCategory}
                       </p>
                       <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
-                        <h3>{requirement.name}</h3>
+                        <h3
+                          className="skip-target"
+                          id={requirement.id}
+                          data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                        >
+                          {requirement.name}
+                        </h3>
                         <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
                       </div>
                       <h4 className="!mt-4">Lagkrav och riktlinjer</h4>
@@ -364,10 +371,9 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
               <div className="content-container content-container--white">
                 <DigiTypography>
                   <p>Krav med id {requirementId} hittades inte.</p>
-                  <StyledLink
-                    to={`/granskning/${reviewId}`}
-                    text="Tillbaka till granskningsöversikten"
-                  />
+                  <StyledLink to={`/granskning/${reviewId}`}>
+                    Tillbaka till granskningsöversikten
+                  </StyledLink>
                 </DigiTypography>
               </div>
             )}
