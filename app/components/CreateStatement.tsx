@@ -1,17 +1,31 @@
-import { NotificationAlertSize, NotificationAlertVariation } from '@designsystem-se/af';
-import { DigiFormCheckbox, DigiNotificationAlert } from '@designsystem-se/af-react';
-import { useMemo, useState } from 'react';
+import {
+  ButtonVariation,
+  FormValidationMessageVariation,
+  NotificationAlertSize,
+  NotificationAlertVariation,
+} from '@designsystem-se/af';
+import {
+  DigiButton,
+  DigiFormCheckbox,
+  DigiFormValidationMessage,
+  DigiIconRedo,
+  DigiLinkInternal,
+  DigiNotificationAlert,
+} from '@designsystem-se/af-react';
+import { useMemo, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 import { type Check, type Requirement } from '~/data/types';
 import { numberRemaining } from '~/helpers';
 
 type Props = {
+  reviewId: number;
   checks?: Check[];
   requirements: Requirement[];
   categories: string[];
 };
 
-export default function CreateStatement({ checks, requirements, categories }: Props) {
+export default function CreateStatement({ reviewId, checks, requirements, categories }: Props) {
   const requirementsWithChecks = useMemo(() => {
     if (!requirements.length || !checks) return [];
     return requirements.map((req) => {
@@ -25,8 +39,30 @@ export default function CreateStatement({ checks, requirements, categories }: Pr
         (check) => check.status === 0 || check.status === null || check.status === undefined,
       )
     : [];
+  const [showCategories, setShowCategories] = useState(true);
+  const summaryRef = useRef<HTMLDivElement>(null);
   const [showTitles, setShowTitles] = useState(true);
   const [showComments, setShowComments] = useState(true);
+  const [copySuccess, setCopySuccess] = useState(false);
+  const [copyFailure, setCopyFailure] = useState(false);
+
+  const reset = () => {
+    setShowCategories(true);
+    setShowTitles(true);
+    setShowComments(true);
+  };
+
+  const copyToClipboard = async () => {
+    const el = summaryRef.current;
+    const text = el?.innerText ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess(true);
+    } catch (err) {
+      console.log(err);
+      setCopyFailure(true);
+    }
+  };
 
   return (
     <div className="content-container content-container--largest content-container--nomargin content-container--xpadding">
@@ -40,11 +76,19 @@ export default function CreateStatement({ checks, requirements, categories }: Pr
           skapa en korrekt tillgänglighetsredogörelse behöver alla krav vara bedömda.
         </DigiNotificationAlert>
       )}
-      <div className="content-container content-container--white content-container--ymargin">
-        <h2>Underkända krav</h2>
+      <div className="content-container content-container--white content-container--nomargin !mb-6">
+        <h2>Sammanställning av brister vid granskning</h2>
         {failedChecks.length > 0 && (
           <>
-            <p>Här följer en översikt av de underkända krav du behöver redogöra för.</p>
+            <p>
+              Här följer en översikt av de underkända krav du behöver redogöra för i din
+              tillgänglighetsredogörelse.
+            </p>
+            <DigiFormCheckbox
+              checked={showCategories}
+              onAfOnChange={() => setShowCategories(!showCategories)}
+              afLabel="Visa kravkategorier"
+            />
             <DigiFormCheckbox
               checked={showTitles}
               onAfOnChange={() => setShowTitles(!showTitles)}
@@ -58,36 +102,84 @@ export default function CreateStatement({ checks, requirements, categories }: Pr
           </>
         )}
         {failedChecks.length === 0 && <p>Det finns inga underkända krav.</p>}
-        {categories.map((cat) => {
-          const failedInCategory = failedChecks.filter((check) => {
-            const requirement = requirements.find(
-              (req) => String(req.id) === String(check.requirement),
-            );
-            return requirement?.category === cat;
-          });
+        {(showCategories || showTitles || showComments) && (
+          <div ref={summaryRef}>
+            {categories.map((cat) => {
+              const failedInCategory = failedChecks.filter((check) => {
+                const requirement = requirements.find(
+                  (req) => String(req.id) === String(check.requirement),
+                );
+                return requirement?.category === cat;
+              });
 
-          if (failedInCategory.length === 0) return null;
+              if (failedInCategory.length === 0) return null;
 
-          return (
-            <div key={cat} className="mt-4">
-              <h3>{cat}</h3>
-              <ul>
-                {failedInCategory.map((check) => {
-                  const requirement = requirements.find(
-                    (req) => String(req.id) === String(check.requirement),
-                  );
-                  return (
-                    <li key={check.id} className="mt-4">
-                      {showTitles && requirement?.name}
-                      {showTitles && showComments && check.comment && <>: </>}
-                      {showComments && check.comment && check.comment}
-                    </li>
-                  );
-                })}
-              </ul>
+              return (
+                <div key={cat} className="mt-4">
+                  {showCategories && <h3>{cat}</h3>}
+
+                  {failedInCategory.map((check) => {
+                    const requirement = requirements.find(
+                      (req) => String(req.id) === String(check.requirement),
+                    );
+                    return (
+                      <div key={check.id} className="mt-8">
+                        {showTitles && (
+                          <p>
+                            <DigiLinkInternal
+                              afHref={`/granskning/${reviewId}/${requirement?.id}/#krav`}
+                            >
+                              {requirement?.name}
+                            </DigiLinkInternal>
+                          </p>
+                        )}
+                        {showComments && check.comment && (
+                          <ReactMarkdown>{check.comment || ''}</ReactMarkdown>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <div role="alert">
+          {!showCategories && !showTitles && !showComments && (
+            <p className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <span>Dina val döljer all information.</span>
+              <span className="inline-flex">
+                <DigiButton
+                  afVariation={ButtonVariation.FUNCTION}
+                  onAfOnClick={reset}
+                  afFullWidth={false}
+                >
+                  Rensa dina val
+                  <DigiIconRedo slot="icon" />
+                </DigiButton>
+              </span>
+            </p>
+          )}
+        </div>
+        {failedChecks.length > 0 && (showCategories || showTitles || showComments) && (
+          <div className="my-8 flex flex-col gap-4">
+            <DigiButton afVariation={ButtonVariation.PRIMARY} onAfOnClick={copyToClipboard}>
+              Kopiera till urklipp
+            </DigiButton>
+            <div role="alert">
+              {copySuccess && (
+                <DigiFormValidationMessage afVariation={FormValidationMessageVariation.SUCCESS}>
+                  Texten har kopierats till urklipp.
+                </DigiFormValidationMessage>
+              )}
+              {copyFailure && (
+                <DigiFormValidationMessage afVariation={FormValidationMessageVariation.ERROR}>
+                  Kunde inte kopiera texten.
+                </DigiFormValidationMessage>
+              )}
             </div>
-          );
-        })}
+          </div>
+        )}
       </div>
     </div>
   );

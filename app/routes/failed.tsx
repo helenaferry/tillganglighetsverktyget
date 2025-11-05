@@ -94,6 +94,7 @@ export default function FailedPage() {
           </div>
 
           <CreateStatement
+            reviewId={review.id}
             checks={checks}
             requirements={requirements}
             categories={categories || []}
