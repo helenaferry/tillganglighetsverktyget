@@ -523,9 +523,11 @@ export function ReviewForm({ reviewId }: Props) {
             )}
           </div>
 
-          <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4" role="status">
-            <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}
-            {requirements?.length} <span className="font-semibold">krav att granska</span>
+          <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4">
+            <span role="status">
+              <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}
+              {requirements?.length} <span className="font-semibold">krav att granska</span>
+            </span>
             <span className="block">
               {numberAutomaticPrefillRequirements} krav hanteras automatiskt av din organisation.
             </span>
