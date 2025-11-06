@@ -13,6 +13,7 @@ import {
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
+import { DigiIconChevronRight } from '@designsystem-se/af-react';
 import { useMemo, useState } from 'react';
 
 import { StyledLink } from '~/components/StyledLink';
@@ -26,7 +27,6 @@ import { CardsOrTable } from './CardsOrTable';
 import ProgressBar from './ProgressBar';
 import { SortButton } from './SortButton';
 import StatusBadge from './StatusBadge';
-import { DigiIconChevronRight } from '@designsystem-se/af-react';
 
 interface Props {
   reviewId: string;
