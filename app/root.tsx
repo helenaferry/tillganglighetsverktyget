@@ -37,7 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ClientOnly>
           <Header />
           <QueryClientProvider client={queryClient}>
-            <div className="bg-[var(--digi--grayscale-100)]">{children}</div>
+            <div className="bg-grayscale-100">{children}</div>
           </QueryClientProvider>
           <Footer />
         </ClientOnly>

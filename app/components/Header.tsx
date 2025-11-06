@@ -47,7 +47,9 @@ export default function Header() {
           afCloseButtonAriaLabel="Stäng meny"
           afNavAriaLabel="Huvudmeny"
         >
-          <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/'}>
+          <DigiHeaderNavigationItem
+            afCurrentPage={location.pathname === '/' || location.pathname.includes('granskning')}
+          >
             <StyledLink to="/" styleVariant="plain">
               Granskningar
             </StyledLink>

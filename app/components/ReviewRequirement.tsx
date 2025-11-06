@@ -202,66 +202,64 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
         <>
           <div className="content-container content-container--nomargin content-container--white">
             <DigiTypography>
-              <div className="lg:flex justify-between content-container content-container--white content-container--nomargin content-container--nopadding">
+              <div className="flex flex-col md:flex-row gap-4 justify-between content-container content-container--largest content-container--white content-container--nomargin content-container--nopadding">
                 <div>
-                  <div>
-                    <Breadcrumbs
-                      currentPage={
-                        requirements?.find((req) => String(req.id) === String(requirementId))
-                          ?.name || 'Krav'
-                      }
-                      pages={[
-                        { title: 'Granskningar', href: '/' },
-                        {
-                          title: review?.title || 'Granskning',
-                          href: `/granskning/${review?.id}`,
-                        },
-                      ]}
-                    />
-                    <DigiTypographyHeadingJumbo
-                      className="wrap-anywhere"
-                      afText={review?.title || 'Granskning'}
-                      afLevel={TypographyHeadingJumboLevel.H1}
-                      afVariation={TypographyHeadingJumboVariation.PRIMARY}
-                    />
-                    <strong>Granskning startades {formatDate(review?.created_at)}</strong>
-                  </div>
-                  <div className="hidden lg:block basis-[14rem] shrink-0 relative">
-                    {requirements &&
-                      requirements.length &&
-                      numberChecked(requirementsWithChecks) > 0 && (
-                        <div
-                          className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full"
-                          aria-label={`${formatPercentage(
-                            numberChecked(requirementsWithChecks) / requirements.length,
-                          )} klart`}
-                        >
-                          <div aria-hidden="true">
-                            <span className="block text-center text-[2.5rem]">
-                              {formatPercentage(
-                                numberChecked(requirementsWithChecks) / requirements.length,
-                              )}
-                            </span>
-                            <span className="block text-center">K L A R T</span>
-                          </div>
+                  <Breadcrumbs
+                    currentPage={
+                      requirements?.find((req) => String(req.id) === String(requirementId))?.name ||
+                      'Krav'
+                    }
+                    pages={[
+                      { title: 'Granskningar', href: '/' },
+                      {
+                        title: review?.title || 'Granskning',
+                        href: `/granskning/${review?.id}`,
+                      },
+                    ]}
+                  />
+                  <DigiTypographyHeadingJumbo
+                    className="wrap-anywhere"
+                    afText={review?.title || 'Granskning'}
+                    afLevel={TypographyHeadingJumboLevel.H1}
+                    afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                  />
+                  <strong>Granskning startades {formatDate(review?.created_at)}</strong>
+                </div>
+                <div className="md:basis-[14rem] md:shrink-0 relative flex gap-1 md:block">
+                  {requirements &&
+                    requirements.length &&
+                    numberChecked(requirementsWithChecks) > 0 && (
+                      <div
+                        className="md:absolute md:right-0 h-24 w-24 md:h-32 md:w-32 mt-3 md:mt-0 text-white font-bold bg-leaf-500 flex flex-col md:flex-row items-center justify-center rounded-full"
+                        aria-label={`${formatPercentage(
+                          numberChecked(requirementsWithChecks) / requirements.length,
+                        )} klart`}
+                      >
+                        <div aria-hidden="true">
+                          <span className="block text-center text-2xl md:text-[2.5rem]">
+                            {formatPercentage(
+                              numberChecked(requirementsWithChecks) / requirements.length,
+                            )}
+                          </span>
+                          <span className="block text-center">K L A R T</span>
                         </div>
-                      )}
-                    {numberRemaining(requirementsWithChecks) > 0 &&
-                      numberChecked(requirementsWithChecks) > 0 && (
-                        <div
-                          className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full"
-                          aria-label={`Bara ${numberRemaining(requirementsWithChecks)} kvar!`}
-                        >
-                          <div aria-hidden="true">
-                            <span className="block text-center leading-none">BARA</span>
-                            <span className="block text-center text-[2rem] leading-none">
-                              {numberRemaining(requirementsWithChecks) || 0}
-                            </span>
-                            <span className="block text-center leading-none"> KVAR!</span>
-                          </div>
+                      </div>
+                    )}
+                  {numberRemaining(requirementsWithChecks) > 0 &&
+                    numberChecked(requirementsWithChecks) > 0 && (
+                      <div
+                        className="md:absolute md:right-26 md:top-14 h-20 w-20 md:h-25 md:w-25 text-white font-bold bg-stratos-500 flex items-center justify-center rounded-full"
+                        aria-label={`Bara ${numberRemaining(requirementsWithChecks)} kvar!`}
+                      >
+                        <div aria-hidden="true">
+                          <span className="block text-center leading-none">BARA</span>
+                          <span className="block text-center text-xl md:text-[2rem] leading-none">
+                            {numberRemaining(requirementsWithChecks) || 0}
+                          </span>
+                          <span className="block text-center leading-none"> KVAR!</span>
                         </div>
-                      )}
-                  </div>
+                      </div>
+                    )}
                 </div>
               </div>
             </DigiTypography>
@@ -280,7 +278,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
               />
             </div>
             <main className="sm:ml-[17rem]" ref={mainRef} tabIndex={-1}>
-              <div className="content-container content-container--largest content-container--nomargin">
+              <div className="content-container !max-w-[70.5rem] content-container--nomargin">
                 <div>
                   {percentageChecked(requirementsWithChecks) === 100 && (
                     <div className="mb-5" role="alert">
