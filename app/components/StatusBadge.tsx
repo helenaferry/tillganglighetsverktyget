@@ -7,6 +7,7 @@ type Props = {
   status?: number | undefined | null;
   plural?: boolean;
   noMinWidth?: boolean;
+  ariaLabel?: string;
 };
 
 const getStatusText = (status: Status, plural?: boolean) => {
@@ -24,7 +25,7 @@ const getStatusText = (status: Status, plural?: boolean) => {
   }
 };
 
-const getBadge = (status: Status, plural?: boolean) => {
+const getBadge = (status: Status, plural?: boolean, ariaLabel?: string) => {
   switch (status) {
     case Status.FAIL:
       return (
@@ -33,6 +34,7 @@ const getBadge = (status: Status, plural?: boolean) => {
           afVariation={BadgeStatusVariation.SECONDARY}
           afText={getStatusText(Status.FAIL, plural)}
           afSize={BadgeStatusSize.LARGE}
+          afAriaLabel={ariaLabel}
         />
       );
     case Status.IRRELEVANT:
@@ -42,6 +44,7 @@ const getBadge = (status: Status, plural?: boolean) => {
           afVariation={BadgeStatusVariation.SECONDARY}
           afText={getStatusText(Status.IRRELEVANT, plural)}
           afSize={BadgeStatusSize.LARGE}
+          afAriaLabel={ariaLabel}
         />
       );
     case Status.PASS:
@@ -51,6 +54,7 @@ const getBadge = (status: Status, plural?: boolean) => {
           afVariation={BadgeStatusVariation.SECONDARY}
           afText={getStatusText(Status.PASS, plural)}
           afSize={BadgeStatusSize.LARGE}
+          afAriaLabel={ariaLabel}
         />
       );
     case Status.NOT_ASSESSED:
@@ -60,12 +64,17 @@ const getBadge = (status: Status, plural?: boolean) => {
           afVariation={BadgeStatusVariation.SECONDARY}
           afText={getStatusText(Status.NOT_ASSESSED, plural)}
           afSize={BadgeStatusSize.LARGE}
+          afAriaLabel={ariaLabel}
         />
       );
   }
 };
 
-export default function StatusBadge({ status, plural, noMinWidth }: Props) {
+export default function StatusBadge({ status, plural, noMinWidth, ariaLabel }: Props) {
   const enumStatus = typeof status === 'number' ? (status as Status) : Status.NOT_ASSESSED;
-  return <div className={noMinWidth ? '' : 'min-w-[6rem]'}>{getBadge(enumStatus, plural)}</div>;
+  return (
+    <div className={noMinWidth ? '' : 'min-w-[6rem]'}>
+      {getBadge(enumStatus, plural, ariaLabel)}
+    </div>
+  );
 }

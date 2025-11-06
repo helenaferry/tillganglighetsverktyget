@@ -76,9 +76,13 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
   };
 
   return (
-    <form id="export-tasks-form" onSubmit={exportToCsv}>
+    <form
+      id="export-tasks-form"
+      className="content-container content-container--largest content-container--nomargin"
+      onSubmit={exportToCsv}
+    >
       {numberOfNotAssessed > 0 && failedChecks.length > 0 && (
-        <div className="content-container content-container--largest content-container--nopadding">
+        <p>
           <DigiNotificationAlert
             afSize={NotificationAlertSize.LARGE}
             afVariation={NotificationAlertVariation.WARNING}
@@ -87,10 +91,10 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
             Granskningen innehåller {numberOfNotAssessed} ohanterade krav. Du kan fortsätta ändå,
             men var medveten om att det kan finnas återstående uppgifter som behöver hanteras.
           </DigiNotificationAlert>
-        </div>
+        </p>
       )}
       {failedChecks.length === 0 && numberOfNotAssessed > 0 && (
-        <div className="content-container content-container--largest content-container--nopadding">
+        <p>
           <DigiNotificationAlert
             afSize={NotificationAlertSize.LARGE}
             afVariation={NotificationAlertVariation.DANGER}
@@ -99,10 +103,10 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
             Granskningen innehåller inga underkända krav, men däremot krav som inte är bedömda. För
             att gå vidare med exporten behöver du först slutföra granskningen.
           </DigiNotificationAlert>
-        </div>
+        </p>
       )}
       {failedChecks.length === 0 && numberOfNotAssessed === 0 && (
-        <div className="content-container content-container--largest content-container--nopadding">
+        <p>
           <DigiNotificationAlert
             afSize={NotificationAlertSize.LARGE}
             afVariation={NotificationAlertVariation.SUCCESS}
@@ -111,11 +115,11 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
             Granskningen är slutförd men innehåller inga underkända krav. Det finns därför inget att
             exportera.
           </DigiNotificationAlert>
-        </div>
+        </p>
       )}
 
       {failedChecks.length > 0 && (
-        <div className="content-container content-container--largest content-container--white">
+        <div className="content-container content-container--white content-container--ymargin">
           <h2>Fyll i uppgifter till Jira</h2>
           <p>Här kan du exportera underkända krav till Jira.</p>
           <p>

@@ -198,182 +198,208 @@ export default function ReviewRequirements({ reviewId }: Props) {
       </div>
       {review && (
         <div className="content-container content-container--nomargin content-container--largest">
-          {percentageChecked(requirementsWithChecks) === 100 && (
-            <div className="mb-5" role="alert">
-              <DigiNotificationAlert
-                afSize={NotificationAlertSize.LARGE}
-                afVariation={NotificationAlertVariation.SUCCESS}
-                afHeading="Hurra, granskningen är klar!"
-              >
-                <div className="mt-6 mb-4">
+          <DigiTypography>
+            {percentageChecked(requirementsWithChecks) === 100 && (
+              <p className="mb-5" role="alert">
+                <DigiNotificationAlert
+                  afSize={NotificationAlertSize.LARGE}
+                  afVariation={NotificationAlertVariation.SUCCESS}
+                  afHeading="Hurra, granskningen är klar!"
+                >
+                  <div className="mt-6 mb-4">
+                    <StyledLink
+                      to={`/granskning/${review.id}/underkanda-krav`}
+                      styleVariant="link-button"
+                      hideIcon
+                    >
+                      Sammanställ underkända krav
+                    </StyledLink>
+                  </div>
+                </DigiNotificationAlert>
+              </p>
+            )}
+            <div className="content-container content-container--white content-container--largest content-container--nomargin mb-5">
+              <div className="flex flex-col sm:flex-row mb-6">
+                <div
+                  className="basis-1/4"
+                  aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ej granskade`}
+                >
+                  <div className="flex flex-col items-center" aria-hidden="true">
+                    <p className="!text-2xl !mb-2">
+                      {numberPerStatus(requirementsWithChecks).notAssessedCount}
+                    </p>
+                    <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
+                  </div>
+                </div>
+                <div
+                  className="basis-1/4"
+                  aria-label={`${numberPerStatus(requirementsWithChecks).passCount} godkända`}
+                >
+                  <div className="flex flex-col items-center" aria-hidden="true">
+                    <p className="!text-2xl !mb-2">
+                      {numberPerStatus(requirementsWithChecks).passCount}
+                    </p>
+                    <StatusBadge status={Status.PASS} plural noMinWidth />
+                  </div>
+                </div>
+                <div
+                  className="basis-1/4"
+                  aria-label={`${numberPerStatus(requirementsWithChecks).failCount} underkända`}
+                >
+                  <div className="flex flex-col items-center" aria-hidden="true">
+                    <p className="!text-2xl !mb-2">
+                      {numberPerStatus(requirementsWithChecks).failCount}
+                    </p>
+                    <StatusBadge status={Status.FAIL} plural noMinWidth />
+                  </div>
+                </div>
+                <div
+                  className="basis-1/4"
+                  aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} irrelevanta`}
+                >
+                  <div className="flex flex-col items-center" aria-hidden="true">
+                    <p className="!text-2xl !mb-2">
+                      {numberPerStatus(requirementsWithChecks).irrelevantCount}
+                    </p>
+                    <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
+                  </div>
+                </div>
+              </div>
+              <ProgressBar
+                progress={percentageChecked(requirementsWithChecks)}
+                text={`${numberChecked(requirementsWithChecks)} av ${requirementsWithChecks.length} krav granskade`}
+              />
+              <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
+                {firstUncheckedId && (
                   <StyledLink
-                    to={`/granskning/${review.id}/underkanda-krav`}
+                    to={`/granskning/${review.id}/${firstUncheckedId}`}
                     styleVariant="link-button"
                     hideIcon
                   >
-                    Sammanställ underkända krav
+                    Granska tillgänglighet
                   </StyledLink>
-                </div>
-              </DigiNotificationAlert>
-            </div>
-          )}
-          <div className="content-container content-container--white content-container--largest content-container--nomargin mb-5">
-            <div className="flex flex-col sm:flex-row mb-6">
-              <div className="flex flex-col items-center basis-1/4">
-                <p className="text-2xl">
-                  {numberPerStatus(requirementsWithChecks).notAssessedCount}
-                </p>
-                <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
-              </div>
-              <div className="flex flex-col items-center basis-1/4">
-                <p className="text-2xl">{numberPerStatus(requirementsWithChecks).passCount}</p>
-                <StatusBadge status={Status.PASS} plural noMinWidth />
-              </div>
-              <div className="flex flex-col items-center basis-1/4">
-                <p className="text-2xl">{numberPerStatus(requirementsWithChecks).failCount}</p>
-                <StatusBadge status={Status.FAIL} plural noMinWidth />
-              </div>
-              <div className="flex flex-col items-center basis-1/4">
-                <p className="text-2xl">
-                  {numberPerStatus(requirementsWithChecks).irrelevantCount}
-                </p>
-                <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
-              </div>
-            </div>
-            <ProgressBar
-              progress={percentageChecked(requirementsWithChecks)}
-              text={`${numberChecked(requirementsWithChecks)} av ${requirementsWithChecks.length} krav granskade`}
-            />
-            <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
-              {firstUncheckedId && (
+                )}
                 <StyledLink
-                  to={`/granskning/${review.id}/${firstUncheckedId}`}
-                  styleVariant="link-button"
+                  to={`/granskning/${review.id}/underkanda-krav`}
+                  styleVariant="link-button-secondary"
                   hideIcon
                 >
-                  Granska tillgänglighet
+                  Sammanställ underkända krav
                 </StyledLink>
-              )}
-              <StyledLink
-                to={`/granskning/${review.id}/underkanda-krav`}
-                styleVariant="link-button-secondary"
-                hideIcon
-              >
-                Sammanställ underkända krav
-              </StyledLink>
+              </div>
             </div>
-          </div>
-          <div className="content-container content-container--white content-container--ymargin content-container--largest min-h-[40rem]">
-            <div>
-              {review && (
-                <div className="container">
-                  <CardsOrTable
-                    headings={[
-                      <SortButton
-                        buttonText="Krav"
-                        sortBy={SortBy.REQUIREMENT}
-                        active={sortBy === SortBy.REQUIREMENT}
-                        sortDirection={sortDirection}
-                        onSortChange={setSort}
-                        key="Krav"
-                      />,
-                      <SortButton
-                        buttonText="Kravkategori"
-                        sortBy={SortBy.CATEGORY}
-                        active={sortBy === SortBy.CATEGORY}
-                        sortDirection={sortDirection}
-                        onSortChange={setSort}
-                        key="Kravkategori"
-                      />,
-                      <SortButton
-                        buttonText="Bedömningsstatus"
-                        sortBy={SortBy.STATUS}
-                        active={sortBy === SortBy.STATUS}
-                        sortDirection={sortDirection}
-                        onSortChange={setSort}
-                        key="Bedömningsstatus"
-                      />,
-                    ]}
-                    cardsHeadings={['Krav', 'Kravkategori', 'Bedömningsstatus']}
-                    rows={filteredRequirements.map((req) => {
-                      return {
-                        id: req.id,
-                        posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
-                        content: [
-                          <StyledLink key={req.id} to={'/granskning/' + review.id + '/' + req.id}>
-                            {req.name}
-                          </StyledLink>,
-                          <span key={req.id + '-category'} className="whitespace-nowrap">
-                            {req.category}
-                          </span>,
-                          <div className="mt-2 md:mt-0" key={req.id + '-status'}>
-                            <StatusBadge status={req.check?.status} />
-                          </div>,
-                        ],
-                      };
-                    })}
-                    totalItems={requirements.length}
-                    itemsName="krav"
-                    filters={[
-                      {
-                        type: 'freeText',
-                        label: 'Sök på krav',
-                        onChange: (e) => {
-                          setFilterFreeText(e.detail);
+            <div className="content-container content-container--white content-container--ymargin content-container--largest min-h-[40rem]">
+              <div>
+                {review && (
+                  <div className="container">
+                    <CardsOrTable
+                      headings={[
+                        <SortButton
+                          buttonText="Krav"
+                          sortBy={SortBy.REQUIREMENT}
+                          active={sortBy === SortBy.REQUIREMENT}
+                          sortDirection={sortDirection}
+                          onSortChange={setSort}
+                          key="Krav"
+                        />,
+                        <SortButton
+                          buttonText="Kravkategori"
+                          sortBy={SortBy.CATEGORY}
+                          active={sortBy === SortBy.CATEGORY}
+                          sortDirection={sortDirection}
+                          onSortChange={setSort}
+                          key="Kravkategori"
+                        />,
+                        <SortButton
+                          buttonText="Bedömningsstatus"
+                          sortBy={SortBy.STATUS}
+                          active={sortBy === SortBy.STATUS}
+                          sortDirection={sortDirection}
+                          onSortChange={setSort}
+                          key="Bedömningsstatus"
+                        />,
+                      ]}
+                      cardsHeadings={['Krav', 'Kravkategori', 'Bedömningsstatus']}
+                      rows={filteredRequirements.map((req) => {
+                        return {
+                          id: req.id,
+                          posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
+                          content: [
+                            <StyledLink key={req.id} to={'/granskning/' + review.id + '/' + req.id}>
+                              {req.name}
+                            </StyledLink>,
+                            <span key={req.id + '-category'} className="whitespace-nowrap">
+                              {req.category}
+                            </span>,
+                            <div className="mt-2 md:mt-0" key={req.id + '-status'}>
+                              <StatusBadge status={req.check?.status} />
+                            </div>,
+                          ],
+                        };
+                      })}
+                      totalItems={requirements.length}
+                      itemsName="krav"
+                      filters={[
+                        {
+                          type: 'freeText',
+                          label: 'Sök på krav',
+                          onChange: (e) => {
+                            setFilterFreeText(e.detail);
+                          },
                         },
-                      },
-                      {
-                        type: 'select',
-                        label: 'Kravkategorier',
-                        options:
-                          categories?.map((cat: string) => ({
-                            id: cat,
-                            label: cat,
-                          })) || [],
-                        onChange: (e) => {
-                          setFilterCategories(e.detail.checked);
+                        {
+                          type: 'select',
+                          label: 'Kravkategorier',
+                          options:
+                            categories?.map((cat: string) => ({
+                              id: cat,
+                              label: cat,
+                            })) || [],
+                          onChange: (e) => {
+                            setFilterCategories(e.detail.checked);
+                          },
                         },
-                      },
-                      {
-                        type: 'select',
-                        label: 'Bedömningsstatus',
-                        options: [
-                          {
-                            label: StatusText.PASS,
-                            id: Status.PASS.toString(),
+                        {
+                          type: 'select',
+                          label: 'Bedömningsstatus',
+                          options: [
+                            {
+                              label: StatusText.PASS,
+                              id: Status.PASS.toString(),
+                            },
+                            {
+                              label: StatusText.FAIL,
+                              id: Status.FAIL.toString(),
+                            },
+                            {
+                              label: StatusText.NOT_ASSESSED,
+                              id: Status.NOT_ASSESSED.toString(),
+                            },
+                            {
+                              label: StatusText.IRRELEVANT,
+                              id: Status.IRRELEVANT.toString(),
+                            },
+                          ],
+                          onChange: (e) => {
+                            setFilterStatus(
+                              e.detail.checked.map((item: string) => Number(item) as Status),
+                            );
                           },
-                          {
-                            label: StatusText.FAIL,
-                            id: Status.FAIL.toString(),
-                          },
-                          {
-                            label: StatusText.NOT_ASSESSED,
-                            id: Status.NOT_ASSESSED.toString(),
-                          },
-                          {
-                            label: StatusText.IRRELEVANT,
-                            id: Status.IRRELEVANT.toString(),
-                          },
-                        ],
-                        onChange: (e) => {
-                          setFilterStatus(
-                            e.detail.checked.map((item: string) => Number(item) as Status),
-                          );
                         },
-                      },
-                    ]}
-                    resetChoices={clearAll}
-                    choicesMade={
-                      filterCategories.length > 0 ||
-                      filterStatus.length > 0 ||
-                      filterFreeText.length > 0 ||
-                      sortBy !== undefined
-                    }
-                  />
-                </div>
-              )}
+                      ]}
+                      resetChoices={clearAll}
+                      choicesMade={
+                        filterCategories.length > 0 ||
+                        filterStatus.length > 0 ||
+                        filterFreeText.length > 0 ||
+                        sortBy !== undefined
+                      }
+                    />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </DigiTypography>
         </div>
       )}
     </div>

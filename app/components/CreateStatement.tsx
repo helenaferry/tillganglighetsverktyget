@@ -67,7 +67,7 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
   return (
     <div className="content-container content-container--largest content-container--nomargin content-container--xpadding">
       {numberRemaining(requirementsWithChecks) > 0 && (
-        <div className="mb-6">
+        <p className="mb-6">
           <DigiNotificationAlert
             afSize={NotificationAlertSize.LARGE}
             afVariation={NotificationAlertVariation.DANGER}
@@ -76,7 +76,7 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
             Granskningen innehåller {numberRemaining(requirementsWithChecks)} ohanterade krav. För
             att skapa en korrekt tillgänglighetsredogörelse behöver alla krav vara bedömda.
           </DigiNotificationAlert>
-        </div>
+        </p>
       )}
       <div className="content-container content-container--white content-container--nomargin !mb-6">
         <h2>Sammanställning av brister vid granskning</h2>
