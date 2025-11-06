@@ -134,3 +134,8 @@ svg {
 .sc-digi-link-button-s:hover > a {
   @apply !underline;
 }
+
+/* Visited link icon color, needed for PC */
+.sc-digi-link-s > a:visited [class*='digi-icon'] {
+  --digi--icon--color: var(--digi--link--color--visited);
+}
