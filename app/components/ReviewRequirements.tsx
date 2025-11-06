@@ -1,4 +1,5 @@
 import {
+  ErrorPageStatusCodes,
   LoaderSkeletonVariation,
   NotificationAlertSize,
   NotificationAlertVariation,
@@ -8,6 +9,7 @@ import {
 import {
   DigiLoaderSkeleton,
   DigiNotificationAlert,
+  DigiNotificationErrorPage,
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
@@ -166,15 +168,16 @@ export default function ReviewRequirements({ reviewId }: Props) {
   return (
     <div className="">
       {loading && (
-        <DigiLoaderSkeleton
-          className="m-5"
-          afVariation={LoaderSkeletonVariation.SECTION}
-          afCount={4}
-        ></DigiLoaderSkeleton>
+        <div className="content-container content-container--largest content-container--nomargin">
+          <DigiLoaderSkeleton
+            afVariation={LoaderSkeletonVariation.SECTION}
+            afCount={4}
+          ></DigiLoaderSkeleton>
+        </div>
       )}
-      <div className="content-container content-container--white content-container--nomargin">
-        <DigiTypography>
-          {review && (
+      {review && (
+        <div className="content-container content-container--white content-container--nomargin">
+          <DigiTypography>
             <div className="lg:flex justify-between">
               <div>
                 <Breadcrumbs
@@ -193,9 +196,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 </p>
               </div>
             </div>
-          )}
-        </DigiTypography>
-      </div>
+          </DigiTypography>
+        </div>
+      )}
       {review && (
         <div className="content-container content-container--nomargin content-container--largest">
           <DigiTypography>
@@ -400,6 +403,16 @@ export default function ReviewRequirements({ reviewId }: Props) {
               </div>
             </div>
           </DigiTypography>
+        </div>
+      )}
+      {!loading && !review && (
+        <div className="content-container content-container--largest content-container--nomargin">
+          <DigiNotificationErrorPage
+            afCustomHeading="Granskningen hittades inte"
+            afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
+          >
+            <p slot="bodytext">Den kan ha tagits bort, eller så har ett fel uppstått.</p>
+          </DigiNotificationErrorPage>
         </div>
       )}
     </div>

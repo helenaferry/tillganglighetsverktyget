@@ -1,4 +1,5 @@
 import {
+  ErrorPageStatusCodes,
   LoaderSkeletonVariation,
   NotificationAlertSize,
   NotificationAlertVariation,
@@ -8,6 +9,7 @@ import {
 import {
   DigiLoaderSkeleton,
   DigiNotificationAlert,
+  DigiNotificationErrorPage,
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
@@ -191,195 +193,193 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
 
   return (
     <div className="grid">
-      <div className="content-container content-container--nomargin content-container--white">
-        <DigiTypography>
-          {loading ? (
-            <div>
-              <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} afCount={4} />
-            </div>
-          ) : (
-            review && (
+      {loading && (
+        <div className="content-container content-container--largest content-container--nomargin">
+          <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} afCount={4} />
+        </div>
+      )}
+      {!loading && review && requirement && (
+        <>
+          <div className="content-container content-container--nomargin content-container--white">
+            <DigiTypography>
               <div className="lg:flex justify-between content-container content-container--white content-container--nomargin content-container--nopadding">
                 <div>
-                  <Breadcrumbs
-                    currentPage={
-                      requirements?.find((req) => String(req.id) === String(requirementId))?.name ||
-                      'Krav'
-                    }
-                    pages={[
-                      { title: 'Granskningar', href: '/' },
-                      {
-                        title: review?.title || 'Granskning',
-                        href: `/granskning/${review?.id}`,
-                      },
-                    ]}
-                  />
-                  <DigiTypographyHeadingJumbo
-                    className="wrap-anywhere"
-                    afText={review?.title || 'Granskning'}
-                    afLevel={TypographyHeadingJumboLevel.H1}
-                    afVariation={TypographyHeadingJumboVariation.PRIMARY}
-                  />
-                  <strong>Granskning startades {formatDate(review?.created_at)}</strong>
-                </div>
-                <div className="hidden lg:block basis-[14rem] shrink-0 relative">
-                  {requirements &&
-                    requirements.length &&
-                    numberChecked(requirementsWithChecks) > 0 && (
-                      <div
-                        className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full"
-                        aria-label={`${formatPercentage(
-                          numberChecked(requirementsWithChecks) / requirements.length,
-                        )} klart`}
-                      >
-                        <div aria-hidden="true">
-                          <span className="block text-center text-[2.5rem]">
-                            {formatPercentage(
-                              numberChecked(requirementsWithChecks) / requirements.length,
-                            )}
-                          </span>
-                          <span className="block text-center">K L A R T</span>
-                        </div>
-                      </div>
-                    )}
-                  {numberRemaining(requirementsWithChecks) > 0 &&
-                    numberChecked(requirementsWithChecks) > 0 && (
-                      <div
-                        className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full"
-                        aria-label={`Bara ${numberRemaining(requirementsWithChecks)} kvar!`}
-                      >
-                        <div aria-hidden="true">
-                          <span className="block text-center leading-none">BARA</span>
-                          <span className="block text-center text-[2rem] leading-none">
-                            {numberRemaining(requirementsWithChecks) || 0}
-                          </span>
-                          <span className="block text-center leading-none"> KVAR!</span>
-                        </div>
-                      </div>
-                    )}
-                </div>
-              </div>
-            )
-          )}
-        </DigiTypography>
-      </div>
-      <div className="relative">
-        <div
-          className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 sm:w-[17rem] overflow-y-auto bg-white`}
-        >
-          {requirement ? (
-            <CategoryNav
-              reviewId={reviewId}
-              categories={categoriesWithRequirements ?? []}
-              selectedCategory={requirement?.category ?? ''}
-              selectedRequirement={requirementId}
-              showCategoryNav={showCategoryNav}
-              onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
-            />
-          ) : (
-            <nav></nav>
-          )}
-        </div>
-        <main className="sm:ml-[17rem]" ref={mainRef} tabIndex={-1}>
-          <div className="content-container content-container--largest content-container--nomargin">
-            {requirement ? (
-              <div>
-                {percentageChecked(requirementsWithChecks) === 100 && (
-                  <div className="mb-5" role="alert">
-                    <DigiNotificationAlert
-                      afSize={NotificationAlertSize.LARGE}
-                      afVariation={NotificationAlertVariation.SUCCESS}
-                      afHeading="Hurra, granskningen är klar!"
-                    >
-                      <div className="mt-6 mb-4">
-                        <StyledLink
-                          to={`/granskning/${reviewId}/underkanda-krav`}
-                          styleVariant="link-button"
-                          hideIcon
-                        >
-                          Sammanställ underkända krav
-                        </StyledLink>
-                      </div>
-                    </DigiNotificationAlert>
+                  <div>
+                    <Breadcrumbs
+                      currentPage={
+                        requirements?.find((req) => String(req.id) === String(requirementId))
+                          ?.name || 'Krav'
+                      }
+                      pages={[
+                        { title: 'Granskningar', href: '/' },
+                        {
+                          title: review?.title || 'Granskning',
+                          href: `/granskning/${review?.id}`,
+                        },
+                      ]}
+                    />
+                    <DigiTypographyHeadingJumbo
+                      className="wrap-anywhere"
+                      afText={review?.title || 'Granskning'}
+                      afLevel={TypographyHeadingJumboLevel.H1}
+                      afVariation={TypographyHeadingJumboVariation.PRIMARY}
+                    />
+                    <strong>Granskning startades {formatDate(review?.created_at)}</strong>
                   </div>
-                )}
-                <CategoryOverview
-                  category={
-                    categoriesWithRequirements.find(
-                      (cat) => cat.category === requirement?.category,
-                    ) ?? { category: requirement?.category ?? '', requirements: [] }
-                  }
-                  onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
-                />
-                <div className="content-container content-container--white content-container--ymargin">
-                  <DigiTypography>
-                    <div className="border-b-1 border-grayscale-400 pb-5">
-                      <p className="text-grayscale-700">
-                        Krav {numberInCategory} av {totalInCategory}
-                      </p>
-                      <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
-                        <h3
-                          className="skip-target"
-                          id={requirement.id}
-                          data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                  <div className="hidden lg:block basis-[14rem] shrink-0 relative">
+                    {requirements &&
+                      requirements.length &&
+                      numberChecked(requirementsWithChecks) > 0 && (
+                        <div
+                          className="absolute right-0 h-32 w-32 text-white font-bold bg-[var(--digi--leaf-500)] flex items-center justify-center rounded-full"
+                          aria-label={`${formatPercentage(
+                            numberChecked(requirementsWithChecks) / requirements.length,
+                          )} klart`}
                         >
-                          {requirement.name}
-                        </h3>
-                        <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
-                      </div>
-                      <h4 className="!mt-4">Lagkrav och riktlinjer</h4>
-                      <div className="flex flex-wrap gap-2 mt-2 mb-4">
-                        {requirement.en301549 &&
-                          requirement.en301549.length > 0 &&
-                          requirement.en301549.split(',').map((text, index) => (
-                            <div
-                              className="bg-grayscale-200 rounded-sm py-2 px-4"
-                              key={`en-${requirement.id}-${text.trim()}-${index}`}
-                            >
-                              {`EN ${text}`}
-                            </div>
-                          ))}
-                        {requirement.wcag &&
-                          requirement.wcag.length > 0 &&
-                          requirement.wcag.split(',').map((text, index) => (
-                            <div
-                              className="bg-grayscale-200 rounded-sm py-2 px-4"
-                              key={`wcag-${requirement.id}-${text.trim()}-${index}`}
-                            >
-                              {`WCAG ${text}`}
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                    <div className="flex flex-col md:flex-row my-5 gap-5">
-                      <div className="flex-1">
-                        <RequirementDetails requirement={requirement} />
-                      </div>
-                      <div className="flex-1">
-                        <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
-                      </div>
-                    </div>
-                  </DigiTypography>
+                          <div aria-hidden="true">
+                            <span className="block text-center text-[2.5rem]">
+                              {formatPercentage(
+                                numberChecked(requirementsWithChecks) / requirements.length,
+                              )}
+                            </span>
+                            <span className="block text-center">K L A R T</span>
+                          </div>
+                        </div>
+                      )}
+                    {numberRemaining(requirementsWithChecks) > 0 &&
+                      numberChecked(requirementsWithChecks) > 0 && (
+                        <div
+                          className="absolute right-26 top-14 h-25 w-25 text-white font-bold bg-[var(--digi--stratos-500)] flex items-center justify-center rounded-full"
+                          aria-label={`Bara ${numberRemaining(requirementsWithChecks)} kvar!`}
+                        >
+                          <div aria-hidden="true">
+                            <span className="block text-center leading-none">BARA</span>
+                            <span className="block text-center text-[2rem] leading-none">
+                              {numberRemaining(requirementsWithChecks) || 0}
+                            </span>
+                            <span className="block text-center leading-none"> KVAR!</span>
+                          </div>
+                        </div>
+                      )}
+                  </div>
                 </div>
-                <PrevNextRequirement
-                  reviewId={reviewId}
-                  nextUnhandled={nextUnhandledRequirement(requirementId)}
-                  previousUnhandled={previousUnhandledRequirement(requirementId)}
-                />
               </div>
-            ) : (
-              <div className="content-container content-container--white">
-                <DigiTypography>
-                  <p>Krav med id {requirementId} hittades inte.</p>
-                  <StyledLink to={`/granskning/${reviewId}`}>
-                    Tillbaka till granskningsöversikten
-                  </StyledLink>
-                </DigiTypography>
-              </div>
-            )}
+            </DigiTypography>
           </div>
-        </main>
-      </div>
+          <div className="relative">
+            <div
+              className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 sm:w-[17rem] overflow-y-auto bg-white`}
+            >
+              <CategoryNav
+                reviewId={reviewId}
+                categories={categoriesWithRequirements ?? []}
+                selectedCategory={requirement?.category ?? ''}
+                selectedRequirement={requirementId}
+                showCategoryNav={showCategoryNav}
+                onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+              />
+            </div>
+            <main className="sm:ml-[17rem]" ref={mainRef} tabIndex={-1}>
+              <div className="content-container content-container--largest content-container--nomargin">
+                <div>
+                  {percentageChecked(requirementsWithChecks) === 100 && (
+                    <div className="mb-5" role="alert">
+                      <DigiNotificationAlert
+                        afSize={NotificationAlertSize.LARGE}
+                        afVariation={NotificationAlertVariation.SUCCESS}
+                        afHeading="Hurra, granskningen är klar!"
+                      >
+                        <div className="mt-6 mb-4">
+                          <StyledLink
+                            to={`/granskning/${reviewId}/underkanda-krav`}
+                            styleVariant="link-button"
+                            hideIcon
+                          >
+                            Sammanställ underkända krav
+                          </StyledLink>
+                        </div>
+                      </DigiNotificationAlert>
+                    </div>
+                  )}
+                  <CategoryOverview
+                    category={
+                      categoriesWithRequirements.find(
+                        (cat) => cat.category === requirement?.category,
+                      ) ?? { category: requirement?.category ?? '', requirements: [] }
+                    }
+                    onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
+                  />
+                  <div className="content-container content-container--white content-container--ymargin">
+                    <DigiTypography>
+                      <div className="border-b-1 border-grayscale-400 pb-5">
+                        <p className="text-grayscale-700">
+                          Krav {numberInCategory} av {totalInCategory}
+                        </p>
+                        <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
+                          <h3
+                            className="skip-target"
+                            id={requirement.id}
+                            data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                          >
+                            {requirement.name}
+                          </h3>
+                          <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
+                        </div>
+                        <h4 className="!mt-4">Lagkrav och riktlinjer</h4>
+                        <div className="flex flex-wrap gap-2 mt-2 mb-4">
+                          {requirement.en301549 &&
+                            requirement.en301549.length > 0 &&
+                            requirement.en301549.split(',').map((text, index) => (
+                              <div
+                                className="bg-grayscale-200 rounded-sm py-2 px-4"
+                                key={`en-${requirement.id}-${text.trim()}-${index}`}
+                              >
+                                {`EN ${text}`}
+                              </div>
+                            ))}
+                          {requirement.wcag &&
+                            requirement.wcag.length > 0 &&
+                            requirement.wcag.split(',').map((text, index) => (
+                              <div
+                                className="bg-grayscale-200 rounded-sm py-2 px-4"
+                                key={`wcag-${requirement.id}-${text.trim()}-${index}`}
+                              >
+                                {`WCAG ${text}`}
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                      <div className="flex flex-col md:flex-row my-5 gap-5">
+                        <div className="flex-1">
+                          <RequirementDetails requirement={requirement} />
+                        </div>
+                        <div className="flex-1">
+                          <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
+                        </div>
+                      </div>
+                    </DigiTypography>
+                  </div>
+                  <PrevNextRequirement
+                    reviewId={reviewId}
+                    nextUnhandled={nextUnhandledRequirement(requirementId)}
+                    previousUnhandled={previousUnhandledRequirement(requirementId)}
+                  />
+                </div>
+              </div>
+            </main>
+          </div>
+        </>
+      )}
+      {!loading && (!review || !requirement) && (
+        <div className="content-container content-container--largest content-container--nomargin">
+          <DigiNotificationErrorPage
+            afCustomHeading="Granskningen hittades inte"
+            afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
+          >
+            <p slot="bodytext">Den kan ha tagits bort, eller så har ett fel uppstått.</p>
+          </DigiNotificationErrorPage>
+        </div>
+      )}
     </div>
   );
 }
