@@ -5,6 +5,7 @@ import {
 } from '@designsystem-se/af';
 import {
   DigiButton,
+  DigiIconChevronRight,
   DigiIconPen,
   DigiLoaderSkeleton,
   DigiTypography,
@@ -176,6 +177,9 @@ export function ReviewsList() {
                   posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
                   content: [
                     <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
+                      <span className="inline lg:hidden">
+                        <DigiIconChevronRight />
+                      </span>{' '}
                       {review.title || 'Granskning'}
                     </StyledLink>,
                     <p className="whitespace-nowrap" key={`created-${review.id}`}>

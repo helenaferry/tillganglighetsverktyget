@@ -26,6 +26,7 @@ import { CardsOrTable } from './CardsOrTable';
 import ProgressBar from './ProgressBar';
 import { SortButton } from './SortButton';
 import StatusBadge from './StatusBadge';
+import { DigiIconChevronRight } from '@designsystem-se/af-react';
 
 interface Props {
   reviewId: string;
@@ -329,6 +330,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                           posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
                           content: [
                             <StyledLink key={req.id} to={'/granskning/' + review.id + '/' + req.id}>
+                              <span className="inline lg:hidden">
+                                <DigiIconChevronRight />
+                              </span>{' '}
                               {req.name}
                             </StyledLink>,
                             <span key={req.id + '-category'} className="whitespace-nowrap">

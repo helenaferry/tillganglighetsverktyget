@@ -11,7 +11,6 @@ import {
   DigiFormFilter,
   DigiFormInputSearch,
   DigiIconRedo,
-  DigiLinkInternal,
   DigiNavigationPagination,
   DigiTable,
 } from '@designsystem-se/af-react';
@@ -141,7 +140,7 @@ export function CardsOrTable({
         </form>
       )}
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4 mb-0">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4 mb-">
         <div className="flex flex-col md:flex-row md:items-center">
           <span className="font-bold" aria-live="polite" aria-atomic="true">
             {hitsText}
@@ -270,9 +269,7 @@ export function CardsOrTable({
               aria-posinset={row.posInSet}
               className="border-b-1 py-4"
             >
-              <p className="my-4!">
-                <DigiLinkInternal afHref="#">{row.content[0]}</DigiLinkInternal>
-              </p>
+              <p className="my-4!">{row.content[0]}</p>
               {row.content.slice(1).map((cell, cellIndex) => (
                 <div key={`${row.id}-cell-${cellIndex + 1}`} className="mb-2">
                   {cardsHeadings && cardsHeadings[cellIndex + 1] && (
