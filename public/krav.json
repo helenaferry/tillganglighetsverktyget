@@ -1313,7 +1313,7 @@
     },
     {
       "id": "sudo",
-      "name": "Tillgänglig dokumentation",
+      "name": "Tillgänglig dokumentation från supporttjänst",
       "type": "requirement",
       "wcag": "",
       "en301549": "12.2.4",
