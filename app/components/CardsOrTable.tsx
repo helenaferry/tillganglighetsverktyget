@@ -234,7 +234,7 @@ export function CardsOrTable({
       {/* Cards view */}
       <div className="lg:hidden space-y-4">
         <fieldset>
-          <legend className="font-bold mb-2">Sortera på:</legend>
+          <legend className="font-bold py-5">Sortera på:</legend>
           {displayHeadingsAboveCards && (
             <div>
               {headings.map((heading, index) => (
@@ -245,7 +245,7 @@ export function CardsOrTable({
                       ? (cardsHeadings[index] as string)
                       : undefined
                   }
-                  className={`${index === 0 ? 'w-full' : ''}`}
+                  className={`${index === 0 ? 'w-full' : ''} pb-5`}
                 >
                   {heading}
                 </div>

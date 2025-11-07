@@ -66,9 +66,9 @@
       "contentType": "",
       "category": "Flexibilitet och anpassning",
       "objectType": "web",
-      "statement": "Ljud som spelas upp automatiskt på en webbplats kan pausas, stoppas eller sänkas.",
+      "statement": "Ljud som spelas upp automatiskt på en webbplats kan pausas, stoppas eller sänkas. Ljudvolymen går att ändra oberoende av ljudvolymen på datorn eller enheten som används.",
       "why": "Ljud som spelas upp automatiskt stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
-      "howToTest": "1. Börja med att kontrollera om det finns ljudfiler eller video med ljud som spelas automatiskt på sidan. \r\n2. Om det finns, kontrollera att ljudvolymen går att justera eller att ljudet går att pausa eller stänga av."
+      "howToTest": "1. Börja med att kontrollera om det finns ljudfiler eller video med ljud som spelas automatiskt på sidan. \r\n2. Om det finns, kontrollera att ljudvolymen går att justera eller att ljudet går att pausa eller stänga av med särskilda kontroller för detta oberoende av systeminställningar."
     },
     {
       "id": "raut",

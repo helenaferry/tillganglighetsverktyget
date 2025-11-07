@@ -116,6 +116,18 @@ svg {
   }
 }
 
+.mobile-sort-icon {
+  svg {
+    --digi--icon--color: var(--color-text);
+  }
+}
+
+.mobile-sort-icon--active {
+  svg {
+    --digi--icon--color: white;
+  }
+}
+
 .sort-button .sc-digi-icon-caret-up-h,
 .sort-button .sc-digi-icon-caret-down-h {
   @apply min-h-0;
