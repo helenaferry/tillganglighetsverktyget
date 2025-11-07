@@ -25,9 +25,9 @@ const contentTypeTexts = [
   },
   {
     contentType: 'Videosamtal',
-    question: 'Innehåller tjänsten röst- och videosamtal?',
+    question: 'Innehåller tjänsten röst-/videokommunikation?',
     prefillComment:
-      'Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar röst- och videosamtal.',
+      'Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar röst-/videokommunikation.',
   },
   {
     contentType: 'Innehållsskapande',

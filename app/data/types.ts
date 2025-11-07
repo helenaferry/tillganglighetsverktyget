@@ -13,6 +13,7 @@ export type Requirement = {
   id: string;
   name: string;
   type: RequirementType;
+  regulatoryFramework: string;
   wcag: string;
   en301549: string;
   contentType: string;
