@@ -7,12 +7,13 @@ import {
 import {
   DigiButton,
   DigiFormCheckbox,
+  DigiFormFieldset,
   DigiFormValidationMessage,
   DigiIconRedo,
   DigiLinkInternal,
   DigiNotificationAlert,
 } from '@designsystem-se/af-react';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
 import { type Check, type Requirement } from '~/data/types';
@@ -50,6 +51,8 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
     setShowCategories(true);
     setShowTitles(true);
     setShowComments(true);
+    const focusElement = document.getElementById('checkbox-show-categories');
+    focusElement?.focus();
   };
 
   const copyToClipboard = async () => {
@@ -63,6 +66,11 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
       setCopyFailure(true);
     }
   };
+
+  useEffect(() => {
+    setCopySuccess(false);
+    setCopyFailure(false);
+  }, [showCategories, showTitles, showComments]);
 
   return (
     <div className="content-container content-container--largest content-container--nomargin content-container--xpadding">
@@ -81,27 +89,53 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
       <div className="content-container content-container--white content-container--nomargin !mb-6">
         <h2>Sammanställning av brister vid granskning</h2>
         {failedChecks.length > 0 && (
-          <>
+          <form name="Innehållsval">
             <p>
               Här följer en översikt av de underkända krav du behöver redogöra för i din
               tillgänglighetsredogörelse.
             </p>
-            <DigiFormCheckbox
-              checked={showCategories}
-              onAfOnChange={() => setShowCategories(!showCategories)}
-              afLabel="Visa kravkategorier"
-            />
-            <DigiFormCheckbox
-              checked={showTitles}
-              onAfOnChange={() => setShowTitles(!showTitles)}
-              afLabel="Visa kravtitlar"
-            />
-            <DigiFormCheckbox
-              checked={showComments}
-              onAfOnChange={() => setShowComments(!showComments)}
-              afLabel="Visa kommentarer"
-            />
-          </>
+            <DigiFormFieldset
+              afForm="Innehållsval"
+              afLegend="Välj innehåll som ska inkluderas i sammanställningen"
+              afName="Innehållsval"
+            >
+              <DigiFormCheckbox
+                checked={showCategories}
+                onAfOnChange={() => setShowCategories(!showCategories)}
+                afLabel="Visa kravkategorier"
+                afId="checkbox-show-categories"
+              />
+              <DigiFormCheckbox
+                checked={showTitles}
+                onAfOnChange={() => setShowTitles(!showTitles)}
+                afLabel="Visa kravtitlar"
+                afId="checkbox-show-titles"
+              />
+              <DigiFormCheckbox
+                checked={showComments}
+                onAfOnChange={() => setShowComments(!showComments)}
+                afLabel="Visa kommentarer"
+                afId="checkbox-show-comments"
+              />
+            </DigiFormFieldset>
+            <div role="alert">
+              {!showCategories && !showTitles && !showComments && (
+                <p className="flex flex-col sm:flex-row sm:items-center gap-2">
+                  <span>Dina val döljer all information.</span>
+                  <span className="inline-flex">
+                    <DigiButton
+                      afVariation={ButtonVariation.FUNCTION}
+                      onAfOnClick={reset}
+                      afFullWidth={false}
+                    >
+                      Rensa dina val
+                      <DigiIconRedo slot="icon" />
+                    </DigiButton>
+                  </span>
+                </p>
+              )}
+            </div>
+          </form>
         )}
         {failedChecks.length === 0 && <p>Det finns inga underkända krav.</p>}
         {(showCategories || showTitles || showComments) && (
@@ -146,23 +180,6 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
             })}
           </div>
         )}
-        <div role="alert">
-          {!showCategories && !showTitles && !showComments && (
-            <p className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span>Dina val döljer all information.</span>
-              <span className="inline-flex">
-                <DigiButton
-                  afVariation={ButtonVariation.FUNCTION}
-                  onAfOnClick={reset}
-                  afFullWidth={false}
-                >
-                  Rensa dina val
-                  <DigiIconRedo slot="icon" />
-                </DigiButton>
-              </span>
-            </p>
-          )}
-        </div>
         {failedChecks.length > 0 && (showCategories || showTitles || showComments) && (
           <div className="my-8 flex flex-col gap-4">
             <DigiButton afVariation={ButtonVariation.PRIMARY} onAfOnClick={copyToClipboard}>

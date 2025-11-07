@@ -6,7 +6,6 @@ import {
 import {
   DigiButton,
   DigiFormCheckbox,
-  DigiFormFieldset,
   DigiFormTextarea,
   DigiNotificationAlert,
 } from '@designsystem-se/af-react';
@@ -120,85 +119,93 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
 
       {failedChecks.length > 0 && (
         <div className="content-container content-container--white content-container--ymargin">
-          <h2>Fyll i uppgifter till Jira</h2>
-          <p>Här kan du exportera underkända krav till Jira.</p>
-          <p>
-            <DigiFormInput
-              afLabel="E-postadress till rapportör"
-              afLabelDescription="Du kan hantera detta i Jira också."
-              afValue={email}
-              onAfOnInput={(e) => setEmail(e.detail.target.value)}
-            />
-          </p>
-          <p>
-            <DigiFormInput
-              afLabel="Ärendetyp"
-              afLabelDescription="Du kan hantera detta i Jira också."
-              afValue={issueType}
-              onAfOnInput={(e) => setIssueType(e.detail.target.value)}
-            />
-          </p>
-          <h2>Välj vilka krav som ska exporteras</h2>
-          <p>
-            Du kan välja vilka krav som ska exporteras genom att markera dem. Om du ändrar
-            kommentarer så sparas det enbart i exporteringen.
-          </p>
-          <p>
-            <DigiButton
-              afType="button"
-              afVariation={ButtonVariation.SECONDARY}
-              onAfOnClick={handleToggleAll}
-            >
-              <span
-                style={{ display: selectedChecks.size < failedChecks.length ? 'inline' : 'none' }}
+          <fieldset form="export-tasks-form" className="mb-6">
+            <legend className="sr-only">Grunduppgifter till Jira</legend>
+            <h2>Fyll i uppgifter till Jira</h2>
+            <p>Här kan du exportera underkända krav till Jira.</p>
+            <p>
+              <DigiFormInput
+                afLabel={`E-postadress till rapportör `}
+                afLabelDescription="Du kan hantera detta i Jira också."
+                afValue={email}
+                onAfOnInput={(e) => setEmail(e.detail.target.value)}
+              />
+            </p>
+            <p>
+              <DigiFormInput
+                afLabel={`Ärendetyp `}
+                afLabelDescription="Du kan hantera detta i Jira också."
+                afValue={issueType}
+                onAfOnInput={(e) => setIssueType(e.detail.target.value)}
+              />
+            </p>
+          </fieldset>
+          <fieldset form="export-tasks-form">
+            <legend className="sr-only">Alla krav</legend>
+            <h2>Välj vilka krav som ska exporteras</h2>
+            <p>
+              Du kan välja vilka krav som ska exporteras genom att markera dem. Om du ändrar
+              kommentarer så sparas det enbart i exporteringen.
+            </p>
+            <p>
+              <DigiButton
+                afType="button"
+                afVariation={ButtonVariation.SECONDARY}
+                onAfOnClick={handleToggleAll}
               >
-                Markera alla krav
-              </span>
-              <span
-                style={{ display: selectedChecks.size < failedChecks.length ? 'none' : 'inline' }}
-              >
-                Avmarkera alla krav
-              </span>
-            </DigiButton>
-          </p>
-          {failedChecks.map((check) => {
-            const requirement = requirements.find(
-              (req) => String(req.id) === String(check.requirement),
-            );
-            return (
-              <DigiFormFieldset key={check.id} afForm="export-tasks-form">
-                <DigiFormCheckbox
-                  afLabel={requirement?.name || 'Krav'}
-                  afName={`requirement-${check.id}`}
-                  afValue={String(check.id)}
-                  afChecked={selectedChecks.has(String(check.id))}
-                  onAfOnChange={(e) => {
-                    const checked = e.detail.target.checked;
-                    setSelectedChecks((prev) => {
-                      const next = new Set(prev);
-                      if (checked) {
-                        next.add(String(check.id));
-                      } else {
-                        next.delete(String(check.id));
-                      }
-                      return next;
-                    });
-                  }}
-                />
-                <p className="!mb-4">
-                  <DigiFormTextarea
-                    afLabel="Kommentar"
-                    afLabelDescription="Ändringar sparas endast i exporten."
-                    afName={`comment-${check.id}`}
-                    afValue={check.comment ?? ''}
-                    onAfOnInput={(e) => {
-                      check.comment = e.detail.target.value;
+                <span
+                  style={{ display: selectedChecks.size < failedChecks.length ? 'inline' : 'none' }}
+                >
+                  Markera alla krav
+                </span>
+                <span
+                  style={{ display: selectedChecks.size < failedChecks.length ? 'none' : 'inline' }}
+                >
+                  Avmarkera alla krav
+                </span>
+              </DigiButton>
+            </p>
+
+            {failedChecks.map((check) => {
+              const requirement = requirements.find(
+                (req) => String(req.id) === String(check.requirement),
+              );
+              return (
+                <fieldset key={check.id} form="export-tasks-form">
+                  <legend className="sr-only">Krav {requirement?.name}</legend>
+                  <DigiFormCheckbox
+                    afLabel={requirement?.name || 'Krav'}
+                    afName={`requirement-${check.id}`}
+                    afValue={String(check.id)}
+                    afChecked={selectedChecks.has(String(check.id))}
+                    onAfOnChange={(e) => {
+                      const checked = e.detail.target.checked;
+                      setSelectedChecks((prev) => {
+                        const next = new Set(prev);
+                        if (checked) {
+                          next.add(String(check.id));
+                        } else {
+                          next.delete(String(check.id));
+                        }
+                        return next;
+                      });
                     }}
                   />
-                </p>
-              </DigiFormFieldset>
-            );
-          })}
+                  <p className="!mb-4">
+                    <DigiFormTextarea
+                      afLabel={`Kommentar `}
+                      afLabelDescription="Ändringar sparas endast i exporten."
+                      afName={`comment-${check.id}`}
+                      afValue={check.comment ?? ''}
+                      onAfOnInput={(e) => {
+                        check.comment = e.detail.target.value;
+                      }}
+                    />
+                  </p>
+                </fieldset>
+              );
+            })}
+          </fieldset>
           <div className="mt-2">
             <DigiButton afType="submit">Spara som .csv</DigiButton>
           </div>
