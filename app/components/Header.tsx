@@ -5,7 +5,9 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useLocation } from 'react-router-dom';
+
 import { envVars } from '~/helpers';
+
 import { StyledLink } from './StyledLink';
 
 export default function Header() {
