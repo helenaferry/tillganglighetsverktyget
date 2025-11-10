@@ -5,10 +5,7 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useLocation } from 'react-router-dom';
-
 import { envVars } from '~/helpers';
-
-import SkipLink from './SkipLink';
 import { StyledLink } from './StyledLink';
 
 export default function Header() {
@@ -20,7 +17,6 @@ export default function Header() {
       <DigiTypography>
         <div className="grid grid-cols-[1fr_5rem] md:grid-cols-1 w-full  border-b-1 border-b-grayscale-200">
           <div className="min-w-0">
-            <SkipLink />
             <StyledLink
               aria-label={`Startsida för ${applicationTitle}`}
               to="/"

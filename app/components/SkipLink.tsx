@@ -4,23 +4,10 @@ import { useLocation } from 'react-router-dom';
 export default function SkipLink() {
   const location = useLocation();
   const [skipTargets, setSkipTargets] = useState<{ id: string; text: string }[]>([]);
-  const [h1Exists, setH1Exists] = useState(false);
 
   useEffect(() => {
-    let h1Attempts = 0;
     let skipAttempts = 0;
-    const maxAttempts = 10;
-
-    function pollForH1() {
-      const h1 = document.querySelector('h1');
-      if (h1) {
-        setH1Exists(true);
-        if (!h1.id) h1.id = 'h1';
-      } else if (h1Attempts < maxAttempts) {
-        h1Attempts++;
-        setTimeout(pollForH1, 50);
-      }
-    }
+    const maxAttempts = 20;
 
     function pollForSkipTargets() {
       const targets = Array.from(document.querySelectorAll('.skip-target')).map((el, i) => {
@@ -40,20 +27,17 @@ export default function SkipLink() {
       }
     }
 
-    pollForH1();
     pollForSkipTargets();
   }, [location.pathname]);
 
   return (
     <div>
-      {h1Exists && (
-        <a
-          href="#h1"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white focus:px-4 focus:py-2 focus:rounded-md focus:z-50 transition"
-        >
-          Hoppa till huvudinnehåll
-        </a>
-      )}
+      <a
+        href="#h1"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white focus:px-4 focus:py-2 focus:rounded-md focus:z-50 transition"
+      >
+        Hoppa till huvudinnehåll
+      </a>
       {skipTargets.map((target) => (
         <a
           key={target.id}
