@@ -237,7 +237,14 @@ export default function RequirementsPage() {
                           >
                             Kategori: {requirement.category}
                           </p>
-                          <h2 aria-describedby={`cat-${requirement.id}`}>{requirement.name}</h2>
+                          <h2
+                            aria-describedby={`cat-${requirement.id}`}
+                            className="skip-target"
+                            id={requirement.id}
+                            data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                          >
+                            {requirement.name}
+                          </h2>
                         </div>
                         <div className="flex flex-col items-end">
                           <DigiButton
