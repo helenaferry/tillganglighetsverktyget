@@ -619,9 +619,9 @@
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
-      "statement": "Tabeller används endast för strukturerad data och är korrekt uppmärkta med elementen `<table>`, `<tr>` för tabellrad, `<th>` för tabellhuvud och `<td>` för dataceller.",
+      "statement": "Tabeller används endast för strukturerad data och är korrekt uppmärkta med elementen `<table>`, `<tr>` för tabellrad, `<th>` för tabellhuvud och `<td>` för dataceller.\r\n\r\nOm en tabellrubrik finns ligger den i elementet `<caption>` som är första elementet under `<table>`.",
       "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur.",
-      "howToTest": "Kontrollera att alla tabeller:\r\n- Omsluts av ett `<table>`-element.\r\n- Har tabellrubriker som omsluts av elementet`<th>`.\r\n- Har tabellrader som omsluts av elementet `<tr>`.\r\n- Har tabellceller som omsluts av elementet `<td>`.\r\n\r\n\r\n"
+      "howToTest": "Kontrollera att alla tabeller:\r\n- Omsluts av ett `<table>`-element.\r\n- Har rubriker som omsluts av elementet`<th>`.\r\n- Har rader som omsluts av elementet `<tr>`.\r\n- Har celler som omsluts av elementet `<td>`.\r\n- Har korrekt kodade tabellrubriker om sådana finns.\r\n\r\n\r\n"
     },
     {
       "id": "tave",
