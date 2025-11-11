@@ -225,7 +225,9 @@ export default function RequirementsPage() {
                 {filteredRequirements.map((requirement) => (
                   <div
                     key={requirement.id}
-                    className="content-container content-container--white content-container--ymargin first:!mt-2"
+                    className="skip-target content-container content-container--white content-container--ymargin first:!mt-2"
+                    id="kravlista"
+                    data-skip-link-text="Hoppa till kravlista"
                   >
                     <div className="border-b-1 border-grayscale-400 pb-5 mb-8">
                       <div className="flex justify-between">
@@ -237,14 +239,7 @@ export default function RequirementsPage() {
                           >
                             Kategori: {requirement.category}
                           </p>
-                          <h2
-                            aria-describedby={`cat-${requirement.id}`}
-                            className="skip-target"
-                            id={requirement.id}
-                            data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
-                          >
-                            {requirement.name}
-                          </h2>
+                          <h2 aria-describedby={`cat-${requirement.id}`}>{requirement.name}</h2>
                         </div>
                         <div className="flex flex-col items-end">
                           <DigiButton
