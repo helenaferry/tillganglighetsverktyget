@@ -182,7 +182,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
             <div className="lg:flex justify-between">
               <div>
                 <Breadcrumbs
-                  currentPage={review.title || 'Granskning'}
+                  currentPage={`Kravöversikt ${review?.title || 'Granskning'}`}
                   pages={[{ title: 'Granskningar', href: '/' }]}
                 />
                 <DigiTypographyHeadingJumbo

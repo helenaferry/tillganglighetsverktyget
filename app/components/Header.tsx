@@ -54,7 +54,12 @@ export default function Header() {
           </DigiHeaderNavigationItem>
           <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
             <StyledLink to="/krav" styleVariant="plain">
-              Krav
+              Tillgänglighetskrav
+            </StyledLink>
+          </DigiHeaderNavigationItem>
+          <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/kravOld'}>
+            <StyledLink to="/kravOld" styleVariant="plain">
+              Krav (gammal)
             </StyledLink>
           </DigiHeaderNavigationItem>
         </DigiHeaderNavigation>

@@ -9,4 +9,5 @@ export default [
   route('granskning/:id/underkanda-krav', 'routes/failed.tsx', { id: 'failed' }),
   route('granskning/:id/export', 'routes/export.tsx', { id: 'export' }),
   route('krav', 'routes/requirements.tsx', { id: 'requirements' }),
+  route('kravOld', 'routes/requirementsOld.tsx', { id: 'requirementsOld' }),
 ] satisfies RouteConfig;

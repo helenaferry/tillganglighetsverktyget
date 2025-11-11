@@ -20,7 +20,7 @@
 }
 
 .content-container {
-  @apply p-6 w-full max-w-screen overflow-x-auto m-5;
+  @apply p-6 w-full max-w-screen overflow-x-auto m-6;
 }
 
 .content-container--white {
@@ -32,11 +32,11 @@
 }
 
 .content-container--ymargin {
-  @apply mx-0 my-5;
+  @apply mx-0 my-6;
 }
 
 .content-container--xmargin {
-  @apply my-0 mx-5;
+  @apply my-0 mx-6;
 }
 
 .content-container--nopadding {
@@ -44,11 +44,11 @@
 }
 
 .content-container--xpadding {
-  @apply px-5 py-0;
+  @apply px-6 py-0;
 }
 
 .content-container--ypadding {
-  @apply py-5 px-0;
+  @apply py-6 px-0;
 }
 
 .content-container--largest {
@@ -99,15 +99,17 @@ svg {
   [type='search'] {
     @apply w-full max-w-[8.5rem] sm:max-w-0 sm:min-w-[20rem];
   }
-  .digi-form-input-search button {
-    @apply h-[2.5rem];
-  }
+
   .digi-button {
     @apply justify-self-stretch !justify-center;
   }
   .digi-form-filter__dropdown {
     @apply w-full;
   }
+}
+
+.sc-digi-form-input-search button {
+  @apply h-[2.5rem];
 }
 
 .sort-button--active {

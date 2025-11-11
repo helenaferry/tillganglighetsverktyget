@@ -18,7 +18,7 @@ export default function Footer() {
             <StyledLink to="/granskning/skapa">Skapa ny granskning</StyledLink>
           </li>
           <li>
-            <StyledLink to="/krav">Krav</StyledLink>
+            <StyledLink to="/krav">Tillgänglighetskrav</StyledLink>
           </li>
           <li>
             <StyledLink

@@ -29,6 +29,7 @@ import CategoryOverview from './CategoryOverview';
 import PrevNextRequirement from './PrevNextRequirement';
 import RequirementDetails from './RequirementDetails';
 import RequirementForm from './RequirementForm';
+import RequirementLegal from './RequirementLegal';
 import StatusBadge from './StatusBadge';
 
 interface Props {
@@ -205,21 +206,21 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
               <div className="flex flex-col md:flex-row gap-4 justify-between content-container content-container--largest content-container--white content-container--nomargin content-container--nopadding">
                 <div>
                   <Breadcrumbs
-                    currentPage={
+                    currentPage={`Granska ${review?.title || 'Granskning'}: ${
                       requirements?.find((req) => String(req.id) === String(requirementId))?.name ||
                       'Krav'
-                    }
+                    }`}
                     pages={[
                       { title: 'Granskningar', href: '/' },
                       {
-                        title: review?.title || 'Granskning',
+                        title: `Kravöversikt ${review?.title || 'Granskning'}`,
                         href: `/granskning/${review?.id}`,
                       },
                     ]}
                   />
                   <DigiTypographyHeadingJumbo
                     className="wrap-anywhere"
-                    afText={review?.title || 'Granskning'}
+                    afText={`Granska ${review?.title || 'Granskning'}`}
                     afLevel={TypographyHeadingJumboLevel.H1}
                     afVariation={TypographyHeadingJumboVariation.PRIMARY}
                   />
@@ -323,29 +324,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                           </h3>
                           <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
                         </div>
-                        <h4 className="!mt-4">Lagkrav och riktlinjer</h4>
-                        <div className="flex flex-wrap gap-2 mt-2 mb-4">
-                          {requirement.en301549 &&
-                            requirement.en301549.length > 0 &&
-                            requirement.en301549.split(',').map((text, index) => (
-                              <div
-                                className="bg-grayscale-200 rounded-sm py-2 px-4"
-                                key={`en-${requirement.id}-${text.trim()}-${index}`}
-                              >
-                                {`EN ${text}`}
-                              </div>
-                            ))}
-                          {requirement.wcag &&
-                            requirement.wcag.length > 0 &&
-                            requirement.wcag.split(',').map((text, index) => (
-                              <div
-                                className="bg-grayscale-200 rounded-sm py-2 px-4"
-                                key={`wcag-${requirement.id}-${text.trim()}-${index}`}
-                              >
-                                {`WCAG ${text}`}
-                              </div>
-                            ))}
-                        </div>
+                        <RequirementLegal requirement={requirement} />
                       </div>
                       <div className="flex flex-col md:flex-row my-5 gap-5">
                         <div className="flex-1">
