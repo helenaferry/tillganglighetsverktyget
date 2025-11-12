@@ -108,8 +108,9 @@ svg {
   }
 }
 
-.sc-digi-form-input-search button {
-  @apply h-[2.5rem];
+.sc-digi-form-input-search button,
+.sc-digi-form-input-search input {
+  @apply !h-[2.625rem];
 }
 
 .sort-button--active {

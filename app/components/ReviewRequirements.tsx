@@ -14,13 +14,14 @@ import {
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
 import { DigiIconChevronRight } from '@designsystem-se/af-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, Status, StatusText } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
+import { useSearchParams } from 'react-router-dom';
 
 import Breadcrumbs from './Breadcrumbs';
 import { CardsOrTable } from './CardsOrTable';
@@ -33,6 +34,7 @@ interface Props {
 }
 
 export default function ReviewRequirements({ reviewId }: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
   const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
   const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
@@ -101,7 +103,60 @@ export default function ReviewRequirements({ reviewId }: Props) {
   const [filterStatus, setFilterStatus] = useState<Status[]>([]);
   const [filterFreeText, setFilterFreeText] = useState<string>('');
   const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
-  const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('descending');
+  const [sortDirection, setSortDirection] = useState<'stigande' | 'fallande'>('fallande');
+
+  useEffect(() => {
+    const categoriesSearchParam = searchParams.get('kategorier');
+    const searchSearchParam = searchParams.get('sok');
+    const statusSearchParam = searchParams.get('status');
+    const sortParam = searchParams.get('sortering');
+    const directionParam = searchParams.get('riktning');
+    if (!categoriesSearchParam) {
+      setFilterCategories([]);
+    } else {
+      setFilterCategories(categoriesSearchParam.split(','));
+    }
+    if (!searchSearchParam) {
+      setFilterFreeText('');
+    } else {
+      setFilterFreeText(searchSearchParam);
+    }
+    if (!statusSearchParam) {
+      setFilterStatus([]);
+    } else {
+      const statusArray = statusSearchParam.split(',').map((s) => Number(s) as Status);
+      setFilterStatus(statusArray);
+    }
+    if (sortParam) {
+      const sortByParam = sortParam;
+      if (sortByParam) {
+        setSortBy(parseInt(sortByParam));
+      }
+    }
+    if (directionParam === 'stigande' || directionParam === 'fallande') {
+      setSortDirection(directionParam);
+    }
+  }, [searchParams]);
+
+  const setUrlParams = (
+    search: string,
+    categories: string[],
+    statuses: Status[],
+    sort: SortBy | undefined,
+    direction: 'stigande' | 'fallande',
+  ) => {
+    const params: Record<string, string> = {};
+    if (search) params.sok = search;
+    if (categories.length > 0) params.kategorier = categories.join(',');
+    if (statuses.length > 0) params.status = statuses.join(',');
+    if (sort !== undefined) params.sortering = sort.toString();
+    if (sort !== undefined && direction) params.riktning = direction;
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.pathname}?${new URLSearchParams(params).toString()}`,
+    );
+  };
 
   const filteredRequirements = useMemo(() => {
     let result = requirementsWithChecks || [];
@@ -120,19 +175,19 @@ export default function ReviewRequirements({ reviewId }: Props) {
     }
     if (sortBy !== undefined) {
       result = [...result].sort((a, b) => {
-        if (sortBy === SortBy.REQUIREMENT && sortDirection === 'ascending') {
+        if (sortBy === SortBy.REQUIREMENT && sortDirection === 'stigande') {
           return a.name.localeCompare(b.name);
-        } else if (sortBy === SortBy.REQUIREMENT && sortDirection === 'descending') {
+        } else if (sortBy === SortBy.REQUIREMENT && sortDirection === 'fallande') {
           return b.name.localeCompare(a.name);
-        } else if (sortBy === SortBy.CATEGORY && sortDirection === 'ascending') {
+        } else if (sortBy === SortBy.CATEGORY && sortDirection === 'stigande') {
           return a.category.localeCompare(b.category);
-        } else if (sortBy === SortBy.CATEGORY && sortDirection === 'descending') {
+        } else if (sortBy === SortBy.CATEGORY && sortDirection === 'fallande') {
           return b.category.localeCompare(a.category);
-        } else if (sortBy === SortBy.STATUS && sortDirection === 'ascending') {
+        } else if (sortBy === SortBy.STATUS && sortDirection === 'stigande') {
           return (
             (a.check?.status ?? Status.NOT_ASSESSED) - (b.check?.status ?? Status.NOT_ASSESSED)
           );
-        } else if (sortBy === SortBy.STATUS && sortDirection === 'descending') {
+        } else if (sortBy === SortBy.STATUS && sortDirection === 'fallande') {
           return (
             (b.check?.status ?? Status.NOT_ASSESSED) - (a.check?.status ?? Status.NOT_ASSESSED)
           );
@@ -152,11 +207,18 @@ export default function ReviewRequirements({ reviewId }: Props) {
 
   const setSort = (field: SortBy | undefined) => {
     if (field === sortBy) {
-      setSortDirection(sortDirection === 'ascending' ? 'descending' : 'ascending');
+      setSortDirection(sortDirection === 'stigande' ? 'fallande' : 'stigande');
     } else {
       setSortBy(field);
-      setSortDirection('descending');
+      setSortDirection('fallande');
     }
+    setUrlParams(
+      filterFreeText,
+      filterCategories,
+      filterStatus,
+      field,
+      field === sortBy ? (sortDirection === 'stigande' ? 'fallande' : 'stigande') : 'fallande',
+    );
   };
 
   const clearAll = () => {
@@ -164,6 +226,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
     setFilterStatus([]);
     setFilterFreeText('');
     setSort(undefined);
+    setSearchParams({});
   };
 
   return (
@@ -350,8 +413,16 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         {
                           type: 'freeText',
                           label: 'Sök på krav',
+                          values: [filterFreeText],
                           onChange: (e) => {
                             setFilterFreeText(e.detail);
+                            setUrlParams(
+                              e.detail,
+                              filterCategories,
+                              filterStatus,
+                              sortBy,
+                              sortDirection,
+                            );
                           },
                         },
                         {
@@ -362,8 +433,16 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               id: cat,
                               label: cat,
                             })) || [],
+                          values: filterCategories,
                           onChange: (e) => {
                             setFilterCategories(e.detail.checked);
+                            setUrlParams(
+                              filterFreeText,
+                              e.detail.checked,
+                              filterStatus,
+                              sortBy,
+                              sortDirection,
+                            );
                           },
                         },
                         {
@@ -387,9 +466,17 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               id: Status.IRRELEVANT.toString(),
                             },
                           ],
+                          values: filterStatus.map((status: Status) => status.toString()),
                           onChange: (e) => {
                             setFilterStatus(
                               e.detail.checked.map((item: string) => Number(item) as Status),
+                            );
+                            setUrlParams(
+                              filterFreeText,
+                              filterCategories,
+                              e.detail.checked.map((item: string) => Number(item) as Status),
+                              sortBy,
+                              sortDirection,
                             );
                           },
                         },

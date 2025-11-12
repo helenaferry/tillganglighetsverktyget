@@ -11,7 +11,7 @@ import {
   DigiTypography,
   DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { ObjectType } from '~/data/types';
@@ -22,8 +22,10 @@ import { useReviews } from '~/hooks/useReviewData';
 import { CardsOrTable } from './CardsOrTable';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
+import { useSearchParams } from 'react-router-dom';
 
 export function ReviewsList() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     data: reviewsAll,
     isLoading: reviewsLoading,
@@ -45,15 +47,49 @@ export function ReviewsList() {
 
   const [filterFreeText, setFilterFreeText] = useState('');
   const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
-  const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('descending');
+  const [sortDirection, setSortDirection] = useState<'stigande' | 'fallande'>('fallande');
+
+  useEffect(() => {
+    const searchSearchParam = searchParams.get('sok');
+    const sortParam = searchParams.get('sortering');
+    const directionParam = searchParams.get('riktning');
+    if (!searchSearchParam) {
+      setFilterFreeText('');
+    } else {
+      setFilterFreeText(searchSearchParam);
+    }
+    if (sortParam) {
+      const sortByParam = sortParam;
+      if (sortByParam) {
+        setSortBy(parseInt(sortByParam));
+      }
+    }
+    if (directionParam === 'stigande' || directionParam === 'fallande') {
+      setSortDirection(directionParam);
+    }
+    console.log('sortyBy', sortBy, 'sortDirection', sortDirection);
+  }, [searchParams]);
+
+  const setUrlParams = (search: string, sort: SortBy, direction: 'stigande' | 'fallande') => {
+    const params: Record<string, string> = {};
+    if (search) params.sok = search;
+    if (sort !== undefined) params.sortering = sort.toString();
+    if (sort !== undefined && direction) params.riktning = direction;
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.pathname}?${new URLSearchParams(params).toString()}`,
+    );
+  };
 
   const setSort = (field: SortBy | undefined) => {
     if (field === sortBy) {
-      setSortDirection(sortDirection === 'ascending' ? 'descending' : 'ascending');
+      setSortDirection(sortDirection === 'stigande' ? 'fallande' : 'stigande');
     } else {
       setSortBy(field);
-      setSortDirection('descending');
+      setSortDirection('fallande');
     }
+    setUrlParams(filterFreeText, field!, sortDirection === 'stigande' ? 'fallande' : 'stigande');
   };
 
   const reviews = useMemo(() => {
@@ -72,21 +108,21 @@ export function ReviewsList() {
       );
     }
     return [...result].sort((a, b) => {
-      if (sortBy === SortBy.CREATED && sortDirection === 'ascending') {
+      if (sortBy === SortBy.CREATED && sortDirection === 'stigande') {
         return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
-      } else if (sortBy === SortBy.CREATED && sortDirection === 'descending') {
+      } else if (sortBy === SortBy.CREATED && sortDirection === 'fallande') {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      } else if (sortBy === SortBy.UPDATED && sortDirection === 'ascending') {
+      } else if (sortBy === SortBy.UPDATED && sortDirection === 'stigande') {
         return new Date(a.latestUpdate).getTime() - new Date(b.latestUpdate).getTime();
-      } else if (sortBy === SortBy.UPDATED && sortDirection === 'descending') {
+      } else if (sortBy === SortBy.UPDATED && sortDirection === 'fallande') {
         return new Date(b.latestUpdate).getTime() - new Date(a.latestUpdate).getTime();
-      } else if (sortBy === SortBy.REVIEWED && sortDirection === 'ascending') {
+      } else if (sortBy === SortBy.REVIEWED && sortDirection === 'stigande') {
         return a.reviewedCount - b.reviewedCount;
-      } else if (sortBy === SortBy.REVIEWED && sortDirection === 'descending') {
+      } else if (sortBy === SortBy.REVIEWED && sortDirection === 'fallande') {
         return b.reviewedCount - a.reviewedCount;
-      } else if (sortBy === SortBy.REVIEW && sortDirection === 'ascending') {
+      } else if (sortBy === SortBy.REVIEW && sortDirection === 'stigande') {
         return a.title && b.title ? a.title.localeCompare(b.title) : 0;
-      } else if (sortBy === SortBy.REVIEW && sortDirection === 'descending') {
+      } else if (sortBy === SortBy.REVIEW && sortDirection === 'fallande') {
         return a.title && b.title ? b.title.localeCompare(a.title) : 0;
       }
       return 0;
@@ -213,8 +249,10 @@ export function ReviewsList() {
                 {
                   type: 'freeText',
                   label: 'Sök på granskningsnamn',
+                  values: [filterFreeText],
                   onChange: (e) => {
                     setFilterFreeText(e.detail);
+                    setUrlParams(e.detail, sortBy!, sortDirection);
                   },
                 },
               ]}
@@ -225,6 +263,7 @@ export function ReviewsList() {
               resetChoices={() => {
                 setFilterFreeText('');
                 setSort(undefined);
+                setSearchParams({});
               }}
               choicesMade={filterFreeText.length > 0 || sortBy !== undefined}
             />

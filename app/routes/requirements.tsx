@@ -90,12 +90,12 @@ export default function RequirementsPage() {
     if (!categoriesSearchParam) {
       setFilterCategories([]);
     } else {
-      setFilterCategories(decodeURIComponent(categoriesSearchParam).split(','));
+      setFilterCategories(categoriesSearchParam.split(','));
     }
     if (!searchSearchParam) {
       setFilterFreeText('');
     } else {
-      setFilterFreeText(decodeURIComponent(searchSearchParam));
+      setFilterFreeText(searchSearchParam);
     }
   }, [searchParams]);
 
@@ -109,8 +109,8 @@ export default function RequirementsPage() {
 
   const setUrlParams = (search: string, categories: string[]) => {
     const params: Record<string, string> = {};
-    if (search) params.sok = encodeURIComponent(search);
-    if (categories.length > 0) params.kategorier = encodeURIComponent(categories.join(','));
+    if (search) params.sok = search;
+    if (categories.length > 0) params.kategorier = categories.join(',');
     setSearchParams(params);
   };
 
@@ -213,7 +213,11 @@ export default function RequirementsPage() {
         <div className="content-container content-container--nomargin content-container--nopadding">
           {!isLoading && filteredRequirements && (
             <div className="content-container content-container--largest content-container--nomargin content-container--xpadding">
-              <div>
+              <div
+                className="skip-target"
+                data-skip-link-text="Hoppa till kravlista"
+                id="kravlista"
+              >
                 {filteredRequirements.length === 0 && (
                   <div className="content-container content-container--white content-container--ymargin">
                     <p>
@@ -225,9 +229,7 @@ export default function RequirementsPage() {
                 {filteredRequirements.map((requirement) => (
                   <div
                     key={requirement.id}
-                    className="skip-target content-container content-container--white content-container--ymargin first:!mt-2"
-                    id="kravlista"
-                    data-skip-link-text="Hoppa till kravlista"
+                    className="content-container content-container--white content-container--ymargin first:!mt-2"
                   >
                     <div className="border-b-1 border-grayscale-400 pb-5 mb-8">
                       <div className="flex justify-between">

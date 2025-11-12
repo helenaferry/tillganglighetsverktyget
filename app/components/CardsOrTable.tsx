@@ -20,6 +20,7 @@ interface FilterProps {
   type: 'freeText' | 'select';
   label: string;
   options?: FormFilterItem[];
+  values?: string[];
   onChange: (e: CustomEvent) => void;
 }
 
@@ -40,7 +41,7 @@ interface Props {
   searchLabel?: string;
   filters?: FilterProps[];
   sortedByThIndex?: number;
-  sortDirection?: 'ascending' | 'descending';
+  sortDirection?: 'stigande' | 'fallande';
   displayHeadingsAboveCards?: boolean;
   resetChoices?: () => void;
   choicesMade?: boolean;
@@ -65,7 +66,9 @@ export function CardsOrTable({
   const [paginationStart, setPaginationStart] = useState(1);
   const [paginationEnd, setPaginationEnd] = useState(defaultItemsPerPage);
   const [pageSize, setPageSize] = useState(defaultItemsPerPage);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(
+    filters?.find((f) => f.type === 'freeText')?.values?.[0] || '',
+  );
   const [filterKey, setFilterKey] = useState(0);
   const [paginationKey, setPaginationKey] = useState(0);
 
@@ -123,7 +126,7 @@ export function CardsOrTable({
                     ></DigiFormInputSearch>
                   )}
                   {filter.type === 'select' && filter.options && filter.options.length > 1 && (
-                    <div key={filter.label + filterKey} className="mb-[0.3rem]">
+                    <div key={filter.label + filterKey} className="mb-[0.4rem]">
                       <DigiFormFilter
                         afFilterButtonText={filter.label}
                         afSubmitButtonText="Filtrera"
@@ -131,6 +134,7 @@ export function CardsOrTable({
                         onAfSubmitFilter={(e) => {
                           filter.onChange(e);
                         }}
+                        afCheckItems={filter.values}
                       />
                     </div>
                   )}
@@ -168,8 +172,11 @@ export function CardsOrTable({
                 { id: 10, title: '10' },
                 { id: 20, title: '20' },
                 { id: 50, title: '50' },
+                { id: 100, title: '100' },
+                { id: 150, title: '150' },
+                { id: 200, title: '200' },
                 { id: 0, title: 'Alla' },
-              ]}
+              ].filter((item) => item.id === 0 || (rows.length > 0 && item.id <= rows.length))}
               onAfChangeItem={(e) => {
                 if (e.detail.item.id === 0) {
                   setPageSize(0);
@@ -205,7 +212,13 @@ export function CardsOrTable({
                         ? (cardsHeadings[index] as string)
                         : undefined
                     }
-                    aria-sort={sortedByThIndex === index ? sortDirection : undefined}
+                    aria-sort={
+                      sortedByThIndex === index
+                        ? sortDirection === 'stigande'
+                          ? 'ascending'
+                          : 'descending'
+                        : undefined
+                    }
                     className={`${index === 0 ? 'w-full' : ''} ${sortedByThIndex === index ? '!border-b-2 !border-sapphire-500' : ''}`}
                     onClick={() => {
                       if (heading && pageSize > 0 && rows.length > pageSize) {
