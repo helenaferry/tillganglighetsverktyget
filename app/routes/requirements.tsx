@@ -111,7 +111,11 @@ export default function RequirementsPage() {
     const params: Record<string, string> = {};
     if (search) params.sok = search;
     if (categories.length > 0) params.kategorier = categories.join(',');
-    setSearchParams(params);
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.pathname}?${new URLSearchParams(params).toString()}`,
+    );
   };
 
   return (
