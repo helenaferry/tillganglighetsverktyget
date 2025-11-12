@@ -340,6 +340,7 @@ export function ReviewForm({ reviewId }: Props) {
           afCount={4}
         ></DigiLoaderSkeleton>
       )}
+      {review && <p className="!font-semibold">Granskning: {review.title}</p>}
       {!loading && (!reviewId || review) && (
         <form id="review-form" onSubmit={handleSubmit} noValidate>
           {/* Disable option to choose between web and document for now 
@@ -418,6 +419,36 @@ export function ReviewForm({ reviewId }: Props) {
               afValidation={nameValidation}
             />
           </div>
+          {/* Kommer sen <div className="mb-6">
+            <DigiFormFieldset
+              afForm="review-form"
+              afLegend="Vilka lagkrav behöver din tjänst uppfylla?"
+              afName="regulatoryFramework"
+            >
+              <DigiFormRadiogroup
+                afName="regulatoryFramework"
+                onAfOnGroupChange={(e) => {
+                  console.log(e.detail);
+                }}
+              >
+                <DigiFormRadiobutton
+                  afLabel="DOS-lagen - Lagen om tillgänglighet till digital offentlig service (offentlig sektor)"
+                  afValue="dos"
+                  afChecked={false}
+                ></DigiFormRadiobutton>
+                <DigiFormRadiobutton
+                  afLabel="LPTT - Lagen om vissa produkters och tjänsters tillgänglighet (privat sektor)"
+                  afValue="lptt"
+                  afChecked={false}
+                ></DigiFormRadiobutton>
+                <DigiFormRadiobutton
+                  afLabel="Inga / vet ej"
+                  afValue="none"
+                  afChecked={false}
+                ></DigiFormRadiobutton>
+              </DigiFormRadiogroup>
+            </DigiFormFieldset>
+          </div>*/}
           {objectType === ObjectType.WEB && (
             <div>
               <h2>Vad innehåller din tjänst?</h2>

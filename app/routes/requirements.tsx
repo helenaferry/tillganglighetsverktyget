@@ -130,7 +130,7 @@ export default function RequirementsPage() {
             afVariation={TypographyHeadingJumboVariation.PRIMARY}
           ></DigiTypographyHeadingJumbo>
 
-          <p>
+          <p className="!font-semibold">
             Här hittar du alla tillgänglighetskrav samlade i en lista. Du kan söka efter specifika
             krav och läsa mer om dem för att lära dig hur du bygger tillgängliga tjänster.
           </p>

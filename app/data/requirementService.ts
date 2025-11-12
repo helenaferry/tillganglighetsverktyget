@@ -14,7 +14,7 @@ export const RequirementService = {
     if (!Array.isArray(json.data)) {
       throw new Error('Invalid requirements data format');
     }
-    return json.data.filter((req) => req.type !== 'guideline');
+    return json.data;
   },
 
   async getAllRequirementCategories(objectType: ObjectType): Promise<string[]> {

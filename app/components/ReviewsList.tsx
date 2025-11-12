@@ -13,7 +13,6 @@ import {
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
 
 import { ObjectType } from '~/data/types';
 import { formatDate } from '~/formattingHelpers';
@@ -23,6 +22,7 @@ import { useReviews } from '~/hooks/useReviewData';
 import { CardsOrTable } from './CardsOrTable';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
+import { useSearchParams } from 'react-router-dom';
 
 export function ReviewsList() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -67,7 +67,6 @@ export function ReviewsList() {
     if (directionParam === 'stigande' || directionParam === 'fallande') {
       setSortDirection(directionParam);
     }
-    console.log('sortyBy', sortBy, 'sortDirection', sortDirection);
   }, [searchParams]);
 
   const setUrlParams = (search: string, sort: SortBy, direction: 'stigande' | 'fallande') => {
