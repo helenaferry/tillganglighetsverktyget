@@ -125,7 +125,7 @@ export default function RequirementsPage() {
           {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
 
           <DigiTypographyHeadingJumbo
-            afText="Tillgänglighetskrav"
+            afText="Tillgänglighets&shy;krav"
             afLevel={TypographyHeadingJumboLevel.H1}
             afVariation={TypographyHeadingJumboVariation.PRIMARY}
           ></DigiTypographyHeadingJumbo>
@@ -189,7 +189,7 @@ export default function RequirementsPage() {
             </form>
           )}
         </div>
-        <div className="content-container content-container--nopadding !mb-0">
+        <div className="content-container content-container--xpadding content-container--nomargin">
           <p role="status" className="flex items-center h-[3rem] ml-1">
             <strong>
               Visar {filteredRequirements.length === selectedRequirements?.length ? 'alla' : ''}{' '}
@@ -236,7 +236,7 @@ export default function RequirementsPage() {
                     className="content-container content-container--white content-container--ymargin first:!mt-2"
                   >
                     <div className="border-b-1 border-grayscale-400 pb-5 mb-8">
-                      <div className="flex justify-between">
+                      <div className="flex flex-col sm:flex-row justify-between">
                         <div>
                           <p
                             className="text-grayscale-700 !mb-2"
@@ -247,7 +247,7 @@ export default function RequirementsPage() {
                           </p>
                           <h2 aria-describedby={`cat-${requirement.id}`}>{requirement.name}</h2>
                         </div>
-                        <div className="flex flex-col items-end">
+                        <div className="flex flex-col sm:items-end mb-4 sm:mb-0">
                           <DigiButton
                             afVariation={ButtonVariation.FUNCTION}
                             afType="button"

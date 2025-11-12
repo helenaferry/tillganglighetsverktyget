@@ -96,10 +96,6 @@ svg {
 }
 
 .cards-or-table__filters {
-  [type='search'] {
-    @apply w-full max-w-[8.5rem] sm:max-w-0 sm:min-w-[20rem];
-  }
-
   .digi-button {
     @apply justify-self-stretch !justify-center;
   }
@@ -108,9 +104,11 @@ svg {
   }
 }
 
-.sc-digi-form-input-search button,
-.sc-digi-form-input-search input {
+.sc-digi-form-input-search button {
   @apply !h-[2.625rem];
+}
+.sc-digi-form-input-search input {
+  @apply !h-[2.625rem] w-full max-w-[8.5rem] sm:max-w-0 sm:min-w-[20rem];
 }
 
 .sort-button--active {
@@ -149,4 +147,8 @@ svg {
 
 .sc-digi-link-button-s:hover > a {
   @apply !underline;
+}
+
+.sc-digi-form-category-filter button {
+  @apply !text-sm sm:!text-base;
 }
