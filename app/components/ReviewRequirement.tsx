@@ -41,7 +41,9 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
   const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
   const { check, isLoading: isCheckLoading } = useCheck(String(reviewId), String(requirementId));
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements(
+    review?.regulatoryFramework || '',
+  );
   const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
     ObjectType.WEB,
   );

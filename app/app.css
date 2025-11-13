@@ -138,7 +138,8 @@ svg {
   @apply !whitespace-normal text-[0.9rem] sm:text-[1rem] sm:!whitespace-nowrap;
 }
 
-#review-form .sc-digi-form-radiogroup {
+#review-form .content-type .sc-digi-form-radiogroup,
+#review-form .prefill .sc-digi-form-radiogroup {
   @apply flex;
   label {
     @apply mr-8;

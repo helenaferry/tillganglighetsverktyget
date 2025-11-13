@@ -29,7 +29,9 @@ export default function ExportReviewPage() {
   const { id } = useParams<{ id: string }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements(
+    review?.regulatoryFramework || '',
+  );
   const requirements = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string)
       ? requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || []

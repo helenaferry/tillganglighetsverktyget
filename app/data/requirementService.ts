@@ -3,7 +3,7 @@ import { ObjectType, type Requirement } from './types';
 const requirementsPath = import.meta.env.VITE_REQUIREMENTS_URL;
 
 export const RequirementService = {
-  async getAllRequirements(): Promise<Requirement[]> {
+  async getAllRequirements(regulatoryFramework: string): Promise<Requirement[]> {
     const res = await fetch(requirementsPath);
     if (!res.ok) {
       throw new Error(
@@ -13,6 +13,11 @@ export const RequirementService = {
     const json: { data: Requirement[] } = await res.json();
     if (!Array.isArray(json.data)) {
       throw new Error('Invalid requirements data format');
+    }
+    if (regulatoryFramework) {
+      return json.data.filter((req) =>
+        req.regulatoryFramework.split(',').includes(regulatoryFramework),
+      );
     }
     return json.data;
   },

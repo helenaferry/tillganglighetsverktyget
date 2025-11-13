@@ -23,11 +23,16 @@ import {
   DigiNotificationAlert,
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { ObjectType, type PrefillRequirement, type PrefillRequirementSetting } from '~/data/types';
 import contentTypeTexts from '~/helpers/contentTypeTexts';
-import { useRequirementContentTypes, useRequirements } from '~/hooks/useRequirementData';
+import {
+  useRegulatoryFrameworks,
+  useRequirementContentTypes,
+  useRequirements,
+} from '~/hooks/useRequirementData';
 import {
   useDeleteChecksForReview,
   useDeleteReview,
@@ -41,12 +46,22 @@ type Props = {
 };
 
 export function ReviewForm({ reviewId }: Props) {
-  const { data: allRequirements, isLoading: isLoadingRequirements } = useRequirements();
-  const { data: contentTypes, isLoading: isLoadingContentTypes } = useRequirementContentTypes(
-    ObjectType.WEB,
-  );
+  const { t } = useTranslation();
+  const [regulatoryFramework, setRegulatoryFramework] = useState<string>('');
+  const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
+
+  const { data: allRequirements, isLoading: isLoadingRequirements } =
+    useRequirements(regulatoryFramework);
+  const { data: contentTypes, isLoading: isLoadingContentTypes } =
+    useRequirementContentTypes(objectType);
   const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
-  const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingReview;
+  const { data: regulatoryFrameworks, isLoading: isLoadingRegulatoryFrameworks } =
+    useRegulatoryFrameworks(objectType);
+  const loading =
+    isLoadingRequirements ||
+    isLoadingContentTypes ||
+    isLoadingReview ||
+    isLoadingRegulatoryFrameworks;
   const allPrefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
   ) as PrefillRequirementSetting[];
@@ -60,7 +75,6 @@ export function ReviewForm({ reviewId }: Props) {
   const [title, setTitle] = useState<string>('');
   const [excludedContentTypes, setExcludedContentTypes] = useState<string[]>([]);
   const [selectedPrefills, setSelectedPrefills] = useState<PrefillRequirementSetting[]>([]);
-  const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
@@ -177,6 +191,7 @@ export function ReviewForm({ reviewId }: Props) {
   useEffect(() => {
     if (review) {
       setTitle(review.title || '');
+      setRegulatoryFramework(review.regulatoryFramework || '');
       setExcludedContentTypes(
         (review.excludedContentTypes?.split(';').filter((s) => s !== '') as string[]) || [],
       );
@@ -275,6 +290,7 @@ export function ReviewForm({ reviewId }: Props) {
         excludedContentTypes,
         selectedPrefillIds: selectedPrefills.map((p) => p.id).join(';'),
         objectType: objectType ?? ObjectType.WEB,
+        regulatoryFramework,
       },
       {
         onSuccess: (review) => {
@@ -369,7 +385,7 @@ export function ReviewForm({ reviewId }: Props) {
           <DigiButton afType="button" onClick={() => setShowDocumentInfo(true)}>
             Vad menas med dokument?
           </DigiButton>
-          <DigiDialog
+         <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showDocumentInfo}
             afHeading="Dokument som inte är webb, enligt avsnitt 10 i EN 301 549"
@@ -419,36 +435,25 @@ export function ReviewForm({ reviewId }: Props) {
               afValidation={nameValidation}
             />
           </div>
-          {/* Kommer sen <div className="mb-6">
+          <div className="mb-6">
             <DigiFormFieldset
               afForm="review-form"
-              afLegend="Vilka lagkrav behöver din tjänst uppfylla?"
+              afLegend={t('ReviewForm.regulatoryFramework.question')}
               afName="regulatoryFramework"
             >
-              <DigiFormRadiogroup
-                afName="regulatoryFramework"
-                onAfOnGroupChange={(e) => {
-                  console.log(e.detail);
-                }}
-              >
-                <DigiFormRadiobutton
-                  afLabel="DOS-lagen - Lagen om tillgänglighet till digital offentlig service (offentlig sektor)"
-                  afValue="dos"
-                  afChecked={false}
-                ></DigiFormRadiobutton>
-                <DigiFormRadiobutton
-                  afLabel="LPTT - Lagen om vissa produkters och tjänsters tillgänglighet (privat sektor)"
-                  afValue="lptt"
-                  afChecked={false}
-                ></DigiFormRadiobutton>
-                <DigiFormRadiobutton
-                  afLabel="Inga / vet ej"
-                  afValue="none"
-                  afChecked={false}
-                ></DigiFormRadiobutton>
+              <DigiFormRadiogroup afName="regulatoryFramework">
+                {regulatoryFrameworks?.map((framework) => (
+                  <DigiFormRadiobutton
+                    key={framework}
+                    afLabel={t(`ReviewForm.regulatoryFramework.${framework}`)}
+                    afValue={framework}
+                    afChecked={regulatoryFramework === framework}
+                    onAfOnChange={() => setRegulatoryFramework(framework)}
+                  ></DigiFormRadiobutton>
+                ))}
               </DigiFormRadiogroup>
             </DigiFormFieldset>
-          </div>*/}
+          </div>
           {objectType === ObjectType.WEB && (
             <div>
               <h2>Vad innehåller din tjänst?</h2>
@@ -469,7 +474,7 @@ export function ReviewForm({ reviewId }: Props) {
                     contentTypeTexts.find((q) => q.contentType === contentType)?.question ||
                     contentType;
                   return (
-                    <div className="mb-4" key={`fieldset-${contentType}`}>
+                    <div className="content-type mb-4" key={`fieldset-${contentType}`}>
                       <DigiFormFieldset
                         afForm="review-form"
                         afLegend={questionText}
@@ -504,7 +509,7 @@ export function ReviewForm({ reviewId }: Props) {
           {prefillRequirements
             .filter((prefill: PrefillRequirementSetting) => prefill.automatic === 'false')
             .map((prefill: PrefillRequirementSetting) => (
-              <div key={prefill.id} className="mb-4">
+              <div key={prefill.id} className="prefill mb-4">
                 {prefill.heading && <h2>{prefill.heading}</h2>}
                 {prefill.description && <p>{prefill.description}</p>}
                 <DigiFormFieldset

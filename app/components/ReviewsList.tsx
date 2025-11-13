@@ -36,7 +36,7 @@ export function ReviewsList() {
     data: requirementsAll,
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
-  } = useRequirements();
+  } = useRequirements('');
 
   enum SortBy {
     REVIEW = 0,
@@ -131,7 +131,14 @@ export function ReviewsList() {
   const requirements = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
   }, [requirementsAll]);
-  const requirementsCount = requirements.length;
+  const requirementsCount = (regulatoryFramework: string) => {
+    if (!regulatoryFramework || regulatoryFramework === '' || regulatoryFramework === 'none') {
+      return requirements.length;
+    }
+    return requirements.filter((r) =>
+      r.regulatoryFramework.split(',').includes(regulatoryFramework),
+    ).length;
+  };
 
   const loading = reviewsLoading || requirementsAllLoading;
   const fetched = reviewsFetched && requirementsAllFetched;
@@ -224,7 +231,7 @@ export function ReviewsList() {
                       {formatDate(review.latestUpdate)}
                     </p>,
                     <p className="whitespace-nowrap" key={`status-${review.id}`}>
-                      {`${review.reviewedCount} av ${requirementsCount}`}
+                      {`${review.reviewedCount} av ${requirementsCount(review.regulatoryFramework || '')} krav`}
                     </p>,
                     <DigiButton
                       afType="button"

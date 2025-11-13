@@ -22,6 +22,8 @@ import { ClientOnly } from './clientOnly';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import SkipLink from './components/SkipLink';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import i18n from './lang/i18n';
 
 const queryClient = new QueryClient();
 

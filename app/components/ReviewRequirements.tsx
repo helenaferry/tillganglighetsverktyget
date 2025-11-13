@@ -37,7 +37,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
   const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements(
+    review?.regulatoryFramework || '',
+  );
 
   const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
     ObjectType.WEB,

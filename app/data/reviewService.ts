@@ -241,8 +241,10 @@ export const ReviewService = {
     excludedContentTypes: string[];
     selectedPrefillIds: string;
     objectType: string;
+    regulatoryFramework: string;
   }): Promise<Review> {
-    const { title, id, excludedContentTypes, selectedPrefillIds, objectType } = input;
+    const { title, id, excludedContentTypes, selectedPrefillIds, objectType, regulatoryFramework } =
+      input;
     if (id) {
       const { data, error } = await supabase
         .from('reviews')
@@ -251,6 +253,7 @@ export const ReviewService = {
           excludedContentTypes: excludedContentTypes.join(';'),
           selectedPrefillIds,
           objectType,
+          regulatoryFramework,
         })
         .eq('id', Number(id))
         .select();
@@ -264,6 +267,7 @@ export const ReviewService = {
           excludedContentTypes: excludedContentTypes.join(';'),
           selectedPrefillIds,
           objectType,
+          regulatoryFramework,
         })
         .select();
       if (error) throw error;

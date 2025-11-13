@@ -1,0 +1,21 @@
+{
+  "start": {
+    "Title": "Granskningar"
+  },
+  "addReview": {
+    "Title": "Skapa granskning",
+    "MetaDescription": "Formulär för att skapa en ny granskning."
+  },
+  "editReview": {
+    "Title": "Redigera granskning",
+    "MetaDescription": "Formulär för att redigera uppgifter för en granskning."
+  },
+  "ReviewForm": {
+    "regulatoryFramework": {
+      "question": "Vilka lagkrav behöver din tjänst uppfylla?",
+      "dos": "DOS-lagen – Lagen om tillgänglighet till digital offentlig service (offentlig sektor)",
+      "lptt": "LPTT – Lagen om vissa produkters och tjänsters tillgänglighet (privat sektor)",
+      "none": "Inga / vet ej"
+    }
+  }
+}

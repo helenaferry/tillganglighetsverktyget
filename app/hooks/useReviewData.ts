@@ -169,6 +169,7 @@ export function useUpsertReview() {
       excludedContentTypes: string[];
       selectedPrefillIds: string;
       objectType: string;
+      regulatoryFramework: string;
     }) => ReviewService.upsertReview(input),
     onSuccess: (_newReview, input) => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
