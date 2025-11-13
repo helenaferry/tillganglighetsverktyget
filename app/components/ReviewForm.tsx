@@ -47,7 +47,8 @@ type Props = {
 
 export function ReviewForm({ reviewId }: Props) {
   const { t } = useTranslation();
-  const [regulatoryFramework, setRegulatoryFramework] = useState<string>('');
+  const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
+  const [regulatoryFramework, setRegulatoryFramework] = useState<string>(regulatoryFrameworkEnv);
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
   const { data: allRequirements, isLoading: isLoadingRequirements } =
@@ -435,25 +436,27 @@ export function ReviewForm({ reviewId }: Props) {
               afValidation={nameValidation}
             />
           </div>
-          <div className="mb-6">
-            <DigiFormFieldset
-              afForm="review-form"
-              afLegend={t('ReviewForm.regulatoryFramework.question')}
-              afName="regulatoryFramework"
-            >
-              <DigiFormRadiogroup afName="regulatoryFramework">
-                {regulatoryFrameworks?.map((framework) => (
-                  <DigiFormRadiobutton
-                    key={framework}
-                    afLabel={t(`ReviewForm.regulatoryFramework.${framework}`)}
-                    afValue={framework}
-                    afChecked={regulatoryFramework === framework}
-                    onAfOnChange={() => setRegulatoryFramework(framework)}
-                  ></DigiFormRadiobutton>
-                ))}
-              </DigiFormRadiogroup>
-            </DigiFormFieldset>
-          </div>
+          {!regulatoryFrameworkEnv && (
+            <div className="mb-6">
+              <DigiFormFieldset
+                afForm="review-form"
+                afLegend={t('ReviewForm.regulatoryFramework.question')}
+                afName="regulatoryFramework"
+              >
+                <DigiFormRadiogroup afName="regulatoryFramework">
+                  {regulatoryFrameworks?.map((framework) => (
+                    <DigiFormRadiobutton
+                      key={framework}
+                      afLabel={t(`ReviewForm.regulatoryFramework.${framework}`)}
+                      afValue={framework}
+                      afChecked={regulatoryFramework === framework}
+                      onAfOnChange={() => setRegulatoryFramework(framework)}
+                    ></DigiFormRadiobutton>
+                  ))}
+                </DigiFormRadiogroup>
+              </DigiFormFieldset>
+            </div>
+          )}
           {objectType === ObjectType.WEB && (
             <div>
               <h2>Vad innehåller din tjänst?</h2>

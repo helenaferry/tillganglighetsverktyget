@@ -25,6 +25,7 @@ import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
 
 export function ReviewsList() {
+  const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     data: reviewsAll,
@@ -131,7 +132,13 @@ export function ReviewsList() {
   const requirements = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
   }, [requirementsAll]);
+
   const requirementsCount = (regulatoryFramework: string) => {
+    if (regulatoryFrameworkEnv && regulatoryFrameworkEnv !== '') {
+      return requirements.filter((r) =>
+        r.regulatoryFramework.split(',').includes(regulatoryFrameworkEnv),
+      ).length;
+    }
     if (!regulatoryFramework || regulatoryFramework === '' || regulatoryFramework === 'none') {
       return requirements.length;
     }
@@ -231,6 +238,7 @@ export function ReviewsList() {
                       {formatDate(review.latestUpdate)}
                     </p>,
                     <p className="whitespace-nowrap" key={`status-${review.id}`}>
+                      {review.reviewedCount < 10 && <span className="inline-block w-2"></span>}
                       {`${review.reviewedCount} av ${requirementsCount(review.regulatoryFramework || '')} krav`}
                     </p>,
                     <DigiButton

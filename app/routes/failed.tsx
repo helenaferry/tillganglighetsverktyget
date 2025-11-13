@@ -33,7 +33,9 @@ export default function FailedPage() {
   const { id } = useParams<{ id: string }>();
   const { review, isLoading: reviewLoading } = useReviewById(String(id));
   const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
+  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements(
+    review?.regulatoryFramework || '',
+  );
   const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
     ObjectType.WEB,
   );

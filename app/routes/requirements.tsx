@@ -26,6 +26,7 @@ import { ObjectType, type RequirementAdditionsSetting } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 
 const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
 
 export function meta() {
   return [{ title: `${applicationTitle}: Krav` }, { name: 'description', content: 'Krav' }];
@@ -35,7 +36,8 @@ export default function RequirementsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get('id');
 
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements();
+  const { data: requirementsAll, isLoading: requirementsAllLoading } =
+    useRequirements(regulatoryFrameworkEnv);
 
   const { data: categories, isLoading: isLoadingCategories } = useRequirementCategories(
     ObjectType.WEB,
