@@ -23,6 +23,7 @@ import { useReviews } from '~/hooks/useReviewData';
 import { CardsOrTable } from './CardsOrTable';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
+import Process from './Process';
 
 export function ReviewsList() {
   const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
@@ -176,10 +177,15 @@ export function ReviewsList() {
         {reviewsError && <p>Fel vid hämtning av granskningar</p>}
         {(fetched && !filteredReviews) ||
           (filteredReviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
-        <div>
-          <StyledLink to="/granskning/skapa" styleVariant="link-button">
-            Skapa ny granskning
-          </StyledLink>
+        <div className="content-container content-container--largest content-container--white content-container--nomargin flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+          <div className="basis-1/3 flex-shrink-0">
+            <StyledLink to="/granskning/skapa" styleVariant="link-button">
+              Skapa ny granskning
+            </StyledLink>
+          </div>
+          <div className="basis-1/3 flex-grow-1">
+            <Process showHeading={true} subHeadingElement="p" showDescription={false} />
+          </div>
         </div>
         {fetched && filteredReviews && (
           <div className="content-container content-container--ymargin content-container--largest content-container--white">

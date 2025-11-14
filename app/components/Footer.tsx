@@ -21,6 +21,9 @@ export default function Footer() {
             <StyledLink to="/krav">Tillgänglighetskrav</StyledLink>
           </li>
           <li>
+            <StyledLink to="/tips">Tips och råd</StyledLink>
+          </li>
+          <li>
             <StyledLink
               to="#"
               overrideLink={true}

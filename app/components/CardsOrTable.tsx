@@ -144,7 +144,7 @@ export function CardsOrTable({
         </form>
       )}
 
-      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4 mb-">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4">
         <div className="flex flex-col md:flex-row md:items-center">
           <span className="font-bold" aria-live="polite" aria-atomic="true">
             {hitsText}

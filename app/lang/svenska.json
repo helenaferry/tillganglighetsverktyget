@@ -1,6 +1,14 @@
 {
   "start": {
-    "Title": "Granskningar"
+    "Title": "Granskningar",
+    "defaultAppTitle": "Granska tillgänglighet"
+  },
+  "Header": {
+    "startPageLink": "Startsida för",
+    "mainMenu": "Huvudmeny",
+    "close": "Stäng",
+    "openMenu": "Öppna meny",
+    "closeMenu": "Stäng meny"
   },
   "addReview": {
     "Title": "Skapa granskning",
@@ -17,5 +25,25 @@
       "lptt": "LPTT – Lagen om vissa produkters och tjänsters tillgänglighet (privat sektor)",
       "none": "Inga / vet ej"
     }
+  },
+  "requirements": {
+    "Title": "Tillgänglighetskrav",
+    "MetaDescription": "Här kan du se alla krav."
+  },
+  "tips": {
+    "Title": "Tips och råd",
+    "MetaDescription": "Instruktioner och tips för att genomföra en tillgänglighetsgranskning.",
+    "Preamble": "Här hittar du instruktioner och tips för att genomföra en tillgänglighetsgranskning."
+  },
+  "Process": {
+    "Heading": "Process för att granska tillgänglighet",
+    "Step1Title": "Skapa granskning",
+    "Step1Description": "Tryck på skapa granskning, namnge granskningen och svara på några frågor om din tjänst.",
+    "Step2Title": "Se kravöversikt",
+    "Step2Description": "Se granskningens status. Sök eller filtrera fram specifika krav eller tryck på granska tillgänglighet.",
+    "Step3Title": "Börja granska",
+    "Step3Description": "Gör en självskattning av din tjänst och bedöm den efter varje krav med en motivering.",
+    "Step4Title": "Sammanställ brister",
+    "Step4Description": "Tryck på sammanställ underkända krav och ta med bristerna till en tillgänglighetsredogörelse."
   }
 }

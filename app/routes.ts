@@ -10,4 +10,5 @@ export default [
   route('granskning/:id/export', 'routes/export.tsx', { id: 'export' }),
   route('krav', 'routes/requirements.tsx', { id: 'requirements' }),
   route('kravOld', 'routes/requirementsOld.tsx', { id: 'requirementsOld' }),
+  route('tips', 'routes/tips.tsx', { id: 'tips' }),
 ] satisfies RouteConfig;

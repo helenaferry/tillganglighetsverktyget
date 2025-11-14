@@ -9,8 +9,10 @@ import { useLocation } from 'react-router-dom';
 import { envVars } from '~/helpers';
 
 import { StyledLink } from './StyledLink';
+import { useTranslation } from 'react-i18next';
 
 export default function Header() {
+  const { t } = useTranslation();
   const { applicationTitle, logoUrl, logoWidth, logoHeight } = envVars();
   const location = useLocation();
 
@@ -20,7 +22,7 @@ export default function Header() {
         <div className="grid grid-cols-[1fr_5rem] md:grid-cols-1 w-full  border-b-1 border-b-grayscale-200">
           <div className="min-w-0">
             <StyledLink
-              aria-label={`Startsida för ${applicationTitle}`}
+              aria-label={`${t('Header.startPageLink')} ${applicationTitle}`}
               to="/"
               styleVariant="plain"
               className="flex gap-4 p-5 items-center text-text hover:text-text visited:!text-text !no-underline"
@@ -37,24 +39,29 @@ export default function Header() {
             </StyledLink>
           </div>
           <div className="flex items-center justify-end md:hidden" style={{ minWidth: '0' }}>
-            <DigiNavigationSidebarButton afAriaLabel="Öppna meny" />
+            <DigiNavigationSidebarButton afAriaLabel={t('Header.openMenu')} />
           </div>
         </div>
         <DigiHeaderNavigation
-          afCloseButtonText="Stäng"
-          afCloseButtonAriaLabel="Stäng meny"
-          afNavAriaLabel="Huvudmeny"
+          afCloseButtonText={t('Header.close')}
+          afCloseButtonAriaLabel={t('Header.closeMenu')}
+          afNavAriaLabel={t('Header.mainMenu')}
         >
           <DigiHeaderNavigationItem
             afCurrentPage={location.pathname === '/' || location.pathname.includes('granskning')}
           >
             <StyledLink to="/" styleVariant="plain">
-              Granskningar
+              {t('start.Title')}
             </StyledLink>
           </DigiHeaderNavigationItem>
           <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
             <StyledLink to="/krav" styleVariant="plain">
-              Tillgänglighetskrav
+              {t('requirements.Title')}
+            </StyledLink>
+          </DigiHeaderNavigationItem>
+          <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/tips'}>
+            <StyledLink to="/tips" styleVariant="plain">
+              {t('tips.Title')}
             </StyledLink>
           </DigiHeaderNavigationItem>
           <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/kravOld'}>
