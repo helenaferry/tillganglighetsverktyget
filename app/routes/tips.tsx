@@ -1,6 +1,7 @@
 import { TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from '@designsystem-se/af';
 import { DigiTypography, DigiTypographyHeadingJumbo } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
+
 import Process from '~/components/Process';
 import i18n from '~/lang/i18n';
 

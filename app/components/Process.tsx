@@ -1,7 +1,7 @@
 import { DigiIconChevronDown, DigiIconChevronRight } from '@designsystem-se/af-react';
 import type { JSX } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Fragment } from 'react/jsx-runtime';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   showHeading?: boolean;

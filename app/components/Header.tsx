@@ -4,12 +4,12 @@ import {
   DigiNavigationSidebarButton,
   DigiTypography,
 } from '@designsystem-se/af-react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import { envVars } from '~/helpers';
 
 import { StyledLink } from './StyledLink';
-import { useTranslation } from 'react-i18next';
 
 export default function Header() {
   const { t } = useTranslation();

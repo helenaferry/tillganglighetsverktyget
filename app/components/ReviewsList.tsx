@@ -21,9 +21,9 @@ import { useRequirements } from '~/hooks/useRequirementData';
 import { useReviews } from '~/hooks/useReviewData';
 
 import { CardsOrTable } from './CardsOrTable';
+import Process from './Process';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
-import Process from './Process';
 
 export function ReviewsList() {
   const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
