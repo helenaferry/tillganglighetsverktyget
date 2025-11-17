@@ -47,24 +47,24 @@ export default function TipsPage() {
           <h3>Microsoft Edge</h3>
           <p>
             Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka
-            på F12 eller högerklicka på ett objekt på sidan och välj ”granska”.
+            på F12 eller högerklicka på ett objekt på sidan och välj &quot;Granska&quot;.
           </p>
           <h3>Google Chrome</h3>
           <p>
             Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka
-            på F12 eller högerklicka på ett objekt på sidan och välj ”Inspektera”.
+            på F12 eller högerklicka på ett objekt på sidan och välj &quot;Inspektera&quot;.
           </p>
           <h3>Safari</h3>
           <p>
             Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg genom att trycka
-            på Option + Command + I eller högerklicka på ett objekt på sidan och välj ”granska
-            element”.
+            på Option + Command + I eller högerklicka på ett objekt på sidan och välj &quot;Granska
+            element&quot;.
           </p>
           <h4>Hur du får tillgång till verktyget för att granska sidor i Safari:</h4>
           <ol>
-            <li>Gå till "Inställningar" i Safari.</li>
-            <li>Klicka på "Avancerat".</li>
-            <li>Välj "Visa funktioner för webbutvecklare".</li>
+            <li>Gå till &quot;Inställningar&quot; i Safari.</li>
+            <li>Klicka på &quot;Avancerat&quot;.</li>
+            <li>Välj &quot;Visa funktioner för webbutvecklare&quot;.</li>
           </ol>
           <h2>Testa med hjälpmedel</h2>
           <p>Exempel på vanliga hjälpmedel för manuell testning:</p>
