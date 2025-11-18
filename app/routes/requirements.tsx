@@ -22,7 +22,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import RequirementDetails from '~/components/RequirementDetails';
 import RequirementLegal from '~/components/RequirementLegal';
-import { ObjectType, type RequirementAdditionsSetting } from '~/data/types';
+import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 
 const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
@@ -59,12 +59,22 @@ export default function RequirementsPage() {
       : requirementsAll?.filter((req) => req.objectType === ObjectType.DOCUMENT);
   }, [showObjectType, requirementsAll]);
 
+  const searchMatches = (requirement: Requirement, search: string) => {
+    const nameMatch = requirement.name.toLowerCase().includes(search.toLowerCase());
+    const wcagMatch =
+      requirement.wcag?.match(/\d+\.\d+\.\d+/g)?.some((num) => num.includes(search)) ?? false;
+    const enMatch = requirement.en301549
+      .split(',')
+      .map((num) => num.trim())
+      .some((num) => num.includes(search));
+    return nameMatch || wcagMatch || enMatch;
+  };
+
   const filteredRequirements = useMemo(() => {
     if (!selectedRequirements) return [];
     return selectedRequirements.filter((req) => {
       if (filterCategories.length > 0 && !filterCategories.includes(req.category)) return false;
-      if (filterFreeText && !req.name.toLowerCase().includes(filterFreeText.toLowerCase()))
-        return false;
+      if (filterFreeText && !searchMatches(req, filterFreeText)) return false;
       return true;
     });
   }, [requirementsAll, filterCategories, filterFreeText, requirementAdditions]);
