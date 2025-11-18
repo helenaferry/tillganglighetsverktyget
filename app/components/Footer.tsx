@@ -8,6 +8,7 @@ import {
 } from '@designsystem-se/af-react';
 
 import { envVars } from '~/helpers';
+
 import { StyledLink } from './StyledLink';
 
 export default function Footer() {
