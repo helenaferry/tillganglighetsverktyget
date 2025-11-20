@@ -9,7 +9,6 @@ import {
   DigiFormTextarea,
   DigiNotificationAlert,
 } from '@designsystem-se/af-react';
-import { DigiFormInput } from '@designsystem-se/af-react';
 import { useState } from 'react';
 
 import { type Check, type Requirement, type Review, Status } from '~/data/types';
@@ -36,8 +35,6 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
     : 0;
   const numberOfNotAssessed = requirements.length - numberOfDone;
 
-  const [email, setEmail] = useState('');
-  const [issueType, setIssueType] = useState('Bugg');
   const [selectedChecks, setSelectedChecks] = useState<Set<string>>(new Set());
 
   const exportToCsv = (e: React.FormEvent) => {
@@ -46,12 +43,12 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
     const formData = new FormData(form);
     const selectedChecks = failedChecks.filter((check) => formData.has(`requirement-${check.id}`));
     const csvRows = [
-      ['Rapportör', 'Ärendetyp', 'Rubrik', 'Beskrivning'],
+      ['Issue Type', 'Summary', 'Description'],
       ...selectedChecks.map((check) => {
         const requirement = requirements.find(
           (req) => String(req.id) === String(check.requirement),
         );
-        return [email, issueType, requirement?.name || '', check.comment || ''];
+        return ['Bug', requirement?.name || '', check.comment || ''];
       }),
     ];
     const csvContent =
@@ -75,11 +72,7 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
   };
 
   return (
-    <form
-      id="export-tasks-form"
-      className="content-container content-container--largest content-container--nomargin"
-      onSubmit={exportToCsv}
-    >
+    <form id="export-tasks-form" className="" onSubmit={exportToCsv}>
       {numberOfNotAssessed > 0 && failedChecks.length > 0 && (
         <p>
           <DigiNotificationAlert
@@ -118,28 +111,7 @@ export default function ExportTasks({ review, checks, requirements }: Props) {
       )}
 
       {failedChecks.length > 0 && (
-        <div className="content-container content-container--white content-container--ymargin">
-          <fieldset form="export-tasks-form" className="mb-6">
-            <legend className="sr-only">Grunduppgifter till Jira</legend>
-            <h2>Fyll i uppgifter till Jira</h2>
-            <p>Här kan du exportera underkända krav till Jira.</p>
-            <p>
-              <DigiFormInput
-                afLabel={`E-postadress till rapportör `}
-                afLabelDescription="Du kan hantera detta i Jira också."
-                afValue={email}
-                onAfOnInput={(e) => setEmail(e.detail.target.value)}
-              />
-            </p>
-            <p>
-              <DigiFormInput
-                afLabel={`Ärendetyp `}
-                afLabelDescription="Du kan hantera detta i Jira också."
-                afValue={issueType}
-                onAfOnInput={(e) => setIssueType(e.detail.target.value)}
-              />
-            </p>
-          </fieldset>
+        <div className="">
           <fieldset form="export-tasks-form">
             <legend className="sr-only">Alla krav</legend>
             <h2>Välj vilka krav som ska exporteras</h2>
