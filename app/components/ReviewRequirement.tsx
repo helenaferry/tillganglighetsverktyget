@@ -397,7 +397,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                               </h2>
                               <RequirementLegal headingLevel="h3" requirement={requirement} />
                             </div>
-                            <div className="flex flex-col md:flex-row my-5 gap-5">
+                            <div className="flex flex-col lg:flex-row my-5 gap-5">
                               <div className="flex-1">
                                 <RequirementDetails requirement={requirement} headingLevel="h3" />
                               </div>
