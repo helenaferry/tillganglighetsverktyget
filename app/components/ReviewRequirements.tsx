@@ -1,17 +1,16 @@
 import {
   ErrorPageStatusCodes,
+  LayoutBlockVariation,
   LoaderSkeletonVariation,
   NotificationAlertSize,
   NotificationAlertVariation,
-  TypographyHeadingJumboLevel,
-  TypographyHeadingJumboVariation,
 } from '@designsystem-se/af';
 import {
+  DigiLayoutBlock,
+  DigiLayoutContainer,
   DigiLoaderSkeleton,
   DigiNotificationAlert,
   DigiNotificationErrorPage,
-  DigiTypography,
-  DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
 import { DigiIconChevronRight } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -23,8 +22,8 @@ import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
-import Breadcrumbs from './Breadcrumbs';
 import { CardsOrTable } from './CardsOrTable';
+import PageTitle from './PageTitle';
 import ProgressBar from './ProgressBar';
 import { SortButton } from './SortButton';
 import StatusBadge from './StatusBadge';
@@ -35,18 +34,32 @@ interface Props {
 
 export default function ReviewRequirements({ reviewId }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { review: review, isLoading: reviewLoading } = useReviewById(reviewId);
-  const { checks, isLoading: checksLoading } = useChecksForReview(reviewId);
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements(
-    review?.regulatoryFramework || '',
-  );
+  const {
+    review: review,
+    isLoading: reviewLoading,
+    isFetched: reviewFetched,
+  } = useReviewById(reviewId);
+  const {
+    checks,
+    isLoading: checksLoading,
+    isFetched: checksFetched,
+  } = useChecksForReview(reviewId);
+  const {
+    data: requirementsAll,
+    isLoading: requirementsAllLoading,
+    isFetched: requirementsAllFetched,
+  } = useRequirements(review?.regulatoryFramework || '');
 
-  const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
-    ObjectType.WEB,
-  );
-  const { data: categoriesDoc, isLoading: categoriesDocLoading } = useRequirementCategories(
-    ObjectType.DOCUMENT,
-  );
+  const {
+    data: categoriesWeb,
+    isLoading: categoriesWebLoading,
+    isFetched: categoriesWebFetched,
+  } = useRequirementCategories(ObjectType.WEB);
+  const {
+    data: categoriesDoc,
+    isLoading: categoriesDocLoading,
+    isFetched: categoriesDocFetched,
+  } = useRequirementCategories(ObjectType.DOCUMENT);
 
   const requirements = useMemo(() => {
     const reqs = requirementsAll ?? [];
@@ -69,6 +82,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
     requirementsAllLoading ||
     categoriesWebLoading ||
     categoriesDocLoading;
+
+  const fetched =
+    reviewFetched &&
+    checksFetched &&
+    requirementsAllFetched &&
+    categoriesWebFetched &&
+    categoriesDocFetched;
 
   const requirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];
@@ -232,274 +252,281 @@ export default function ReviewRequirements({ reviewId }: Props) {
   };
 
   return (
-    <div className="">
+    <main>
       {loading && (
-        <div className="content-container content-container--largest content-container--nomargin">
+        <div>
           <DigiLoaderSkeleton
             afVariation={LoaderSkeletonVariation.SECTION}
             afCount={4}
           ></DigiLoaderSkeleton>
         </div>
       )}
-      {review && (
-        <div className="content-container content-container--white content-container--nomargin">
-          <DigiTypography>
-            <div className="lg:flex justify-between">
-              <div>
-                <Breadcrumbs
-                  currentPage={`Kravöversikt ${review?.title || 'Granskning'}`}
-                  pages={[{ title: 'Granskningar', href: '/' }]}
-                />
-                <DigiTypographyHeadingJumbo
-                  className="wrap-anywhere"
-                  afText={`Kravöversikt ${review?.title}`}
-                  afLevel={TypographyHeadingJumboLevel.H1}
-                  afVariation={TypographyHeadingJumboVariation.PRIMARY}
-                ></DigiTypographyHeadingJumbo>
-                <p className="!font-semibold">
-                  Här är en översikt över alla krav för granskningen. Du kan söka eller filtrera
-                  fram specifika krav. Du kan också se status för granskningen.
-                </p>
-              </div>
-            </div>
-          </DigiTypography>
-        </div>
-      )}
-      {review && (
-        <div className="content-container content-container--nomargin content-container--largest">
-          <DigiTypography>
+      {fetched && review && (
+        <>
+          <PageTitle
+            h1Text={`Kravöversikt: ${review?.title || 'Granskning'}`}
+            preamble="Här är en översikt över alla krav för granskningen. Du kan söka eller filtrera
+                  fram specifika krav. Du kan också se status för granskningen."
+            breadcrumbsCurrentPage={`Kravöversikt: ${review?.title || 'Granskning'}`}
+            breadcrumbsPages={[{ title: 'Granskningar', href: '/' }]}
+          />
+
+          <div>
             {percentageChecked(requirementsWithChecks) === 100 && (
-              <p className="mb-5" role="alert">
-                <DigiNotificationAlert
-                  afSize={NotificationAlertSize.LARGE}
-                  afVariation={NotificationAlertVariation.SUCCESS}
-                  afHeading="Hurra, granskningen är klar!"
-                >
-                  <div className="mt-6 mb-4">
+              <DigiLayoutBlock
+                afVariation={LayoutBlockVariation.TRANSPARENT}
+                afMarginTop={true}
+                afMarginBottom={false}
+              >
+                <div role="alert" className="max-w-p-medium">
+                  <DigiNotificationAlert
+                    afSize={NotificationAlertSize.LARGE}
+                    afVariation={NotificationAlertVariation.SUCCESS}
+                    afHeading="Hurra, granskningen är klar!"
+                  >
+                    <div className="mt-6 mb-4">
+                      <StyledLink
+                        to={`/granskning/${review.id}/underkanda-krav`}
+                        styleVariant="link-button"
+                        hideIcon
+                      >
+                        Sammanställ underkända krav
+                      </StyledLink>
+                    </div>
+                  </DigiNotificationAlert>
+                </div>
+              </DigiLayoutBlock>
+            )}
+            <DigiLayoutContainer
+              afVerticalPadding={false}
+              afMarginTop={true}
+              afMarginBottom={false}
+            >
+              <DigiLayoutBlock
+                afVariation={LayoutBlockVariation.PRIMARY}
+                afMarginBottom={false}
+                afVerticalPadding={true}
+              >
+                <div className="flex flex-col sm:flex-row mb-6">
+                  <div
+                    className="basis-1/4"
+                    aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ej granskade`}
+                  >
+                    <div className="flex flex-col items-center" aria-hidden="true">
+                      <p className="!text-2xl !mb-2">
+                        {numberPerStatus(requirementsWithChecks).notAssessedCount}
+                      </p>
+                      <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
+                    </div>
+                  </div>
+                  <div
+                    className="basis-1/4"
+                    aria-label={`${numberPerStatus(requirementsWithChecks).passCount} godkända`}
+                  >
+                    <div className="flex flex-col items-center" aria-hidden="true">
+                      <p className="!text-2xl !mb-2">
+                        {numberPerStatus(requirementsWithChecks).passCount}
+                      </p>
+                      <StatusBadge status={Status.PASS} plural noMinWidth />
+                    </div>
+                  </div>
+                  <div
+                    className="basis-1/4"
+                    aria-label={`${numberPerStatus(requirementsWithChecks).failCount} underkända`}
+                  >
+                    <div className="flex flex-col items-center" aria-hidden="true">
+                      <p className="!text-2xl !mb-2">
+                        {numberPerStatus(requirementsWithChecks).failCount}
+                      </p>
+                      <StatusBadge status={Status.FAIL} plural noMinWidth />
+                    </div>
+                  </div>
+                  <div
+                    className="basis-1/4"
+                    aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} irrelevanta`}
+                  >
+                    <div className="flex flex-col items-center" aria-hidden="true">
+                      <p className="!text-2xl !mb-2">
+                        {numberPerStatus(requirementsWithChecks).irrelevantCount}
+                      </p>
+                      <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
+                    </div>
+                  </div>
+                </div>
+                <ProgressBar
+                  progress={percentageChecked(requirementsWithChecks)}
+                  text={`${numberChecked(requirementsWithChecks)} av ${requirementsWithChecks.length} krav granskade`}
+                />
+                <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
+                  {firstUncheckedId && (
                     <StyledLink
-                      to={`/granskning/${review.id}/underkanda-krav`}
+                      to={`/granskning/${review.id}/${firstUncheckedId}`}
                       styleVariant="link-button"
                       hideIcon
                     >
-                      Sammanställ underkända krav
+                      Granska tillgänglighet
                     </StyledLink>
-                  </div>
-                </DigiNotificationAlert>
-              </p>
-            )}
-            <div className="content-container content-container--white content-container--largest content-container--nomargin mb-5">
-              <div className="flex flex-col sm:flex-row mb-6">
-                <div
-                  className="basis-1/4"
-                  aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ej granskade`}
-                >
-                  <div className="flex flex-col items-center" aria-hidden="true">
-                    <p className="!text-2xl !mb-2">
-                      {numberPerStatus(requirementsWithChecks).notAssessedCount}
-                    </p>
-                    <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
-                  </div>
-                </div>
-                <div
-                  className="basis-1/4"
-                  aria-label={`${numberPerStatus(requirementsWithChecks).passCount} godkända`}
-                >
-                  <div className="flex flex-col items-center" aria-hidden="true">
-                    <p className="!text-2xl !mb-2">
-                      {numberPerStatus(requirementsWithChecks).passCount}
-                    </p>
-                    <StatusBadge status={Status.PASS} plural noMinWidth />
-                  </div>
-                </div>
-                <div
-                  className="basis-1/4"
-                  aria-label={`${numberPerStatus(requirementsWithChecks).failCount} underkända`}
-                >
-                  <div className="flex flex-col items-center" aria-hidden="true">
-                    <p className="!text-2xl !mb-2">
-                      {numberPerStatus(requirementsWithChecks).failCount}
-                    </p>
-                    <StatusBadge status={Status.FAIL} plural noMinWidth />
-                  </div>
-                </div>
-                <div
-                  className="basis-1/4"
-                  aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} irrelevanta`}
-                >
-                  <div className="flex flex-col items-center" aria-hidden="true">
-                    <p className="!text-2xl !mb-2">
-                      {numberPerStatus(requirementsWithChecks).irrelevantCount}
-                    </p>
-                    <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
-                  </div>
-                </div>
-              </div>
-              <ProgressBar
-                progress={percentageChecked(requirementsWithChecks)}
-                text={`${numberChecked(requirementsWithChecks)} av ${requirementsWithChecks.length} krav granskade`}
-              />
-              <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
-                {firstUncheckedId && (
+                  )}
                   <StyledLink
-                    to={`/granskning/${review.id}/${firstUncheckedId}`}
-                    styleVariant="link-button"
+                    to={`/granskning/${review.id}/underkanda-krav`}
+                    styleVariant="link-button-secondary"
                     hideIcon
                   >
-                    Granska tillgänglighet
+                    Sammanställ underkända krav
                   </StyledLink>
-                )}
-                <StyledLink
-                  to={`/granskning/${review.id}/underkanda-krav`}
-                  styleVariant="link-button-secondary"
-                  hideIcon
-                >
-                  Sammanställ underkända krav
-                </StyledLink>
-              </div>
-            </div>
-            <div className="content-container content-container--white content-container--ymargin content-container--largest min-h-[40rem]">
-              <div>
-                {review && (
-                  <div className="container">
-                    <CardsOrTable
-                      headings={[
-                        <SortButton
-                          buttonText="Krav"
-                          sortBy={SortBy.REQUIREMENT}
-                          active={sortBy === SortBy.REQUIREMENT}
-                          sortDirection={sortDirection}
-                          onSortChange={setSort}
-                          key="Krav"
-                        />,
-                        <SortButton
-                          buttonText="Kravkategori"
-                          sortBy={SortBy.CATEGORY}
-                          active={sortBy === SortBy.CATEGORY}
-                          sortDirection={sortDirection}
-                          onSortChange={setSort}
-                          key="Kravkategori"
-                        />,
-                        <SortButton
-                          buttonText="Bedömningsstatus"
-                          sortBy={SortBy.STATUS}
-                          active={sortBy === SortBy.STATUS}
-                          sortDirection={sortDirection}
-                          onSortChange={setSort}
-                          key="Bedömningsstatus"
-                        />,
-                      ]}
-                      cardsHeadings={['Krav', 'Kravkategori', 'Bedömningsstatus']}
-                      rows={filteredRequirements.map((req) => {
-                        return {
-                          id: req.id,
-                          posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
-                          content: [
-                            <StyledLink key={req.id} to={'/granskning/' + review.id + '/' + req.id}>
-                              <span className="inline lg:hidden">
-                                <DigiIconChevronRight />
-                              </span>{' '}
-                              {req.name}
-                            </StyledLink>,
-                            <span key={req.id + '-category'} className="whitespace-nowrap">
-                              {req.category}
-                            </span>,
-                            <div className="mt-2 md:mt-0" key={req.id + '-status'}>
-                              <StatusBadge status={req.check?.status} />
-                            </div>,
-                          ],
-                        };
-                      })}
-                      totalItems={requirements.length}
-                      itemsName="krav"
-                      filters={[
-                        {
-                          type: 'freeText',
-                          label: 'Sök på krav',
-                          values: [filterFreeText],
-                          onChange: (e) => {
-                            setFilterFreeText(e.detail);
-                            setUrlParams(
-                              e.detail,
-                              filterCategories,
-                              filterStatus,
-                              sortBy,
-                              sortDirection,
-                            );
-                          },
-                        },
-                        {
-                          type: 'select',
-                          label: 'Kravkategorier',
-                          options:
-                            categories?.map((cat: string) => ({
-                              id: cat,
-                              label: cat,
-                            })) || [],
-                          values: filterCategories,
-                          onChange: (e) => {
-                            setFilterCategories(e.detail.checked);
-                            setUrlParams(
-                              filterFreeText,
-                              e.detail.checked,
-                              filterStatus,
-                              sortBy,
-                              sortDirection,
-                            );
-                          },
-                        },
-                        {
-                          type: 'select',
-                          label: 'Bedömningsstatus',
-                          options: [
+                </div>
+              </DigiLayoutBlock>
+            </DigiLayoutContainer>
+            <DigiLayoutContainer afMarginTop={false} afVerticalPadding={true}>
+              <DigiLayoutBlock afMarginTop={false} afVerticalPadding={true}>
+                <div className="min-h-[40rem]">
+                  <div>
+                    {review && (
+                      <div>
+                        <CardsOrTable
+                          headings={[
+                            <SortButton
+                              buttonText="Krav"
+                              sortBy={SortBy.REQUIREMENT}
+                              active={sortBy === SortBy.REQUIREMENT}
+                              sortDirection={sortDirection}
+                              onSortChange={setSort}
+                              key="Krav"
+                            />,
+                            <SortButton
+                              buttonText="Kravkategori"
+                              sortBy={SortBy.CATEGORY}
+                              active={sortBy === SortBy.CATEGORY}
+                              sortDirection={sortDirection}
+                              onSortChange={setSort}
+                              key="Kravkategori"
+                            />,
+                            <SortButton
+                              buttonText="Bedömningsstatus"
+                              sortBy={SortBy.STATUS}
+                              active={sortBy === SortBy.STATUS}
+                              sortDirection={sortDirection}
+                              onSortChange={setSort}
+                              key="Bedömningsstatus"
+                            />,
+                          ]}
+                          cardsHeadings={['Krav', 'Kravkategori', 'Bedömningsstatus']}
+                          rows={filteredRequirements.map((req) => {
+                            return {
+                              id: req.id,
+                              posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
+                              content: [
+                                <StyledLink
+                                  key={req.id}
+                                  to={'/granskning/' + review.id + '/' + req.id}
+                                >
+                                  <span className="inline lg:hidden">
+                                    <DigiIconChevronRight />
+                                  </span>{' '}
+                                  {req.name}
+                                </StyledLink>,
+                                <span key={req.id + '-category'} className="whitespace-nowrap">
+                                  {req.category}
+                                </span>,
+                                <div className="mt-2 md:mt-0" key={req.id + '-status'}>
+                                  <StatusBadge status={req.check?.status} />
+                                </div>,
+                              ],
+                            };
+                          })}
+                          totalItems={requirements.length}
+                          itemsName="krav"
+                          filters={[
                             {
-                              label: StatusText.PASS,
-                              id: Status.PASS.toString(),
+                              type: 'freeText',
+                              label: 'Sök på krav',
+                              values: [filterFreeText],
+                              onChange: (e) => {
+                                setFilterFreeText(e.detail);
+                                setUrlParams(
+                                  e.detail,
+                                  filterCategories,
+                                  filterStatus,
+                                  sortBy,
+                                  sortDirection,
+                                );
+                              },
                             },
                             {
-                              label: StatusText.FAIL,
-                              id: Status.FAIL.toString(),
+                              type: 'select',
+                              label: 'Kravkategorier',
+                              options:
+                                categories?.map((cat: string) => ({
+                                  id: cat,
+                                  label: cat,
+                                })) || [],
+                              values: filterCategories,
+                              onChange: (e) => {
+                                setFilterCategories(e.detail.checked);
+                                setUrlParams(
+                                  filterFreeText,
+                                  e.detail.checked,
+                                  filterStatus,
+                                  sortBy,
+                                  sortDirection,
+                                );
+                              },
                             },
                             {
-                              label: StatusText.NOT_ASSESSED,
-                              id: Status.NOT_ASSESSED.toString(),
+                              type: 'select',
+                              label: 'Bedömningsstatus',
+                              options: [
+                                {
+                                  label: StatusText.PASS,
+                                  id: Status.PASS.toString(),
+                                },
+                                {
+                                  label: StatusText.FAIL,
+                                  id: Status.FAIL.toString(),
+                                },
+                                {
+                                  label: StatusText.NOT_ASSESSED,
+                                  id: Status.NOT_ASSESSED.toString(),
+                                },
+                                {
+                                  label: StatusText.IRRELEVANT,
+                                  id: Status.IRRELEVANT.toString(),
+                                },
+                              ],
+                              values: filterStatus.map((status: Status) => status.toString()),
+                              onChange: (e) => {
+                                setFilterStatus(
+                                  e.detail.checked.map((item: string) => Number(item) as Status),
+                                );
+                                setUrlParams(
+                                  filterFreeText,
+                                  filterCategories,
+                                  e.detail.checked.map((item: string) => Number(item) as Status),
+                                  sortBy,
+                                  sortDirection,
+                                );
+                              },
                             },
-                            {
-                              label: StatusText.IRRELEVANT,
-                              id: Status.IRRELEVANT.toString(),
-                            },
-                          ],
-                          values: filterStatus.map((status: Status) => status.toString()),
-                          onChange: (e) => {
-                            setFilterStatus(
-                              e.detail.checked.map((item: string) => Number(item) as Status),
-                            );
-                            setUrlParams(
-                              filterFreeText,
-                              filterCategories,
-                              e.detail.checked.map((item: string) => Number(item) as Status),
-                              sortBy,
-                              sortDirection,
-                            );
-                          },
-                        },
-                      ]}
-                      resetChoices={clearAll}
-                      choicesMade={
-                        filterCategories.length > 0 ||
-                        filterStatus.length > 0 ||
-                        filterFreeText.length > 0 ||
-                        sortBy !== undefined
-                      }
-                    />
+                          ]}
+                          resetChoices={clearAll}
+                          choicesMade={
+                            filterCategories.length > 0 ||
+                            filterStatus.length > 0 ||
+                            filterFreeText.length > 0 ||
+                            sortBy !== undefined
+                          }
+                        />
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
-          </DigiTypography>
-        </div>
+                </div>
+              </DigiLayoutBlock>
+            </DigiLayoutContainer>
+          </div>
+        </>
       )}
       {!loading && !review && (
-        <div className="content-container content-container--largest content-container--nomargin">
+        <div>
           <DigiNotificationErrorPage
             afCustomHeading="Granskningen hittades inte"
             afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
@@ -508,6 +535,6 @@ export default function ReviewRequirements({ reviewId }: Props) {
           </DigiNotificationErrorPage>
         </div>
       )}
-    </div>
+    </main>
   );
 }

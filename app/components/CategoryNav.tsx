@@ -18,8 +18,8 @@ type Props = {
   categories: Category[];
   selectedCategory: string;
   selectedRequirement: string;
-  showCategoryNav: boolean;
-  onToggleNav: () => void;
+  showCategoryNav?: boolean;
+  onToggleNav?: () => void;
 };
 const StatusIndicator = ({ checked, active }: { checked: boolean; active: boolean }) => {
   return (
@@ -94,10 +94,10 @@ export default function CategoryNav({
   return (
     <nav>
       <DigiTypography>
-        <div className="flex justify-between pt-5 px-5">
-          {showCategoryNav && <h2>Kravkategorier</h2>}
+        <div className="flex justify-between pt-18 md:pt-5 px-5">
+          <h2>Kravkategorier</h2>
           <DigiButton
-            className="block sm:hidden"
+            className="block md:hidden"
             afSize={ButtonSize.SMALL}
             afVariation={ButtonVariation.FUNCTION}
             onAfOnClick={onToggleNav}
@@ -106,7 +106,7 @@ export default function CategoryNav({
             <DigiIconX slot="icon-secondary" />
           </DigiButton>
         </div>
-        <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'} sm:block`}>
+        <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'} md:block`}>
           {categories.length === 0 ? (
             <li>Inga kravkategorier tillgängliga</li>
           ) : (
@@ -173,7 +173,7 @@ export default function CategoryNav({
                                 <StatusIndicator checked={done} active={selected} />
                               </div>
                               <div
-                                className={`text-left no-underline hover:underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
+                                className={`text-sm text-left no-underline hover:underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
                               >
                                 {req.name}
                               </div>

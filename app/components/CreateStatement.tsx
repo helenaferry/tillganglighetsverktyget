@@ -10,9 +10,12 @@ import {
   DigiFormFieldset,
   DigiFormValidationMessage,
   DigiIconRedo,
+  DigiLayoutBlock,
+  DigiLayoutContainer,
   DigiLinkInternal,
   DigiNotificationAlert,
 } from '@designsystem-se/af-react';
+import {} from '@designsystem-se/af-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
@@ -73,7 +76,7 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
   }, [showCategories, showTitles, showComments]);
 
   return (
-    <div className="content-container content-container--largest content-container--nomargin content-container--xpadding">
+    <DigiLayoutContainer afVerticalPadding={true}>
       {numberRemaining(requirementsWithChecks) > 0 && (
         <p className="mb-6">
           <DigiNotificationAlert
@@ -86,7 +89,7 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
           </DigiNotificationAlert>
         </p>
       )}
-      <div className="content-container content-container--white content-container--nomargin !mb-6">
+      <DigiLayoutBlock afVerticalPadding={true}>
         <h2>Sammanställning av brister vid granskning</h2>
         {failedChecks.length > 0 && (
           <form name="Innehållsval">
@@ -199,7 +202,7 @@ export default function CreateStatement({ reviewId, checks, requirements, catego
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </DigiLayoutBlock>
+    </DigiLayoutContainer>
   );
 }

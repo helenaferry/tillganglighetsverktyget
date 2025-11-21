@@ -21,8 +21,13 @@ export function useReviews(): UseQueryResult<ReviewSummary[], Error> {
 export function useReviewById(reviewId: string): {
   review?: Review;
   isLoading: boolean;
+  isFetched: boolean;
 } {
-  const { data: reviewData, isLoading } = useQuery<Review, Error>({
+  const {
+    data: reviewData,
+    isLoading,
+    isFetched,
+  } = useQuery<Review, Error>({
     queryKey: ['review', reviewId],
     queryFn: () => ReviewService.getReviewById(reviewId),
     enabled: !!reviewId && reviewId !== 'undefined',
@@ -30,12 +35,20 @@ export function useReviewById(reviewId: string): {
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
-  return { review: reviewData, isLoading };
+  return { review: reviewData, isLoading, isFetched };
 }
 
 // Get checks for a review
-export function useChecksForReview(reviewId: string): { checks?: Check[]; isLoading: boolean } {
-  const { data: checksData, isLoading } = useQuery<Check[], Error>({
+export function useChecksForReview(reviewId: string): {
+  checks?: Check[];
+  isLoading: boolean;
+  isFetched: boolean;
+} {
+  const {
+    data: checksData,
+    isLoading,
+    isFetched,
+  } = useQuery<Check[], Error>({
     queryKey: ['checks', String(reviewId)],
     queryFn: () => {
       return ReviewService.getChecksForReview(String(reviewId));
@@ -45,15 +58,19 @@ export function useChecksForReview(reviewId: string): { checks?: Check[]; isLoad
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
-  return { checks: checksData, isLoading };
+  return { checks: checksData, isLoading, isFetched };
 }
 
 // Get a check by reviewId and requirementId
 export function useCheck(
   reviewId: string,
   requirementId: string,
-): { check?: Check | null; isLoading: boolean } {
-  const { data: checkData, isLoading } = useQuery<Check | null, Error>({
+): { check?: Check | null; isLoading: boolean; isFetched: boolean } {
+  const {
+    data: checkData,
+    isLoading,
+    isFetched,
+  } = useQuery<Check | null, Error>({
     queryKey: ['check', reviewId, requirementId],
     queryFn: () => ReviewService.getCheckById(reviewId, requirementId),
     enabled: !!reviewId && !!requirementId,
@@ -61,7 +78,7 @@ export function useCheck(
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
-  return { check: checkData, isLoading };
+  return { check: checkData, isLoading, isFetched };
 }
 
 // Update or add check

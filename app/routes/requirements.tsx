@@ -3,9 +3,9 @@ import {
   ButtonVariation,
   FormInputSearchVariation,
   FormInputType,
+  LayoutBlockVariation,
+  LayoutContainerVariation,
   LoaderSkeletonVariation,
-  TypographyHeadingJumboLevel,
-  TypographyHeadingJumboVariation,
 } from '@designsystem-se/af';
 import {
   DigiButton,
@@ -13,13 +13,15 @@ import {
   DigiFormInputSearch,
   DigiIconRedo,
   DigiIconShareAlt,
+  DigiLayoutBlock,
+  DigiLayoutContainer,
   DigiLoaderSkeleton,
   DigiTypography,
-  DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import PageTitle from '~/components/PageTitle';
 import RequirementDetails from '~/components/RequirementDetails';
 import RequirementLegal from '~/components/RequirementLegal';
 import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
@@ -131,25 +133,20 @@ export default function RequirementsPage() {
   };
 
   return (
-    <main className="mb-12">
+    <main>
       <DigiTypography>
-        <div className="content-container content-container--white content-container--nomargin">
+        <div>
           {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
 
-          <DigiTypographyHeadingJumbo
-            afText="Tillgänglighets&shy;krav"
-            afLevel={TypographyHeadingJumboLevel.H1}
-            afVariation={TypographyHeadingJumboVariation.PRIMARY}
-          ></DigiTypographyHeadingJumbo>
-
-          <p className="!font-semibold">
-            Här hittar du alla tillgänglighetskrav samlade i en lista. Du kan söka efter specifika
-            krav och läsa mer om dem för att lära dig hur du bygger tillgängliga tjänster.
-          </p>
-
-          {!isLoading && categories && (
+          <PageTitle
+            h1Text="Tillgänglighets&shy;krav"
+            preamble="Här hittar du alla tillgänglighetskrav samlade i en lista. Du kan söka efter specifika
+            krav och läsa mer om dem för att lära dig hur du bygger tillgängliga tjänster."
+          >
             <form id="requirement-filters" className="mt-12" onSubmit={(e) => e.preventDefault()}>
-              {/* Hide type filter for now <p>
+              {!isLoading && categories && (
+                <>
+                  {/* Hide type filter for now <p>
               <DigiFormFieldset afForm="requirement-filters" afLegend="Visa krav för" afName="typ">
                 <DigiFormRadiogroup afName="type">
                   <DigiFormRadiobutton
@@ -167,41 +164,43 @@ export default function RequirementsPage() {
                 </DigiFormRadiogroup>
               </DigiFormFieldset>
             </p>*/}
-              <p>
-                <DigiFormInputSearch
-                  afLabel="Sök på krav"
-                  afVariation={FormInputSearchVariation.MEDIUM}
-                  afType={FormInputType.SEARCH}
-                  afButtonText="Sök"
-                  afValue={filterFreeText}
-                  afButtonType={ButtonType.BUTTON}
-                  onAfOnSubmitSearch={(e) => {
-                    setFilterFreeText(e.detail);
-                    setUrlParams(e.detail, filterCategories);
-                  }}
-                ></DigiFormInputSearch>
-              </p>
-              <div className="content-container content-container--largest !p-2 !-m-2">
-                <DigiFormCategoryFilter
-                  afCategories={categoryFilterOptions || []}
-                  afAllCategoriesSelected={showAllCategories}
-                  afAllCategoriesText="Alla kategorier"
-                  afHideToggle={true}
-                  onAfOnSelectedCategoryChange={(e) => {
-                    if (e.detail.length === 0 || e.detail.length === categories?.length) {
-                      setFilterCategories([]);
-                      setUrlParams(filterFreeText, []);
-                      return;
-                    }
-                    setFilterCategories(e.detail);
-                    setUrlParams(filterFreeText, e.detail);
-                  }}
-                ></DigiFormCategoryFilter>
-              </div>
+                  <p>
+                    <DigiFormInputSearch
+                      afLabel="Sök på krav"
+                      afVariation={FormInputSearchVariation.MEDIUM}
+                      afType={FormInputType.SEARCH}
+                      afButtonText="Sök"
+                      afValue={filterFreeText}
+                      afButtonType={ButtonType.BUTTON}
+                      onAfOnSubmitSearch={(e) => {
+                        setFilterFreeText(e.detail);
+                        setUrlParams(e.detail, filterCategories);
+                      }}
+                    ></DigiFormInputSearch>
+                  </p>
+                  <div className="">
+                    <DigiFormCategoryFilter
+                      afCategories={categoryFilterOptions || []}
+                      afAllCategoriesSelected={showAllCategories}
+                      afAllCategoriesText="Alla kravkategorier"
+                      afHideToggle={true}
+                      onAfOnSelectedCategoryChange={(e) => {
+                        if (e.detail.length === 0 || e.detail.length === categories?.length) {
+                          setFilterCategories([]);
+                          setUrlParams(filterFreeText, []);
+                          return;
+                        }
+                        setFilterCategories(e.detail);
+                        setUrlParams(filterFreeText, e.detail);
+                      }}
+                    ></DigiFormCategoryFilter>
+                  </div>
+                </>
+              )}
             </form>
-          )}
+          </PageTitle>
         </div>
-        <div className="content-container content-container--xpadding content-container--nomargin">
+        <DigiLayoutBlock afVariation={LayoutBlockVariation.TRANSPARENT}>
           <p role="status" className="flex items-center h-[3rem] ml-1">
             <strong>
               Visar {filteredRequirements.length === selectedRequirements?.length ? 'alla' : ''}{' '}
@@ -225,17 +224,17 @@ export default function RequirementsPage() {
               </span>
             )}
           </p>
-        </div>
-        <div className="content-container content-container--nomargin content-container--nopadding">
+        </DigiLayoutBlock>
+        <DigiLayoutContainer afNoGutter={true} afVariation={LayoutContainerVariation.FLUID}>
           {!isLoading && filteredRequirements && (
-            <div className="content-container content-container--largest content-container--nomargin content-container--xpadding">
+            <DigiLayoutBlock afVariation={LayoutBlockVariation.TRANSPARENT} className="-mb-5 pb-5">
               <div
                 className="skip-target"
                 data-skip-link-text="Hoppa till kravlista"
                 id="kravlista"
               >
                 {filteredRequirements.length === 0 && (
-                  <div className="content-container content-container--white content-container--ymargin">
+                  <div className="">
                     <p>
                       Din sökning &quot;{filterFreeText}&quot; gav inget resultat. Försök med andra
                       sökord eller annan filtrering.
@@ -243,9 +242,10 @@ export default function RequirementsPage() {
                   </div>
                 )}
                 {filteredRequirements.map((requirement) => (
-                  <div
+                  <DigiLayoutBlock
                     key={requirement.id}
-                    className="content-container content-container--white content-container--ymargin first:!mt-2"
+                    afVerticalPadding={true}
+                    afMarginBottom={true}
                   >
                     <div className="border-b-1 border-grayscale-400 pb-5 mb-8">
                       <div className="flex flex-col sm:flex-row justify-between">
@@ -255,7 +255,7 @@ export default function RequirementsPage() {
                             aria-hidden="true"
                             id={`cat-${requirement.id}`}
                           >
-                            Kategori: {requirement.category}
+                            Kravkategori: {requirement.category}
                           </p>
                           <h2 aria-describedby={`cat-${requirement.id}`}>{requirement.name}</h2>
                         </div>
@@ -292,12 +292,12 @@ export default function RequirementsPage() {
                       headingLevel="h3"
                       twoCols
                     ></RequirementDetails>
-                  </div>
+                  </DigiLayoutBlock>
                 ))}
               </div>
-            </div>
+            </DigiLayoutBlock>
           )}
-        </div>
+        </DigiLayoutContainer>
       </DigiTypography>
     </main>
   );

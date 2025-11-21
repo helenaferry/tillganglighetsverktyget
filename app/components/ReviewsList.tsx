@@ -1,15 +1,12 @@
-import {
-  LoaderSkeletonVariation,
-  TypographyHeadingJumboLevel,
-  TypographyHeadingJumboVariation,
-} from '@designsystem-se/af';
+import { LoaderSkeletonVariation } from '@designsystem-se/af';
 import {
   DigiButton,
   DigiIconChevronRight,
   DigiIconPen,
+  DigiLayoutBlock,
+  DigiLayoutContainer,
   DigiLoaderSkeleton,
   DigiTypography,
-  DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -21,6 +18,7 @@ import { useRequirements } from '~/hooks/useRequirementData';
 import { useReviews } from '~/hooks/useReviewData';
 
 import { CardsOrTable } from './CardsOrTable';
+import PageTitle from './PageTitle';
 import Process from './Process';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
@@ -152,144 +150,143 @@ export function ReviewsList() {
   const fetched = reviewsFetched && requirementsAllFetched;
   const navigate = useNavigate();
   return (
-    <DigiTypography>
-      <div className="content-container content-container--white content-container--nomargin pt-12">
-        <DigiTypographyHeadingJumbo
-          afText="Granskningar"
-          afLevel={TypographyHeadingJumboLevel.H1}
-          afVariation={TypographyHeadingJumboVariation.PRIMARY}
-        ></DigiTypographyHeadingJumbo>
-        <p>
-          <strong>
-            Här visas alla granskningar som har gjorts. Starta en ny granskning för att självskatta
-            tillgängligheten i din tjänst. Du kan när som helst återuppta en påbörjad granskning
-            genom att klicka på den i listan.
-          </strong>
-        </p>
-      </div>
-      <div className="content-container content-container--nomargin">
-        {loading && (
-          <DigiLoaderSkeleton
-            afVariation={LoaderSkeletonVariation.SECTION}
-            afCount={4}
-          ></DigiLoaderSkeleton>
-        )}
-        {reviewsError && <p>Fel vid hämtning av granskningar</p>}
-        {(fetched && !filteredReviews) ||
-          (filteredReviews?.length === 0 && <p>Inga granskningar hittades.</p>)}
-        <div className="content-container content-container--largest content-container--white content-container--nomargin flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-          <div className="basis-1/3 flex-shrink-0">
-            <StyledLink to="/granskning/skapa" styleVariant="link-button">
-              Skapa ny granskning
-            </StyledLink>
-          </div>
-          <div className="basis-1/3 flex-grow-1">
-            <Process showHeading={true} subHeadingElement="p" showDescription={false} />
-          </div>
+    <main>
+      <DigiTypography>
+        <div>
+          <PageTitle
+            h1Text="Granskningar"
+            preamble="Här hittar du alla granskningar som har gjorts. Skapa en ny granskning för att själv bedöma tillgängligheten i din tjänst. Du kan när som helst fortsätta en påbörjad granskning genom att klicka på den i listan."
+          ></PageTitle>
         </div>
-        {fetched && filteredReviews && (
-          <div className="content-container content-container--ymargin content-container--largest content-container--white">
-            <CardsOrTable
-              headings={[
-                <SortButton
-                  buttonText="Granskningsnamn"
-                  sortBy={SortBy.REVIEW}
-                  active={sortBy === SortBy.REVIEW}
+        <DigiLayoutContainer afVerticalPadding={true}>
+          <div>
+            <DigiLayoutBlock afMarginBottom={true} afVerticalPadding={true}>
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div className="basis-1/3 flex-shrink-0">
+                  <StyledLink to="/granskning/skapa" styleVariant="link-button">
+                    Skapa ny granskning
+                  </StyledLink>
+                </div>
+                <div className="basis-1/3 flex-grow-1">
+                  <Process showHeading={true} subHeadingElement="p" showDescription={false} />
+                </div>
+              </div>
+            </DigiLayoutBlock>
+            {loading && (
+              <DigiLoaderSkeleton
+                afVariation={LoaderSkeletonVariation.SECTION}
+                afCount={4}
+              ></DigiLoaderSkeleton>
+            )}
+            {reviewsError && <p>Fel vid hämtning av granskningar</p>}
+            {fetched && (!filteredReviews || filteredReviews?.length === 0) && (
+              <p>Inga granskningar hittades.</p>
+            )}
+            {fetched && filteredReviews && (
+              <DigiLayoutBlock afMarginTop={true} afMarginBottom={false} afVerticalPadding={true}>
+                <CardsOrTable
+                  headings={[
+                    <SortButton
+                      buttonText="Granskningsnamn"
+                      sortBy={SortBy.REVIEW}
+                      active={sortBy === SortBy.REVIEW}
+                      sortDirection={sortDirection}
+                      onSortChange={setSort}
+                      key="Granskningsnamn"
+                    />,
+                    <SortButton
+                      buttonText="Skapad"
+                      sortBy={SortBy.CREATED}
+                      active={sortBy === SortBy.CREATED}
+                      sortDirection={sortDirection}
+                      onSortChange={setSort}
+                      key="Skapad"
+                    />,
+                    <SortButton
+                      buttonText="Uppdaterad"
+                      sortBy={SortBy.UPDATED}
+                      active={sortBy === SortBy.UPDATED}
+                      sortDirection={sortDirection}
+                      onSortChange={setSort}
+                      key="Uppdaterad"
+                    />,
+                    <SortButton
+                      buttonText="Granskat"
+                      sortBy={SortBy.REVIEWED}
+                      active={sortBy === SortBy.REVIEWED}
+                      sortDirection={sortDirection}
+                      onSortChange={setSort}
+                      key="Granskat"
+                    />,
+                    '',
+                  ]}
+                  cardsHeadings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskat', '']}
+                  rows={filteredReviews.map((review) => {
+                    return {
+                      id: review.id,
+                      posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
+                      content: [
+                        <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
+                          <span className="inline lg:hidden">
+                            <DigiIconChevronRight />
+                          </span>{' '}
+                          {review.title || 'Granskning'}
+                        </StyledLink>,
+                        <p className="whitespace-nowrap" key={`created-${review.id}`}>
+                          {formatDate(review.created_at)}
+                        </p>,
+                        <p className="whitespace-nowrap" key={`updated-${review.id}`}>
+                          {formatDate(review.latestUpdate)}
+                        </p>,
+                        <p className="whitespace-nowrap" key={`status-${review.id}`}>
+                          {review.reviewedCount < 10 && <span className="inline-block w-2"></span>}
+                          {`${review.reviewedCount} av ${requirementsCount(review.regulatoryFramework || '')} krav`}
+                        </p>,
+                        <DigiButton
+                          afType="button"
+                          afVariation="function"
+                          afAriaLabel={'Ändra uppgifter för granskning: ' + review.title}
+                          onClick={() => {
+                            navigate(`/granskning/${review.id}/redigera`);
+                          }}
+                          key={`edit-${review.id}`}
+                        >
+                          Ändra uppgifter
+                          <DigiIconPen slot="icon" />
+                        </DigiButton>,
+                      ],
+                    };
+                  })}
+                  itemsName="granskningar"
+                  itemsNameSingular="granskning"
+                  totalItems={reviews?.length || 0}
+                  filters={[
+                    {
+                      type: 'freeText',
+                      label: 'Sök på granskningsnamn',
+                      values: [filterFreeText],
+                      onChange: (e) => {
+                        setFilterFreeText(e.detail);
+                        setUrlParams(e.detail, sortBy!, sortDirection);
+                      },
+                    },
+                  ]}
+                  defaultItemsPerPage={10}
+                  sortedByThIndex={sortBy}
                   sortDirection={sortDirection}
-                  onSortChange={setSort}
-                  key="Granskningsnamn"
-                />,
-                <SortButton
-                  buttonText="Skapad"
-                  sortBy={SortBy.CREATED}
-                  active={sortBy === SortBy.CREATED}
-                  sortDirection={sortDirection}
-                  onSortChange={setSort}
-                  key="Skapad"
-                />,
-                <SortButton
-                  buttonText="Uppdaterad"
-                  sortBy={SortBy.UPDATED}
-                  active={sortBy === SortBy.UPDATED}
-                  sortDirection={sortDirection}
-                  onSortChange={setSort}
-                  key="Uppdaterad"
-                />,
-                <SortButton
-                  buttonText="Granskat"
-                  sortBy={SortBy.REVIEWED}
-                  active={sortBy === SortBy.REVIEWED}
-                  sortDirection={sortDirection}
-                  onSortChange={setSort}
-                  key="Granskat"
-                />,
-                '',
-              ]}
-              cardsHeadings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskat', '']}
-              rows={filteredReviews.map((review) => {
-                return {
-                  id: review.id,
-                  posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
-                  content: [
-                    <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
-                      <span className="inline lg:hidden">
-                        <DigiIconChevronRight />
-                      </span>{' '}
-                      {review.title || 'Granskning'}
-                    </StyledLink>,
-                    <p className="whitespace-nowrap" key={`created-${review.id}`}>
-                      {formatDate(review.created_at)}
-                    </p>,
-                    <p className="whitespace-nowrap" key={`updated-${review.id}`}>
-                      {formatDate(review.latestUpdate)}
-                    </p>,
-                    <p className="whitespace-nowrap" key={`status-${review.id}`}>
-                      {review.reviewedCount < 10 && <span className="inline-block w-2"></span>}
-                      {`${review.reviewedCount} av ${requirementsCount(review.regulatoryFramework || '')} krav`}
-                    </p>,
-                    <DigiButton
-                      afType="button"
-                      afVariation="function"
-                      afAriaLabel={'Ändra uppgifter för granskning: ' + review.title}
-                      onClick={() => {
-                        navigate(`/granskning/${review.id}/redigera`);
-                      }}
-                      key={`edit-${review.id}`}
-                    >
-                      Ändra uppgifter
-                      <DigiIconPen slot="icon" />
-                    </DigiButton>,
-                  ],
-                };
-              })}
-              itemsName="granskningar"
-              itemsNameSingular="granskning"
-              totalItems={reviews?.length || 0}
-              filters={[
-                {
-                  type: 'freeText',
-                  label: 'Sök på granskningsnamn',
-                  values: [filterFreeText],
-                  onChange: (e) => {
-                    setFilterFreeText(e.detail);
-                    setUrlParams(e.detail, sortBy!, sortDirection);
-                  },
-                },
-              ]}
-              defaultItemsPerPage={10}
-              sortedByThIndex={sortBy}
-              sortDirection={sortDirection}
-              displayHeadingsAboveCards={true}
-              resetChoices={() => {
-                setFilterFreeText('');
-                setSort(undefined);
-                setSearchParams({});
-              }}
-              choicesMade={filterFreeText.length > 0 || sortBy !== undefined}
-            />
+                  displayHeadingsAboveCards={true}
+                  resetChoices={() => {
+                    setFilterFreeText('');
+                    setSort(undefined);
+                    setSearchParams({});
+                  }}
+                  choicesMade={filterFreeText.length > 0 || sortBy !== undefined}
+                />
+              </DigiLayoutBlock>
+            )}
           </div>
-        )}
-      </div>
-    </DigiTypography>
+        </DigiLayoutContainer>
+      </DigiTypography>
+    </main>
   );
 }

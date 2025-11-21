@@ -1,8 +1,7 @@
-import { TypographyHeadingJumboLevel, TypographyHeadingJumboVariation } from '@designsystem-se/af';
-import { DigiTypography, DigiTypographyHeadingJumbo } from '@designsystem-se/af-react';
+import { DigiLayoutBlock, DigiLayoutContainer, DigiTypography } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
 
-import Breadcrumbs from '~/components/Breadcrumbs';
+import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
 import i18n from '~/lang/i18n';
 
@@ -19,18 +18,18 @@ export default function AddReviewPage() {
   const { t } = useTranslation();
   return (
     <DigiTypography>
-      <div className="content-container content-container--white content-container--nomargin">
-        <Breadcrumbs
-          pages={[{ title: t('start.Title'), href: '/' }]}
-          currentPage={t('addReview.Title')}
-        />
-        <DigiTypographyHeadingJumbo
-          afText={t('addReview.Title')}
-          afLevel={TypographyHeadingJumboLevel.H1}
-          afVariation={TypographyHeadingJumboVariation.PRIMARY}
-        ></DigiTypographyHeadingJumbo>
-        <ReviewForm />
-      </div>
+      <main>
+        <PageTitle
+          h1Text={t('addReview.Title')}
+          breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
+          breadcrumbsCurrentPage={t('addReview.Title')}
+        />{' '}
+        <DigiLayoutContainer afVerticalPadding={true}>
+          <DigiLayoutBlock afVerticalPadding={true}>
+            <ReviewForm />
+          </DigiLayoutBlock>
+        </DigiLayoutContainer>
+      </main>
     </DigiTypography>
   );
 }

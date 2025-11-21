@@ -6,6 +6,7 @@ import {
 } from '@designsystem-se/af';
 import {
   DigiLoaderSkeleton,
+  DigiNotificationAlert,
   DigiNotificationErrorPage,
   DigiTypography,
   DigiTypographyHeadingJumbo,
@@ -41,7 +42,7 @@ export default function ExportReviewPage() {
   return (
     <main>
       {loading && (
-        <div className="content-container">
+        <div className="">
           <DigiLoaderSkeleton
             className="m-5"
             afVariation={LoaderSkeletonVariation.SECTION}
@@ -51,7 +52,7 @@ export default function ExportReviewPage() {
       )}
       {!loading && review && checks && requirements && (
         <DigiTypography>
-          <div className="content-container content-container--nomargin content-container--white">
+          <div className="">
             <Breadcrumbs
               pages={[
                 { title: 'Granskningar', href: '/' },
@@ -69,6 +70,12 @@ export default function ExportReviewPage() {
             <p className="pt-8">
               <b>Granskning:</b> {review.title}
             </p>
+
+            <DigiNotificationAlert afHeading="Den här sidan ser lite hemsk ut just nu">
+              Men misströsta inte, den ska bort och slås ihop med sidan för att sammanställa
+              brister. Under tiden kan du använda den här fula sidan för att spara .csv och
+              importera i Jira.
+            </DigiNotificationAlert>
           </div>
           <ExportTasks review={review} checks={checks} requirements={requirements} />
         </DigiTypography>

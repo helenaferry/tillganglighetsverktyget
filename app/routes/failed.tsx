@@ -1,20 +1,15 @@
+import { ErrorPageStatusCodes, LoaderSkeletonVariation } from '@designsystem-se/af';
 import {
-  ErrorPageStatusCodes,
-  LoaderSkeletonVariation,
-  TypographyHeadingJumboLevel,
-  TypographyHeadingJumboVariation,
-} from '@designsystem-se/af';
-import {
+  DigiLayoutBlock,
   DigiLoaderSkeleton,
   DigiNotificationErrorPage,
   DigiTypography,
-  DigiTypographyHeadingJumbo,
 } from '@designsystem-se/af-react';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Breadcrumbs from '~/components/Breadcrumbs';
 import CreateStatement from '~/components/CreateStatement';
+import PageTitle from '~/components/PageTitle';
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
@@ -31,86 +26,106 @@ export function meta() {
 
 export default function FailedPage() {
   const { id } = useParams<{ id: string }>();
-  const { review, isLoading: reviewLoading } = useReviewById(String(id));
-  const { checks, isLoading: checksLoading } = useChecksForReview(String(id));
-  const { data: requirementsAll, isLoading: requirementsAllLoading } = useRequirements(
-    review?.regulatoryFramework || '',
-  );
-  const { data: categoriesWeb, isLoading: categoriesWebLoading } = useRequirementCategories(
-    ObjectType.WEB,
-  );
-  const { data: categoriesDoc, isLoading: categoriesDocLoading } = useRequirementCategories(
-    ObjectType.DOCUMENT,
-  );
+  const { review, isLoading: reviewLoading, isFetched: reviewFetched } = useReviewById(String(id));
+  const {
+    checks,
+    isLoading: checksLoading,
+    isFetched: checksFetched,
+  } = useChecksForReview(String(id));
+  const {
+    data: requirementsAll,
+    isLoading: requirementsAllLoading,
+    isFetched: requirementsAllFetched,
+  } = useRequirements(review?.regulatoryFramework || '');
+  const {
+    data: categoriesWeb,
+    isLoading: categoriesWebLoading,
+    isFetched: categoriesWebFetched,
+  } = useRequirementCategories(ObjectType.WEB);
+  const {
+    data: categoriesDoc,
+    isLoading: categoriesDocLoading,
+    isFetched: categoriesDocFetched,
+  } = useRequirementCategories(ObjectType.DOCUMENT);
   const requirements = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string)
       ? requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || []
       : requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
-  }, [review]);
+  }, [review, requirementsAll]);
   const categories = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string) ? categoriesDoc : categoriesWeb;
-  }, [review]);
+  }, [review, categoriesDoc, categoriesWeb]);
   const loading =
     reviewLoading ||
     checksLoading ||
     requirementsAllLoading ||
     categoriesWebLoading ||
     categoriesDocLoading;
+  const fetched =
+    reviewFetched &&
+    checksFetched &&
+    requirementsAllFetched &&
+    categoriesWebFetched &&
+    categoriesDocFetched;
   return (
     <main>
       {loading && (
-        <div className="content-container">
+        <DigiLayoutBlock>
           <DigiLoaderSkeleton
             className="m-5"
             afVariation={LoaderSkeletonVariation.SECTION}
             afCount={4}
           ></DigiLoaderSkeleton>
-        </div>
+        </DigiLayoutBlock>
       )}
-      {!loading && review && (
-        <DigiTypography>
-          <div className="content-container content-container--nomargin content-container--white">
-            <Breadcrumbs
-              pages={[
+      {fetched &&
+        (!review ||
+          !checks ||
+          checks.length === 0 ||
+          !requirements ||
+          requirements.length === 0 ||
+          !categories ||
+          categories.length === 0) && (
+          <DigiNotificationErrorPage afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}>
+            <p slot="bodytext">
+              Granskningen med id &quot;{id}&quot; kunde inte hittas. Den kan ha tagits bort, eller
+              så har ett oväntat fel uppstått.
+            </p>
+          </DigiNotificationErrorPage>
+        )}
+      {fetched &&
+        review &&
+        checks &&
+        checks.length > 0 &&
+        requirements &&
+        requirements.length > 0 &&
+        categories &&
+        categories.length > 0 && (
+          <DigiTypography>
+            <PageTitle
+              h1Text="Underkända krav"
+              breadcrumbsPages={[
                 { title: 'Granskningar', href: '/' },
                 { title: review?.title || 'Granskning', href: `/granskning/${review.id}` },
               ]}
-              currentPage="Underkända krav"
+              breadcrumbsCurrentPage="Underkända krav"
+            >
+              <StyledLink
+                to={`/granskning/${review.id}/export`}
+                styleVariant="link-button"
+                hideIcon
+              >
+                Exportera uppgifter till Jira
+              </StyledLink>
+            </PageTitle>
+            <CreateStatement
+              reviewId={review.id}
+              checks={checks}
+              requirements={requirements}
+              categories={categories}
             />
-
-            <DigiTypographyHeadingJumbo
-              afText="Underkända krav"
-              afLevel={TypographyHeadingJumboLevel.H1}
-              afVariation={TypographyHeadingJumboVariation.PRIMARY}
-            ></DigiTypographyHeadingJumbo>
-
-            <p className="pt-8">
-              <b>Granskning:</b> {review.title}
-            </p>
-          </div>
-
-          <div className="content-container content-container--nomargin">
-            <StyledLink to={`/granskning/${review.id}/export`} styleVariant="link-button" hideIcon>
-              Exportera uppgifter till Jira
-            </StyledLink>
-          </div>
-
-          <CreateStatement
-            reviewId={review.id}
-            checks={checks}
-            requirements={requirements}
-            categories={categories || []}
-          />
-        </DigiTypography>
-      )}
-      {!loading && !review && (
-        <DigiNotificationErrorPage afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}>
-          <p slot="bodytext">
-            Granskningen med id &quot;{id}&quot; kunde inte hittas. Den kan ha tagits bort, eller så
-            har ett oväntat fel uppstått.
-          </p>
-        </DigiNotificationErrorPage>
-      )}
+          </DigiTypography>
+        )}
     </main>
   );
 }

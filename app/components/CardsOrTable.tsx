@@ -234,9 +234,9 @@ export function CardsOrTable({
             </thead>
             <tbody>
               {paginatedRows.map((row) => (
-                <tr key={row.id} aria-rowindex={row.posInSet}>
+                <tr key={`row-${row.id}`} aria-rowindex={row.posInSet}>
                   {row.content.map((cell, cellIndex) => (
-                    <td key={`${row.id}-${cellIndex}`}>{cell}</td>
+                    <td key={`cell-${row.id}-${cellIndex}`}>{cell}</td>
                   ))}
                 </tr>
               ))}
@@ -277,7 +277,7 @@ export function CardsOrTable({
         >
           {paginatedRows.map((row) => (
             <li
-              key={row.id}
+              key={`card-${row.id}`}
               aria-setsize={rows.length}
               aria-posinset={row.posInSet}
               className="border-b-1 py-4"

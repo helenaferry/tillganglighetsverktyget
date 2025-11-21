@@ -1,5 +1,5 @@
 import { ExpandableAccordionHeaderLevel } from '@designsystem-se/af';
-import { DigiExpandableAccordion } from '@designsystem-se/af-react';
+import { DigiExpandableAccordion, DigiTypography } from '@designsystem-se/af-react';
 import ReactMarkdown from 'react-markdown';
 
 import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
@@ -22,47 +22,49 @@ export default function RequirementDetails({
   const addition = requirementAdditions.items.find((item) => item.id === requirement.id);
   const HeadingTag = headingLevel;
   return (
-    <div className={twoCols ? 'md:grid md:grid-cols-2 md:gap-6' : ''}>
-      <div>
-        {requirement.statement && (
-          <div>
-            <HeadingTag>Beskrivning</HeadingTag>
+    <DigiTypography>
+      <div className={twoCols ? 'md:grid md:grid-cols-2 md:gap-6' : ''}>
+        <div>
+          {requirement.statement && (
             <div>
-              <ReactMarkdown>{requirement.statement || ''}</ReactMarkdown>
+              <HeadingTag>Beskrivning</HeadingTag>
+              <div>
+                <ReactMarkdown>{requirement.statement || ''}</ReactMarkdown>
+              </div>
             </div>
-          </div>
-        )}
-        {requirement.why && (
-          <div className="mt-4">
-            <HeadingTag>Varför är detta viktigt?</HeadingTag>
+          )}
+          {requirement.why && (
+            <div className="mt-4">
+              <HeadingTag>Varför är detta viktigt?</HeadingTag>
+              <div>
+                <ReactMarkdown>{requirement.why || ''}</ReactMarkdown>
+              </div>
+            </div>
+          )}
+          {addition && (
+            <div className="mt-4">
+              <HeadingTag>{requirementAdditions.heading}</HeadingTag>
+              <div>
+                <ReactMarkdown>{addition?.text || ''}</ReactMarkdown>
+              </div>
+            </div>
+          )}
+        </div>
+        {requirement.howToTest && (
+          <DigiExpandableAccordion
+            afHeading="Hur du kan testa"
+            afHeadingLevel={
+              ExpandableAccordionHeaderLevel[
+                HeadingTag.toUpperCase() as keyof typeof ExpandableAccordionHeaderLevel
+              ]
+            }
+          >
             <div>
-              <ReactMarkdown>{requirement.why || ''}</ReactMarkdown>
+              <ReactMarkdown>{requirement.howToTest || ''}</ReactMarkdown>
             </div>
-          </div>
-        )}
-        {addition && (
-          <div className="mt-4">
-            <HeadingTag>{requirementAdditions.heading}</HeadingTag>
-            <div>
-              <ReactMarkdown>{addition?.text || ''}</ReactMarkdown>
-            </div>
-          </div>
+          </DigiExpandableAccordion>
         )}
       </div>
-      {requirement.howToTest && (
-        <DigiExpandableAccordion
-          afHeading="Hur du kan testa"
-          afHeadingLevel={
-            ExpandableAccordionHeaderLevel[
-              HeadingTag.toUpperCase() as keyof typeof ExpandableAccordionHeaderLevel
-            ]
-          }
-        >
-          <div>
-            <ReactMarkdown>{requirement.howToTest || ''}</ReactMarkdown>
-          </div>
-        </DigiExpandableAccordion>
-      )}
-    </div>
+    </DigiTypography>
   );
 }
