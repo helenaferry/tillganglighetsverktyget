@@ -2,7 +2,7 @@ import { LoaderSkeletonVariation } from '@designsystem-se/af';
 import {
   DigiButton,
   DigiIconChevronRight,
-  DigiIconPen,
+  DigiIconEdit,
   DigiLayoutBlock,
   DigiLayoutContainer,
   DigiLoaderSkeleton,
@@ -252,7 +252,7 @@ export function ReviewsList() {
                           key={`edit-${review.id}`}
                         >
                           Ändra uppgifter
-                          <DigiIconPen slot="icon" />
+                          <DigiIconEdit slot="icon" />
                         </DigiButton>,
                       ],
                     };
