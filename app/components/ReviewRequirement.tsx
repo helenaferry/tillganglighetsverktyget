@@ -387,19 +387,15 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                               <p className="text-grayscale-700">
                                 Krav {numberInCategory} av {totalInCategory}
                               </p>
-                              <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
-                                <h2
-                                  className="skip-target"
-                                  id={requirement.id}
-                                  data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
-                                >
-                                  {requirement.name}
-                                </h2>
-                                <div>
-                                  {!isCheckLoading && <StatusBadge status={check?.status} />}
-                                </div>
-                              </div>
-                              <RequirementLegal requirement={requirement} />
+                              <h2
+                                className="skip-target flex gap-4"
+                                id={requirement.id}
+                                data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                              >
+                                <span>{requirement.name}</span>
+                                {!isCheckLoading && <StatusBadge status={check?.status} />}
+                              </h2>
+                              <RequirementLegal headingLevel="h3" requirement={requirement} />
                             </div>
                             <div className="flex flex-col md:flex-row my-5 gap-5">
                               <div className="flex-1">

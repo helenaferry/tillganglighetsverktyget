@@ -27,7 +27,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
 
   return (
     <form id="requirement-form">
-      <DigiFormFieldset afForm="requirement-form" afLegend="Status för krav">
+      <DigiFormFieldset afForm="requirement-form" afLegend="Bedömning av kravet">
         <DigiFormRadiogroup
           afName="fulfillment"
           onAfOnGroupChange={(e: CustomEvent) => {
@@ -73,7 +73,8 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
       </DigiFormFieldset>
       <DigiFormTextarea
         afValue={check?.comment ?? ''}
-        afLabel="Kommentar"
+        afLabel="Motivera bedömning"
+        afLabelDescription="Skriv inte personuppgifter eller känslig information, eftersom texten är underlag till en tillgänglighetsredogörelse."
         afVariation={FormTextareaVariation.LARGE}
         onChange={(event) => {
           const input: UpsertCheckInput = {

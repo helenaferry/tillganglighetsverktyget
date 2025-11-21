@@ -265,8 +265,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
         <>
           <PageTitle
             h1Text={`Kravöversikt: ${review?.title || 'Granskning'}`}
-            preamble="Här är en översikt över alla krav för granskningen. Du kan söka eller filtrera
-                  fram specifika krav. Du kan också se status för granskningen."
+            preamble="Här får du en översikt över alla krav i granskningen. Du kan söka eller filtrera fram specifika krav, samt se aktuell status för granskningen."
             breadcrumbsCurrentPage={`Kravöversikt: ${review?.title || 'Granskning'}`}
             breadcrumbsPages={[{ title: 'Granskningar', href: '/' }]}
           />

@@ -73,7 +73,7 @@ const getBadge = (status: Status, plural?: boolean, ariaLabel?: string) => {
 export default function StatusBadge({ status, plural, noMinWidth, ariaLabel }: Props) {
   const enumStatus = typeof status === 'number' ? (status as Status) : Status.NOT_ASSESSED;
   return (
-    <div className={noMinWidth ? '' : 'min-w-[6rem]'}>
+    <div className={`inline-block ${noMinWidth ? '' : 'min-w-[6rem]'}`}>
       {getBadge(enumStatus, plural, ariaLabel)}
     </div>
   );
