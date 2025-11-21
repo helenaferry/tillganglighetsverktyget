@@ -261,7 +261,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                     />
                     <div className="mt-5">
                       <DigiTypographyPreamble>
-                        Granskning startades ${formatDate(review?.created_at)}
+                        Granskning startades {formatDate(review?.created_at)}
                       </DigiTypographyPreamble>
                     </div>
                   </div>
@@ -305,90 +305,101 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
               </DigiTypography>
             </DigiLayoutBlock>
           </DigiLayoutContainer>
-          <DigiLayoutContainer afVerticalPadding={true}>
-            <div className="relative">
-              <div
-                className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 md:w-[20rem] overflow-y-auto bg-white`}
-              >
-                <CategoryNav
-                  reviewId={reviewId}
-                  categories={categoriesWithRequirements ?? []}
-                  selectedCategory={requirement?.category ?? ''}
-                  selectedRequirement={requirementId}
-                  showCategoryNav={showCategoryNav}
-                  onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
-                />
-              </div>
-              <main className="md:ml-[21.5rem]" ref={mainRef} tabIndex={-1}>
-                <div>
-                  <div>
-                    {percentageChecked(requirementsWithChecks) === 100 && (
-                      <div className="mb-5" role="alert">
-                        <DigiNotificationAlert
-                          afSize={NotificationAlertSize.LARGE}
-                          afVariation={NotificationAlertVariation.SUCCESS}
-                          afHeading="Hurra, granskningen är klar!"
-                        >
-                          <div className="mt-6 mb-4">
-                            <StyledLink
-                              to={`/granskning/${reviewId}/underkanda-krav`}
-                              styleVariant="link-button"
-                              hideIcon
-                            >
-                              Sammanställ underkända krav
-                            </StyledLink>
-                          </div>
-                        </DigiNotificationAlert>
-                      </div>
-                    )}
-                    <CategoryOverview
-                      category={
-                        categoriesWithRequirements.find(
-                          (cat) => cat.category === requirement?.category,
-                        ) ?? { category: requirement?.category ?? '', requirements: [] }
-                      }
-                      onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
-                    />
-                    <DigiLayoutContainer afNoGutter={true} afMarginTop={true} afMarginBottom={true}>
-                      <DigiLayoutBlock afVerticalPadding={true}>
-                        <DigiTypography>
-                          <div className="border-b-1 border-grayscale-400 pb-5">
-                            <p className="text-grayscale-700">
-                              Krav {numberInCategory} av {totalInCategory}
-                            </p>
-                            <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
-                              <h2
-                                className="skip-target"
-                                id={requirement.id}
-                                data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
-                              >
-                                {requirement.name}
-                              </h2>
-                              <div>{!isCheckLoading && <StatusBadge status={check?.status} />}</div>
-                            </div>
-                            <RequirementLegal requirement={requirement} />
-                          </div>
-                          <div className="flex flex-col md:flex-row my-5 gap-5">
-                            <div className="flex-1">
-                              <RequirementDetails requirement={requirement} headingLevel="h3" />
-                            </div>
-                            <div className="flex-1">
-                              <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
-                            </div>
-                          </div>
-                        </DigiTypography>
-                      </DigiLayoutBlock>
-                    </DigiLayoutContainer>
-                    <PrevNextRequirement
-                      reviewId={reviewId}
-                      nextUnhandled={nextUnhandledRequirement(requirementId)}
-                      previousUnhandled={previousUnhandledRequirement(requirementId)}
-                    />
-                  </div>
+          <div className="">
+            <DigiLayoutContainer afVerticalPadding={true}>
+              <div className="relative">
+                <div
+                  className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 md:w-[20rem] overflow-y-auto bg-white`}
+                >
+                  <CategoryNav
+                    reviewId={reviewId}
+                    categories={categoriesWithRequirements ?? []}
+                    selectedCategory={requirement?.category ?? ''}
+                    selectedRequirement={requirementId}
+                    showCategoryNav={showCategoryNav}
+                    onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+                  />
                 </div>
-              </main>
-            </div>
-          </DigiLayoutContainer>
+                <main className="md:ml-[21.5rem]" ref={mainRef} tabIndex={-1}>
+                  <div>
+                    <div>
+                      {percentageChecked(requirementsWithChecks) === 100 && (
+                        <div className="mb-5" role="alert">
+                          <DigiNotificationAlert
+                            afSize={NotificationAlertSize.LARGE}
+                            afVariation={NotificationAlertVariation.SUCCESS}
+                            afHeading="Hurra, granskningen är klar!"
+                          >
+                            <div className="mt-6 mb-4">
+                              <StyledLink
+                                to={`/granskning/${reviewId}/underkanda-krav`}
+                                styleVariant="link-button"
+                                hideIcon
+                              >
+                                Sammanställ underkända krav
+                              </StyledLink>
+                            </div>
+                          </DigiNotificationAlert>
+                        </div>
+                      )}
+                      <CategoryOverview
+                        category={
+                          categoriesWithRequirements.find(
+                            (cat) => cat.category === requirement?.category,
+                          ) ?? { category: requirement?.category ?? '', requirements: [] }
+                        }
+                        onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
+                      />
+                      <DigiLayoutContainer
+                        afNoGutter={true}
+                        afMarginTop={true}
+                        afMarginBottom={true}
+                      >
+                        <DigiLayoutBlock afVerticalPadding={true}>
+                          <DigiTypography>
+                            <div className="border-b-1 border-grayscale-400 pb-5">
+                              <p className="text-grayscale-700">
+                                Krav {numberInCategory} av {totalInCategory}
+                              </p>
+                              <div className="w-full flex flex-col sm:flex-row gap-4 justify-between">
+                                <h2
+                                  className="skip-target"
+                                  id={requirement.id}
+                                  data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                                >
+                                  {requirement.name}
+                                </h2>
+                                <div>
+                                  {!isCheckLoading && <StatusBadge status={check?.status} />}
+                                </div>
+                              </div>
+                              <RequirementLegal requirement={requirement} />
+                            </div>
+                            <div className="flex flex-col md:flex-row my-5 gap-5">
+                              <div className="flex-1">
+                                <RequirementDetails requirement={requirement} headingLevel="h3" />
+                              </div>
+                              <div className="flex-1">
+                                <RequirementForm
+                                  requirementId={requirement.id}
+                                  reviewId={reviewId}
+                                />
+                              </div>
+                            </div>
+                          </DigiTypography>
+                        </DigiLayoutBlock>
+                      </DigiLayoutContainer>
+                      <PrevNextRequirement
+                        reviewId={reviewId}
+                        nextUnhandled={nextUnhandledRequirement(requirementId)}
+                        previousUnhandled={previousUnhandledRequirement(requirementId)}
+                      />
+                    </div>
+                  </div>
+                </main>
+              </div>
+            </DigiLayoutContainer>
+          </div>
         </>
       )}
       {!loading && (!review || !requirement) && (
