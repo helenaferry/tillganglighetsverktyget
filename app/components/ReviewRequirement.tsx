@@ -309,7 +309,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
             <DigiLayoutContainer afVerticalPadding={true}>
               <div className="relative">
                 <div
-                  className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-screen' : 'w-[0]'} transition-[width] duration-300 md:w-[20rem] overflow-y-auto bg-white`}
+                  className={`absolute z-10 inset-y-0 left-0 ${showCategoryNav ? 'w-full' : 'w-[0]'} transition-[width] duration-300 md:w-[20rem] overflow-y-auto bg-white`}
                 >
                   <CategoryNav
                     reviewId={reviewId}
@@ -317,7 +317,15 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                     selectedCategory={requirement?.category ?? ''}
                     selectedRequirement={requirementId}
                     showCategoryNav={showCategoryNav}
-                    onToggleNav={() => setShowCategoryNav(!showCategoryNav)}
+                    onToggleNav={() => {
+                      setShowCategoryNav(!showCategoryNav);
+                      if (showCategoryNav) {
+                        console.log('focusing');
+                        console.log(document.getElementById('toggle-category-nav'));
+                        document.getElementById('toggle-category-nav')?.focus();
+                      }
+                    }}
+                    focusTrap={showCategoryNav}
                   />
                 </div>
                 <main className="md:ml-[21.5rem]" ref={mainRef} tabIndex={-1}>
@@ -348,7 +356,25 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                             (cat) => cat.category === requirement?.category,
                           ) ?? { category: requirement?.category ?? '', requirements: [] }
                         }
-                        onToggleCategoryNav={() => setShowCategoryNav(!showCategoryNav)}
+                        onToggleCategoryNav={() => {
+                          setShowCategoryNav(!showCategoryNav);
+                          const closeNav = document.getElementById('close-category-nav');
+                          closeNav?.focus();
+                          const nav = document.getElementById('category-nav');
+                          closeNav?.addEventListener('keydown', (e) => {
+                            if (e.key === 'Tab' && e.shiftKey) {
+                              document.getElementById('last-focusable')?.focus();
+                            }
+                          });
+                          nav?.addEventListener('keydown', (e) => {
+                            if (e.key === 'Tab' && !e.shiftKey) {
+                              if (e.target && (e.target as HTMLElement).id === 'last-focusable') {
+                                closeNav?.focus();
+                              }
+                            }
+                          });
+                        }}
+                        isCategoryNavOpen={showCategoryNav}
                       />
                       <DigiLayoutContainer
                         afNoGutter={true}

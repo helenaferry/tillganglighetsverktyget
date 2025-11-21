@@ -8,6 +8,7 @@ import { DigiLink, DigiLinkButton } from '@designsystem-se/af-react';
 import { useNavigate } from 'react-router';
 
 type Props = {
+  id?: string;
   to: string;
   children: React.ReactNode;
   ariaLabel?: string;
@@ -25,6 +26,7 @@ type Props = {
 };
 
 export function StyledLink({
+  id,
   to,
   children,
   ariaLabel,
@@ -67,6 +69,7 @@ export function StyledLink({
     case 'link-button-secondary':
       return (
         <DigiLinkButton
+          id={id}
           afHref={to}
           afOverrideLink={overrideLink}
           onAfOnClick={handleClick}
@@ -84,6 +87,7 @@ export function StyledLink({
     case 'primary-button':
       return (
         <a
+          id={id}
           href={to}
           aria-label={ariaLabel}
           onClick={handleClick}
@@ -101,6 +105,7 @@ export function StyledLink({
     case 'secondary-button':
       return (
         <a
+          id={id}
           href={to}
           aria-label={ariaLabel}
           onClick={handleClick}
@@ -117,6 +122,7 @@ export function StyledLink({
     case 'plain':
       return (
         <a
+          id={id}
           href={to}
           aria-label={ariaLabel}
           onClick={handleClick}
@@ -129,6 +135,7 @@ export function StyledLink({
     default:
       return (
         <DigiLink
+          id={id}
           afHref={to}
           afAriaLabel={ariaLabel}
           afOverrideLink={overrideLink}

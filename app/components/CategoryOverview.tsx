@@ -14,10 +14,15 @@ import ProgressBar from './ProgressBar';
 
 type Props = {
   category?: Category;
+  isCategoryNavOpen: boolean;
   onToggleCategoryNav: () => void;
 };
 
-export default function CategoryOverview({ category, onToggleCategoryNav }: Props) {
+export default function CategoryOverview({
+  category,
+  isCategoryNavOpen,
+  onToggleCategoryNav,
+}: Props) {
   if (!category) return null;
   const checkedCount = numberChecked(category.requirements);
   const totalCount = category?.requirements.length;
@@ -29,10 +34,13 @@ export default function CategoryOverview({ category, onToggleCategoryNav }: Prop
           <DigiTypography>
             <div className="absolute md:hidden -left-2">
               <DigiButton
+                afId="toggle-category-nav"
                 afSize={ButtonSize.MEDIUM}
                 afVariation={ButtonVariation.PRIMARY}
                 afFullWidth={false}
                 onAfOnClick={onToggleCategoryNav}
+                afAriaControls="category-nav"
+                afAriaExpanded={isCategoryNavOpen}
               >
                 Kravkategorier
                 <DigiIconArrowRight slot="icon-secondary" />

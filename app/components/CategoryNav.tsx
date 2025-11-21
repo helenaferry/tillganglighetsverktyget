@@ -20,6 +20,7 @@ type Props = {
   selectedRequirement: string;
   showCategoryNav?: boolean;
   onToggleNav?: () => void;
+  focusTrap?: boolean;
 };
 const StatusIndicator = ({ checked, active }: { checked: boolean; active: boolean }) => {
   return (
@@ -92,11 +93,12 @@ export default function CategoryNav({
   };
 
   return (
-    <nav>
+    <nav id="category-nav" aria-describedby="category-nav-heading">
       <DigiTypography>
         <div className="flex justify-between pt-18 md:pt-5 px-5">
-          <h2>Kravkategorier</h2>
+          <h2 id="category-nav-heading">Kravkategorier</h2>
           <DigiButton
+            afId="close-category-nav"
             className="block md:hidden"
             afSize={ButtonSize.SMALL}
             afVariation={ButtonVariation.FUNCTION}
@@ -110,7 +112,7 @@ export default function CategoryNav({
           {categories.length === 0 ? (
             <li>Inga kravkategorier tillgängliga</li>
           ) : (
-            categories.map((category) => {
+            categories.map((category, buttonIndex: number) => {
               const isExpanded = expandedCategories.includes(category.category);
               return (
                 <li
@@ -123,6 +125,11 @@ export default function CategoryNav({
                     aria-controls={category.category}
                     aria-expanded={isExpanded}
                     className="expand-category group flex justify-between w-full text-left py-1"
+                    id={
+                      !isExpanded && buttonIndex === categories.length - 1
+                        ? 'last-focusable'
+                        : undefined
+                    }
                   >
                     <div>
                       <div
@@ -154,7 +161,7 @@ export default function CategoryNav({
                     {!category.requirements || category.requirements.length === 0 ? (
                       <li>Inga krav tillgängliga</li>
                     ) : (
-                      category.requirements.map((req) => {
+                      category.requirements.map((req, linkIndex) => {
                         const done =
                           req.check?.status === Status.PASS ||
                           req.check?.status === Status.FAIL ||
@@ -163,6 +170,13 @@ export default function CategoryNav({
                         return (
                           <li key={req.id}>
                             <StyledLink
+                              id={
+                                buttonIndex === categories.length - 1 &&
+                                isExpanded &&
+                                linkIndex === category.requirements.length - 1
+                                  ? 'last-focusable'
+                                  : undefined
+                              }
                               to={`/granskning/${reviewId}/${req.id}/#krav`}
                               overrideLink={true}
                               styleVariant="plain"
