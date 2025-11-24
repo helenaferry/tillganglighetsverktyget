@@ -251,12 +251,12 @@ export default function RequirementsPage() {
                 id="kravlista"
               >
                 {filteredRequirements.length === 0 && (
-                  <div className="">
+                  <DigiLayoutBlock afVerticalPadding={true} afMarginBottom={true}>
                     <p>
                       Din sökning &quot;{filterFreeText}&quot; gav inget resultat. Försök med andra
                       sökord eller annan filtrering.
                     </p>
-                  </div>
+                  </DigiLayoutBlock>
                 )}
                 {filteredRequirements.map((requirement) => (
                   <DigiLayoutBlock
