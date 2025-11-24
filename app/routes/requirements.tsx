@@ -53,6 +53,7 @@ export default function RequirementsPage() {
 
   const [showObjectType] = useState<ObjectType>(ObjectType.WEB);
   const [filterFreeText, setFilterFreeText] = useState('');
+  const [filterSpecific, setFilterSpecific] = useState<Requirement>();
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [showAllCategories, setShowAllCategories] = useState(true);
   const selectedRequirements = useMemo(() => {
@@ -74,6 +75,7 @@ export default function RequirementsPage() {
 
   const filteredRequirements = useMemo(() => {
     if (!selectedRequirements) return [];
+    if (filterSpecific) return [filterSpecific];
     return selectedRequirements.filter((req) => {
       if (filterCategories.length > 0 && !filterCategories.includes(req.category)) return false;
       if (filterFreeText && !searchMatches(req, filterFreeText)) return false;
@@ -87,17 +89,25 @@ export default function RequirementsPage() {
         name: category,
         hits:
           selectedRequirements
-            ?.filter((req) => searchMatches(req, filterFreeText))
+            ?.filter((req) => (filterSpecific ? req.id === filterSpecific.id : true))
+            ?.filter((req) => (filterFreeText ? searchMatches(req, filterFreeText) : true))
             .filter((req) => req.category === category).length || 0,
         selected: !showAllCategories && filterCategories.includes(category),
       };
     });
-  }, [selectedRequirements, categories, filterCategories, filterFreeText]);
+  }, [
+    selectedRequirements,
+    categories,
+    filterCategories,
+    filterFreeText,
+    filterSpecific,
+    showAllCategories,
+  ]);
 
   useEffect(() => {
     if (id) {
       const requirement = requirementsAll?.find((req) => String(req.id) === String(id));
-      if (requirement) setFilterFreeText(requirement.name);
+      if (requirement) setFilterSpecific(requirement);
     }
   }, [id, requirementsAll]);
 
@@ -173,7 +183,7 @@ export default function RequirementsPage() {
                       afVariation={FormInputSearchVariation.MEDIUM}
                       afType={FormInputType.SEARCH}
                       afButtonText="Sök"
-                      afValue={filterFreeText}
+                      afValue={filterSpecific ? filterSpecific.name : filterFreeText}
                       afButtonType={ButtonType.BUTTON}
                       onAfOnSubmitSearch={(e) => {
                         setFilterFreeText(e.detail);
@@ -189,7 +199,6 @@ export default function RequirementsPage() {
                       afAllCategoriesText="Alla kravkategorier"
                       afHideToggle={true}
                       onAfOnSelectedCategoryChange={(e) => {
-                        console.log(e.detail);
                         if (e.detail.length === 0 || e.detail.length === categories?.length) {
                           setShowAllCategories(true);
                           setFilterCategories([]);
@@ -219,6 +228,7 @@ export default function RequirementsPage() {
                   afVariation={ButtonVariation.FUNCTION}
                   onAfOnClick={() => {
                     setFilterFreeText('');
+                    setFilterSpecific(undefined);
                     setFilterCategories([]);
                     setSearchParams({});
                     setShowAllCategories(true);
