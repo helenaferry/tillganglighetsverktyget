@@ -85,11 +85,14 @@ export default function RequirementsPage() {
     return categories?.map((category) => {
       return {
         name: category,
-        hits: selectedRequirements?.filter((req) => req.category === category).length || 0,
+        hits:
+          selectedRequirements
+            ?.filter((req) => searchMatches(req, filterFreeText))
+            .filter((req) => req.category === category).length || 0,
         selected: !showAllCategories && filterCategories.includes(category),
       };
     });
-  }, [selectedRequirements, categories, filterCategories]);
+  }, [selectedRequirements, categories, filterCategories, filterFreeText]);
 
   useEffect(() => {
     if (id) {
@@ -178,18 +181,22 @@ export default function RequirementsPage() {
                       }}
                     ></DigiFormInputSearch>
                   </p>
-                  <div className="">
+                  <div>
                     <DigiFormCategoryFilter
+                      key={filterFreeText + showAllCategories.toString()} // To make sure component re-renders when these change
                       afCategories={categoryFilterOptions || []}
                       afAllCategoriesSelected={showAllCategories}
                       afAllCategoriesText="Alla kravkategorier"
                       afHideToggle={true}
                       onAfOnSelectedCategoryChange={(e) => {
+                        console.log(e.detail);
                         if (e.detail.length === 0 || e.detail.length === categories?.length) {
+                          setShowAllCategories(true);
                           setFilterCategories([]);
                           setUrlParams(filterFreeText, []);
                           return;
                         }
+                        setShowAllCategories(false);
                         setFilterCategories(e.detail);
                         setUrlParams(filterFreeText, e.detail);
                       }}
