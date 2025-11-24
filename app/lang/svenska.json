@@ -1,4 +1,5 @@
 {
+  "resetButtonDefaultText": "Rensa dina val",
   "start": {
     "Title": "Granskningar",
     "defaultAppTitle": "Granska tillgänglighet"

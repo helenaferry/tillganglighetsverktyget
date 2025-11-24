@@ -11,7 +11,6 @@ import {
   DigiButton,
   DigiFormCategoryFilter,
   DigiFormInputSearch,
-  DigiIconRedo,
   DigiIconShareAlt,
   DigiLayoutBlock,
   DigiLayoutContainer,
@@ -24,6 +23,8 @@ import { useSearchParams } from 'react-router-dom';
 import PageTitle from '~/components/PageTitle';
 import RequirementDetails from '~/components/RequirementDetails';
 import RequirementLegal from '~/components/RequirementLegal';
+import ResetButton from '~/components/ResetButton';
+import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 
@@ -52,6 +53,7 @@ export default function RequirementsPage() {
   ) as RequirementAdditionsSetting;
 
   const [showObjectType] = useState<ObjectType>(ObjectType.WEB);
+  const [timesFiltered, setTimesFiltered] = useState(0);
   const [filterFreeText, setFilterFreeText] = useState('');
   const [filterSpecific, setFilterSpecific] = useState<Requirement>();
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
@@ -179,6 +181,7 @@ export default function RequirementsPage() {
             </p>*/}
                   <p>
                     <DigiFormInputSearch
+                      afId="requirement-search"
                       afLabel="Sök på krav"
                       afVariation={FormInputSearchVariation.MEDIUM}
                       afType={FormInputType.SEARCH}
@@ -188,6 +191,7 @@ export default function RequirementsPage() {
                       onAfOnSubmitSearch={(e) => {
                         setFilterFreeText(e.detail);
                         setUrlParams(e.detail, filterCategories);
+                        setTimesFiltered(timesFiltered + 1);
                       }}
                     ></DigiFormInputSearch>
                   </p>
@@ -208,6 +212,7 @@ export default function RequirementsPage() {
                         setShowAllCategories(false);
                         setFilterCategories(e.detail);
                         setUrlParams(filterFreeText, e.detail);
+                        setTimesFiltered(timesFiltered + 1);
                       }}
                     ></DigiFormCategoryFilter>
                   </div>
@@ -217,30 +222,31 @@ export default function RequirementsPage() {
           </PageTitle>
         </div>
         <DigiLayoutBlock afVariation={LayoutBlockVariation.TRANSPARENT}>
-          <p role="status" className="flex items-center h-[3rem] ml-1">
-            <strong>
-              Visar {filteredRequirements.length === selectedRequirements?.length ? 'alla' : ''}{' '}
-              {filteredRequirements.length} krav{' '}
-            </strong>
-            {filteredRequirements.length < (selectedRequirements?.length || 0) && (
-              <span className="inline-flex md:ml-4">
-                <DigiButton
-                  afVariation={ButtonVariation.FUNCTION}
-                  onAfOnClick={() => {
-                    setFilterFreeText('');
-                    setFilterSpecific(undefined);
-                    setFilterCategories([]);
-                    setSearchParams({});
-                    setShowAllCategories(true);
-                  }}
-                  afFullWidth={false}
-                >
-                  Rensa dina val
-                  <DigiIconRedo slot="icon" />
-                </DigiButton>
-              </span>
-            )}
-          </p>
+          <div>
+            <ScreenReaderAlert
+              updateOnChange={timesFiltered}
+              className="flex items-center h-[3rem] ml-1"
+            >
+              <strong>
+                Visar {filteredRequirements.length === selectedRequirements?.length ? 'alla' : ''}{' '}
+                {filteredRequirements.length} krav{' '}
+              </strong>
+              {filteredRequirements.length < (selectedRequirements?.length || 0) && (
+                <span className="inline-flex md:ml-4">
+                  <ResetButton
+                    onClick={() => {
+                      setFilterFreeText('');
+                      setFilterSpecific(undefined);
+                      setFilterCategories([]);
+                      setSearchParams({});
+                      setShowAllCategories(true);
+                    }}
+                    focusOnReset={document.getElementById('requirement-search')}
+                  ></ResetButton>
+                </span>
+              )}
+            </ScreenReaderAlert>
+          </div>
         </DigiLayoutBlock>
         <DigiLayoutContainer afNoGutter={true} afVariation={LayoutContainerVariation.FLUID}>
           {!isLoading && filteredRequirements && (

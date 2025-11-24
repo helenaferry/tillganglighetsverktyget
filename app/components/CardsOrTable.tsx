@@ -1,20 +1,20 @@
 import {
-  ButtonVariation,
   type FormFilterItem,
   FormInputSearchVariation,
   FormInputType,
   TableSize,
 } from '@designsystem-se/af';
 import {
-  DigiButton,
   DigiContextMenu,
   DigiFormFilter,
   DigiFormInputSearch,
-  DigiIconRedo,
   DigiNavigationPagination,
   DigiTable,
 } from '@designsystem-se/af-react';
 import { type ReactNode, useMemo, useState } from 'react';
+
+import ResetButton from './ResetButton';
+import ScreenReaderAlert from './ScreenReaderAlert';
 
 interface FilterProps {
   type: 'freeText' | 'select';
@@ -71,6 +71,7 @@ export function CardsOrTable({
   );
   const [filterKey, setFilterKey] = useState(0);
   const [paginationKey, setPaginationKey] = useState(0);
+  const [timesFiltered, setTimesFiltered] = useState(0);
 
   const paginatedRows = useMemo(() => {
     if (!pageSize || pageSize <= 0) return rows;
@@ -114,6 +115,7 @@ export function CardsOrTable({
                 <div key={filter.label} className="max-w-[14rem] sm:max-w-none">
                   {filter.type === 'freeText' && (
                     <DigiFormInputSearch
+                      afId="search-input"
                       afLabel={filter.label}
                       afVariation={FormInputSearchVariation.MEDIUM}
                       afType={FormInputType.SEARCH}
@@ -122,6 +124,7 @@ export function CardsOrTable({
                       onAfOnSubmitSearch={(e) => {
                         setSearchTerm(e.detail);
                         filter.onChange(e);
+                        setTimesFiltered(timesFiltered + 1);
                       }}
                     ></DigiFormInputSearch>
                   )}
@@ -133,6 +136,7 @@ export function CardsOrTable({
                         afListItems={filter.options}
                         onAfSubmitFilter={(e) => {
                           filter.onChange(e);
+                          setTimesFiltered(timesFiltered + 1);
                         }}
                         afCheckItems={filter.values}
                       />
@@ -145,23 +149,22 @@ export function CardsOrTable({
       )}
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4">
-        <div className="flex flex-col md:flex-row md:items-center">
-          <span className="font-bold" aria-live="polite" aria-atomic="true">
-            {hitsText}
-          </span>
+        <ScreenReaderAlert
+          className="flex flex-col md:flex-row md:items-center"
+          updateOnChange={timesFiltered}
+        >
+          <span className="font-bold">{hitsText}</span>
           {choicesMade && (
             <span className="inline-flex md:ml-4">
-              <DigiButton
-                afVariation={ButtonVariation.FUNCTION}
-                onAfOnClick={reset}
-                afFullWidth={false}
-              >
-                Rensa dina val
-                <DigiIconRedo slot="icon" />
-              </DigiButton>
+              <ResetButton
+                onClick={() => {
+                  reset();
+                }}
+                focusOnReset={document.getElementById('search-input')}
+              />
             </span>
           )}
-        </div>
+        </ScreenReaderAlert>
         {pageSize > -1 && (
           <div>
             <DigiContextMenu
