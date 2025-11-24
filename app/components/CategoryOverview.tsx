@@ -32,7 +32,9 @@ export default function CategoryOverview({
       <DigiLayoutBlock afVerticalPadding={true}>
         <div className="" id="krav">
           <DigiTypography>
-            <div className="absolute md:hidden -left-2">
+            <div
+              className={`absolute md:hidden transition-all duration-500 ${isCategoryNavOpen ? 'left-0' : '-left-2'}`}
+            >
               <DigiButton
                 afId="toggle-category-nav"
                 afSize={ButtonSize.MEDIUM}
