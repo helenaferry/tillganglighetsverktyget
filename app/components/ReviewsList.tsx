@@ -179,9 +179,6 @@ export function ReviewsList() {
               ></DigiLoaderSkeleton>
             )}
             {reviewsError && <p>Fel vid hämtning av granskningar</p>}
-            {fetched && (!filteredReviews || filteredReviews?.length === 0) && (
-              <p>Inga granskningar hittades.</p>
-            )}
             {fetched && filteredReviews && (
               <DigiLayoutBlock afMarginTop={true} afMarginBottom={false} afVerticalPadding={true}>
                 <CardsOrTable

@@ -255,10 +255,12 @@ export default function ReviewRequirements({ reviewId }: Props) {
     <main>
       {loading && (
         <div>
-          <DigiLoaderSkeleton
-            afVariation={LoaderSkeletonVariation.SECTION}
-            afCount={4}
-          ></DigiLoaderSkeleton>
+          <DigiLayoutBlock afMarginTop={true} afMarginBottom={true} afVerticalPadding={true}>
+            <DigiLoaderSkeleton
+              afVariation={LoaderSkeletonVariation.SECTION}
+              afCount={4}
+            ></DigiLoaderSkeleton>
+          </DigiLayoutBlock>
         </div>
       )}
       {fetched && review && (

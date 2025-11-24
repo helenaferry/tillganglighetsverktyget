@@ -151,14 +151,13 @@ export default function RequirementsPage() {
     <main>
       <DigiTypography>
         <div>
-          {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
-
           <PageTitle
             h1Text="Tillgänglighets&shy;krav"
             preamble="Här hittar du alla tillgänglighetskrav samlade i en lista. Du kan söka efter specifika
             krav och läsa mer om dem för att lära dig hur du bygger tillgängliga tjänster."
           >
             <form id="requirement-filters" className="mt-12" onSubmit={(e) => e.preventDefault()}>
+              {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
               {!isLoading && categories && (
                 <>
                   {/* Hide type filter for now <p>

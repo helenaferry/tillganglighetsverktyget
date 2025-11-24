@@ -227,8 +227,10 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   return (
     <div className="">
       {loading && (
-        <div className="">
-          <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} afCount={4} />
+        <div>
+          <DigiLayoutBlock afMarginTop={true} afMarginBottom={true} afVerticalPadding={true}>
+            <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} afCount={4} />
+          </DigiLayoutBlock>
         </div>
       )}
       {fetched && review && requirement && (
