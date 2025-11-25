@@ -126,3 +126,8 @@ svg {
     @apply !max-w-full;
   }
 }
+
+footer,
+footer * {
+  --digi--link--color--visited: #fff;
+}
