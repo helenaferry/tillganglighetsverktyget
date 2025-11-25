@@ -7,7 +7,6 @@ export default [
   route('granskning/skapa', 'routes/addReview.tsx'),
   route('granskning/:id/redigera', 'routes/editReview.tsx', { id: 'edit' }),
   route('granskning/:id/underkanda-krav', 'routes/failed.tsx', { id: 'failed' }),
-  route('granskning/:id/export', 'routes/export.tsx', { id: 'export' }),
   route('krav', 'routes/requirements.tsx', { id: 'requirements' }),
   route('tips', 'routes/tips.tsx', { id: 'tips' }),
 ] satisfies RouteConfig;

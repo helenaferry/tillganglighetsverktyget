@@ -6,25 +6,27 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import CreateStatement from '~/components/CreateStatement';
+import Export from '~/components/Export';
 import PageTitle from '~/components/PageTitle';
-import { StyledLink } from '~/components/StyledLink';
 import { ObjectType } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
+import i18n from '~/lang/i18n';
 
 const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
 
 export function meta() {
   return [
-    { title: `${applicationTitle}: Underkända krav` },
-    { name: 'description', content: 'Underkända krav' },
+    { title: `${applicationTitle}: ${i18n.t('failed.Title')}` },
+    { name: 'description', content: i18n.t('failed.MetaDescription') },
   ];
 }
 
 export default function FailedPage() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { review, isLoading: reviewLoading, isFetched: reviewFetched } = useReviewById(String(id));
   const {
@@ -87,10 +89,7 @@ export default function FailedPage() {
           !categories ||
           categories.length === 0) && (
           <DigiNotificationErrorPage afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}>
-            <p slot="bodytext">
-              Granskningen med id &quot;{id}&quot; kunde inte hittas. Den kan ha tagits bort, eller
-              så har ett oväntat fel uppstått.
-            </p>
+            <p slot="bodytext">{t('failed.NotFound', { id: id })}</p>
           </DigiNotificationErrorPage>
         )}
       {fetched &&
@@ -103,23 +102,16 @@ export default function FailedPage() {
         categories.length > 0 && (
           <DigiTypography>
             <PageTitle
-              h1Text="Underkända krav"
+              h1Text={t('failed.Title')}
               breadcrumbsPages={[
-                { title: 'Granskningar', href: '/' },
-                { title: review?.title || 'Granskning', href: `/granskning/${review.id}` },
+                { title: `${t('start.Title')}`, href: '/' },
+                { title: review?.title || `${t('Review')}`, href: `/granskning/${review.id}` },
               ]}
-              breadcrumbsCurrentPage="Underkända krav"
-            >
-              <StyledLink
-                to={`/granskning/${review.id}/export`}
-                styleVariant="link-button"
-                hideIcon
-              >
-                Exportera uppgifter till Jira
-              </StyledLink>
-            </PageTitle>
-            <CreateStatement
-              reviewId={review.id}
+              breadcrumbsCurrentPage={t('failed.Title')}
+              preamble={`${t('Review')}: ${review.title}`}
+            />
+            <Export
+              review={review}
               checks={checks}
               requirements={requirements}
               categories={categories}

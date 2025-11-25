@@ -1,4 +1,8 @@
 {
+  "Review": "Granskning",
+  "Reviews": "Granskningar",
+  "review": "granskning",
+  "reviews": "granskningar",
   "resetButtonDefaultText": "Rensa dina val",
   "start": {
     "Title": "Granskningar",
@@ -46,5 +50,20 @@
     "Step3Description": "Gör en självskattning av din tjänst och bedöm den efter varje krav med en motivering.",
     "Step4Title": "Sammanställ brister",
     "Step4Description": "Tryck på sammanställ underkända krav och ta med bristerna till en tillgänglighetsredogörelse."
+  },
+  "failed": {
+    "Title": "Underkända krav",
+    "MetaDescription": "Sammanställning av underkända krav som underlag till tillgänglighetsredogörelse eller export av buggar till Jira.",
+    "NotFound": "Granskningen med id \"{{id}}\" kunde inte hittas. Den kan ha tagits bort, eller så har ett oväntat fel uppstått.",
+    "SubTitle": "Sammanställning av brister vid granskning",
+    "FailedDescription": "Här hittar du en sammanställning av underkända krav. Du kan kopiera texten som underlag till din tillgänglighetsredogörelse eller spara som en .csv-fil för att importera bristerna som buggar i Jira.",
+    "IncompleteTitle": "Ofullständig granskning",
+    "IncompleteDescription": "Granskningen innehåller {{numberRemaining}} ohanterade krav. För att skapa en korrekt tillgänglighetsredogörelse behöver alla krav vara bedömda.",
+    "CsvFileName": "exporterade_uppgifter",
+    "NoFailedChecks": "Det finns inga underkända krav.",
+    "CopyButtonText": "Kopiera text",
+    "CopySuccessMessage": "Texten har kopierats till urklipp.",
+    "CopyFailMessage": "Kunde inte kopiera texten.",
+    "SaveCsvButtonText": "Spara som .csv"
   }
 }
