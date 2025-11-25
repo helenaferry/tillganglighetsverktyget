@@ -13,12 +13,13 @@ import {
   DigiNotificationAlert,
 } from '@designsystem-se/af-react';
 import { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 
 import { type Check, type Requirement, type Review } from '~/data/types';
 import { numberRemaining } from '~/helpers';
+
 import ScreenReaderAlert from './ScreenReaderAlert';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   review: Review;
