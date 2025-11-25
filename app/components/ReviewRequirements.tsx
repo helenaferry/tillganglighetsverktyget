@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { StyledLink } from '~/components/StyledLink';
-import { ObjectType, Status, StatusText, type Requirement } from '~/data/types';
+import { ObjectType, type Requirement, Status, StatusText } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
