@@ -67,11 +67,11 @@ export default function RequirementsPage() {
   const searchMatches = (requirement: Requirement, search: string) => {
     const nameMatch = requirement.name.toLowerCase().includes(search.toLowerCase());
     const wcagMatch =
-      requirement.wcag?.match(/\d+\.\d+\.\d+/g)?.some((num) => num.includes(search)) ?? false;
+      requirement.wcag?.match(/\d+\.\d+\.\d+/g)?.some((num) => num === search) ?? false;
     const enMatch = requirement.en301549
       .split(',')
       .map((num) => num.trim())
-      .some((num) => num.includes(search));
+      .some((num) => num === search);
     return nameMatch || wcagMatch || enMatch;
   };
 

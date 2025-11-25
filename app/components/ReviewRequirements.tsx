@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { StyledLink } from '~/components/StyledLink';
-import { ObjectType, Status, StatusText } from '~/data/types';
+import { ObjectType, Status, StatusText, type Requirement } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
@@ -180,6 +180,17 @@ export default function ReviewRequirements({ reviewId }: Props) {
     );
   };
 
+  const searchMatches = (requirement: Requirement, search: string) => {
+    const nameMatch = requirement.name.toLowerCase().includes(search.toLowerCase());
+    const wcagMatch =
+      requirement.wcag?.match(/\d+\.\d+\.\d+/g)?.some((num) => num === search) ?? false;
+    const enMatch = requirement.en301549
+      .split(',')
+      .map((num) => num.trim())
+      .some((num) => num === search);
+    return nameMatch || wcagMatch || enMatch;
+  };
+
   const filteredRequirements = useMemo(() => {
     let result = requirementsWithChecks || [];
     if (filterCategories.length > 0) {
@@ -191,9 +202,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
       );
     }
     if (filterFreeText && filterFreeText.length > 0) {
-      result = result.filter((req) =>
-        req.name.toLowerCase().includes(filterFreeText.toLowerCase()),
-      );
+      result = result.filter((req) => searchMatches(req, filterFreeText));
     }
     if (sortBy !== undefined) {
       result = [...result].sort((a, b) => {
