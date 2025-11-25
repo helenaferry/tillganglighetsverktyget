@@ -202,6 +202,7 @@ export function CardsOrTable({
 
       <div className="hidden lg:block">
         <DigiTable afSize={TableSize.MEDIUM}>
+          <h2 className="sr-only">Tabell med {itemsName}</h2>
           <table aria-rowcount={rows.length} className="mt-6">
             <caption className="sr-only">Tabell med {itemsName}</caption>
             <thead>
