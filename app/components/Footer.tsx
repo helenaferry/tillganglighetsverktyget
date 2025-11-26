@@ -6,9 +6,11 @@ import {
   DigiIconEnvelope,
   DigiLinkExternal,
 } from '@designsystem-se/af-react';
-import { envVars } from '~/helpers';
-import { StyledLink } from './StyledLink';
 import { useTranslation } from 'react-i18next';
+
+import { envVars } from '~/helpers';
+
+import { StyledLink } from './StyledLink';
 
 export default function Footer() {
   const { t } = useTranslation();
