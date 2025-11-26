@@ -25,7 +25,7 @@ export default function Header() {
           <div className="flex justify-between items-center">
             <div className="min-w-0">
               <StyledLink
-                aria-label={`${t('Header.startPageLink')} ${applicationTitle}`}
+                aria-label={t('homeLink', { appName: applicationTitle })}
                 to="/"
                 styleVariant="plain"
                 className="flex gap-4 py-5 items-center text-text hover:text-text visited:!text-text !no-underline"
