@@ -26,9 +26,9 @@
   "ReviewForm": {
     "regulatoryFramework": {
       "question": "Vilka lagkrav behöver din tjänst uppfylla?",
-      "dos": "DOS-lagen – Lagen om tillgänglighet till digital offentlig service (offentlig sektor)",
-      "lptt": "LPTT – Lagen om vissa produkters och tjänsters tillgänglighet (privat sektor)",
-      "none": "Inga / vet ej"
+      "dos": "Lagen om tillgänglighet till digital offentlig service (DOS)",
+      "lptt": "Lagen om vissa produkters och tjänsters tillgänglighet (LPTT)",
+      "none": "Vet ej (alla krav inkluderas)"
     }
   },
   "requirements": {
