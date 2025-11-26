@@ -6,12 +6,12 @@ import {
   DigiIconEnvelope,
   DigiLinkExternal,
 } from '@designsystem-se/af-react';
-
 import { envVars } from '~/helpers';
-
 import { StyledLink } from './StyledLink';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
   const { applicationTitle, logoUrl, logoWidth, logoHeight, footerLinks } = envVars();
   console.log(footerLinks);
   return (
@@ -49,28 +49,28 @@ export default function Footer() {
 
         <div>
           <DigiFooterCard afType={FooterCardVariation.BORDER}>
-            <StyledLink to="/">Alla granskningar</StyledLink>
-            <p>Återuppta en befintlig granskning eller skapa en ny.</p>
+            <StyledLink to="/">{t('start.FooterTitle')}</StyledLink>
+            <p>{t('start.FooterDescription')}</p>
           </DigiFooterCard>
           <DigiFooterCard afType={FooterCardVariation.BORDER}>
-            <StyledLink to="/granskning/skapa">Skapa ny granskning</StyledLink>
-            <p>Namnge och svara på några frågor om tjänsten som ska granskas.</p>
+            <StyledLink to="/granskning/skapa">{t('addReview.FooterTitle')}</StyledLink>
+            <p>{t('addReview.FooterDescription')}</p>
           </DigiFooterCard>
         </div>
         <div>
           <DigiFooterCard afType={FooterCardVariation.BORDER}>
-            <StyledLink to="/tips">Tips och råd</StyledLink>
-            <p>Tips om hur du genomför en tillgänglighetsgranskning.</p>
+            <StyledLink to="/tips">{t('tips.Title')}</StyledLink>
+            <p>{t('tips.FooterDescription')}</p>
           </DigiFooterCard>
           <DigiFooterCard afType={FooterCardVariation.BORDER}>
-            <StyledLink to="/krav">Tillgänglighetskrav</StyledLink>
-            <p>Läs om alla tillgänglighetskrav. Sök eller filtrera fram specifika krav.</p>
+            <StyledLink to="/krav">{t('requirements.Title')}</StyledLink>
+            <p>{t('requirements.FooterDescription')}</p>
           </DigiFooterCard>
         </div>
       </div>
       <div slot="content-bottom-left">
         <StyledLink
-          aria-label={`Startsida för ${applicationTitle}`}
+          ariaLabel={t('homeLink', { appName: applicationTitle })}
           to="/"
           className="flex gap-4 pb-5 items-center text-white hover:text-white visited:!text-white !no-underline"
         >

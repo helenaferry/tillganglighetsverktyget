@@ -6,10 +6,13 @@
   "Yes": "Ja",
   "No": "Nej",
   "of": "av",
+  "homeLink": "Startsida för {{appName}}",
   "resetButtonDefaultText": "Rensa dina val",
   "start": {
     "Title": "Granskningar",
-    "defaultAppTitle": "Granska tillgänglighet"
+    "defaultAppTitle": "Granska tillgänglighet",
+    "FooterTitle": "Alla granskningar",
+    "FooterDescription": "Återuppta en befintlig granskning eller skapa en ny."
   },
   "Header": {
     "startPageLink": "Startsida för",
@@ -21,7 +24,9 @@
   "addReview": {
     "Title": "Skapa granskning",
     "MetaDescription": "Formulär för att skapa en ny granskning.",
-    "Preamble": "Granskningen du skapar kommer visas i listan med alla granskningar så att du kan hitta den igen."
+    "Preamble": "Granskningen du skapar kommer visas i listan med alla granskningar så att du kan hitta den igen.",
+    "FooterTitle": "Skapa ny granskning",
+    "FooterDescription": "Namnge och svara på några frågor om tjänsten som ska granskas."
   },
   "editReview": {
     "Title": "Redigera granskning",
@@ -72,12 +77,14 @@
   },
   "requirements": {
     "Title": "Tillgänglighetskrav",
-    "MetaDescription": "Här kan du se alla krav."
+    "MetaDescription": "Här kan du se alla krav.",
+    "FooterDescription": "Läs om alla tillgänglighetskrav. Sök eller filtrera fram specifika krav."
   },
   "tips": {
     "Title": "Tips och råd",
     "MetaDescription": "Instruktioner och tips för att genomföra en tillgänglighetsgranskning.",
-    "Preamble": "Här hittar du instruktioner och tips för att genomföra en tillgänglighetsgranskning."
+    "Preamble": "Här hittar du instruktioner och tips för att genomföra en tillgänglighetsgranskning.",
+    "FooterDescription": "Tips om hur du genomför en tillgänglighetsgranskning."
   },
   "Process": {
     "Heading": "Process för att granska tillgänglighet",
