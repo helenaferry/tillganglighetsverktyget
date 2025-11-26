@@ -40,5 +40,8 @@ export function envVars() {
     logoUrl: import.meta.env.VITE_LOGO_URL || '/logo.svg',
     logoWidth: import.meta.env.VITE_LOGO_WIDTH || '3.5rem',
     logoHeight: import.meta.env.VITE_LOGO_HEIGHT || 'auto',
+    footerLinks: import.meta.env.VITE_FOOTER_LINKS
+      ? JSON.parse(import.meta.env.VITE_FOOTER_LINKS)
+      : [],
   };
 }

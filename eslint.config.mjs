@@ -22,7 +22,12 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
-    ignores: ['.react-router/**/*', 'minifyEnvAdd.cjs', 'minifyEnvPrefill.cjs'],
+    ignores: [
+      '.react-router/**/*',
+      'minifyEnvAdd.cjs',
+      'minifyEnvPrefill.cjs',
+      'minifyEnvFooterLinks.cjs',
+    ],
   },
   {
     extends: compat.extends(

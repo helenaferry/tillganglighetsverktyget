@@ -26,7 +26,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { ObjectType, type PrefillRequirement, type PrefillRequirementSetting } from '~/data/types';
+import {
+  ObjectType,
+  type PrefillRequirement,
+  type PrefillRequirementSetting,
+  type Review,
+} from '~/data/types';
 import contentTypeTexts from '~/helpers/contentTypeTexts';
 import {
   useRegulatoryFrameworks,
@@ -37,15 +42,14 @@ import {
   useDeleteChecksForReview,
   useDeleteReview,
   usePrefillRequirements,
-  useReviewById,
   useUpsertReview,
 } from '~/hooks/useReviewData';
 
 type Props = {
-  reviewId?: string;
+  review?: Review;
 };
 
-export function ReviewForm({ reviewId }: Props) {
+export function ReviewForm({ review }: Props) {
   const { t } = useTranslation();
   const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
   const [regulatoryFramework, setRegulatoryFramework] = useState<string>(regulatoryFrameworkEnv);
@@ -55,14 +59,9 @@ export function ReviewForm({ reviewId }: Props) {
     useRequirements(regulatoryFramework);
   const { data: contentTypes, isLoading: isLoadingContentTypes } =
     useRequirementContentTypes(objectType);
-  const { review, isLoading: isLoadingReview } = useReviewById(String(reviewId));
   const { data: regulatoryFrameworks, isLoading: isLoadingRegulatoryFrameworks } =
     useRegulatoryFrameworks(objectType);
-  const loading =
-    isLoadingRequirements ||
-    isLoadingContentTypes ||
-    isLoadingReview ||
-    isLoadingRegulatoryFrameworks;
+  const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingRegulatoryFrameworks;
   const allPrefillRequirements = JSON.parse(
     import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
   ) as PrefillRequirementSetting[];
@@ -86,10 +85,10 @@ export function ReviewForm({ reviewId }: Props) {
     FormInputValidation.NEUTRAL,
   );
   const [contentTypePrefillsUpdated, setContentTypePrefillsUpdated] = useState<boolean>(
-    reviewId ? false : true,
+    review ? false : true,
   );
   const [configPrefillsUpdated, setConfigPrefillsUpdated] = useState<boolean>(
-    reviewId ? false : true,
+    review ? false : true,
   );
 
   const requirements = useMemo(() => {
@@ -106,8 +105,7 @@ export function ReviewForm({ reviewId }: Props) {
             status: 'IRRELEVANT',
             comment:
               contentTypeTexts.find((q) => q.contentType === contentType)?.prefillComment ||
-              'Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: ' +
-                contentType,
+              t('ReviewForm.contentTypes.fallbackPrefillComment') + contentType,
           };
         }
         return undefined;
@@ -227,8 +225,8 @@ export function ReviewForm({ reviewId }: Props) {
   };
 
   const handleDeleteReview = () => {
-    if (!reviewId) return;
-    deleteReview.mutate(Number(reviewId), {
+    if (!review) return;
+    deleteReview.mutate(Number(review.id), {
       onSuccess: () => {
         setShowDeleteConfirmation(false);
         navigate('/');
@@ -286,7 +284,7 @@ export function ReviewForm({ reviewId }: Props) {
     }
     upsertReview.mutate(
       {
-        id: reviewId,
+        id: review?.id.toString(),
         title,
         excludedContentTypes,
         selectedPrefillIds: selectedPrefills.map((p) => p.id).join(';'),
@@ -357,8 +355,7 @@ export function ReviewForm({ reviewId }: Props) {
           afCount={4}
         ></DigiLoaderSkeleton>
       )}
-      {review && <p className="!font-semibold">Granskning: {review.title}</p>}
-      {!loading && (!reviewId || review) && (
+      {!loading && (
         <form id="review-form" onSubmit={handleSubmit} noValidate>
           {/* Disable option to choose between web and document for now 
           <DigiFormFieldset afForm="review-form" afLegend="Typ av granskningsobjekt" afName="typ">
@@ -418,11 +415,11 @@ export function ReviewForm({ reviewId }: Props) {
               användaren.
             </p>
           </DigiDialog>*/}
-          <div className="max-w-[24rem] my-8">
+          <div className="max-w-[24rem] mb-6">
             <DigiFormInput
               afId="reviewName"
-              afLabel="Namn på granskning"
-              afLabelDescription="Namnet visas i listan med alla granskningar så att du kan hitta din granskning igen."
+              afLabel={t('ReviewForm.reviewName.label')}
+              afLabelDescription={t('ReviewForm.reviewName.description')}
               afValue={title}
               onAfOnInput={(e) => {
                 const value = e.detail.target.value;
@@ -432,7 +429,7 @@ export function ReviewForm({ reviewId }: Props) {
                 setTitle(value);
               }}
               afRequired={true}
-              afValidationText="Ange ett namn för granskningen"
+              afValidationText={t('ReviewForm.reviewName.validation')}
               afValidation={nameValidation}
             />
           </div>
@@ -459,16 +456,13 @@ export function ReviewForm({ reviewId }: Props) {
           )}
           {objectType === ObjectType.WEB && (
             <div>
-              <h2>Vad innehåller din tjänst?</h2>
-              <p>
-                Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då
-                som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.
-              </p>
+              <h2>{t('ReviewForm.contentTypes.question')}</h2>
+              <p>{t('ReviewForm.contentTypes.description')}</p>
 
               {review && (
                 <p className="mt-4">
-                  <strong>Observera!</strong> Ändringar i en påbörjad granskning kan påverka krav
-                  som redan har bedömts.
+                  <strong>{t('ReviewForm.contentTypes.noteTitle')}</strong>{' '}
+                  {t('ReviewForm.contentTypes.note')}
                 </p>
               )}
               {contentTypes &&
@@ -492,12 +486,12 @@ export function ReviewForm({ reviewId }: Props) {
                           }}
                         >
                           <DigiFormRadiobutton
-                            afLabel="Ja"
+                            afLabel={t('Yes')}
                             afValue="true"
                             afChecked={excludedContentTypes.includes(contentType) ? false : true}
                           ></DigiFormRadiobutton>
                           <DigiFormRadiobutton
-                            afLabel="Nej"
+                            afLabel={t('No')}
                             afValue="false"
                             afChecked={excludedContentTypes.includes(contentType) ? true : false}
                           ></DigiFormRadiobutton>
@@ -538,12 +532,12 @@ export function ReviewForm({ reviewId }: Props) {
                     }}
                   >
                     <DigiFormRadiobutton
-                      afLabel="Ja"
+                      afLabel={t('Yes')}
                       afValue="true"
                       afChecked={selectedPrefills.some((p) => p.id === prefill.id)}
                     ></DigiFormRadiobutton>
                     <DigiFormRadiobutton
-                      afLabel="Nej"
+                      afLabel={t('No')}
                       afValue="false"
                       afChecked={!selectedPrefills.some((p) => p.id === prefill.id)}
                       afAriaDescribedby="prefill-warning-message"
@@ -556,19 +550,19 @@ export function ReviewForm({ reviewId }: Props) {
           <div role="alert" id="prefill-warning-message">
             {showRemovePrefillConfirmation && (
               <DigiFormValidationMessage afVariation={FormValidationMessageVariation.WARNING}>
-                Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer status
-                för alla krav relaterade till detta val att nollställas.
+                {t('ReviewForm.prefillWarning')}
               </DigiFormValidationMessage>
             )}
           </div>
 
           <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4">
             <span role="status">
-              <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span> av{' '}
-              {requirements?.length} <span className="font-semibold">krav att granska</span>
+              <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span>{' '}
+              {t('of')} {requirements?.length}{' '}
+              <span className="font-semibold">{t('ReviewForm.requirementsToReview')}</span>
             </span>
             <span className="block">
-              {numberAutomaticPrefillRequirements} krav hanteras automatiskt av din organisation.
+              {t('ReviewForm.automaticPrefillInfo', { number: numberAutomaticPrefillRequirements })}
             </span>
           </p>
 
@@ -580,9 +574,11 @@ export function ReviewForm({ reviewId }: Props) {
                 setShowAbortConfirmation(true);
               }}
             >
-              Avbryt
+              {t('ReviewForm.cancelButtonText')}
             </DigiButton>
-            <DigiButton afType="submit">{review ? 'Spara ändring' : 'Skapa granskning'}</DigiButton>
+            <DigiButton afType="submit">
+              {review ? t('ReviewForm.saveButtonText') : t('ReviewForm.createButtonText')}
+            </DigiButton>
             {review && (
               <DigiButton
                 afSize={ButtonSize.MEDIUM}
@@ -591,7 +587,7 @@ export function ReviewForm({ reviewId }: Props) {
                 onAfOnClick={() => setShowDeleteConfirmation(true)}
               >
                 <DigiIconTrash slot="icon" />
-                Radera granskning
+                {t('ReviewForm.deleteButtonText')}
               </DigiButton>
             )}
           </div>
@@ -599,18 +595,18 @@ export function ReviewForm({ reviewId }: Props) {
             <DigiNotificationAlert
               afSize={NotificationAlertSize.LARGE}
               afVariation={NotificationAlertVariation.DANGER}
-              afHeading="Fel vid sparande"
+              afHeading={t('ReviewForm.saveErrorHeading')}
             >
-              Det gick inte att spara granskningen. Försök igen senare.
+              {t('ReviewForm.saveErrorText')}
             </DigiNotificationAlert>
           )}
 
           <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showAbortConfirmation}
-            afHeading={`Vill du verkligen avbryta utan att spara dina ändringar?`}
-            afPrimaryButtonText="Ja, avbryt"
-            afSecondaryButtonText="Nej, stanna kvar"
+            afHeading={t('ReviewForm.abort.confirmHeading')}
+            afPrimaryButtonText={t('ReviewForm.abort.confirmYes')}
+            afSecondaryButtonText={t('ReviewForm.abort.confirmNo')}
             onAfOnClose={() => setShowAbortConfirmation(false)}
             onAfSecondaryButtonClick={() => setShowAbortConfirmation(false)}
             onAfPrimaryButtonClick={() => {
@@ -622,26 +618,23 @@ export function ReviewForm({ reviewId }: Props) {
           <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showDeleteConfirmation && review !== undefined}
-            afHeading={`Vill du verkligen ta bort granskningen?`}
-            afPrimaryButtonText="Ja, ta bort"
-            afSecondaryButtonText="Nej, avbryt"
+            afHeading={t('ReviewForm.delete.confirmHeading')}
+            afPrimaryButtonText={t('ReviewForm.delete.confirmYes')}
+            afSecondaryButtonText={t('ReviewForm.delete.confirmNo')}
             onAfOnClose={() => setShowDeleteConfirmation(false)}
             onAfSecondaryButtonClick={() => setShowDeleteConfirmation(false)}
             onAfPrimaryButtonClick={handleDeleteReview}
           >
             <p>
-              <strong>Vald granskning:</strong> {review?.title}
+              <strong>{t('ReviewForm.delete.confirmInfo')}</strong> {review?.title}
             </p>
-            <p>
-              All information, inklusive eventuella granskade krav, kommer att tas bort och kan inte
-              återställas.
-            </p>
+            <p>{t('ReviewForm.delete.confirmText')}</p>
           </DigiDialog>
         </form>
       )}
       {saving && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40">
-          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText="Sparar" />
+          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText={t('ReviewForm.saving')} />
         </div>
       )}
     </div>

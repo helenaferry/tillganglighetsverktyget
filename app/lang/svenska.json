@@ -3,6 +3,9 @@
   "Reviews": "Granskningar",
   "review": "granskning",
   "reviews": "granskningar",
+  "Yes": "Ja",
+  "No": "Nej",
+  "of": "av",
   "resetButtonDefaultText": "Rensa dina val",
   "start": {
     "Title": "Granskningar",
@@ -17,19 +20,55 @@
   },
   "addReview": {
     "Title": "Skapa granskning",
-    "MetaDescription": "Formulär för att skapa en ny granskning."
+    "MetaDescription": "Formulär för att skapa en ny granskning.",
+    "Preamble": "Granskningen du skapar kommer visas i listan med alla granskningar så att du kan hitta den igen."
   },
   "editReview": {
     "Title": "Redigera granskning",
-    "MetaDescription": "Formulär för att redigera uppgifter för en granskning."
+    "MetaDescription": "Formulär för att redigera uppgifter för en granskning.",
+    "Preamble": "Granskning: {{title}}"
   },
   "ReviewForm": {
+    "reviewName": {
+      "label": "Namn på granskning",
+      "description": "Skriv inte personuppgifter eller känslig information eftersom texten kommer att vara offentligt tillgänglig.",
+      "validation": "Ange ett namn för granskningen."
+    },
     "regulatoryFramework": {
       "question": "Vilka lagkrav behöver din tjänst uppfylla?",
       "dos": "Lagen om tillgänglighet till digital offentlig service (DOS)",
       "lptt": "Lagen om vissa produkters och tjänsters tillgänglighet (LPTT)",
       "none": "Vet ej (alla krav inkluderas)"
-    }
+    },
+    "contentTypes": {
+      "question": "Vad innehåller din tjänst?",
+      "description": "Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
+      "noteTitle": "Observera!",
+      "note": "Ändringar i en påbörjad granskning kan påverka krav som redan har bedömts.",
+      "prefillWarning": "Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer status för alla krav relaterade till detta val att nollställas.",
+      "fallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
+    },
+    "requirementsToReview": "krav att granska",
+    "automaticPrefillInfo": "{{number}} krav hanteras automatiskt av din organisation.",
+    "cancelButtonText": "Avbryt",
+    "createButtonText": "Skapa granskning",
+    "saveButtonText": "Spara granskning",
+    "deleteButtonText": "Radera granskning",
+    "saveErrorHeading": "Fel vid sparande",
+    "saveErrorText": "Det gick inte att spara granskningen. Försök igen senare.",
+    "abort": {
+      "confirmHeading": "Vill du verkligen avbryta utan att spara dina ändringar?",
+      "confirmYes": "Ja, avbryt",
+      "confirmNo": "Nej, stanna kvar"
+    },
+    "delete": {
+      "confirmHeading": "Vill du verkligen ta bort granskningen?",
+      "confirmInfo": "Vald granskning:",
+      "confirmText": "All information, inklusive eventuella granskade krav, kommer att tas bort och kan inte återställas.",
+      "confirmYes": "Ja, ta bort",
+      "confirmNo": "Nej, avbryt"
+    },
+    "saving": "Sparar"
   },
   "requirements": {
     "Title": "Tillgänglighetskrav",

@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
+import { useReviewById } from '~/hooks/useReviewData';
 import i18n from '~/lang/i18n';
 
 const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
@@ -18,20 +19,26 @@ export function meta() {
 export default function EditReviewPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
+  const { review } = useReviewById(String(id));
 
   return (
     <DigiTypography>
       <main>
-        <PageTitle
-          h1Text={t('editReview.Title')}
-          breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
-          breadcrumbsCurrentPage={t('editReview.Title')}
-        />
-        <DigiLayoutContainer afVerticalPadding={true}>
-          <DigiLayoutBlock afVerticalPadding={true}>
-            <ReviewForm reviewId={String(id)} />
-          </DigiLayoutBlock>
-        </DigiLayoutContainer>
+        {review && (
+          <>
+            <PageTitle
+              h1Text={t('editReview.Title')}
+              preamble={t('editReview.Preamble', { title: review.title })}
+              breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
+              breadcrumbsCurrentPage={t('editReview.Title')}
+            />
+            <DigiLayoutContainer afVerticalPadding={true}>
+              <DigiLayoutBlock afVerticalPadding={true}>
+                <ReviewForm review={review} />
+              </DigiLayoutBlock>
+            </DigiLayoutContainer>
+          </>
+        )}
       </main>
     </DigiTypography>
   );

@@ -21,9 +21,10 @@ export default function AddReviewPage() {
       <main>
         <PageTitle
           h1Text={t('addReview.Title')}
+          preamble={t('addReview.Preamble')}
           breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
           breadcrumbsCurrentPage={t('addReview.Title')}
-        />{' '}
+        />
         <DigiLayoutContainer afVerticalPadding={true}>
           <DigiLayoutBlock afVerticalPadding={true}>
             <ReviewForm />
