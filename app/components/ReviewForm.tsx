@@ -415,7 +415,7 @@ export function ReviewForm({ review }: Props) {
               användaren.
             </p>
           </DigiDialog>*/}
-          <div className="max-w-[24rem] mb-6">
+          <div className="max-w-[25rem] mb-6">
             <DigiFormInput
               afId="reviewName"
               afLabel={t('ReviewForm.reviewName.label')}
