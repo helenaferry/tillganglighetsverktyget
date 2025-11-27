@@ -426,7 +426,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
           </div>
         </>
       )}
-      {!loading && (!review || !requirement) && (
+      {fetched && (!review || !requirement) && (
         <div className="">
           <DigiNotificationErrorPage
             afCustomHeading="Granskningen hittades inte"
