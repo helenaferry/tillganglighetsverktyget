@@ -36,12 +36,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col gap-0">
         <SkipLink />
         <ClientOnly>
           <Header />
           <QueryClientProvider client={queryClient}>
-            <div className="bg-grayscale-100 grow-1">{children}</div>
+            <div className="bg-grayscale-100 grow">{children}</div>
           </QueryClientProvider>
           <Footer />
         </ClientOnly>

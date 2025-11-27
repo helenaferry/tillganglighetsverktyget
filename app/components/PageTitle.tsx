@@ -31,7 +31,7 @@ const PageTitle = ({
     <DigiLayoutContainer afVariation={LayoutContainerVariation.FLUID} afNoGutter={true}>
       <DigiLayoutBlock
         afVariation={LayoutBlockVariation.PRIMARY}
-        afMarginTop={true}
+        afMarginTop={false}
         afVerticalPadding={true}
       >
         {breadcrumbsCurrentPage && breadcrumbsPages && (
