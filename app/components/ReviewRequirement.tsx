@@ -1,5 +1,7 @@
 import {
+  ButtonVariation,
   ErrorPageStatusCodes,
+  FormValidationMessageVariation,
   LayoutContainerVariation,
   LoaderSkeletonVariation,
   NotificationAlertSize,
@@ -8,6 +10,9 @@ import {
   TypographyHeadingJumboVariation,
 } from '@designsystem-se/af';
 import {
+  DigiButton,
+  DigiFormValidationMessage,
+  DigiIconComunicationFlag,
   DigiLayoutBlock,
   DigiLayoutContainer,
   DigiLoaderSkeleton,
@@ -26,14 +31,21 @@ import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
 import { formatDate, formatPercentage } from '~/formattingHelpers';
 import { numberChecked, numberRemaining, percentageChecked } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
-import { useCheck, useChecksForReview, useReviewById } from '~/hooks/useReviewData';
+import {
+  useCheck,
+  useChecksForReview,
+  useReviewById,
+  useToggleCheckFlag,
+} from '~/hooks/useReviewData';
 
 import Breadcrumbs from './Breadcrumbs';
 import CategoryOverview from './CategoryOverview';
+import FilledFlag from './FilledFlag';
 import PrevNextRequirement from './PrevNextRequirement';
 import RequirementDetails from './RequirementDetails';
 import RequirementForm from './RequirementForm';
 import RequirementLegal from './RequirementLegal';
+import ScreenReaderAlert from './ScreenReaderAlert';
 import StatusBadge from './StatusBadge';
 
 interface Props {
@@ -42,6 +54,8 @@ interface Props {
 }
 
 export default function ReviewRequirement({ reviewId, requirementId }: Props) {
+  const toggleCheckFlag = useToggleCheckFlag();
+
   const {
     review: review,
     isLoading: reviewLoading,
@@ -196,6 +210,8 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   };
 
   const [requirement, setRequirement] = useState<RequirementWithCheck | null>(null);
+  const [flagMessage, setFlagMessage] = useState<string>('');
+  const [flagErrorMessage, setFlagErrorMessage] = useState<string>('');
 
   const numberInCategory =
     (categoriesWithRequirements
@@ -223,6 +239,25 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
       }
     }
   }, [requirement, location.hash]);
+
+  const flagRequirement = (flag: boolean) => {
+    setFlagErrorMessage('');
+    setFlagMessage('');
+    toggleCheckFlag.mutate(
+      { reviewId: Number(reviewId), requirementId, flag },
+      {
+        onSuccess: () => {
+          setFlagMessage(
+            flag ? 'Kravet har flaggats i kravöversikten.' : 'Flaggningen av kravet är borttagen.',
+          );
+        },
+        onError: (err) => {
+          console.error('Fel vid sparande:', err);
+          setFlagErrorMessage('Ett fel uppstod vid sparande av flaggningen.');
+        },
+      },
+    );
+  };
 
   return (
     <div className="">
@@ -395,9 +430,85 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                 data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
                               >
                                 <span>{requirement.name}</span>
-                                {!isCheckLoading && <StatusBadge status={check?.status} />}
+                                {!isCheckLoading && <StatusBadge status={check?.status} />}{' '}
                               </h2>
-                              <RequirementLegal headingLevel="h3" requirement={requirement} />
+                              <div className="flex flex-col lg:flex-row justify-between gap-5">
+                                <div>
+                                  <RequirementLegal headingLevel="h3" requirement={requirement} />
+                                </div>
+                                <div
+                                  key={`flag-${check?.flag}`}
+                                  className="lg:text-right lg:basis-[20rem] lg:shrink-0 flex flex-col lg:items-end lg:pt-4"
+                                >
+                                  {check?.flag ? (
+                                    <>
+                                      <span className="hidden lg:inline-block">
+                                        <DigiButton
+                                          afVariation={ButtonVariation.FUNCTION}
+                                          onAfOnClick={() => flagRequirement(false)}
+                                        >
+                                          <span slot="icon">
+                                            <FilledFlag />
+                                          </span>
+                                          Flaggad
+                                        </DigiButton>
+                                      </span>
+                                      <span className="lg:hidden mb-3">
+                                        <DigiButton
+                                          afVariation={ButtonVariation.SECONDARY}
+                                          onAfOnClick={() => flagRequirement(false)}
+                                        >
+                                          <span slot="icon">
+                                            <FilledFlag />
+                                          </span>
+                                          Flaggad
+                                        </DigiButton>
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span className="hidden lg:inline-block">
+                                        <DigiButton
+                                          afVariation={ButtonVariation.FUNCTION}
+                                          onAfOnClick={() => flagRequirement(true)}
+                                        >
+                                          <DigiIconComunicationFlag slot="icon" />
+                                          Flagga
+                                        </DigiButton>
+                                      </span>
+                                      <span className="lg:hidden mb-3">
+                                        <DigiButton
+                                          afVariation={ButtonVariation.SECONDARY}
+                                          onAfOnClick={() => flagRequirement(true)}
+                                        >
+                                          <DigiIconComunicationFlag slot="icon" />
+                                          Flagga
+                                        </DigiButton>
+                                      </span>
+                                    </>
+                                  )}
+                                  <ScreenReaderAlert
+                                    updateOnChange={flagErrorMessage + flagMessage}
+                                  >
+                                    <p className="min-h-[2rem]">
+                                      {flagMessage && (
+                                        <DigiFormValidationMessage
+                                          afVariation={FormValidationMessageVariation.SUCCESS}
+                                        >
+                                          {flagMessage}
+                                        </DigiFormValidationMessage>
+                                      )}
+                                      {flagErrorMessage && (
+                                        <DigiFormValidationMessage
+                                          afVariation={FormValidationMessageVariation.ERROR}
+                                        >
+                                          {flagErrorMessage}
+                                        </DigiFormValidationMessage>
+                                      )}
+                                    </p>
+                                  </ScreenReaderAlert>
+                                </div>
+                              </div>
                             </div>
                             <div className="flex flex-col lg:flex-row my-5 gap-5">
                               <div className="flex-1">

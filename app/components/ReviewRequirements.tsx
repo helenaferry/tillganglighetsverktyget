@@ -1,4 +1,5 @@
 import {
+  ButtonVariation,
   ErrorPageStatusCodes,
   LayoutBlockVariation,
   LoaderSkeletonVariation,
@@ -6,6 +7,7 @@ import {
   NotificationAlertVariation,
 } from '@designsystem-se/af';
 import {
+  DigiButton,
   DigiLayoutBlock,
   DigiLayoutContainer,
   DigiLoaderSkeleton,
@@ -23,6 +25,7 @@ import { useRequirementCategories, useRequirements } from '~/hooks/useRequiremen
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 import { CardsOrTable } from './CardsOrTable';
+import FilledFlag from './FilledFlag';
 import PageTitle from './PageTitle';
 import ProgressBar from './ProgressBar';
 import { SortButton } from './SortButton';
@@ -124,6 +127,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<Status[]>([]);
   const [filterFreeText, setFilterFreeText] = useState<string>('');
+  const [filterFlagged, setFilterFlagged] = useState<boolean>(true);
   const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
   const [sortDirection, setSortDirection] = useState<'stigande' | 'fallande'>('fallande');
 
@@ -133,6 +137,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
     const statusSearchParam = searchParams.get('status');
     const sortParam = searchParams.get('sortering');
     const directionParam = searchParams.get('riktning');
+    const flaggedParam = searchParams.get('flaggade');
     if (!categoriesSearchParam) {
       setFilterCategories([]);
     } else {
@@ -158,6 +163,11 @@ export default function ReviewRequirements({ reviewId }: Props) {
     if (directionParam === 'stigande' || directionParam === 'fallande') {
       setSortDirection(directionParam);
     }
+    if (flaggedParam === 'true') {
+      setFilterFlagged(true);
+    } else {
+      setFilterFlagged(false);
+    }
   }, [searchParams]);
 
   const setUrlParams = (
@@ -166,6 +176,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
     statuses: Status[],
     sort: SortBy | undefined,
     direction: 'stigande' | 'fallande',
+    flagged: boolean,
   ) => {
     const params: Record<string, string> = {};
     if (search) params.sok = search;
@@ -173,6 +184,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
     if (statuses.length > 0) params.status = statuses.join(',');
     if (sort !== undefined) params.sortering = sort.toString();
     if (sort !== undefined && direction) params.riktning = direction;
+    if (flagged) params.flaggade = 'true';
     window.history.replaceState(
       {},
       '',
@@ -193,6 +205,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
 
   const filteredRequirements = useMemo(() => {
     let result = requirementsWithChecks || [];
+    if (filterFlagged) {
+      result = result.filter((req) => req.check?.flag === true);
+    }
     if (filterCategories.length > 0) {
       result = result.filter((req) => filterCategories.includes(req.category));
     }
@@ -234,6 +249,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
     filterFreeText,
     sortBy,
     sortDirection,
+    filterFlagged,
   ]);
 
   const setSort = (field: SortBy | undefined) => {
@@ -249,6 +265,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
       filterStatus,
       field,
       field === sortBy ? (sortDirection === 'stigande' ? 'fallande' : 'stigande') : 'fallande',
+      filterFlagged,
     );
   };
 
@@ -403,6 +420,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               onSortChange={setSort}
                               key="Krav"
                             />,
+                            '',
                             <SortButton
                               buttonText="Kravkategori"
                               sortBy={SortBy.CATEGORY}
@@ -420,7 +438,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               key="Bedömningsstatus"
                             />,
                           ]}
-                          cardsHeadings={['Krav', 'Kravkategori', 'Bedömningsstatus']}
+                          cardsHeadings={['Krav', '', 'Kravkategori', 'Bedömningsstatus']}
                           rows={filteredRequirements.map((req) => {
                             return {
                               id: req.id,
@@ -435,6 +453,18 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   </span>{' '}
                                   {req.name}
                                 </StyledLink>,
+                                <span key={req.id + '-flag'}>
+                                  {req.check?.flag ? (
+                                    <span className="flag text-sapphire-500 flex items-center">
+                                      <span className="basis-6 shrink-0">
+                                        <FilledFlag />
+                                      </span>
+                                      <span className="font-semibold">Flaggad</span>
+                                    </span>
+                                  ) : (
+                                    ''
+                                  )}
+                                </span>,
                                 <span key={req.id + '-category'} className="whitespace-nowrap">
                                   {req.category}
                                 </span>,
@@ -459,6 +489,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   filterStatus,
                                   sortBy,
                                   sortDirection,
+                                  filterFlagged,
                                 );
                               },
                             },
@@ -479,6 +510,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   filterStatus,
                                   sortBy,
                                   sortDirection,
+                                  filterFlagged,
                                 );
                               },
                             },
@@ -514,6 +546,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   e.detail.checked.map((item: string) => Number(item) as Status),
                                   sortBy,
                                   sortDirection,
+                                  filterFlagged,
                                 );
                               },
                             },
@@ -523,7 +556,56 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             filterCategories.length > 0 ||
                             filterStatus.length > 0 ||
                             filterFreeText.length > 0 ||
-                            sortBy !== undefined
+                            sortBy !== undefined ||
+                            filterFlagged
+                          }
+                          toggleButtons={
+                            <fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
+                              <legend className="sr-only">Toggla alla eller flaggade krav</legend>
+                              <DigiButton
+                                afVariation={
+                                  filterFlagged
+                                    ? ButtonVariation.SECONDARY
+                                    : ButtonVariation.PRIMARY
+                                }
+                                afAriaPressed={!filterFlagged}
+                                onAfOnClick={() => {
+                                  setFilterFlagged(false);
+                                  setUrlParams(
+                                    filterFreeText,
+                                    filterCategories,
+                                    filterStatus,
+                                    sortBy,
+                                    sortDirection,
+                                    false,
+                                  );
+                                }}
+                              >
+                                Visa alla krav
+                              </DigiButton>
+                              <DigiButton
+                                afVariation={
+                                  filterFlagged
+                                    ? ButtonVariation.PRIMARY
+                                    : ButtonVariation.SECONDARY
+                                }
+                                afAriaPressed={filterFlagged}
+                                onAfOnClick={() => {
+                                  setFilterFlagged(true);
+                                  setUrlParams(
+                                    filterFreeText,
+                                    filterCategories,
+                                    filterStatus,
+                                    sortBy,
+                                    sortDirection,
+                                    true,
+                                  );
+                                }}
+                              >
+                                Visa flaggade krav (
+                                {requirementsWithChecks.filter((req) => req.check?.flag).length})
+                              </DigiButton>
+                            </fieldset>
                           }
                         />
                       </div>

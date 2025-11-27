@@ -217,3 +217,17 @@ export function useDeleteReview() {
     },
   });
 }
+
+// Toggle check flag
+export function useToggleCheckFlag() {
+  const queryClient = useQueryClient();
+  return useMutation<Check, Error, { reviewId: number; requirementId: string; flag: boolean }>({
+    mutationFn: ({ reviewId, requirementId, flag }) =>
+      ReviewService.toggleCheckFlag(reviewId, requirementId, flag),
+    onSuccess: (_, { reviewId, requirementId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check', String(reviewId), requirementId] });
+      queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}

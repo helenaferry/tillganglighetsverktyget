@@ -45,6 +45,7 @@ interface Props {
   displayHeadingsAboveCards?: boolean;
   resetChoices?: () => void;
   choicesMade?: boolean;
+  toggleButtons?: ReactNode;
 }
 
 export function CardsOrTable({
@@ -61,6 +62,7 @@ export function CardsOrTable({
   displayHeadingsAboveCards = true,
   resetChoices,
   choicesMade = false,
+  toggleButtons,
 }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationStart, setPaginationStart] = useState(1);
@@ -147,6 +149,8 @@ export function CardsOrTable({
           </div>
         </form>
       )}
+
+      {toggleButtons && <div className="mt-4">{toggleButtons}</div>}
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4">
         <ScreenReaderAlert
@@ -238,7 +242,11 @@ export function CardsOrTable({
             </thead>
             <tbody>
               {paginatedRows.map((row) => (
-                <tr key={`row-${row.id}`} aria-rowindex={row.posInSet}>
+                <tr
+                  key={`row-${row.id}`}
+                  aria-rowindex={row.posInSet}
+                  className="has-[.flag]:bg-grayscale-100"
+                >
                   {row.content.map((cell, cellIndex) => (
                     <td key={`cell-${row.id}-${cellIndex}`}>{cell}</td>
                   ))}
@@ -254,19 +262,22 @@ export function CardsOrTable({
           <legend className="font-bold py-5">Sortera på:</legend>
           {displayHeadingsAboveCards && (
             <div>
-              {headings.map((heading, index) => (
-                <div
-                  key={`hac-${index}-${headings.length}`}
-                  aria-label={
-                    cardsHeadings && typeof cardsHeadings[index] === 'string'
-                      ? (cardsHeadings[index] as string)
-                      : undefined
-                  }
-                  className={`${index === 0 ? 'w-full' : ''} pb-5`}
-                >
-                  {heading}
-                </div>
-              ))}
+              {headings.map(
+                (heading, index) =>
+                  heading && (
+                    <div
+                      key={`hac-${index}-${headings.length}`}
+                      aria-label={
+                        cardsHeadings && typeof cardsHeadings[index] === 'string'
+                          ? (cardsHeadings[index] as string)
+                          : undefined
+                      }
+                      className={`${index === 0 ? 'w-full' : ''} pb-5`}
+                    >
+                      {heading}
+                    </div>
+                  ),
+              )}
             </div>
           )}
         </fieldset>
@@ -284,7 +295,7 @@ export function CardsOrTable({
               key={`card-${row.id}`}
               aria-setsize={rows.length}
               aria-posinset={row.posInSet}
-              className="border-b-1 py-4"
+              className="border-b-1 py-4 has-[.flag]:bg-grayscale-100 has-[.flag]:px-4 has-[.flag]:border-x-1"
             >
               <p className="my-4!">{row.content[0]}</p>
               {row.content.slice(1).map((cell, cellIndex) => (

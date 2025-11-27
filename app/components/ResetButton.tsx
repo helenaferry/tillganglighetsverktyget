@@ -9,7 +9,7 @@ type Props = {
   focusOnReset: HTMLElement | null;
 };
 
-export default function ScreenReaderAlert({
+export default function ResetButton({
   buttonText = i18n.t('resetButtonDefaultText'),
   onClick,
   focusOnReset,

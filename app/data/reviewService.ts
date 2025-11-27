@@ -282,4 +282,37 @@ export const ReviewService = {
   async deleteReview(reviewId: number): Promise<void> {
     await supabase.from('reviews').delete().eq('id', Number(reviewId));
   },
+
+  async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
+    const { data: existing } = await supabase
+      .from('checks')
+      .select('*')
+      .eq('review', Number(reviewId))
+      .eq('requirement', requirementId)
+      .single();
+
+    if (existing) {
+      const { data, error } = await supabase
+        .from('checks')
+        .update({ flag })
+        .eq('id', existing.id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Check;
+    } else {
+      const { data, error } = await supabase
+        .from('checks')
+        .insert({
+          review: Number(reviewId),
+          requirement: requirementId,
+          status: Status.NOT_ASSESSED,
+          flag,
+        })
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Check;
+    }
+  },
 };
