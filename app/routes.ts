@@ -9,4 +9,7 @@ export default [
   route('granskning/:id/underkanda-krav', 'routes/failed.tsx', { id: 'failed' }),
   route('krav', 'routes/requirements.tsx', { id: 'requirements' }),
   route('tips', 'routes/tips.tsx', { id: 'tips' }),
+  route('tillganglighetsredogorelse', 'routes/accessibilityStatement.tsx', {
+    id: 'accessibility-statement',
+  }),
 ] satisfies RouteConfig;

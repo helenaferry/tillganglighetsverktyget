@@ -19,31 +19,35 @@ export default function Footer() {
     <DigiFooter>
       <div slot="content-top">
         <DigiFooterCard afType={FooterCardVariation.ICON}>
-          {footerLinks && footerLinks.length > 0 && (
-            <ul>
-              {footerLinks.map(
-                (link: { url: string; external: string; text: string; icon: string }) => {
-                  return (
-                    <li key={link.url}>
-                      {link.external === 'true' ? (
-                        <DigiLinkExternal afHref={link.url} afTarget="_blank">
-                          {link.text}
-                        </DigiLinkExternal>
-                      ) : (
-                        <StyledLink to={link.url}>
-                          {link.icon === 'a11y' && (
-                            <DigiIconAccessibilityUniversal></DigiIconAccessibilityUniversal>
-                          )}
-                          {link.icon === 'email' && <DigiIconEnvelope></DigiIconEnvelope>}
-                          {link.text}
-                        </StyledLink>
-                      )}
-                    </li>
-                  );
-                },
-              )}
-            </ul>
-          )}
+          <ul>
+            <li>
+              <StyledLink to="/tillganglighetsredogorelse">
+                <DigiIconAccessibilityUniversal></DigiIconAccessibilityUniversal>
+                Tillgänglighetsredogörelse
+              </StyledLink>
+            </li>
+            {footerLinks.map(
+              (link: { url: string; external: string; text: string; icon: string }) => {
+                return (
+                  <li key={link.url}>
+                    {link.external === 'true' ? (
+                      <DigiLinkExternal afHref={link.url} afTarget="_blank">
+                        {link.text}
+                      </DigiLinkExternal>
+                    ) : (
+                      <StyledLink to={link.url}>
+                        {link.icon === 'a11y' && (
+                          <DigiIconAccessibilityUniversal></DigiIconAccessibilityUniversal>
+                        )}
+                        {link.icon === 'email' && <DigiIconEnvelope></DigiIconEnvelope>}
+                        {link.text}
+                      </StyledLink>
+                    )}
+                  </li>
+                );
+              },
+            )}
+          </ul>
         </DigiFooterCard>
 
         <div></div>
