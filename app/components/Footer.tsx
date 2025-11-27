@@ -15,7 +15,6 @@ import { StyledLink } from './StyledLink';
 export default function Footer() {
   const { t } = useTranslation();
   const { applicationTitle, logoUrl, logoWidth, logoHeight, footerLinks } = envVars();
-  console.log(footerLinks);
   return (
     <DigiFooter>
       <div slot="content-top">
