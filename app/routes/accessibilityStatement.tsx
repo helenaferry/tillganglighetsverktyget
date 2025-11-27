@@ -57,7 +57,9 @@ export default function AccessibilityStatementPage() {
                 och berätta det.
               </p>
               <p>
-                <DigiLinkExternal afHref="https://www.digg.se/tdosanmalan">Digg</DigiLinkExternal>
+                <DigiLinkExternal afTarget="_blank" afHref="https://www.digg.se/tdosanmalan">
+                  Digg
+                </DigiLinkExternal>
               </p>
               <h2>Teknisk information om webbplatsens tillgänglighet</h2>
               <p>
@@ -83,7 +85,7 @@ export default function AccessibilityStatementPage() {
                 tillgänglighet genom att följa WCAG 2.1 på nivå AA.
               </p>
               <p>
-                <DigiLinkExternal afHref="https://webbriktlinjer.se">
+                <DigiLinkExternal afTarget="_blank" afHref="https://webbriktlinjer.se">
                   Kriterier WCAG (webbriktlinjer.se)
                 </DigiLinkExternal>
               </p>
