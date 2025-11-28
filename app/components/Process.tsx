@@ -50,13 +50,13 @@ export default function Process({
             <div
               key={index}
               role="listitem"
-              className="flex gap-2 flex-row md:flex-col basis-1/1 md:basis-1/4 flex-grow-0 flex-shrink-1 items-center md:items-start"
+              className="flex gap-2 flex-row md:flex-col basis-1/1 md:basis-1/4 shrink items-center md:items-start"
             >
               <div aria-hidden="true" className="flex min-w-0 md:w-full gap-5">
                 <img src={step.imgSrc} alt="" className="w-18 md:w-24 lg:w-18 xl:w-24 h-auto" />
                 {/* Arrow horizontal, md and up */}
                 {index < steps.length - 1 && (
-                  <div className="hidden md:flex rotate-0 basis-[3rem] flex-grow-1 flex-shrink-0 items-center justify-stretch">
+                  <div className="hidden md:flex rotate-0 basis-[3rem] shrink items-center justify-stretch">
                     <hr className="border-t-2 border-grayscale-900 w-full max-w-[10rem] relative left-[0.35rem] bottom-[0.02rem]" />
                     <DigiIconChevronRight />
                   </div>
@@ -69,7 +69,7 @@ export default function Process({
                   </div>
                 </div>
               </div>
-              <div className="basis-1/2 flex-grow-0">
+              <div className="basis-1/2 shrink">
                 <HeadingTag>{step.title}</HeadingTag>
                 {showDescription && (
                   <p className="block max-w-full wrap-break-word hyphens-auto">

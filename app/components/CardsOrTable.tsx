@@ -227,7 +227,7 @@ export function CardsOrTable({
                           : 'descending'
                         : undefined
                     }
-                    className={`${index === 0 ? 'w-full' : ''} ${sortedByThIndex === index ? '!border-b-2 !border-sapphire-500' : ''}`}
+                    className={`${sortedByThIndex === index ? '!border-b-2 !border-sapphire-500' : ''}`}
                     onClick={() => {
                       if (heading && pageSize > 0 && rows.length > pageSize) {
                         setCurrentPage(1);

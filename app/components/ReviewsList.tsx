@@ -1,8 +1,10 @@
-import { LoaderSkeletonVariation } from '@designsystem-se/af';
+import { ButtonVariation, LoaderSkeletonVariation } from '@designsystem-se/af';
 import {
   DigiButton,
   DigiIconChevronRight,
   DigiIconEdit,
+  DigiIconHeart,
+  DigiIconHeartSolid,
   DigiLayoutBlock,
   DigiLayoutContainer,
   DigiLoaderSkeleton,
@@ -46,13 +48,19 @@ export function ReviewsList() {
   }
 
   const [filterFreeText, setFilterFreeText] = useState('');
+  const [filterFaves, setFilterFaves] = useState(false);
   const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
   const [sortDirection, setSortDirection] = useState<'stigande' | 'fallande'>('fallande');
+  const [favoriteReviews, setFavoriteReviews] = useState<number[]>(() => {
+    const storedFaves = localStorage.getItem('favoriteReviews');
+    return storedFaves ? JSON.parse(storedFaves) : [];
+  });
 
   useEffect(() => {
     const searchSearchParam = searchParams.get('sok');
     const sortParam = searchParams.get('sortering');
     const directionParam = searchParams.get('riktning');
+    const favesParam = searchParams.get('favoriter');
     if (!searchSearchParam) {
       setFilterFreeText('');
     } else {
@@ -67,13 +75,24 @@ export function ReviewsList() {
     if (directionParam === 'stigande' || directionParam === 'fallande') {
       setSortDirection(directionParam);
     }
+    if (favesParam === 'true') {
+      setFilterFaves(true);
+    } else {
+      setFilterFaves(false);
+    }
   }, [searchParams]);
 
-  const setUrlParams = (search: string, sort: SortBy, direction: 'stigande' | 'fallande') => {
+  const setUrlParams = (
+    search: string,
+    sort: SortBy | undefined,
+    direction: 'stigande' | 'fallande',
+    faves: boolean,
+  ) => {
     const params: Record<string, string> = {};
     if (search) params.sok = search;
     if (sort !== undefined) params.sortering = sort.toString();
     if (sort !== undefined && direction) params.riktning = direction;
+    if (faves) params.favoriter = 'true';
     window.history.replaceState(
       {},
       '',
@@ -88,7 +107,12 @@ export function ReviewsList() {
       setSortBy(field);
       setSortDirection('fallande');
     }
-    setUrlParams(filterFreeText, field!, sortDirection === 'stigande' ? 'fallande' : 'stigande');
+    setUrlParams(
+      filterFreeText,
+      field!,
+      sortDirection === 'stigande' ? 'fallande' : 'stigande',
+      filterFaves,
+    );
   };
 
   const reviews = useMemo(() => {
@@ -101,6 +125,9 @@ export function ReviewsList() {
 
   const filteredReviews = useMemo(() => {
     let result = reviews || [];
+    if (filterFaves) {
+      result = result.filter((review) => favoriteReviews.includes(review.id));
+    }
     if (filterFreeText) {
       result = result.filter(
         (review) => review.title?.toLowerCase().includes(filterFreeText.toLowerCase()) || false,
@@ -126,7 +153,7 @@ export function ReviewsList() {
       }
       return 0;
     });
-  }, [reviews, filterFreeText, sortBy, sortDirection]);
+  }, [reviews, filterFreeText, sortBy, sortDirection, filterFaves, favoriteReviews]);
 
   const requirements = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
@@ -167,7 +194,7 @@ export function ReviewsList() {
                     Skapa ny granskning
                   </StyledLink>
                 </div>
-                <div className="basis-1/3 flex-grow-1">
+                <div className="basis-1/3 grow">
                   <Process showHeading={true} subHeadingElement="p" showDescription={false} />
                 </div>
               </div>
@@ -186,6 +213,7 @@ export function ReviewsList() {
               <DigiLayoutBlock afMarginTop={true} afMarginBottom={false} afVerticalPadding={true}>
                 <CardsOrTable
                   headings={[
+                    '',
                     <SortButton
                       buttonText="Granskningsnamn"
                       sortBy={SortBy.REVIEW}
@@ -220,12 +248,52 @@ export function ReviewsList() {
                     />,
                     '',
                   ]}
-                  cardsHeadings={['Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskat', '']}
+                  cardsHeadings={['', 'Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskat', '']}
                   rows={filteredReviews.map((review) => {
                     return {
                       id: review.id,
                       posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
                       content: [
+                        <>
+                          {favoriteReviews.includes(review.id) ? (
+                            <DigiButton
+                              afType="button"
+                              afVariation={ButtonVariation.FUNCTION}
+                              key={`fav-off-${review.id}`}
+                              aria-label="Ta bort från favoriter"
+                              onClick={() => {
+                                let updatedFaves = [...favoriteReviews];
+                                updatedFaves = updatedFaves.filter((id) => id !== review.id);
+                                setFavoriteReviews(updatedFaves);
+                                localStorage.setItem(
+                                  'favoriteReviews',
+                                  JSON.stringify(updatedFaves),
+                                );
+                              }}
+                            >
+                              <DigiIconHeartSolid slot="icon" />
+                            </DigiButton>
+                          ) : (
+                            <DigiButton
+                              afType="button"
+                              afVariation={ButtonVariation.FUNCTION}
+                              key={`fav-on-${review.id}`}
+                              aria-label="Lägg till i favoriter"
+                              onClick={() => {
+                                let updatedFaves = [...favoriteReviews];
+                                updatedFaves.push(review.id);
+                                setFavoriteReviews(updatedFaves);
+                                localStorage.setItem(
+                                  'favoriteReviews',
+                                  JSON.stringify(updatedFaves),
+                                );
+                              }}
+                            >
+                              <DigiIconHeart slot="icon" />
+                            </DigiButton>
+                          )}
+                        </>,
+
                         <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
                           <span className="inline lg:hidden">
                             <DigiIconChevronRight />
@@ -267,7 +335,7 @@ export function ReviewsList() {
                       values: [filterFreeText],
                       onChange: (e) => {
                         setFilterFreeText(e.detail);
-                        setUrlParams(e.detail, sortBy!, sortDirection);
+                        setUrlParams(e.detail, sortBy!, sortDirection, filterFaves);
                       },
                     },
                   ]}
@@ -279,8 +347,38 @@ export function ReviewsList() {
                     setFilterFreeText('');
                     setSort(undefined);
                     setSearchParams({});
+                    setFilterFaves(false);
                   }}
-                  choicesMade={filterFreeText.length > 0 || sortBy !== undefined}
+                  choicesMade={filterFreeText.length > 0 || sortBy !== undefined || filterFaves}
+                  toggleButtons={
+                    <fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
+                      <legend className="sr-only">Toggla-text</legend>
+                      <DigiButton
+                        afVariation={
+                          filterFaves ? ButtonVariation.SECONDARY : ButtonVariation.PRIMARY
+                        }
+                        afAriaPressed={!filterFaves}
+                        onAfOnClick={() => {
+                          setFilterFaves(false);
+                          setUrlParams(filterFreeText, sortBy!, sortDirection, false);
+                        }}
+                      >
+                        Visa alla granskningar
+                      </DigiButton>
+                      <DigiButton
+                        afVariation={
+                          filterFaves ? ButtonVariation.PRIMARY : ButtonVariation.SECONDARY
+                        }
+                        afAriaPressed={filterFaves}
+                        onAfOnClick={() => {
+                          setFilterFaves(true);
+                          setUrlParams(filterFreeText, sortBy, sortDirection, true);
+                        }}
+                      >
+                        Visa favoriter ({favoriteReviews.length})
+                      </DigiButton>
+                    </fieldset>
+                  }
                 />
               </DigiLayoutBlock>
             )}
