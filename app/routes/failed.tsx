@@ -21,7 +21,7 @@ const applicationTitle = envVars().applicationTitle;
 
 export function meta() {
   return [
-    { title: `${applicationTitle}: ${i18n.t('failed.Title')}` },
+    { title: `${i18n.t('failed.Title')} - ${applicationTitle}` },
     { name: 'description', content: i18n.t('failed.MetaDescription') },
   ];
 }

@@ -36,7 +36,7 @@ const regulatoryFrameworkEnv = envVars().regulatoryFramework;
 
 export function meta() {
   return [
-    { title: `${applicationTitle}: ${i18n.t('requirements.Title')}` },
+    { title: `${i18n.t('requirements.Title')} - ${applicationTitle}` },
     { name: 'description', content: i18n.t('requirements.MetaDescription') },
   ];
 }

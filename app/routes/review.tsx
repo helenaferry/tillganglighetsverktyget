@@ -1,10 +1,16 @@
 import { useParams } from 'react-router-dom';
 
 import ReviewRequirement from '~/components/ReviewRequirement';
+import { envVars } from '~/helpers';
+import i18n from '~/lang/i18n';
 
-// TODO: Needs rework if we are to show review title
+const applicationTitle = envVars().applicationTitle;
+
 export function meta() {
-  return [{ title: 'Granska' }, { name: 'description', content: 'Granskningsvy' }];
+  return [
+    { title: `${i18n.t('ReviewRequirement.ReviewView')} - ${applicationTitle}` },
+    { name: 'description', content: i18n.t('ReviewRequirement.ReviewView') },
+  ];
 }
 
 export default function ReviewPage() {

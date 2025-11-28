@@ -120,7 +120,8 @@
     "ShowAllRequirements": "Visa alla krav",
     "ShowFlaggedRequirements": "Visa flaggade krav ({{count}})",
     "NotFoundHeading": "Granskningen hittades inte",
-    "NotFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått."
+    "NotFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått.",
+    "ReviewOverview": "Kravöversikt"
   },
   "ReviewRequirement": {
     "Title": "Granska: {{title}}",
@@ -135,7 +136,8 @@
     "Only": "BARA",
     "Remaining": "KVAR",
     "Showing": "Krav {{number}} av {{total}}",
-    "Skip": "Hoppa till krav: {{requirementName}}"
+    "Skip": "Hoppa till krav: {{requirementName}}",
+    "ReviewView": "Granskningsvy"
   },
   "requirements": {
     "Title": "Tillgänglighets\u00ADkrav",

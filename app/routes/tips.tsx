@@ -18,13 +18,13 @@ import { useTranslation } from 'react-i18next';
 import PageTitle from '~/components/PageTitle';
 import Process from '~/components/Process';
 import i18n from '~/lang/i18n';
+import { envVars } from '~/helpers';
 
-const applicationTitle =
-  import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle');
+const applicationTitle = envVars().applicationTitle;
 
 export function meta() {
   return [
-    { title: `${applicationTitle}: ${i18n.t('tips.Title')}` },
+    { title: `${i18n.t('tips.Title')} - ${applicationTitle}` },
     { name: 'description', content: i18n.t('tips.MetaDescription') },
   ];
 }

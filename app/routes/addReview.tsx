@@ -4,13 +4,13 @@ import { useTranslation } from 'react-i18next';
 import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
 import i18n from '~/lang/i18n';
+import { envVars } from '~/helpers';
 
-const applicationTitle =
-  import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle');
+const applicationTitle = envVars().applicationTitle || i18n.t('FallbackApplicationTitle');
 
 export function meta() {
   return [
-    { title: `${applicationTitle}: ${i18n.t('addReview.Title')}` },
+    { title: `${i18n.t('addReview.Title')} - ${applicationTitle}` },
     { name: 'description', content: i18n.t('addReview.MetaDescription') },
   ];
 }
