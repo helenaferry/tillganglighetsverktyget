@@ -19,6 +19,7 @@
   --color-grayscale-700: var(--digi--grayscale-700);
 
   --color-sapphire-500: var(--digi--sapphire-500);
+  --color--link-hover: var(--digi--color--text--link-hover);
 
   --spacing-p-medium: var(--digi--paragraph-width--medium);
   --spacing-p-large: var(--digi--paragraph-width--large);
@@ -38,6 +39,17 @@ article li {
 
 svg {
   @apply !max-w-full !max-h-full min-w-[var(--digi--icon--width)];
+}
+
+.favorite {
+  svg {
+    --digi--icon--color: var(--color-sapphire-500);
+  }
+}
+.favorite:hover {
+  svg {
+    --digi--icon--color: var(--color-link-hover);
+  }
 }
 
 /* CategoryNav */

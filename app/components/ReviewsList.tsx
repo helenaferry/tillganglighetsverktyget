@@ -11,6 +11,7 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
@@ -24,7 +25,6 @@ import PageTitle from './PageTitle';
 import Process from './Process';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
-import { useTranslation } from 'react-i18next';
 
 export function ReviewsList() {
   const { t } = useTranslation();
@@ -256,50 +256,42 @@ export function ReviewsList() {
                     '',
                   ]}
                   rows={filteredReviews.map((review) => {
+                    const isFavorite = favoriteReviews.includes(review.id);
                     return {
                       id: review.id,
                       posInSet: filteredReviews.findIndex((r) => r.id === review.id) + 1,
                       content: [
-                        <>
-                          {favoriteReviews.includes(review.id) ? (
-                            <DigiButton
-                              afType="button"
-                              afVariation={ButtonVariation.FUNCTION}
-                              key={`fav-off-${review.id}`}
-                              aria-label={t('ReviewsList.FavoriteRemove')}
-                              onClick={() => {
-                                let updatedFaves = [...favoriteReviews];
-                                updatedFaves = updatedFaves.filter((id) => id !== review.id);
-                                setFavoriteReviews(updatedFaves);
-                                localStorage.setItem(
-                                  'favoriteReviews',
-                                  JSON.stringify(updatedFaves),
-                                );
-                              }}
-                            >
+                        <DigiButton
+                          afType="button"
+                          afVariation={ButtonVariation.FUNCTION}
+                          key={`fav-${review.id}}`}
+                          afAriaLabel={
+                            isFavorite
+                              ? t('ReviewsList.FavoriteRemove', { reviewName: review.title })
+                              : t('ReviewsList.FavoriteAdd', { reviewName: review.title })
+                          }
+                          afAriaPressed={isFavorite}
+                          onClick={() => {
+                            let updatedFaves = [...favoriteReviews];
+                            if (isFavorite) {
+                              updatedFaves = updatedFaves.filter((id) => id !== review.id);
+                            } else {
+                              updatedFaves.push(review.id);
+                            }
+                            setFavoriteReviews(updatedFaves);
+                            localStorage.setItem('favoriteReviews', JSON.stringify(updatedFaves));
+                          }}
+                        >
+                          {isFavorite ? (
+                            <span className="favorite inline-block w-4 h-4">
                               <DigiIconHeartSolid slot="icon" />
-                            </DigiButton>
+                            </span>
                           ) : (
-                            <DigiButton
-                              afType="button"
-                              afVariation={ButtonVariation.FUNCTION}
-                              key={`fav-on-${review.id}`}
-                              aria-label={t('ReviewsList.FavoriteAdd')}
-                              onClick={() => {
-                                const updatedFaves = [...favoriteReviews];
-                                updatedFaves.push(review.id);
-                                setFavoriteReviews(updatedFaves);
-                                localStorage.setItem(
-                                  'favoriteReviews',
-                                  JSON.stringify(updatedFaves),
-                                );
-                              }}
-                            >
+                            <span className="favorite inline-block w-4 h-4">
                               <DigiIconHeart slot="icon" />
-                            </DigiButton>
+                            </span>
                           )}
-                        </>,
-
+                        </DigiButton>,
                         <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
                           <span className="inline lg:hidden">
                             <DigiIconChevronRight />
