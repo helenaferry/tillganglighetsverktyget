@@ -280,7 +280,7 @@ export function ReviewsList() {
                               key={`fav-on-${review.id}`}
                               aria-label="Lägg till i favoriter"
                               onClick={() => {
-                                let updatedFaves = [...favoriteReviews];
+                                const updatedFaves = [...favoriteReviews];
                                 updatedFaves.push(review.id);
                                 setFavoriteReviews(updatedFaves);
                                 localStorage.setItem(
