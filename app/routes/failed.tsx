@@ -12,10 +12,10 @@ import { useParams } from 'react-router-dom';
 import Export from '~/components/Export';
 import PageTitle from '~/components/PageTitle';
 import { ObjectType } from '~/data/types';
+import { envVars } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 import i18n from '~/lang/i18n';
-import { envVars } from '~/helpers';
 
 const applicationTitle = envVars().applicationTitle;
 

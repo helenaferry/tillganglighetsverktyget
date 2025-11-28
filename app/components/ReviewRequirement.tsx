@@ -23,6 +23,7 @@ import {
   DigiTypographyPreamble,
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import CategoryNav from '~/components/CategoryNav';
@@ -54,6 +55,7 @@ interface Props {
 }
 
 export default function ReviewRequirement({ reviewId, requirementId }: Props) {
+  const { t } = useTranslation();
   const toggleCheckFlag = useToggleCheckFlag();
 
   const {
@@ -248,12 +250,11 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
       {
         onSuccess: () => {
           setFlagMessage(
-            flag ? 'Kravet har flaggats i kravöversikten.' : 'Flaggningen av kravet är borttagen.',
+            flag ? t('ReviewRequirement.FlagSet') : t('ReviewRequirement.FlagRemoved'),
           );
         },
-        onError: (err) => {
-          console.error('Fel vid sparande:', err);
-          setFlagErrorMessage('Ett fel uppstod vid sparande av flaggningen.');
+        onError: () => {
+          setFlagErrorMessage(t('ReviewRequirement.FlagError'));
         },
       },
     );
@@ -277,14 +278,15 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                 <div className="flex flex-col md:flex-row gap-4 justify-between">
                   <div>
                     <Breadcrumbs
-                      currentPage={`Granska ${review?.title || 'Granskning'}: ${
-                        requirements?.find((req) => String(req.id) === String(requirementId))
-                          ?.name || 'Krav'
+                      currentPage={`${t('ReviewRequirement.Review')}: ${
+                        requirements?.find((req) => String(req.id) === String(requirementId))?.name
                       }`}
                       pages={[
-                        { title: 'Granskningar', href: '/' },
+                        { title: t('start.Title'), href: '/' },
                         {
-                          title: `Kravöversikt ${review?.title || 'Granskning'}`,
+                          title: t('ReviewRequirements.title', {
+                            reviewTitle: review?.title || '',
+                          }),
                           href: `/granskning/${review?.id}`,
                         },
                       ]}
@@ -292,13 +294,13 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                     <DigiTypographyHeadingJumbo
                       id="h1"
                       className="wrap-anywhere"
-                      afText={`Granska ${review?.title || 'Granskning'}`}
+                      afText={t('ReviewRequirement.Title', { title: review?.title || '' })}
                       afLevel={TypographyHeadingJumboLevel.H1}
                       afVariation={TypographyHeadingJumboVariation.PRIMARY}
                     />
                     <div className="mt-5">
                       <DigiTypographyPreamble>
-                        Granskning startades {formatDate(review?.created_at)}
+                        {t('ReviewRequirement.ReviewStarted')} {formatDate(review?.created_at)}
                       </DigiTypographyPreamble>
                     </div>
                   </div>
@@ -307,7 +309,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       requirements.length &&
                       numberChecked(requirementsWithChecks) > 0 && (
                         <div
-                          className="md:absolute md:right-0 h-24 w-24 md:h-32 md:w-32 mt-3 md:mt-0 text-white font-bold bg-leaf-500 flex flex-col md:flex-row items-center justify-center rounded-full"
+                          className="md:absolute md:right-0 h-24 w-24 md:h-32 md:w-32 mt-3 md:mt-0 text-white font-bold bg-forest-500 flex flex-col md:flex-row items-center justify-center rounded-full"
                           aria-label={`${formatPercentage(
                             numberChecked(requirementsWithChecks) / requirements.length,
                           )} klart`}
@@ -318,7 +320,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                 numberChecked(requirementsWithChecks) / requirements.length,
                               )}
                             </span>
-                            <span className="block text-center">K L A R T</span>
+                            <span className="block text-center">{t('ReviewRequirement.Done')}</span>
                           </div>
                         </div>
                       )}
@@ -326,14 +328,19 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       numberChecked(requirementsWithChecks) > 0 && (
                         <div
                           className="md:absolute md:right-26 md:top-14 h-20 w-20 md:h-25 md:w-25 text-white font-bold bg-stratos-500 flex items-center justify-center rounded-full"
-                          aria-label={`Bara ${numberRemaining(requirementsWithChecks)} kvar!`}
+                          aria-label={`${t('ReviewRequirement.Only')} ${numberRemaining(requirementsWithChecks)} ${t('ReviewRequirement.Remaining')}`}
                         >
                           <div aria-hidden="true">
-                            <span className="block text-center leading-none">BARA</span>
+                            <span className="block text-center leading-none">
+                              {t('ReviewRequirement.Only')}
+                            </span>
                             <span className="block text-center text-xl md:text-[2rem] leading-none">
                               {numberRemaining(requirementsWithChecks) || 0}
                             </span>
-                            <span className="block text-center leading-none"> KVAR!</span>
+                            <span className="block text-center leading-none">
+                              {' '}
+                              {t('ReviewRequirement.Remaining')}
+                            </span>
                           </div>
                         </div>
                       )}
@@ -357,8 +364,6 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                     onToggleNav={() => {
                       setShowCategoryNav(!showCategoryNav);
                       if (showCategoryNav) {
-                        console.log('focusing');
-                        console.log(document.getElementById('toggle-category-nav'));
                         document.getElementById('toggle-category-nav')?.focus();
                       }
                     }}
@@ -373,7 +378,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                           <DigiNotificationAlert
                             afSize={NotificationAlertSize.LARGE}
                             afVariation={NotificationAlertVariation.SUCCESS}
-                            afHeading="Hurra, granskningen är klar!"
+                            afHeading={t('ReviewRequirements.doneHeading')}
                           >
                             <div className="mt-6 mb-4">
                               <StyledLink
@@ -381,7 +386,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                 styleVariant="link-button"
                                 hideIcon
                               >
-                                Sammanställ underkända krav
+                                {t('ReviewRequirements.compileFailed')}
                               </StyledLink>
                             </div>
                           </DigiNotificationAlert>
@@ -422,12 +427,17 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                           <DigiTypography>
                             <div className="border-b-1 border-grayscale-400 pb-5">
                               <p className="text-grayscale-700">
-                                Krav {numberInCategory} av {totalInCategory}
+                                {t('ReviewRequirement.Showing', {
+                                  number: numberInCategory,
+                                  total: totalInCategory,
+                                })}
                               </p>
                               <h2
                                 className="skip-target flex gap-4"
                                 id={requirement.id}
-                                data-skip-link-text={`Hoppa till krav: ${requirement.name}`}
+                                data-skip-link-text={t('ReviewRequirement.Skip', {
+                                  requirementName: requirement.name,
+                                })}
                               >
                                 <span>{requirement.name}</span>
                                 {!isCheckLoading && <StatusBadge status={check?.status} />}{' '}
@@ -450,7 +460,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                           <span slot="icon">
                                             <FilledFlag />
                                           </span>
-                                          Flaggad
+                                          {t('ReviewRequirement.Flagged')}
                                         </DigiButton>
                                       </span>
                                       <span className="lg:hidden mb-3">
@@ -461,7 +471,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                           <span slot="icon">
                                             <FilledFlag />
                                           </span>
-                                          Flaggad
+                                          {t('ReviewRequirement.Flagged')}
                                         </DigiButton>
                                       </span>
                                     </>
@@ -473,7 +483,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                           onAfOnClick={() => flagRequirement(true)}
                                         >
                                           <DigiIconComunicationFlag slot="icon" />
-                                          Flagga
+                                          {t('ReviewRequirement.Flag')}
                                         </DigiButton>
                                       </span>
                                       <span className="lg:hidden mb-3">
@@ -482,7 +492,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                           onAfOnClick={() => flagRequirement(true)}
                                         >
                                           <DigiIconComunicationFlag slot="icon" />
-                                          Flagga
+                                          {t('ReviewRequirement.Flag')}
                                         </DigiButton>
                                       </span>
                                     </>
@@ -540,10 +550,10 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
       {fetched && (!review || !requirement) && (
         <div className="">
           <DigiNotificationErrorPage
-            afCustomHeading="Granskningen hittades inte"
+            afCustomHeading={t('ReviewRequirements.notFoundHeading')}
             afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
           >
-            <p slot="bodytext">Den kan ha tagits bort, eller så har ett fel uppstått.</p>
+            <p slot="bodytext">{t('ReviewRequirements.notFoundText')}</p>
           </DigiNotificationErrorPage>
         </div>
       )}

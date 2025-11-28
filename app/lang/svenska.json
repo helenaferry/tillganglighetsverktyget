@@ -101,6 +101,21 @@
     "notFoundHeading": "Granskningen hittades inte",
     "notFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått."
   },
+  "ReviewRequirement": {
+    "Title": "Granska: {{title}}",
+    "ReviewStarted": "Granskningen startades",
+    "Flagged": "Flaggad",
+    "Flag": "Flagga",
+    "FlagSet": "Kravet har flaggats i kravöversikten",
+    "FlagRemoved": "Flaggningen av kravet är borttagen.",
+    "FlagError": "Ett fel uppstod vid flaggningen.",
+    "Review": "Granska",
+    "Done": "K L A R T",
+    "Only": "BARA",
+    "Remaining": "KVAR",
+    "Showing": "Krav {{number}} av {{total}}",
+    "Skip": "Hoppa till krav: {{requirementName}}"
+  },
   "requirements": {
     "Title": "Tillgänglighets\u00ADkrav",
     "MetaDescription": "Här kan du se alla krav.",
