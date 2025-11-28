@@ -16,6 +16,7 @@ import {
 } from '@designsystem-se/af-react';
 import { DigiIconChevronRight } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
 import { StyledLink } from '~/components/StyledLink';
@@ -36,6 +37,7 @@ interface Props {
 }
 
 export default function ReviewRequirements({ reviewId }: Props) {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const {
     review: review,
@@ -292,10 +294,12 @@ export default function ReviewRequirements({ reviewId }: Props) {
       {fetched && review && (
         <>
           <PageTitle
-            h1Text={`Kravöversikt: ${review?.title || 'Granskning'}`}
-            preamble="Här får du en översikt över alla krav i granskningen. Du kan söka eller filtrera fram specifika krav, samt se aktuell status för granskningen."
-            breadcrumbsCurrentPage={`Kravöversikt: ${review?.title || 'Granskning'}`}
-            breadcrumbsPages={[{ title: 'Granskningar', href: '/' }]}
+            h1Text={t('ReviewRequirements.title', { reviewTitle: review?.title || t('Review') })}
+            preamble={t('ReviewRequirements.preamble')}
+            breadcrumbsCurrentPage={t('ReviewRequirements.title', {
+              reviewTitle: review?.title || t('Review'),
+            })}
+            breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
           />
 
           <div>
@@ -309,7 +313,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   <DigiNotificationAlert
                     afSize={NotificationAlertSize.LARGE}
                     afVariation={NotificationAlertVariation.SUCCESS}
-                    afHeading="Hurra, granskningen är klar!"
+                    afHeading={t('ReviewRequirements.doneHeading')}
                   >
                     <div className="mt-6 mb-4">
                       <StyledLink
@@ -317,7 +321,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         styleVariant="link-button"
                         hideIcon
                       >
-                        Sammanställ underkända krav
+                        {t('ReviewRequirements.compileFailed')}
                       </StyledLink>
                     </div>
                   </DigiNotificationAlert>
@@ -337,7 +341,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 <div className="flex flex-col sm:flex-row mb-6">
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ej granskade`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ${t('ReviewRequirements.statusLabelNotAssessed')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -348,7 +352,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   </div>
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).passCount} godkända`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).passCount} ${t('ReviewRequirements.statusLabelPass')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -359,7 +363,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   </div>
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).failCount} underkända`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).failCount} ${t('ReviewRequirements.statusLabelFail')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -370,7 +374,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   </div>
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} irrelevanta`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} ${t('ReviewRequirements.statusLabelIrrelevant')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -382,7 +386,10 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 </div>
                 <ProgressBar
                   progress={percentageChecked(requirementsWithChecks)}
-                  text={`${numberChecked(requirementsWithChecks)} av ${requirementsWithChecks.length} krav granskade`}
+                  text={t('ReviewRequirements.progressText', {
+                    checked: numberChecked(requirementsWithChecks),
+                    total: requirementsWithChecks.length,
+                  })}
                 />
                 <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
                   {firstUncheckedId && (
@@ -391,7 +398,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       styleVariant="link-button"
                       hideIcon
                     >
-                      Granska tillgänglighet
+                      {t('ReviewRequirements.reviewAccessibilityButton')}
                     </StyledLink>
                   )}
                   <StyledLink
@@ -399,7 +406,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                     styleVariant="link-button-secondary"
                     hideIcon
                   >
-                    Sammanställ underkända krav
+                    {t('ReviewRequirements.compileFailed')}
                   </StyledLink>
                 </div>
               </DigiLayoutBlock>
@@ -413,7 +420,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         <CardsOrTable
                           headings={[
                             <SortButton
-                              buttonText="Krav"
+                              buttonText={t('ReviewRequirements.headingRequirement')}
                               sortBy={SortBy.REQUIREMENT}
                               active={sortBy === SortBy.REQUIREMENT}
                               sortDirection={sortDirection}
@@ -422,7 +429,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             />,
                             '',
                             <SortButton
-                              buttonText="Kravkategori"
+                              buttonText={t('ReviewRequirements.headingCategory')}
                               sortBy={SortBy.CATEGORY}
                               active={sortBy === SortBy.CATEGORY}
                               sortDirection={sortDirection}
@@ -430,7 +437,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               key="Kravkategori"
                             />,
                             <SortButton
-                              buttonText="Bedömningsstatus"
+                              buttonText={t('ReviewRequirements.headingStatus')}
                               sortBy={SortBy.STATUS}
                               active={sortBy === SortBy.STATUS}
                               sortDirection={sortDirection}
@@ -438,7 +445,12 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               key="Bedömningsstatus"
                             />,
                           ]}
-                          cardsHeadings={['Krav', '', 'Kravkategori', 'Bedömningsstatus']}
+                          cardsHeadings={[
+                            t('ReviewRequirements.headingRequirement'),
+                            '',
+                            t('ReviewRequirements.headingCategory'),
+                            t('ReviewRequirements.headingStatus'),
+                          ]}
                           rows={filteredRequirements.map((req) => {
                             return {
                               id: req.id,
@@ -459,7 +471,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                       <span className="basis-6 shrink-0">
                                         <FilledFlag />
                                       </span>
-                                      <span className="font-semibold">Flaggad</span>
+                                      <span className="font-semibold">
+                                        {t('ReviewRequirements.flagged')}
+                                      </span>
                                     </span>
                                   ) : (
                                     ''
@@ -475,11 +489,11 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             };
                           })}
                           totalItems={requirements.length}
-                          itemsName="krav"
+                          itemsName={t('ReviewRequirements.itemsName')}
                           filters={[
                             {
                               type: 'freeText',
-                              label: 'Sök på krav',
+                              label: t('ReviewRequirements.searchLabel'),
                               values: [filterFreeText],
                               onChange: (e) => {
                                 setFilterFreeText(e.detail);
@@ -495,7 +509,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             },
                             {
                               type: 'select',
-                              label: 'Kravkategorier',
+                              label: t('ReviewRequirements.filterCategories'),
                               options:
                                 categories?.map((cat: string) => ({
                                   id: cat,
@@ -516,7 +530,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             },
                             {
                               type: 'select',
-                              label: 'Bedömningsstatus',
+                              label: t('ReviewRequirements.filterStatus'),
                               options: [
                                 {
                                   label: StatusText.PASS,
@@ -561,7 +575,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                           }
                           toggleButtons={
                             <fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
-                              <legend className="sr-only">Toggla alla eller flaggade krav</legend>
+                              <legend className="sr-only">
+                                {t('ReviewRequirements.toggleLegend')}
+                              </legend>
                               <DigiButton
                                 afVariation={
                                   filterFlagged
@@ -581,7 +597,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   );
                                 }}
                               >
-                                Visa alla krav
+                                {t('ReviewRequirements.showAllRequirements')}
                               </DigiButton>
                               <DigiButton
                                 afVariation={
@@ -602,8 +618,10 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   );
                                 }}
                               >
-                                Visa flaggade krav (
-                                {requirementsWithChecks.filter((req) => req.check?.flag).length})
+                                {t('ReviewRequirements.showFlaggedRequirements', {
+                                  count: requirementsWithChecks.filter((req) => req.check?.flag)
+                                    .length,
+                                })}
                               </DigiButton>
                             </fieldset>
                           }
@@ -620,10 +638,10 @@ export default function ReviewRequirements({ reviewId }: Props) {
       {!loading && !review && (
         <div>
           <DigiNotificationErrorPage
-            afCustomHeading="Granskningen hittades inte"
+            afCustomHeading={t('ReviewRequirements.notFoundHeading')}
             afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
           >
-            <p slot="bodytext">Den kan ha tagits bort, eller så har ett fel uppstått.</p>
+            <p slot="bodytext">{t('ReviewRequirements.notFoundText')}</p>
           </DigiNotificationErrorPage>
         </div>
       )}

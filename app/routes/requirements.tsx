@@ -17,6 +17,7 @@ import {
   DigiLoaderSkeleton,
   DigiTypography,
 } from '@designsystem-se/af-react';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -27,15 +28,20 @@ import ResetButton from '~/components/ResetButton';
 import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import i18n from '~/lang/i18n';
 
 const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
 const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
 
 export function meta() {
-  return [{ title: `${applicationTitle}: Krav` }, { name: 'description', content: 'Krav' }];
+  return [
+    { title: `${applicationTitle}: ${i18n.t('requirements.Title')}` },
+    { name: 'description', content: i18n.t('requirements.MetaDescription') },
+  ];
 }
 
 export default function RequirementsPage() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get('id');
 
@@ -151,11 +157,7 @@ export default function RequirementsPage() {
     <main>
       <DigiTypography>
         <div>
-          <PageTitle
-            h1Text="Tillgänglighets&shy;krav"
-            preamble="Här hittar du alla tillgänglighetskrav samlade i en lista. Du kan söka efter specifika
-            krav och läsa mer om dem för att lära dig hur du bygger tillgängliga tjänster."
-          >
+          <PageTitle h1Text={t('requirements.Title')} preamble={t('requirements.Preamble')}>
             <form id="requirement-filters" className="mt-12" onSubmit={(e) => e.preventDefault()}>
               {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
               {!isLoading && categories && (
@@ -181,10 +183,10 @@ export default function RequirementsPage() {
                   <p>
                     <DigiFormInputSearch
                       afId="requirement-search"
-                      afLabel="Sök på krav"
+                      afLabel={t('requirements.SearchLabel')}
                       afVariation={FormInputSearchVariation.MEDIUM}
                       afType={FormInputType.SEARCH}
-                      afButtonText="Sök"
+                      afButtonText={t('requirements.SearchButtonText')}
                       afValue={filterSpecific ? filterSpecific.name : filterFreeText}
                       afButtonType={ButtonType.BUTTON}
                       onAfOnSubmitSearch={(e) => {
@@ -199,7 +201,7 @@ export default function RequirementsPage() {
                       key={filterFreeText + showAllCategories.toString()} // To make sure component re-renders when these change
                       afCategories={categoryFilterOptions || []}
                       afAllCategoriesSelected={showAllCategories}
-                      afAllCategoriesText="Alla kravkategorier"
+                      afAllCategoriesText={t('requirements.AllCategories')}
                       afHideToggle={true}
                       onAfOnSelectedCategoryChange={(e) => {
                         if (e.detail.length === 0 || e.detail.length === categories?.length) {
@@ -227,8 +229,13 @@ export default function RequirementsPage() {
               className="flex items-center h-[3rem] ml-1"
             >
               <strong>
-                Visar {filteredRequirements.length === selectedRequirements?.length ? 'alla' : ''}{' '}
-                {filteredRequirements.length} krav{' '}
+                {t('requirements.Showing', {
+                  all:
+                    filteredRequirements.length === selectedRequirements?.length
+                      ? t('requirements.all')
+                      : '',
+                  count: filteredRequirements.length,
+                })}
               </strong>
               {filteredRequirements.length < (selectedRequirements?.length || 0) && (
                 <span className="inline-flex md:ml-4">
@@ -252,15 +259,12 @@ export default function RequirementsPage() {
             <DigiLayoutBlock afVariation={LayoutBlockVariation.TRANSPARENT} className="-mb-5 pb-5">
               <div
                 className="skip-target"
-                data-skip-link-text="Hoppa till kravlista"
+                data-skip-link-text={t('requirements.skipLink')}
                 id="kravlista"
               >
                 {filteredRequirements.length === 0 && (
                   <DigiLayoutBlock afVerticalPadding={true} afMarginBottom={true}>
-                    <p>
-                      Din sökning &quot;{filterFreeText}&quot; gav inget resultat. Försök med andra
-                      sökord eller annan filtrering.
-                    </p>
+                    <p>{t('requirements.noResults', { search: filterFreeText })}</p>
                   </DigiLayoutBlock>
                 )}
                 {filteredRequirements.map((requirement) => (
@@ -269,51 +273,55 @@ export default function RequirementsPage() {
                     afVerticalPadding={true}
                     afMarginBottom={true}
                   >
-                    <div className="border-b-1 border-grayscale-400 pb-5 mb-8">
-                      <div className="flex flex-col sm:flex-row justify-between">
-                        <div>
-                          <p
-                            className="text-grayscale-700 !mb-2"
-                            aria-hidden="true"
-                            id={`cat-${requirement.id}`}
-                          >
-                            Kravkategori: {requirement.category}
-                          </p>
-                          <h2 aria-describedby={`cat-${requirement.id}`}>{requirement.name}</h2>
+                    <article>
+                      <div className="border-b-1 border-grayscale-400 pb-5 mb-8">
+                        <div className="flex flex-col sm:flex-row justify-between">
+                          <div>
+                            <p
+                              className="text-grayscale-700 !mb-2"
+                              aria-hidden="true"
+                              id={`cat-${requirement.id}`}
+                            >
+                              {t('requirements.category')}
+                              {requirement.category}
+                            </p>
+                            <h2 aria-describedby={`cat-${requirement.id}`}>{requirement.name}</h2>
+                          </div>
+                          <div className="flex flex-col sm:items-end mb-4 sm:mb-0">
+                            <DigiButton
+                              afVariation={ButtonVariation.FUNCTION}
+                              afType="button"
+                              afAriaLabel={`${t('requirements.Share')} ${requirement.name}`}
+                              onAfOnClick={() => {
+                                const target = document.querySelector(`#share-${requirement.id}`);
+                                if (target) {
+                                  target.innerHTML = `<a href="${window.location.origin}${window.location.pathname}?id=${requirement.id}">Länk kopierad till urklipp</a>`;
+                                }
+                                navigator.clipboard.writeText(
+                                  window.location.origin +
+                                    window.location.pathname +
+                                    `?id=${requirement.id}`,
+                                );
+                              }}
+                            >
+                              {t('requirements.ShareButton')}
+                              <DigiIconShareAlt slot="icon" />
+                            </DigiButton>
+                            <p
+                              className="!text-xs h-2"
+                              id={`share-${requirement.id}`}
+                              role="status"
+                            ></p>
+                          </div>
                         </div>
-                        <div className="flex flex-col sm:items-end mb-4 sm:mb-0">
-                          <DigiButton
-                            afVariation={ButtonVariation.FUNCTION}
-                            afType="button"
-                            afAriaLabel={`Dela länk till krav: ${requirement.name}`}
-                            onAfOnClick={() => {
-                              const target = document.querySelector(`#share-${requirement.id}`);
-                              if (target) {
-                                target.innerHTML = `<a href="${window.location.origin}${window.location.pathname}?id=${requirement.id}">Länk kopierad till urklipp</a>`;
-                              }
-                              navigator.clipboard.writeText(
-                                window.location.origin +
-                                  window.location.pathname +
-                                  `?id=${requirement.id}`,
-                              );
-                            }}
-                          >
-                            Dela <DigiIconShareAlt slot="icon" />
-                          </DigiButton>
-                          <p
-                            className="!text-xs h-2"
-                            id={`share-${requirement.id}`}
-                            role="status"
-                          ></p>
-                        </div>
+                        <RequirementLegal requirement={requirement} headingLevel="h3" />
                       </div>
-                      <RequirementLegal requirement={requirement} headingLevel="h3" />
-                    </div>
-                    <RequirementDetails
-                      requirement={requirement}
-                      headingLevel="h3"
-                      twoCols
-                    ></RequirementDetails>
+                      <RequirementDetails
+                        requirement={requirement}
+                        headingLevel="h3"
+                        twoCols
+                      ></RequirementDetails>
+                    </article>
                   </DigiLayoutBlock>
                 ))}
               </div>

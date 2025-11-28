@@ -1,9 +1,13 @@
 import { ReviewsList } from '~/components/ReviewsList';
+import { envVars } from '~/helpers';
+import i18n from '~/lang/i18n';
 
 export function meta() {
+  const { applicationTitle } = envVars();
+
   return [
-    { title: 'Granska tillgänglighet' },
-    { name: 'description', content: 'Hur tillgänglig är din webbplats?' },
+    { title: applicationTitle },
+    { name: 'description', content: i18n.t('start.MetaDescription') },
   ];
 }
 

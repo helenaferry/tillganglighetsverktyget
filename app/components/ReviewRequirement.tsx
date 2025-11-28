@@ -366,7 +366,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                   />
                 </div>
                 <main className="md:ml-[21.5rem]" ref={mainRef} tabIndex={-1}>
-                  <div>
+                  <article>
                     <div>
                       {percentageChecked(requirementsWithChecks) === 100 && (
                         <div className="mb-5" role="alert">
@@ -530,7 +530,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                         previousUnhandled={previousUnhandledRequirement(requirementId)}
                       />
                     </div>
-                  </div>
+                  </article>
                 </main>
               </div>
             </DigiLayoutContainer>

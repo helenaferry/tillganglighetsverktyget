@@ -10,6 +10,7 @@
   "resetButtonDefaultText": "Rensa dina val",
   "start": {
     "Title": "Granskningar",
+    "MetaDescription": "Hur tillgänglig är din webbplats?",
     "defaultAppTitle": "Granska tillgänglighet",
     "FooterTitle": "Alla granskningar",
     "FooterDescription": "Återuppta en befintlig granskning eller skapa en ny."
@@ -74,10 +75,46 @@
     },
     "saving": "Sparar"
   },
+  "ReviewRequirements": {
+    "title": "Kravöversikt: {{reviewTitle}}",
+    "preamble": "Här får du en översikt över alla krav i granskningen. Du kan söka eller filtrera fram specifika krav, samt se aktuell status för granskningen.",
+    "doneHeading": "Hurra, granskningen är klar!",
+    "compileFailed": "Sammanställ underkända krav",
+    "statusLabelNotAssessed": "ej granskade",
+    "statusLabelPass": "godkända",
+    "statusLabelFail": "underkända",
+    "statusLabelIrrelevant": "irrelevanta",
+    "progressText": "{{checked}} av {{total}} krav granskade",
+    "reviewAccessibilityButton": "Granska tillgänglighet",
+    "headingRequirement": "Krav",
+    "headingCategory": "Kravkategori",
+    "headingStatus": "Bedömningsstatus",
+    "flagged": "Flaggad",
+    "itemsName": "krav",
+    "searchLabel": "Sök på krav",
+    "filterCategories": "Kravkategorier",
+    "filterStatus": "Bedömningsstatus",
+    "toggleLegend": "Toggla alla eller flaggade krav",
+    "showAllRequirements": "Visa alla krav",
+    "showFlaggedRequirements": "Visa flaggade krav ({{count}})",
+    "notFoundHeading": "Granskningen hittades inte",
+    "notFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått."
+  },
   "requirements": {
-    "Title": "Tillgänglighetskrav",
+    "Title": "Tillgänglighets\u00ADkrav",
     "MetaDescription": "Här kan du se alla krav.",
-    "FooterDescription": "Läs om alla tillgänglighetskrav. Sök eller filtrera fram specifika krav."
+    "Preamble": "Här hittar du alla tillgänglighetskrav samlade i en lista. Du kan söka efter specifika krav och läsa mer om dem för att lära dig hur du bygger tillgängliga tjänster.",
+    "FooterDescription": "Läs om alla tillgänglighetskrav. Sök eller filtrera fram specifika krav.",
+    "SearchLabel": "Sök på krav",
+    "SearchButtonText": "Sök",
+    "AllCategories": "Alla kravkategorier",
+    "Showing": "Visar {{all}}{{count}} krav",
+    "all": "alla ",
+    "skipLink": "Hoppa till kravlista",
+    "noResults": "Din sökning \"{{search}}\" gav inget resultat. Försök med andra sökord eller annan filtrering.",
+    "category": "Kravkategori: ",
+    "Share": "Dela länk till krav: ",
+    "ShareButton": "Dela"
   },
   "tips": {
     "Title": "Tips och råd",
