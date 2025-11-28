@@ -1,4 +1,5 @@
 import { type RequirementWithCheck, Status } from './data/types';
+import i18n from './lang/i18n';
 
 export function numberChecked(requirements: RequirementWithCheck[]) {
   return requirements.filter(
@@ -36,7 +37,7 @@ export function numberRemaining(requirements: RequirementWithCheck[]) {
 
 export function envVars() {
   return {
-    applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet',
+    applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || i18n.t('fallbackApplicationTitle'),
     logoUrl: import.meta.env.VITE_LOGO_URL || '/logo.svg',
     logoWidth: import.meta.env.VITE_LOGO_WIDTH || '3.5rem',
     logoHeight: import.meta.env.VITE_LOGO_HEIGHT || 'auto',

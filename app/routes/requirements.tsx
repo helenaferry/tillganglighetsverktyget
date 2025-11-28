@@ -29,8 +29,9 @@ import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import i18n from '~/lang/i18n';
+import { envVars } from '~/helpers';
 
-const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+const applicationTitle = envVars().applicationTitle;
 const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
 
 export function meta() {
@@ -295,7 +296,7 @@ export default function RequirementsPage() {
                               onAfOnClick={() => {
                                 const target = document.querySelector(`#share-${requirement.id}`);
                                 if (target) {
-                                  target.innerHTML = `<a href="${window.location.origin}${window.location.pathname}?id=${requirement.id}">Länk kopierad till urklipp</a>`;
+                                  target.innerHTML = `<a href="${window.location.origin}${window.location.pathname}?id=${requirement.id}">${t('requirements.LinkCopied')}</a>`;
                                 }
                                 navigator.clipboard.writeText(
                                   window.location.origin +

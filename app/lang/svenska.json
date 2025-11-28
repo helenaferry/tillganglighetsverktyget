@@ -1,4 +1,5 @@
 {
+  "fallbackApplicationTitle": "Granska tillgänglighet",
   "Review": "Granskning",
   "Reviews": "Granskningar",
   "review": "granskning",
@@ -114,7 +115,8 @@
     "noResults": "Din sökning \"{{search}}\" gav inget resultat. Försök med andra sökord eller annan filtrering.",
     "category": "Kravkategori: ",
     "Share": "Dela länk till krav: ",
-    "ShareButton": "Dela"
+    "ShareButton": "Dela",
+    "LinkCopied": "Länk kopierad till urklipp"
   },
   "tips": {
     "Title": "Tips och råd",
