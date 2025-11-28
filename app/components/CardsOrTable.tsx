@@ -46,6 +46,7 @@ interface Props {
   resetChoices?: () => void;
   choicesMade?: boolean;
   toggleButtons?: ReactNode;
+  mainColumnIndex?: number;
 }
 
 export function CardsOrTable({
@@ -63,6 +64,7 @@ export function CardsOrTable({
   resetChoices,
   choicesMade = false,
   toggleButtons,
+  mainColumnIndex = 0,
 }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationStart, setPaginationStart] = useState(1);
@@ -248,7 +250,12 @@ export function CardsOrTable({
                   className="has-[.flag]:bg-grayscale-100"
                 >
                   {row.content.map((cell, cellIndex) => (
-                    <td key={`cell-${row.id}-${cellIndex}`}>{cell}</td>
+                    <td
+                      key={`cell-${row.id}-${cellIndex}`}
+                      className={cellIndex === mainColumnIndex ? 'w-full' : undefined}
+                    >
+                      {cell}
+                    </td>
                   ))}
                 </tr>
               ))}

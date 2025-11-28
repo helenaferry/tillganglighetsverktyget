@@ -25,7 +25,7 @@ export default function Header() {
           <div className="flex justify-between items-center">
             <div className="min-w-0">
               <StyledLink
-                aria-label={t('homeLink', { appName: applicationTitle })}
+                aria-label={t('HomeLink', { appName: applicationTitle })}
                 to="/"
                 styleVariant="plain"
                 className="flex gap-4 py-5 items-center text-text hover:text-text visited:!text-text !no-underline"
@@ -42,16 +42,16 @@ export default function Header() {
               </StyledLink>
             </div>
             <div className="md:hidden">
-              <DigiNavigationSidebarButton afAriaLabel={t('Header.openMenu')} />
+              <DigiNavigationSidebarButton afAriaLabel={t('Header.OpenMenu')} />
             </div>
           </div>
         </DigiLayoutContainer>
         <DigiLayoutContainer afNoGutter={true} afVariation={LayoutContainerVariation.FLUID}>
           <div className="border-t-1 border-grayscale-200">
             <DigiHeaderNavigation
-              afCloseButtonText={t('Header.close')}
-              afCloseButtonAriaLabel={t('Header.closeMenu')}
-              afNavAriaLabel={t('Header.mainMenu')}
+              afCloseButtonText={t('Header.Close')}
+              afCloseButtonAriaLabel={t('Header.CloseMenu')}
+              afNavAriaLabel={t('Header.MainMenu')}
               afCentered={HeaderCenterContentWidth.WIDTH_1400}
             >
               <DigiHeaderNavigationItem
@@ -60,7 +60,7 @@ export default function Header() {
                 }
               >
                 <StyledLink to="/" styleVariant="plain">
-                  {t('start.Title')}
+                  {t('Home.Title')}
                 </StyledLink>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>

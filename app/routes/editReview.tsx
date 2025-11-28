@@ -30,7 +30,7 @@ export default function EditReviewPage() {
             <PageTitle
               h1Text={t('editReview.Title')}
               preamble={t('editReview.Preamble', { title: review.title })}
-              breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
+              breadcrumbsPages={[{ title: t('Home.Title'), href: '/' }]}
               breadcrumbsCurrentPage={t('editReview.Title')}
             />
             <DigiLayoutContainer afVerticalPadding={true}>

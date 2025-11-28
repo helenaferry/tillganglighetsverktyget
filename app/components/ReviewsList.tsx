@@ -24,8 +24,10 @@ import PageTitle from './PageTitle';
 import Process from './Process';
 import { SortButton } from './SortButton';
 import { StyledLink } from './StyledLink';
+import { useTranslation } from 'react-i18next';
 
 export function ReviewsList() {
+  const { t } = useTranslation();
   const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
   const [searchParams, setSearchParams] = useSearchParams();
   const {
@@ -180,10 +182,7 @@ export function ReviewsList() {
     <main>
       <DigiTypography>
         <div>
-          <PageTitle
-            h1Text="Granskningar"
-            preamble="Här hittar du alla granskningar som har gjorts. Skapa en ny granskning för att själv bedöma tillgängligheten i din tjänst. Du kan när som helst fortsätta en påbörjad granskning genom att klicka på den i listan."
-          ></PageTitle>
+          <PageTitle h1Text={t('Home.Title')} preamble={t('Home.Preamble')}></PageTitle>
         </div>
         <DigiLayoutContainer afVerticalPadding={true}>
           <div>
@@ -191,7 +190,7 @@ export function ReviewsList() {
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                 <div className="basis-1/3 flex-shrink-0">
                   <StyledLink to="/granskning/skapa" styleVariant="link-button">
-                    Skapa ny granskning
+                    {t('Home.CreateReview')}
                   </StyledLink>
                 </div>
                 <div className="basis-1/3 grow">
@@ -205,9 +204,9 @@ export function ReviewsList() {
                 afCount={4}
               ></DigiLoaderSkeleton>
             )}
-            {reviewsError && <p>Fel vid hämtning av granskningar</p>}
+            {reviewsError && <p>{t('ReviewsList.LoadingError')}</p>}
             {fetched && (!filteredReviews || filteredReviews?.length === 0) && (
-              <p>Inga granskningar hittades.</p>
+              <p>{t('ReviewsList.NoReviewsFound')}</p>
             )}
             {fetched && filteredReviews && (
               <DigiLayoutBlock afMarginTop={true} afMarginBottom={false} afVerticalPadding={true}>
@@ -215,40 +214,47 @@ export function ReviewsList() {
                   headings={[
                     '',
                     <SortButton
-                      buttonText="Granskningsnamn"
+                      buttonText={t('ReviewsList.HeadingReviewName')}
                       sortBy={SortBy.REVIEW}
                       active={sortBy === SortBy.REVIEW}
                       sortDirection={sortDirection}
                       onSortChange={setSort}
-                      key="Granskningsnamn"
+                      key="review-name"
                     />,
                     <SortButton
-                      buttonText="Skapad"
+                      buttonText={t('ReviewsList.HeadingCreated')}
                       sortBy={SortBy.CREATED}
                       active={sortBy === SortBy.CREATED}
                       sortDirection={sortDirection}
                       onSortChange={setSort}
-                      key="Skapad"
+                      key="created"
                     />,
                     <SortButton
-                      buttonText="Uppdaterad"
+                      buttonText={t('ReviewsList.HeadingUpdated')}
                       sortBy={SortBy.UPDATED}
                       active={sortBy === SortBy.UPDATED}
                       sortDirection={sortDirection}
                       onSortChange={setSort}
-                      key="Uppdaterad"
+                      key="updated"
                     />,
                     <SortButton
-                      buttonText="Granskat"
+                      buttonText={t('ReviewsList.HeadingReviewed')}
                       sortBy={SortBy.REVIEWED}
                       active={sortBy === SortBy.REVIEWED}
                       sortDirection={sortDirection}
                       onSortChange={setSort}
-                      key="Granskat"
+                      key="reviewed"
                     />,
                     '',
                   ]}
-                  cardsHeadings={['', 'Granskningsnamn', 'Skapad', 'Uppdaterad', 'Granskat', '']}
+                  cardsHeadings={[
+                    '',
+                    t('ReviewsList.HeadingReviewName'),
+                    t('ReviewsList.HeadingCreated'),
+                    t('ReviewsList.HeadingUpdated'),
+                    t('ReviewsList.HeadingReviewed'),
+                    '',
+                  ]}
                   rows={filteredReviews.map((review) => {
                     return {
                       id: review.id,
@@ -260,7 +266,7 @@ export function ReviewsList() {
                               afType="button"
                               afVariation={ButtonVariation.FUNCTION}
                               key={`fav-off-${review.id}`}
-                              aria-label="Ta bort från favoriter"
+                              aria-label={t('ReviewsList.FavoriteRemove')}
                               onClick={() => {
                                 let updatedFaves = [...favoriteReviews];
                                 updatedFaves = updatedFaves.filter((id) => id !== review.id);
@@ -278,7 +284,7 @@ export function ReviewsList() {
                               afType="button"
                               afVariation={ButtonVariation.FUNCTION}
                               key={`fav-on-${review.id}`}
-                              aria-label="Lägg till i favoriter"
+                              aria-label={t('ReviewsList.FavoriteAdd')}
                               onClick={() => {
                                 const updatedFaves = [...favoriteReviews];
                                 updatedFaves.push(review.id);
@@ -298,7 +304,7 @@ export function ReviewsList() {
                           <span className="inline lg:hidden">
                             <DigiIconChevronRight />
                           </span>{' '}
-                          {review.title || 'Granskning'}
+                          {review.title || t('ReviewsList.ReviewFallback')}
                         </StyledLink>,
                         <p className="whitespace-nowrap" key={`created-${review.id}`}>
                           {formatDate(review.created_at)}
@@ -308,30 +314,35 @@ export function ReviewsList() {
                         </p>,
                         <p className="whitespace-nowrap" key={`status-${review.id}`}>
                           {review.reviewedCount < 10 && <span className="inline-block w-2"></span>}
-                          {`${review.reviewedCount} av ${requirementsCount(review.regulatoryFramework || '')} krav`}
+                          {t('ReviewsList.ReviewedOf', {
+                            reviewed: review.reviewedCount,
+                            total: requirementsCount(review.regulatoryFramework || ''),
+                          })}
                         </p>,
                         <DigiButton
                           afType="button"
                           afVariation="function"
-                          afAriaLabel={'Ändra uppgifter för granskning: ' + review.title}
+                          afAriaLabel={t('ReviewsList.EditReviewDetails', {
+                            title: review.title,
+                          })}
                           onClick={() => {
                             navigate(`/granskning/${review.id}/redigera`);
                           }}
                           key={`edit-${review.id}`}
                         >
-                          Ändra uppgifter
+                          {t('ReviewsList.EditDetailsButton')}
                           <DigiIconEdit slot="icon" />
                         </DigiButton>,
                       ],
                     };
                   })}
-                  itemsName="granskningar"
-                  itemsNameSingular="granskning"
+                  itemsName={t('ReviewsList.ItemsName')}
+                  itemsNameSingular={t('ReviewsList.ItemsNameSingular')}
                   totalItems={reviews?.length || 0}
                   filters={[
                     {
                       type: 'freeText',
-                      label: 'Sök på granskningsnamn',
+                      label: t('ReviewsList.SearchLabel'),
                       values: [filterFreeText],
                       onChange: (e) => {
                         setFilterFreeText(e.detail);
@@ -352,7 +363,7 @@ export function ReviewsList() {
                   choicesMade={filterFreeText.length > 0 || sortBy !== undefined || filterFaves}
                   toggleButtons={
                     <fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
-                      <legend className="sr-only">Toggla-text</legend>
+                      <legend className="sr-only">{t('ReviewsList.ToggleFaves')}</legend>
                       <DigiButton
                         afVariation={
                           filterFaves ? ButtonVariation.SECONDARY : ButtonVariation.PRIMARY
@@ -363,7 +374,7 @@ export function ReviewsList() {
                           setUrlParams(filterFreeText, sortBy!, sortDirection, false);
                         }}
                       >
-                        Visa alla granskningar
+                        {t('ReviewsList.ShowAllReviews')}
                       </DigiButton>
                       <DigiButton
                         afVariation={
@@ -375,10 +386,11 @@ export function ReviewsList() {
                           setUrlParams(filterFreeText, sortBy, sortDirection, true);
                         }}
                       >
-                        Visa favoriter ({favoriteReviews.length})
+                        {t('ReviewsList.ShowFavorites', { count: favoriteReviews.length })}
                       </DigiButton>
                     </fieldset>
                   }
+                  mainColumnIndex={1}
                 />
               </DigiLayoutBlock>
             )}

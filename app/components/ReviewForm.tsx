@@ -105,7 +105,7 @@ export function ReviewForm({ review }: Props) {
             status: 'IRRELEVANT',
             comment:
               contentTypeTexts.find((q) => q.contentType === contentType)?.prefillComment ||
-              t('ReviewForm.contentTypes.fallbackPrefillComment') + contentType,
+              t('ReviewForm.ContentTypes.FallbackPrefillComment') + contentType,
           };
         }
         return undefined;
@@ -418,8 +418,8 @@ export function ReviewForm({ review }: Props) {
           <div className="max-w-[25rem] mb-6">
             <DigiFormInput
               afId="reviewName"
-              afLabel={t('ReviewForm.reviewName.label')}
-              afLabelDescription={t('ReviewForm.reviewName.description')}
+              afLabel={t('ReviewForm.ReviewName.Label')}
+              afLabelDescription={t('ReviewForm.ReviewName.Description')}
               afValue={title}
               onAfOnInput={(e) => {
                 const value = e.detail.target.value;
@@ -429,7 +429,7 @@ export function ReviewForm({ review }: Props) {
                 setTitle(value);
               }}
               afRequired={true}
-              afValidationText={t('ReviewForm.reviewName.validation')}
+              afValidationText={t('ReviewForm.ReviewName.Validation')}
               afValidation={nameValidation}
             />
           </div>
@@ -437,14 +437,16 @@ export function ReviewForm({ review }: Props) {
             <div className="mb-6">
               <DigiFormFieldset
                 afForm="review-form"
-                afLegend={t('ReviewForm.regulatoryFramework.question')}
+                afLegend={t('ReviewForm.RegulatoryFramework.Question')}
                 afName="regulatoryFramework"
               >
                 <DigiFormRadiogroup afName="regulatoryFramework">
                   {regulatoryFrameworks?.map((framework) => (
                     <DigiFormRadiobutton
                       key={framework}
-                      afLabel={t(`ReviewForm.regulatoryFramework.${framework}`)}
+                      afLabel={t(
+                        `ReviewForm.RegulatoryFramework.${framework.charAt(0).toUpperCase() + framework.slice(1)}`,
+                      )}
                       afValue={framework}
                       afChecked={regulatoryFramework === framework}
                       onAfOnChange={() => setRegulatoryFramework(framework)}
@@ -456,13 +458,13 @@ export function ReviewForm({ review }: Props) {
           )}
           {objectType === ObjectType.WEB && (
             <div>
-              <h2>{t('ReviewForm.contentTypes.question')}</h2>
-              <p>{t('ReviewForm.contentTypes.description')}</p>
+              <h2>{t('ReviewForm.ContentTypes.Question')}</h2>
+              <p>{t('ReviewForm.ContentTypes.Description')}</p>
 
               {review && (
                 <p className="mt-4">
-                  <strong>{t('ReviewForm.contentTypes.noteTitle')}</strong>{' '}
-                  {t('ReviewForm.contentTypes.note')}
+                  <strong>{t('ReviewForm.ContentTypes.NoteTitle')}</strong>{' '}
+                  {t('ReviewForm.ContentTypes.Note')}
                 </p>
               )}
               {contentTypes &&
@@ -559,10 +561,10 @@ export function ReviewForm({ review }: Props) {
             <span role="status">
               <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span>{' '}
               {t('of')} {requirements?.length}{' '}
-              <span className="font-semibold">{t('ReviewForm.requirementsToReview')}</span>
+              <span className="font-semibold">{t('ReviewForm.RequirementsToReview')}</span>
             </span>
             <span className="block">
-              {t('ReviewForm.automaticPrefillInfo', { number: numberAutomaticPrefillRequirements })}
+              {t('ReviewForm.AutomaticPrefillInfo', { number: numberAutomaticPrefillRequirements })}
             </span>
           </p>
 
@@ -574,10 +576,10 @@ export function ReviewForm({ review }: Props) {
                 setShowAbortConfirmation(true);
               }}
             >
-              {t('ReviewForm.cancelButtonText')}
+              {t('ReviewForm.CancelButtonText')}
             </DigiButton>
             <DigiButton afType="submit">
-              {review ? t('ReviewForm.saveButtonText') : t('ReviewForm.createButtonText')}
+              {review ? t('ReviewForm.SaveButtonText') : t('ReviewForm.CreateButtonText')}
             </DigiButton>
             {review && (
               <DigiButton
@@ -587,7 +589,7 @@ export function ReviewForm({ review }: Props) {
                 onAfOnClick={() => setShowDeleteConfirmation(true)}
               >
                 <DigiIconTrash slot="icon" />
-                {t('ReviewForm.deleteButtonText')}
+                {t('ReviewForm.DeleteButtonText')}
               </DigiButton>
             )}
           </div>
@@ -595,18 +597,18 @@ export function ReviewForm({ review }: Props) {
             <DigiNotificationAlert
               afSize={NotificationAlertSize.LARGE}
               afVariation={NotificationAlertVariation.DANGER}
-              afHeading={t('ReviewForm.saveErrorHeading')}
+              afHeading={t('ReviewForm.SaveErrorHeading')}
             >
-              {t('ReviewForm.saveErrorText')}
+              {t('ReviewForm.SaveErrorText')}
             </DigiNotificationAlert>
           )}
 
           <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showAbortConfirmation}
-            afHeading={t('ReviewForm.abort.confirmHeading')}
-            afPrimaryButtonText={t('ReviewForm.abort.confirmYes')}
-            afSecondaryButtonText={t('ReviewForm.abort.confirmNo')}
+            afHeading={t('ReviewForm.Abort.ConfirmHeading')}
+            afPrimaryButtonText={t('ReviewForm.Abort.ConfirmYes')}
+            afSecondaryButtonText={t('ReviewForm.Abort.ConfirmNo')}
             onAfOnClose={() => setShowAbortConfirmation(false)}
             onAfSecondaryButtonClick={() => setShowAbortConfirmation(false)}
             onAfPrimaryButtonClick={() => {
@@ -618,23 +620,23 @@ export function ReviewForm({ review }: Props) {
           <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showDeleteConfirmation && review !== undefined}
-            afHeading={t('ReviewForm.delete.confirmHeading')}
-            afPrimaryButtonText={t('ReviewForm.delete.confirmYes')}
-            afSecondaryButtonText={t('ReviewForm.delete.confirmNo')}
+            afHeading={t('ReviewForm.Delete.ConfirmHeading')}
+            afPrimaryButtonText={t('ReviewForm.Delete.ConfirmYes')}
+            afSecondaryButtonText={t('ReviewForm.Delete.ConfirmNo')}
             onAfOnClose={() => setShowDeleteConfirmation(false)}
             onAfSecondaryButtonClick={() => setShowDeleteConfirmation(false)}
             onAfPrimaryButtonClick={handleDeleteReview}
           >
             <p>
-              <strong>{t('ReviewForm.delete.confirmInfo')}</strong> {review?.title}
+              <strong>{t('ReviewForm.Delete.ConfirmInfo')}</strong> {review?.title}
             </p>
-            <p>{t('ReviewForm.delete.confirmText')}</p>
+            <p>{t('ReviewForm.Delete.ConfirmText')}</p>
           </DigiDialog>
         </form>
       )}
       {saving && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/40">
-          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText={t('ReviewForm.saving')} />
+          <DigiLoaderSpinner afSize={LoaderSpinnerSize.LARGE} afText={t('ReviewForm.Saving')} />
         </div>
       )}
     </div>

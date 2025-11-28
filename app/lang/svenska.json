@@ -1,5 +1,5 @@
 {
-  "fallbackApplicationTitle": "Granska tillgänglighet",
+  "FallbackApplicationTitle": "Granska tillgänglighet",
   "Review": "Granskning",
   "Reviews": "Granskningar",
   "review": "granskning",
@@ -7,20 +7,41 @@
   "Yes": "Ja",
   "No": "Nej",
   "of": "av",
-  "homeLink": "Startsida för {{appName}}",
-  "resetButtonDefaultText": "Rensa dina val",
-  "start": {
+  "HomeLink": "Startsida för {{appName}}",
+  "ResetButtonDefaultText": "Rensa dina val",
+  "Home": {
     "Title": "Granskningar",
     "MetaDescription": "Hur tillgänglig är din webbplats?",
-    "defaultAppTitle": "Granska tillgänglighet",
+    "Preamble": "Här hittar du alla granskningar som har gjorts. Skapa en ny granskning för att själv bedöma tillgängligheten i din tjänst. Du kan när som helst fortsätta en påbörjad granskning genom att klicka på den i listan",
     "FooterTitle": "Alla granskningar",
-    "FooterDescription": "Återuppta en befintlig granskning eller skapa en ny."
+    "FooterDescription": "Återuppta en befintlig granskning eller skapa en ny.",
+    "CreateReview": "Skapa ny granskning"
   },
   "Header": {
-    "mainMenu": "Huvudmeny",
-    "close": "Stäng",
-    "openMenu": "Öppna meny",
-    "closeMenu": "Stäng meny"
+    "MainMenu": "Huvudmeny",
+    "Close": "Stäng",
+    "OpenMenu": "Öppna meny",
+    "CloseMenu": "Stäng meny"
+  },
+  "ReviewsList": {
+    "LoadingError": "Fel vid hämtning av granskningar",
+    "NoReviewsFound": "Inga granskningar hittades.",
+    "HeadingReviewName": "Granskningsnamn",
+    "HeadingCreated": "Skapad",
+    "HeadingUpdated": "Uppdaterad",
+    "HeadingReviewed": "Granskat",
+    "FavoriteRemove": "Ta bort från favoriter",
+    "FavoriteAdd": "Lägg till i favoriter",
+    "ReviewFallback": "Granskning",
+    "ReviewedOf": "{{reviewed}} av {{total}} krav",
+    "EditReviewDetails": "Ändra uppgifter för granskning: {{title}}",
+    "EditDetailsButton": "Ändra uppgifter",
+    "ItemsName": "granskningar",
+    "ItemsNameSingular": "granskning",
+    "SearchLabel": "Sök på granskningsnamn",
+    "ToggleFaves": "Toggla favoriter eller alla granskningar",
+    "ShowAllReviews": "Visa alla granskningar",
+    "ShowFavorites": "Visa favoriter ({{count}})"
   },
   "addReview": {
     "Title": "Skapa granskning",
@@ -35,71 +56,71 @@
     "Preamble": "Granskning: {{title}}"
   },
   "ReviewForm": {
-    "reviewName": {
-      "label": "Namn på granskning",
-      "description": "Skriv inte personuppgifter eller känslig information eftersom texten kommer att vara offentligt tillgänglig.",
-      "validation": "Ange ett namn för granskningen."
+    "ReviewName": {
+      "Label": "Namn på granskning",
+      "Description": "Skriv inte personuppgifter eller känslig information eftersom texten kommer att vara offentligt tillgänglig.",
+      "Validation": "Ange ett namn för granskningen."
     },
-    "regulatoryFramework": {
-      "question": "Vilka lagkrav behöver din tjänst uppfylla?",
-      "dos": "Lagen om tillgänglighet till digital offentlig service (DOS)",
-      "lptt": "Lagen om vissa produkters och tjänsters tillgänglighet (LPTT)",
-      "none": "Vet ej (alla krav inkluderas)"
+    "RegulatoryFramework": {
+      "Question": "Vilka lagkrav behöver din tjänst uppfylla?",
+      "Dos": "Lagen om tillgänglighet till digital offentlig service (DOS)",
+      "Lptt": "Lagen om vissa produkters och tjänsters tillgänglighet (LPTT)",
+      "None": "Vet ej (alla krav inkluderas)"
     },
-    "contentTypes": {
-      "question": "Vad innehåller din tjänst?",
-      "description": "Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
-      "noteTitle": "Observera!",
-      "note": "Ändringar i en påbörjad granskning kan påverka krav som redan har bedömts.",
-      "prefillWarning": "Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer status för alla krav relaterade till detta val att nollställas.",
-      "fallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
+    "ContentTypes": {
+      "Question": "Vad innehåller din tjänst?",
+      "Description": "Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
+      "NoteTitle": "Observera!",
+      "Note": "Ändringar i en påbörjad granskning kan påverka krav som redan har bedömts.",
+      "PrefillWarning": "Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer status för alla krav relaterade till detta val att nollställas.",
+      "FallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
     },
-    "requirementsToReview": "krav att granska",
-    "automaticPrefillInfo": "{{number}} krav hanteras automatiskt av din organisation.",
-    "cancelButtonText": "Avbryt",
-    "createButtonText": "Skapa granskning",
-    "saveButtonText": "Spara granskning",
-    "deleteButtonText": "Radera granskning",
-    "saveErrorHeading": "Fel vid sparande",
-    "saveErrorText": "Det gick inte att spara granskningen. Försök igen senare.",
-    "abort": {
-      "confirmHeading": "Vill du verkligen avbryta utan att spara dina ändringar?",
-      "confirmYes": "Ja, avbryt",
-      "confirmNo": "Nej, stanna kvar"
+    "RequirementsToReview": "krav att granska",
+    "AutomaticPrefillInfo": "{{number}} krav hanteras automatiskt av din organisation.",
+    "CancelButtonText": "Avbryt",
+    "CreateButtonText": "Skapa granskning",
+    "SaveButtonText": "Spara granskning",
+    "DeleteButtonText": "Radera granskning",
+    "SaveErrorHeading": "Fel vid sparande",
+    "SaveErrorText": "Det gick inte att spara granskningen. Försök igen senare.",
+    "Abort": {
+      "ConfirmHeading": "Vill du verkligen avbryta utan att spara dina ändringar?",
+      "ConfirmYes": "Ja, avbryt",
+      "ConfirmNo": "Nej, stanna kvar"
     },
-    "delete": {
-      "confirmHeading": "Vill du verkligen ta bort granskningen?",
-      "confirmInfo": "Vald granskning:",
-      "confirmText": "All information, inklusive eventuella granskade krav, kommer att tas bort och kan inte återställas.",
-      "confirmYes": "Ja, ta bort",
-      "confirmNo": "Nej, avbryt"
+    "Delete": {
+      "ConfirmHeading": "Vill du verkligen ta bort granskningen?",
+      "ConfirmInfo": "Vald granskning:",
+      "ConfirmText": "All information, inklusive eventuella granskade krav, kommer att tas bort och kan inte återställas.",
+      "ConfirmYes": "Ja, ta bort",
+      "ConfirmNo": "Nej, avbryt"
     },
-    "saving": "Sparar"
+    "Saving": "Sparar"
   },
   "ReviewRequirements": {
-    "title": "Kravöversikt: {{reviewTitle}}",
-    "preamble": "Här får du en översikt över alla krav i granskningen. Du kan söka eller filtrera fram specifika krav, samt se aktuell status för granskningen.",
-    "doneHeading": "Hurra, granskningen är klar!",
-    "compileFailed": "Sammanställ underkända krav",
-    "statusLabelNotAssessed": "ej granskade",
-    "statusLabelPass": "godkända",
-    "statusLabelFail": "underkända",
-    "statusLabelIrrelevant": "irrelevanta",
-    "progressText": "{{checked}} av {{total}} krav granskade",
-    "reviewAccessibilityButton": "Granska tillgänglighet",
-    "headingRequirement": "Krav",
-    "headingCategory": "Kravkategori",
-    "headingStatus": "Bedömningsstatus",
-    "flagged": "Flaggad",
-    "itemsName": "krav",
-    "searchLabel": "Sök på krav",
-    "filterCategories": "Kravkategorier",
-    "filterStatus": "Bedömningsstatus",
-    "toggleLegend": "Toggla alla eller flaggade krav",
-    "showAllRequirements": "Visa alla krav",
-    "showFlaggedRequirements": "Visa flaggade krav ({{count}})",
-    "notFoundHeading": "Granskningen hittades inte",
-    "notFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått."
+    "Title": "Kravöversikt: {{reviewTitle}}",
+    "Preamble": "Här får du en översikt över alla krav i granskningen. Du kan söka eller filtrera fram specifika krav, samt se aktuell status för granskningen.",
+    "DoneHeading": "Hurra, granskningen är klar!",
+    "CompileFailed": "Sammanställ underkända krav",
+    "StatusLabelNotAssessed": "ej granskade",
+    "StatusLabelPass": "godkända",
+    "StatusLabelFail": "underkända",
+    "StatusLabelIrrelevant": "irrelevanta",
+    "ProgressText": "{{checked}} av {{total}} krav granskade",
+    "ReviewAccessibilityButton": "Granska tillgänglighet",
+    "HeadingRequirement": "Krav",
+    "HeadingCategory": "Kravkategori",
+    "HeadingStatus": "Bedömningsstatus",
+    "Flagged": "Flaggad",
+    "ItemsName": "krav",
+    "SearchLabel": "Sök på krav",
+    "FilterCategories": "Kravkategorier",
+    "FilterStatus": "Bedömningsstatus",
+    "ToggleLegend": "Toggla flaggade eller alla krav",
+    "ShowAllRequirements": "Visa alla krav",
+    "ShowFlaggedRequirements": "Visa flaggade krav ({{count}})",
+    "NotFoundHeading": "Granskningen hittades inte",
+    "NotFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått."
   },
   "ReviewRequirement": {
     "Title": "Granska: {{title}}",

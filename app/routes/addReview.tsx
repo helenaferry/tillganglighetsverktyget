@@ -5,7 +5,8 @@ import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
 import i18n from '~/lang/i18n';
 
-const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || i18n.t('start.defaultAppTitle');
+const applicationTitle =
+  import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle');
 
 export function meta() {
   return [
@@ -22,7 +23,7 @@ export default function AddReviewPage() {
         <PageTitle
           h1Text={t('addReview.Title')}
           preamble={t('addReview.Preamble')}
-          breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
+          breadcrumbsPages={[{ title: t('Home.Title'), href: '/' }]}
           breadcrumbsCurrentPage={t('addReview.Title')}
         />
         <DigiLayoutContainer afVerticalPadding={true}>

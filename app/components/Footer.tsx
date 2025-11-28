@@ -54,8 +54,8 @@ export default function Footer() {
 
         <div>
           <DigiFooterCard afType={FooterCardVariation.BORDER}>
-            <StyledLink to="/">{t('start.FooterTitle')}</StyledLink>
-            <p>{t('start.FooterDescription')}</p>
+            <StyledLink to="/">{t('Home.FooterTitle')}</StyledLink>
+            <p>{t('Home.FooterDescription')}</p>
           </DigiFooterCard>
           <DigiFooterCard afType={FooterCardVariation.BORDER}>
             <StyledLink to="/granskning/skapa">{t('addReview.FooterTitle')}</StyledLink>
@@ -75,7 +75,7 @@ export default function Footer() {
       </div>
       <div slot="content-bottom-left">
         <StyledLink
-          ariaLabel={t('homeLink', { appName: applicationTitle })}
+          ariaLabel={t('HomeLink', { appName: applicationTitle })}
           to="/"
           className="flex gap-4 pb-5 items-center text-white hover:text-white visited:!text-white !no-underline"
         >

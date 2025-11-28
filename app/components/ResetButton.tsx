@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function ResetButton({
-  buttonText = i18n.t('resetButtonDefaultText'),
+  buttonText = i18n.t('ResetButtonDefaultText'),
   onClick,
   focusOnReset,
 }: Props) {

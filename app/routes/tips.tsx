@@ -19,7 +19,8 @@ import PageTitle from '~/components/PageTitle';
 import Process from '~/components/Process';
 import i18n from '~/lang/i18n';
 
-const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || i18n.t('start.defaultAppTitle');
+const applicationTitle =
+  import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle');
 
 export function meta() {
   return [

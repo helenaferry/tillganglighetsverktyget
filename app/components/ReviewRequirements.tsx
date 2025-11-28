@@ -294,12 +294,12 @@ export default function ReviewRequirements({ reviewId }: Props) {
       {fetched && review && (
         <>
           <PageTitle
-            h1Text={t('ReviewRequirements.title', { reviewTitle: review?.title || t('Review') })}
-            preamble={t('ReviewRequirements.preamble')}
-            breadcrumbsCurrentPage={t('ReviewRequirements.title', {
+            h1Text={t('ReviewRequirements.Title', { reviewTitle: review?.title || t('Review') })}
+            preamble={t('ReviewRequirements.Preamble')}
+            breadcrumbsCurrentPage={t('ReviewRequirements.Title', {
               reviewTitle: review?.title || t('Review'),
             })}
-            breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
+            breadcrumbsPages={[{ title: t('Home.Title'), href: '/' }]}
           />
 
           <div>
@@ -313,7 +313,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   <DigiNotificationAlert
                     afSize={NotificationAlertSize.LARGE}
                     afVariation={NotificationAlertVariation.SUCCESS}
-                    afHeading={t('ReviewRequirements.doneHeading')}
+                    afHeading={t('ReviewRequirements.DoneHeading')}
                   >
                     <div className="mt-6 mb-4">
                       <StyledLink
@@ -321,7 +321,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         styleVariant="link-button"
                         hideIcon
                       >
-                        {t('ReviewRequirements.compileFailed')}
+                        {t('ReviewRequirements.CompileFailed')}
                       </StyledLink>
                     </div>
                   </DigiNotificationAlert>
@@ -341,7 +341,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 <div className="flex flex-col sm:flex-row mb-6">
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ${t('ReviewRequirements.statusLabelNotAssessed')}`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ${t('ReviewRequirements.StatusLabelNotAssessed')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -352,7 +352,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   </div>
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).passCount} ${t('ReviewRequirements.statusLabelPass')}`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).passCount} ${t('ReviewRequirements.StatusLabelPass')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -363,7 +363,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   </div>
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).failCount} ${t('ReviewRequirements.statusLabelFail')}`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).failCount} ${t('ReviewRequirements.StatusLabelFail')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -374,7 +374,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                   </div>
                   <div
                     className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} ${t('ReviewRequirements.statusLabelIrrelevant')}`}
+                    aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} ${t('ReviewRequirements.StatusLabelIrrelevant')}`}
                   >
                     <div className="flex flex-col items-center" aria-hidden="true">
                       <p className="!text-2xl !mb-2">
@@ -386,9 +386,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 </div>
                 <ProgressBar
                   progress={percentageChecked(requirementsWithChecks)}
-                  text={t('ReviewRequirements.progressText', {
+                  text={t('ReviewRequirements.ProgressText', {
                     checked: numberChecked(requirementsWithChecks),
-                    total: requirementsWithChecks.length,
+                    total: requirements?.length,
                   })}
                 />
                 <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
@@ -398,7 +398,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       styleVariant="link-button"
                       hideIcon
                     >
-                      {t('ReviewRequirements.reviewAccessibilityButton')}
+                      {t('ReviewRequirements.ReviewAccessibilityButton')}
                     </StyledLink>
                   )}
                   <StyledLink
@@ -406,7 +406,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                     styleVariant="link-button-secondary"
                     hideIcon
                   >
-                    {t('ReviewRequirements.compileFailed')}
+                    {t('ReviewRequirements.CompileFailed')}
                   </StyledLink>
                 </div>
               </DigiLayoutBlock>
@@ -420,7 +420,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                         <CardsOrTable
                           headings={[
                             <SortButton
-                              buttonText={t('ReviewRequirements.headingRequirement')}
+                              buttonText={t('ReviewRequirements.HeadingRequirement')}
                               sortBy={SortBy.REQUIREMENT}
                               active={sortBy === SortBy.REQUIREMENT}
                               sortDirection={sortDirection}
@@ -429,7 +429,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             />,
                             '',
                             <SortButton
-                              buttonText={t('ReviewRequirements.headingCategory')}
+                              buttonText={t('ReviewRequirements.HeadingCategory')}
                               sortBy={SortBy.CATEGORY}
                               active={sortBy === SortBy.CATEGORY}
                               sortDirection={sortDirection}
@@ -437,7 +437,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               key="Kravkategori"
                             />,
                             <SortButton
-                              buttonText={t('ReviewRequirements.headingStatus')}
+                              buttonText={t('ReviewRequirements.HeadingStatus')}
                               sortBy={SortBy.STATUS}
                               active={sortBy === SortBy.STATUS}
                               sortDirection={sortDirection}
@@ -472,7 +472,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                         <FilledFlag />
                                       </span>
                                       <span className="font-semibold">
-                                        {t('ReviewRequirements.flagged')}
+                                        {t('ReviewRequirements.Flagged')}
                                       </span>
                                     </span>
                                   ) : (
@@ -489,11 +489,11 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             };
                           })}
                           totalItems={requirements.length}
-                          itemsName={t('ReviewRequirements.itemsName')}
+                          itemsName={t('ReviewRequirements.ItemsName')}
                           filters={[
                             {
                               type: 'freeText',
-                              label: t('ReviewRequirements.searchLabel'),
+                              label: t('ReviewRequirements.SearchLabel'),
                               values: [filterFreeText],
                               onChange: (e) => {
                                 setFilterFreeText(e.detail);
@@ -509,7 +509,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             },
                             {
                               type: 'select',
-                              label: t('ReviewRequirements.filterCategories'),
+                              label: t('ReviewRequirements.FilterCategories'),
                               options:
                                 categories?.map((cat: string) => ({
                                   id: cat,
@@ -530,7 +530,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             },
                             {
                               type: 'select',
-                              label: t('ReviewRequirements.filterStatus'),
+                              label: t('ReviewRequirements.FilterStatus'),
                               options: [
                                 {
                                   label: StatusText.PASS,
@@ -576,7 +576,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                           toggleButtons={
                             <fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
                               <legend className="sr-only">
-                                {t('ReviewRequirements.toggleLegend')}
+                                {t('ReviewRequirements.ToggleLegend')}
                               </legend>
                               <DigiButton
                                 afVariation={
@@ -597,7 +597,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   );
                                 }}
                               >
-                                {t('ReviewRequirements.showAllRequirements')}
+                                {t('ReviewRequirements.ShowAllRequirements')}
                               </DigiButton>
                               <DigiButton
                                 afVariation={
@@ -638,10 +638,10 @@ export default function ReviewRequirements({ reviewId }: Props) {
       {!loading && !review && (
         <div>
           <DigiNotificationErrorPage
-            afCustomHeading={t('ReviewRequirements.notFoundHeading')}
+            afCustomHeading={t('ReviewRequirements.NotFoundHeading')}
             afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
           >
-            <p slot="bodytext">{t('ReviewRequirements.notFoundText')}</p>
+            <p slot="bodytext">{t('ReviewRequirements.NotFoundText')}</p>
           </DigiNotificationErrorPage>
         </div>
       )}

@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next';
 import PageTitle from '~/components/PageTitle';
 import i18n from '~/lang/i18n';
 
-const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || i18n.t('start.defaultAppTitle');
+const applicationTitle =
+  import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle');
 
 export function meta() {
   return [
@@ -28,7 +29,7 @@ export default function AccessibilityStatementPage() {
           <PageTitle
             h1Text="Tillgänglighetsredogörelse"
             preamble="Arbetsförmedlingen är ägare till den här webbplatsen. Vi vill att alla ska kunna använda webbplatsen, oavsett behov. Här redogör vi hur arbetsformedlingen.se uppfyller lagen om tillgänglighet till digital offentlig service, eventuella kända tillgänglighetsproblem och hur du kan rapportera brister till oss så att vi kan åtgärda dem."
-            breadcrumbsPages={[{ title: t('start.Title'), href: '/' }]}
+            breadcrumbsPages={[{ title: t('Home.Title'), href: '/' }]}
             breadcrumbsCurrentPage="Tillgänglighetsredogörelse"
           />
           <DigiLayoutContainer afVerticalPadding={true}>

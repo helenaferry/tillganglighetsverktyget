@@ -7,7 +7,7 @@ export function meta() {
 
   return [
     { title: applicationTitle },
-    { name: 'description', content: i18n.t('start.MetaDescription') },
+    { name: 'description', content: i18n.t('Home.MetaDescription') },
   ];
 }
 

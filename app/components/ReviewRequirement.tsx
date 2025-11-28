@@ -282,9 +282,9 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                         requirements?.find((req) => String(req.id) === String(requirementId))?.name
                       }`}
                       pages={[
-                        { title: t('start.Title'), href: '/' },
+                        { title: t('Home.Title'), href: '/' },
                         {
-                          title: t('ReviewRequirements.title', {
+                          title: t('ReviewRequirements.Title', {
                             reviewTitle: review?.title || '',
                           }),
                           href: `/granskning/${review?.id}`,
@@ -378,7 +378,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                           <DigiNotificationAlert
                             afSize={NotificationAlertSize.LARGE}
                             afVariation={NotificationAlertVariation.SUCCESS}
-                            afHeading={t('ReviewRequirements.doneHeading')}
+                            afHeading={t('ReviewRequirements.DoneHeading')}
                           >
                             <div className="mt-6 mb-4">
                               <StyledLink
@@ -386,7 +386,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                 styleVariant="link-button"
                                 hideIcon
                               >
-                                {t('ReviewRequirements.compileFailed')}
+                                {t('ReviewRequirements.CompileFailed')}
                               </StyledLink>
                             </div>
                           </DigiNotificationAlert>
@@ -550,10 +550,10 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
       {fetched && (!review || !requirement) && (
         <div className="">
           <DigiNotificationErrorPage
-            afCustomHeading={t('ReviewRequirements.notFoundHeading')}
+            afCustomHeading={t('ReviewRequirements.NotFoundHeading')}
             afHttpStatusCode={ErrorPageStatusCodes.NOT_FOUND}
           >
-            <p slot="bodytext">{t('ReviewRequirements.notFoundText')}</p>
+            <p slot="bodytext">{t('ReviewRequirements.NotFoundText')}</p>
           </DigiNotificationErrorPage>
         </div>
       )}

@@ -37,7 +37,7 @@ export function numberRemaining(requirements: RequirementWithCheck[]) {
 
 export function envVars() {
   return {
-    applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || i18n.t('fallbackApplicationTitle'),
+    applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle'),
     logoUrl: import.meta.env.VITE_LOGO_URL || '/logo.svg',
     logoWidth: import.meta.env.VITE_LOGO_WIDTH || '3.5rem',
     logoHeight: import.meta.env.VITE_LOGO_HEIGHT || 'auto',

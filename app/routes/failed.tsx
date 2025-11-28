@@ -105,7 +105,7 @@ export default function FailedPage() {
             <PageTitle
               h1Text={t('failed.Title')}
               breadcrumbsPages={[
-                { title: `${t('start.Title')}`, href: '/' },
+                { title: `${t('Home.Title')}`, href: '/' },
                 { title: review?.title || `${t('Review')}`, href: `/granskning/${review.id}` },
               ]}
               breadcrumbsCurrentPage={t('failed.Title')}
