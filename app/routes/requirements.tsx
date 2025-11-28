@@ -27,12 +27,12 @@ import RequirementLegal from '~/components/RequirementLegal';
 import ResetButton from '~/components/ResetButton';
 import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
+import { envVars } from '~/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import i18n from '~/lang/i18n';
-import { envVars } from '~/helpers';
 
 const applicationTitle = envVars().applicationTitle;
-const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
+const regulatoryFrameworkEnv = envVars().regulatoryFramework;
 
 export function meta() {
   return [

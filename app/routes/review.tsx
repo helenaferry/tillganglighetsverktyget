@@ -2,11 +2,9 @@ import { useParams } from 'react-router-dom';
 
 import ReviewRequirement from '~/components/ReviewRequirement';
 
+// TODO: Needs rework if we are to show review title
 export function meta() {
-  return [
-    { title: 'Granska tillgänglighet: Granskningsvy' },
-    { name: 'description', content: 'Granskningsvy' },
-  ];
+  return [{ title: 'Granska' }, { name: 'description', content: 'Granskningsvy' }];
 }
 
 export default function ReviewPage() {

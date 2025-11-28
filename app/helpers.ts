@@ -44,5 +44,6 @@ export function envVars() {
     footerLinks: import.meta.env.VITE_FOOTER_LINKS
       ? JSON.parse(import.meta.env.VITE_FOOTER_LINKS)
       : [],
+    regulatoryFramework: import.meta.env.VITE_REGULATORY_FRAMEWORK || '',
   };
 }

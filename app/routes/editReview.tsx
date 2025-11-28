@@ -6,8 +6,9 @@ import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
 import { useReviewById } from '~/hooks/useReviewData';
 import i18n from '~/lang/i18n';
+import { envVars } from '~/helpers';
 
-const applicationTitle = import.meta.env.VITE_APPLICATION_TITLE || 'Granska tillgänglighet';
+const applicationTitle = envVars().applicationTitle;
 
 export function meta() {
   return [
