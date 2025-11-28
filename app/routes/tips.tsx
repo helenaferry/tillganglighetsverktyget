@@ -17,8 +17,8 @@ import { useTranslation } from 'react-i18next';
 
 import PageTitle from '~/components/PageTitle';
 import Process from '~/components/Process';
-import i18n from '~/lang/i18n';
 import { envVars } from '~/helpers';
+import i18n from '~/lang/i18n';
 
 const applicationTitle = envVars().applicationTitle;
 
