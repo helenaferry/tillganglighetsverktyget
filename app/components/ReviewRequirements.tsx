@@ -618,7 +618,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                   );
                                 }}
                               >
-                                {t('ReviewRequirements.showFlaggedRequirements', {
+                                {t('ReviewRequirements.ShowFlaggedRequirements', {
                                   count: requirementsWithChecks.filter((req) => req.check?.flag)
                                     .length,
                                 })}
