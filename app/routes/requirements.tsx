@@ -75,7 +75,7 @@ export default function RequirementsPage() {
     const nameMatch = requirement.name.toLowerCase().includes(search.toLowerCase());
     const wcagMatch =
       requirement.wcag?.match(/\d+\.\d+\.\d+/g)?.some((num) => num === search) ?? false;
-    const enMatch = requirement.en301549
+    const enMatch = (requirement.en301549 ?? '')
       .split(',')
       .map((num) => num.trim())
       .some((num) => num === search);
