@@ -135,9 +135,19 @@
     "Done": "K L A R T",
     "Only": "BARA",
     "Remaining": "KVAR",
+    "PercentDone": "{{percent}} klart",
     "Showing": "Krav {{number}} av {{total}}",
     "Skip": "Hoppa till krav: {{requirementName}}",
     "ReviewView": "Granskningsvy"
+  },
+  "RequirementForm": {
+    "Legend": "Bedömning av kravet",
+    "Label": "Motivera bedömning",
+    "LabelDescription": "Skriv inte personuppgifter eller känslig information, eftersom texten är underlag till en tillgänglighetsredogörelse.",
+    "SaveError": "Fel vid sparande",
+    "SuggestionsHeading": "Förslag på texter",
+    "SuggestionsDescription": "Dessa texter ger exempel på vanliga fel och du kan utgå från dem när du skriver din motivering. Klicka på en text för att kopiera den till textfältet.",
+    "CopyTextAriaDescription": "Kopiera textförslag till motivering"
   },
   "requirements": {
     "Title": "Tillgänglighets\u00ADkrav",

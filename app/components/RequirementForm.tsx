@@ -7,6 +7,7 @@ import {
   DigiFormTextarea,
 } from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Status, StatusText, type UpsertCheckInput } from '~/data/types';
 import { useCheck, useDeleteCheck, useUpsertCheck } from '~/hooks/useReviewData';
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export default function RequirementForm({ requirementId, reviewId }: Props) {
+  const { t } = useTranslation();
   const upsertCheck = useUpsertCheck();
   const deleteCheck = useDeleteCheck();
   const { check } = useCheck(reviewId, requirementId);
@@ -52,7 +54,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
 
   return (
     <form id="requirement-form">
-      <DigiFormFieldset afForm="requirement-form" afLegend="Bedömning av kravet">
+      <DigiFormFieldset afForm="requirement-form" afLegend={t('RequirementForm.Legend')}>
         <DigiFormRadiogroup
           afName="fulfillment"
           onAfOnGroupChange={(e: CustomEvent) => {
@@ -99,8 +101,8 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
       <DigiFormTextarea
         afId="motivation"
         afValue={localComment}
-        afLabel="Motivera bedömning"
-        afLabelDescription="Skriv inte personuppgifter eller känslig information, eftersom texten är underlag till en tillgänglighetsredogörelse."
+        afLabel={t('RequirementForm.Label')}
+        afLabelDescription={t('RequirementForm.LabelDescription')}
         afVariation={FormTextareaVariation.LARGE}
         onAfOnInput={(event) => {
           setLocalComment(event.detail.target.value);
@@ -119,16 +121,13 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
           });
         }}
       />
-      {upsertCheck.isError ? 'Fel vid sparande' : ''}
+      {upsertCheck.isError ? t('RequirementForm.SaveError') : ''}
       <DigiExpandableAccordion
-        afHeading="Förslag på texter"
+        afHeading={t('RequirementForm.SuggestionsHeading')}
         afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
       >
         <div>
-          <p>
-            Dessa texter ger exempel på vanliga fel och du kan utgå från dem när du skriver din
-            motivering. Klicka på en text för att kopiera den till textfältet.
-          </p>
+          <p>{t('RequirementForm.SuggestionsDescription')}</p>
           {[
             '[Tillgänglighetsfunktion] går inte att aktivera utan [funktionsförmåga].',
             'Identifiering är bara möjlig med [biometrisk metod].',
@@ -136,7 +135,7 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
             'Det finns knappar med samma text men som utför olika funktion på olika sidor. Det finns också knappar med samma funktion på flera sidor där knapptexterna är olika.',
           ].map((text, index) => (
             <button
-              aria-description="Kopiera textförslag till motivering"
+              aria-description={t('RequirementForm.CopyTextAriaDescription')}
               key={index}
               className="bg-grayscale-100 w-full p-3 mb-3 rounded text-stratos-500 hover:underline text-left"
               onClick={useText}

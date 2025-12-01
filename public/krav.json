@@ -637,6 +637,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "2.4.11 (AA)",
       "category": "Navigation och interaktion",
+      "objectType": "web",
       "statement": "Element med tangentbordsfokus får inte vara helt skymda av annat innehåll. Fokusmarkeringen ska alltid vara synlig, även om det finns överlappande ytor som fast sidhuvud eller dialogrutor. \r\n\r\nUndantag gäller halvtransparenta ytor med en opacitet lägre än 1, förutsatt att kontrasten mot bakgrunden uppfyller kravet på minst 3:1.",
       "why": "Användare som navigerar med tangentbord måste kunna se vilket element som har fokus. Om fokus döljs kan användaren tappa orienteringen och tro att sidan inte fungerar.",
       "howToTest": "- Navigera med tabbtangenten och kontrollera att fokus alltid är synligt.\r\n- Testa scenarier med fast sidhuvud, kakmeddelanden och dialogrutor.\r\n- Säkerställ att innehåll som går att öppna inte blockerar fokus och att det går att stänga."

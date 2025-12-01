@@ -446,10 +446,10 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             />,
                           ]}
                           cardsHeadings={[
-                            t('ReviewRequirements.headingRequirement'),
+                            t('ReviewRequirements.HeadingRequirement'),
                             '',
-                            t('ReviewRequirements.headingCategory'),
-                            t('ReviewRequirements.headingStatus'),
+                            t('ReviewRequirements.HeadingCategory'),
+                            t('ReviewRequirements.HeadingStatus'),
                           ]}
                           rows={filteredRequirements.map((req) => {
                             return {

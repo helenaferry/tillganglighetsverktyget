@@ -310,9 +310,11 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       numberChecked(requirementsWithChecks) > 0 && (
                         <div
                           className="md:absolute md:right-0 h-24 w-24 md:h-32 md:w-32 mt-3 md:mt-0 text-white font-bold bg-forest-500 flex flex-col md:flex-row items-center justify-center rounded-full"
-                          aria-label={`${formatPercentage(
-                            numberChecked(requirementsWithChecks) / requirements.length,
-                          )} klart`}
+                          aria-label={t('ReviewRequirement.PercentDone', {
+                            percent: formatPercentage(
+                              numberChecked(requirementsWithChecks) / requirements.length,
+                            ),
+                          })}
                         >
                           <div aria-hidden="true">
                             <span className="block text-center text-2xl md:text-[2.5rem]">
