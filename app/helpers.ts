@@ -1,4 +1,4 @@
-import { type RequirementWithCheck, Status } from './data/types';
+import { type RequirementWithCheck, Status, type LogoConfig } from './data/types';
 import i18n from './lang/i18n';
 
 export function numberChecked(requirements: RequirementWithCheck[]) {
@@ -38,9 +38,7 @@ export function numberRemaining(requirements: RequirementWithCheck[]) {
 export function envVars() {
   return {
     applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle'),
-    logoUrl: import.meta.env.VITE_LOGO_URL || '/logo.svg',
-    logoWidth: import.meta.env.VITE_LOGO_WIDTH || '3.5rem',
-    logoHeight: import.meta.env.VITE_LOGO_HEIGHT || 'auto',
+    logo: JSON.parse(import.meta.env.VITE_LOGO || '{}') as LogoConfig,
     footerLinks: import.meta.env.VITE_FOOTER_LINKS
       ? JSON.parse(import.meta.env.VITE_FOOTER_LINKS)
       : [],

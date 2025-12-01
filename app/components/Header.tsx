@@ -15,8 +15,10 @@ import { StyledLink } from './StyledLink';
 
 export default function Header() {
   const { t } = useTranslation();
-  const { applicationTitle, logoUrl, logoWidth, logoHeight } = envVars();
+  const { applicationTitle, logo } = envVars();
   const location = useLocation();
+
+  console.log(logo);
 
   return (
     <header className="bg-white">
@@ -25,20 +27,13 @@ export default function Header() {
           <div className="flex justify-between items-center">
             <div className="min-w-0">
               <StyledLink
-                aria-label={t('HomeLink', { appName: applicationTitle })}
+                ariaLabel={t('HomeLink', { appName: applicationTitle })}
                 to="/"
                 styleVariant="plain"
                 className="flex gap-4 py-5 items-center text-text hover:text-text visited:!text-text !no-underline"
               >
-                <img
-                  src={logoUrl}
-                  alt=""
-                  style={{ width: logoWidth, height: logoHeight }}
-                  className="border-r-2 border-r-text pr-4"
-                />
-                <span className="font-bold text-base sm:text-[1.7rem] text-text w-full max-w-full break-words hyphens-auto">
-                  {applicationTitle}
-                </span>
+                <img src={logo.header.mobileUrl} alt="" className="md:hidden" />
+                <img src={logo.header.desktopUrl} alt="" className="hidden md:inline-block" />
               </StyledLink>
             </div>
             <div className="md:hidden">

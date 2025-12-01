@@ -14,7 +14,7 @@ import { StyledLink } from './StyledLink';
 
 export default function Footer() {
   const { t } = useTranslation();
-  const { applicationTitle, logoUrl, logoWidth, logoHeight, footerLinks } = envVars();
+  const { applicationTitle, logo, footerLinks } = envVars();
   return (
     <DigiFooter>
       <div slot="content-top">
@@ -79,15 +79,8 @@ export default function Footer() {
           to="/"
           className="flex gap-4 pb-5 items-center text-white hover:text-white visited:!text-white !no-underline"
         >
-          <img
-            src={logoUrl}
-            alt=""
-            style={{ width: logoWidth, height: logoHeight }}
-            className="border-r-2 border-r-white pr-4"
-          />
-          <span className="font-bold text-[1.75rem] text-white w-full max-w-full break-words hyphens-auto">
-            {applicationTitle}
-          </span>
+          <img src={logo.footer.mobileUrl} alt="" className="md:hidden" />
+          <img src={logo.footer.desktopUrl} alt="" className="hidden md:inline-block" />
         </StyledLink>
       </div>
     </DigiFooter>

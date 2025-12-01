@@ -85,3 +85,14 @@ export type RequirementAdditionsSetting = {
   heading: string;
   items: { id: string; text: string }[];
 };
+
+export type LogoConfig = {
+  header: {
+    mobileUrl: string;
+    desktopUrl: string;
+  };
+  footer: {
+    mobileUrl: string;
+    desktopUrl: string;
+  };
+};
