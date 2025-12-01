@@ -29,7 +29,7 @@ import { StyledLink } from './StyledLink';
 export function ReviewsList() {
   const { t } = useTranslation();
   const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const {
     data: reviewsAll,
     isLoading: reviewsLoading,
@@ -349,7 +349,7 @@ export function ReviewsList() {
                   resetChoices={() => {
                     setFilterFreeText('');
                     setSort(undefined);
-                    setSearchParams({});
+                    window.history.replaceState({}, '', window.location.pathname);
                     setFilterFaves(false);
                   }}
                   choicesMade={filterFreeText.length > 0 || sortBy !== undefined || filterFaves}
@@ -369,6 +369,7 @@ export function ReviewsList() {
                         {t('ReviewsList.ShowAllReviews')}
                       </DigiButton>
                       <DigiButton
+                        key={favoriteReviews.length}
                         afVariation={
                           filterFaves ? ButtonVariation.PRIMARY : ButtonVariation.SECONDARY
                         }

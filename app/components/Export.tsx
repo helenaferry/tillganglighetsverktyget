@@ -100,69 +100,71 @@ export default function Export({ review, checks, requirements, categories }: Pro
         </p>
       )}
       <DigiLayoutBlock afVerticalPadding={true}>
-        <h2>{t('failed.SubTitle')}</h2>
-        {failedChecks.length > 0 && <p>{t('failed.FailedDescription')}</p>}
-        {failedChecks.length === 0 && <p>{t('failed.NoFailedChecks')}</p>}
-        {failedChecks.length > 0 && (
-          <div ref={summaryRef}>
-            {categories.map((cat) => {
-              const failedInCategory = failedChecks.filter((check) => {
-                const requirement = requirements.find(
-                  (req) => String(req.id) === String(check.requirement),
+        <article>
+          <h2>{t('failed.SubTitle')}</h2>
+          {failedChecks.length > 0 && <p>{t('failed.FailedDescription')}</p>}
+          {failedChecks.length === 0 && <p>{t('failed.NoFailedChecks')}</p>}
+          {failedChecks.length > 0 && (
+            <div ref={summaryRef}>
+              {categories.map((cat) => {
+                const failedInCategory = failedChecks.filter((check) => {
+                  const requirement = requirements.find(
+                    (req) => String(req.id) === String(check.requirement),
+                  );
+                  return requirement?.category === cat;
+                });
+
+                if (failedInCategory.length === 0) return null;
+
+                return (
+                  <div key={cat} className="mt-4">
+                    {failedInCategory.map((check) => {
+                      const requirement = requirements.find(
+                        (req) => String(req.id) === String(check.requirement),
+                      );
+                      return (
+                        <div key={check.id} className="mt-8">
+                          <p>
+                            <DigiLinkInternal
+                              afHref={`/granskning/${review.id}/${requirement?.id}/#krav`}
+                            >
+                              {requirement?.name}
+                            </DigiLinkInternal>
+                          </p>
+                          {check.comment && <ReactMarkdown>{check.comment || ''}</ReactMarkdown>}
+                        </div>
+                      );
+                    })}
+                  </div>
                 );
-                return requirement?.category === cat;
-              });
-
-              if (failedInCategory.length === 0) return null;
-
-              return (
-                <div key={cat} className="mt-4">
-                  {failedInCategory.map((check) => {
-                    const requirement = requirements.find(
-                      (req) => String(req.id) === String(check.requirement),
-                    );
-                    return (
-                      <div key={check.id} className="mt-8">
-                        <p>
-                          <DigiLinkInternal
-                            afHref={`/granskning/${review.id}/${requirement?.id}/#krav`}
-                          >
-                            {requirement?.name}
-                          </DigiLinkInternal>
-                        </p>
-                        {check.comment && <ReactMarkdown>{check.comment || ''}</ReactMarkdown>}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        )}
-        {failedChecks.length > 0 && (
-          <div>
-            <div className="mt-8 mb-4 flex gap-4">
-              <DigiButton afVariation={ButtonVariation.SECONDARY} onAfOnClick={copyToClipboard}>
-                {t('failed.CopyButtonText')}
-              </DigiButton>
-              <DigiButton afVariation={ButtonVariation.SECONDARY} onAfOnClick={exportToCsv}>
-                {t('failed.SaveCsvButtonText')}
-              </DigiButton>
+              })}
             </div>
-            <ScreenReaderAlert updateOnChange={copiedTimestamp}>
-              {copySuccess && (
-                <DigiFormValidationMessage afVariation={FormValidationMessageVariation.SUCCESS}>
-                  {t('failed.CopySuccessMessage')}
-                </DigiFormValidationMessage>
-              )}
-              {copyFailure && (
-                <DigiFormValidationMessage afVariation={FormValidationMessageVariation.ERROR}>
-                  {t('failed.CopyFailMessage')}
-                </DigiFormValidationMessage>
-              )}
-            </ScreenReaderAlert>
-          </div>
-        )}
+          )}
+          {failedChecks.length > 0 && (
+            <div>
+              <div className="mt-8 mb-4 flex gap-4">
+                <DigiButton afVariation={ButtonVariation.SECONDARY} onAfOnClick={copyToClipboard}>
+                  {t('failed.CopyButtonText')}
+                </DigiButton>
+                <DigiButton afVariation={ButtonVariation.SECONDARY} onAfOnClick={exportToCsv}>
+                  {t('failed.SaveCsvButtonText')}
+                </DigiButton>
+              </div>
+              <ScreenReaderAlert updateOnChange={copiedTimestamp}>
+                {copySuccess && (
+                  <DigiFormValidationMessage afVariation={FormValidationMessageVariation.SUCCESS}>
+                    {t('failed.CopySuccessMessage')}
+                  </DigiFormValidationMessage>
+                )}
+                {copyFailure && (
+                  <DigiFormValidationMessage afVariation={FormValidationMessageVariation.ERROR}>
+                    {t('failed.CopyFailMessage')}
+                  </DigiFormValidationMessage>
+                )}
+              </ScreenReaderAlert>
+            </div>
+          )}
+        </article>
       </DigiLayoutBlock>
     </DigiLayoutContainer>
   );

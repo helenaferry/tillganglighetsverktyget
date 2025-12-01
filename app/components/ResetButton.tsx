@@ -23,7 +23,12 @@ export default function ResetButton({
     }
   };
   return (
-    <DigiButton afVariation={ButtonVariation.FUNCTION} onAfOnClick={reset} afFullWidth={false}>
+    <DigiButton
+      afType="button"
+      afVariation={ButtonVariation.FUNCTION}
+      onAfOnClick={reset}
+      afFullWidth={false}
+    >
       {buttonText}
       <DigiIconRedo slot="icon" />
     </DigiButton>

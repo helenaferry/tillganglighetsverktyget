@@ -43,7 +43,7 @@ export function meta() {
 
 export default function RequirementsPage() {
   const { t } = useTranslation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
 
   const { data: requirementsAll, isLoading: requirementsAllLoading } =
@@ -245,7 +245,7 @@ export default function RequirementsPage() {
                       setFilterFreeText('');
                       setFilterSpecific(undefined);
                       setFilterCategories([]);
-                      setSearchParams({});
+                      window.history.replaceState({}, '', window.location.pathname);
                       setShowAllCategories(true);
                     }}
                     focusOnReset={document.getElementById('requirement-search')}

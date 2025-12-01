@@ -38,7 +38,7 @@ interface Props {
 
 export default function ReviewRequirements({ reviewId }: Props) {
   const { t } = useTranslation();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const {
     review: review,
     isLoading: reviewLoading,
@@ -276,7 +276,8 @@ export default function ReviewRequirements({ reviewId }: Props) {
     setFilterStatus([]);
     setFilterFreeText('');
     setSort(undefined);
-    setSearchParams({});
+    setFilterFlagged(false);
+    window.history.replaceState({}, '', window.location.pathname);
   };
 
   return (
