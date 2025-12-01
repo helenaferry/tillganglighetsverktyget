@@ -9,6 +9,10 @@
   "of": "av",
   "HomeLink": "Startsida för {{appName}}",
   "ResetButtonDefaultText": "Rensa dina val",
+  "ErrorHeading": "Hoppsan",
+  "UnexpectedError": "Ett oväntat fel inträffade. Försök igen senare.",
+  "NotFound": "Sidan kunde inte hittas.",
+
   "Home": {
     "Title": "Granskningar",
     "MetaDescription": "Hur tillgänglig är din webbplats?",
@@ -22,6 +26,18 @@
     "Close": "Stäng",
     "OpenMenu": "Öppna meny",
     "CloseMenu": "Stäng meny"
+  },
+  "CategoryNav": {
+    "Heading": "Kravkategorier",
+    "Close": "Stäng"
+  },
+  "CategoryOverview": {
+    "ToggleCategoryNav": "Kravkategorier",
+    "CategoryLabel": "Kravkategori: {{category}}",
+    "ProgressText": "{{checked}} av {{total}} krav granskade i denna kategori"
+  },
+  "CardsOrTable": {
+    "SearchAndFilterLabel": "Sök och filtrera"
   },
   "ReviewsList": {
     "LoadingError": "Fel vid hämtning av granskningar",
@@ -153,6 +169,11 @@
     "SuggestionsHeading": "Förslag på texter",
     "SuggestionsDescription": "Dessa texter ger exempel på vanliga fel och du kan utgå från dem när du skriver din motivering. Klicka på en text för att kopiera den till textfältet.",
     "CopyTextAriaDescription": "Kopiera textförslag till motivering"
+  },
+  "PrevNextRequirement": {
+    "PreviousRequirement": "Föregående ogranskade krav",
+    "NextRequirement": "Nästa ogranskade krav",
+    "NoMoreUnhandled": "Inga fler ogranskade krav"
   },
   "requirements": {
     "Title": "Tillgänglighets\u00ADkrav",

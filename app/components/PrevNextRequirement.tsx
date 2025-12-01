@@ -1,4 +1,5 @@
 import { DigiLayoutBlock, DigiLayoutContainer, DigiTypography } from '@designsystem-se/af-react';
+import { useTranslation } from 'react-i18next';
 
 import type { Requirement } from '~/data/types';
 
@@ -11,26 +12,29 @@ interface Props {
 }
 
 export default function PrevNextRequirement({ reviewId, nextUnhandled, previousUnhandled }: Props) {
+  const { t } = useTranslation();
   return (
     <DigiLayoutContainer afNoGutter={true}>
       <DigiLayoutBlock afVerticalPadding={true}>
         <DigiTypography>
           <h4>
-            {nextUnhandled ? `Nästa ogranskade krav: ${nextUnhandled.name}` : ''}
-            {!nextUnhandled && previousUnhandled
-              ? `Föregående ogranskade krav: ${previousUnhandled.name}`
+            {nextUnhandled
+              ? `${t('PrevNextRequirement.NextRequirement')}: ${nextUnhandled.name}`
               : ''}
-            {!nextUnhandled && !previousUnhandled ? 'Inga fler ogranskade krav' : ''}
+            {!nextUnhandled && previousUnhandled
+              ? `${t('PrevNextRequirement.PreviousRequirement')}: ${previousUnhandled.name}`
+              : ''}
+            {!nextUnhandled && !previousUnhandled ? t('PrevNextRequirement.NoMoreUnhandled') : ''}
           </h4>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             {previousUnhandled && (
               <StyledLink
                 styleVariant="secondary-button"
                 to={`/granskning/${reviewId}/${previousUnhandled.id}#krav`}
-                ariaLabel={`Föregående ogranskade krav: ${previousUnhandled.name}`}
+                ariaLabel={`${t('PrevNextRequirement.PreviousRequirement')}: ${previousUnhandled.name}`}
                 overrideLink={true}
               >
-                Föregående ogranskade krav
+                {t('PrevNextRequirement.PreviousRequirement')}
               </StyledLink>
             )}
 
@@ -38,10 +42,10 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
               <StyledLink
                 styleVariant="primary-button"
                 to={`/granskning/${reviewId}/${nextUnhandled.id}#krav`}
-                ariaLabel={`Nästa ogranskade krav: ${nextUnhandled.name}`}
+                ariaLabel={`${t('PrevNextRequirement.NextRequirement')}: ${nextUnhandled.name}`}
                 overrideLink={true}
               >
-                Nästa ogranskade krav
+                {t('PrevNextRequirement.NextRequirement')}
               </StyledLink>
             )}
 
@@ -51,7 +55,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
                 styleVariant="link-button-secondary"
                 hideIcon
               >
-                Sammanställ underkända krav
+                {t('ReviewRequirements.CompileFailed')}
               </StyledLink>
             )}
           </div>

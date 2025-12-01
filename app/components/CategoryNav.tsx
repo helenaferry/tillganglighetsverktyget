@@ -8,6 +8,7 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { type Category, Status } from '~/data/types';
 
@@ -56,6 +57,7 @@ export default function CategoryNav({
   showCategoryNav,
   onToggleNav,
 }: Props) {
+  const { t } = useTranslation();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([selectedCategory]);
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export default function CategoryNav({
     <nav id="category-nav" aria-describedby="category-nav-heading">
       <DigiTypography>
         <div className="flex justify-between pt-18 md:pt-5 px-5">
-          <h2 id="category-nav-heading">Kravkategorier</h2>
+          <h2 id="category-nav-heading">{t('CategoryNav.Heading')}</h2>
           <DigiButton
             afId="close-category-nav"
             className="block md:hidden"
@@ -104,7 +106,7 @@ export default function CategoryNav({
             afVariation={ButtonVariation.FUNCTION}
             onAfOnClick={onToggleNav}
           >
-            Stäng
+            {t('CategoryNav.Close')}
             <DigiIconX slot="icon-secondary" />
           </DigiButton>
         </div>

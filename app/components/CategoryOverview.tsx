@@ -6,6 +6,7 @@ import {
   DigiLayoutContainer,
   DigiTypography,
 } from '@designsystem-se/af-react';
+import { useTranslation } from 'react-i18next';
 
 import { type Category } from '~/data/types';
 import { numberChecked } from '~/helpers';
@@ -23,6 +24,7 @@ export default function CategoryOverview({
   isCategoryNavOpen,
   onToggleCategoryNav,
 }: Props) {
+  const { t } = useTranslation();
   if (!category) return null;
   const checkedCount = numberChecked(category.requirements);
   const totalCount = category?.requirements.length;
@@ -44,16 +46,21 @@ export default function CategoryOverview({
                 afAriaControls="category-nav"
                 afAriaExpanded={isCategoryNavOpen}
               >
-                Kravkategorier
+                {t('CategoryOverview.ToggleCategoryNav')}
                 <DigiIconArrowRight slot="icon-secondary" />
               </DigiButton>
             </div>
 
             <div className="pt-14 md:pt-0">
-              <p className="text-grayscale-700">Kravkategori: {category?.category}</p>
+              <p className="text-grayscale-700">
+                {t('CategoryOverview.CategoryLabel', { category: category?.category })}
+              </p>
               <ProgressBar
                 progress={percentageChecked}
-                text={`${checkedCount} av ${totalCount} krav granskade i denna kategori`}
+                text={t('CategoryOverview.ProgressText', {
+                  checked: checkedCount,
+                  total: totalCount,
+                })}
               />
             </div>
           </DigiTypography>

@@ -12,6 +12,7 @@ import {
   DigiTable,
 } from '@designsystem-se/af-react';
 import { type ReactNode, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ResetButton from './ResetButton';
 import ScreenReaderAlert from './ScreenReaderAlert';
@@ -66,6 +67,7 @@ export function CardsOrTable({
   toggleButtons,
   mainColumnIndex = 0,
 }: Props) {
+  const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationStart, setPaginationStart] = useState(1);
   const [paginationEnd, setPaginationEnd] = useState(defaultItemsPerPage);
@@ -110,7 +112,7 @@ export function CardsOrTable({
       {filters && filters.length > 0 && (
         <form
           className="cards-or-table__filters flex flex-col lg:flex-row gap-4 justify-between"
-          aria-label="Sök och filtrera"
+          aria-label={t('CardsOrTable.SearchAndFilterLabel')}
           onSubmit={(e) => e.preventDefault()}
         >
           <div className="flex flex-col lg:flex-row gap-4 lg:items-end">
