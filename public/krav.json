@@ -739,6 +739,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "2.5.7 (AA) ",
       "category": "Navigation och interaktion",
+      "objectType": "web",
       "statement": "Funktioner som kräver att användaren drar och släpper ett objekt (drag-and-drop) ska kunna utföras med ett alternativ som inte kräver dragning, till exempel genom klick. \r\n\r\nUndantag görs för funktioner som styr webbläsaren eller hjälpmedel.",
       "why": "Det finns användare med nedsatt finmotorik eller styrka som gör att de inte kan dra objekt med mus eller fingrar. Ett alternativ gör att personer med motoriska svårigheter eller som använder alternativa styrsätt kan utföra samma funktion.",
       "howToTest": "- Identifiera funktioner som kräver dragning, t.ex. sortering av listor eller flytt av objekt.\r\n- Kontrollera att det finns ett alternativ som fungerar med enstaka klick eller tryck (t.ex. pilar, menyval eller textfält).\r\n- Säkerställ att alternativet ger samma resultat som dragningen."
@@ -905,6 +906,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "2.5.8 (AA)",
       "category": "Navigation och interaktion",
+      "objectType": "web",
       "statement": "Klickbara element ska vara minst 24 × 24 CSS-pixlar. Om elementet är mindre måste det finnas tillräckligt avstånd (minst 1 CSS-pixel) mellan klickbara ytor så att de inte överlappar vid förstoring. \r\n\r\nUndantag görs för länkar i löpande text och juridisk text.",
       "why": "Större klickytor gör det lättare att träffa rätt, särskilt för användare med nedsatt finmotorik eller som använder pekskärm där precisionen är lägre än med mus.",
       "howToTest": "- Kontrollera storleken på klickbara element så att de är minst 24 × 24 CSS-pixlar.\r\n- Om element är mindre, kontrollera att avståndet mellan klickbara ytor är minst 1 CSS-pixel.\r\n- Testa med förstoring för att säkerställa att ytor inte överlappar varandra."
