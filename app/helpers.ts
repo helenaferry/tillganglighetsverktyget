@@ -1,4 +1,4 @@
-import { type RequirementWithCheck, Status, type LogoConfig } from './data/types';
+import { type LogoConfig, type RequirementWithCheck, Status } from './data/types';
 import i18n from './lang/i18n';
 
 export function numberChecked(requirements: RequirementWithCheck[]) {
