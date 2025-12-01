@@ -36,7 +36,7 @@ export default function Header() {
                   style={{ width: logoWidth, height: logoHeight }}
                   className="border-r-2 border-r-text pr-4"
                 />
-                <span className="font-bold text-base sm:text-[1.7rem] w-full max-w-full break-words hyphens-auto">
+                <span className="font-bold text-base sm:text-[1.7rem] text-text w-full max-w-full break-words hyphens-auto">
                   {applicationTitle}
                 </span>
               </StyledLink>
