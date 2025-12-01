@@ -140,6 +140,11 @@
     "Skip": "Hoppa till krav: {{requirementName}}",
     "ReviewView": "Granskningsvy"
   },
+  "RequirementDetails": {
+    "Description": "Beskrivning",
+    "Why": "Varför är detta viktigt?",
+    "HowToTest": "Hur du kan testa"
+  },
   "RequirementForm": {
     "Legend": "Bedömning av kravet",
     "Label": "Motivera bedömning",
