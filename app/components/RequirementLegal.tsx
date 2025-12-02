@@ -10,7 +10,7 @@ export default function RequirementLegal({ headingLevel = 'h4', requirement }: P
   return (
     <>
       <HeadingTag className="!mt-4">Lagkrav och riktlinjer</HeadingTag>
-      <div className="flex flex-wrap gap-2 mt-2 mb-4">
+      <div className="flex flex-wrap gap-2 mt-2">
         {requirement.en301549 &&
           requirement.en301549.length > 0 &&
           requirement.en301549.split(',').map((text, index) => (

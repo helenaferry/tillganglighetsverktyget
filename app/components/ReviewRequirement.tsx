@@ -109,7 +109,9 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
     checksLoading ||
     requirementsAllLoading ||
     categoriesWebLoading ||
-    categoriesDocLoading;
+    categoriesDocLoading ||
+    !reviewFetched ||
+    !requirementsAllFetched;
 
   const fetched =
     reviewFetched &&
@@ -428,21 +430,25 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                         <DigiLayoutBlock afVerticalPadding={true}>
                           <DigiTypography>
                             <div className="border-b-1 border-grayscale-400 pb-5">
-                              <p className="text-grayscale-700">
+                              <p className="text-grayscale-700 !mb-0">
                                 {t('ReviewRequirement.Showing', {
                                   number: numberInCategory,
                                   total: totalInCategory,
                                 })}
                               </p>
                               <h2
-                                className="skip-target flex gap-4"
+                                className="skip-target flex flex-col md:flex-row md:gap-4 md:items-baseline !mb-0"
                                 id={requirement.id}
                                 data-skip-link-text={t('ReviewRequirement.Skip', {
                                   requirementName: requirement.name,
                                 })}
                               >
                                 <span>{requirement.name}</span>
-                                {!isCheckLoading && <StatusBadge status={check?.status} />}{' '}
+                                {!isCheckLoading && (
+                                  <span className="md:self-start inline-flex align-top leading-none">
+                                    <StatusBadge status={check?.status} />
+                                  </span>
+                                )}
                               </h2>
                               <div className="flex flex-col lg:flex-row justify-between gap-5">
                                 <div>
@@ -450,7 +456,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                 </div>
                                 <div
                                   key={`flag-${check?.flag}`}
-                                  className="lg:text-right lg:basis-[20rem] lg:shrink-0 flex flex-col lg:items-end lg:pt-4"
+                                  className="lg:text-right lg:basis-[20rem] lg:shrink-0 flex flex-col lg:items-end lg:pt-3"
                                 >
                                   {check?.flag ? (
                                     <>
@@ -502,7 +508,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                   <ScreenReaderAlert
                                     updateOnChange={flagErrorMessage + flagMessage}
                                   >
-                                    <p className="min-h-[2rem]">
+                                    <div className="lg:min-h-[2rem]">
                                       {flagMessage && (
                                         <DigiFormValidationMessage
                                           afVariation={FormValidationMessageVariation.SUCCESS}
@@ -517,22 +523,13 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                           {flagErrorMessage}
                                         </DigiFormValidationMessage>
                                       )}
-                                    </p>
+                                    </div>
                                   </ScreenReaderAlert>
                                 </div>
                               </div>
                             </div>
-                            <div className="flex flex-col lg:flex-row my-5 gap-5">
-                              <div className="flex-1">
-                                <RequirementDetails requirement={requirement} headingLevel="h3" />
-                              </div>
-                              <div className="flex-1">
-                                <RequirementForm
-                                  requirementId={requirement.id}
-                                  reviewId={reviewId}
-                                />
-                              </div>
-                            </div>
+                            <RequirementDetails requirement={requirement} headingLevel="h3" />
+                            <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
                           </DigiTypography>
                         </DigiLayoutBlock>
                       </DigiLayoutContainer>

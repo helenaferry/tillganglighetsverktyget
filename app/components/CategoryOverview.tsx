@@ -52,12 +52,10 @@ export default function CategoryOverview({
             </div>
 
             <div className="pt-14 md:pt-0">
-              <p className="text-grayscale-700">
-                {t('CategoryOverview.CategoryLabel', { category: category?.category })}
-              </p>
               <ProgressBar
                 progress={percentageChecked}
                 text={t('CategoryOverview.ProgressText', {
+                  category: category?.category,
                   checked: checkedCount,
                   total: totalCount,
                 })}

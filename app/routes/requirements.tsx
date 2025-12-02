@@ -320,7 +320,6 @@ export default function RequirementsPage() {
                       <RequirementDetails
                         requirement={requirement}
                         headingLevel="h3"
-                        twoCols
                       ></RequirementDetails>
                     </article>
                   </DigiLayoutBlock>

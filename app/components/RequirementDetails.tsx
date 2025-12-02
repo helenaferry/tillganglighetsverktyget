@@ -8,14 +8,9 @@ import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
 export type Props = {
   requirement: Requirement;
   headingLevel?: 'h2' | 'h3' | 'h4';
-  twoCols?: boolean;
 };
 
-export default function RequirementDetails({
-  requirement,
-  headingLevel = 'h4',
-  twoCols = false,
-}: Props) {
+export default function RequirementDetails({ requirement, headingLevel = 'h4' }: Props) {
   const { t } = useTranslation();
   const requirementAdditions = JSON.parse(
     import.meta.env.VITE_REQUIREMENT_ADDITIONS || '{}',
@@ -25,8 +20,8 @@ export default function RequirementDetails({
   const HeadingTag = headingLevel;
   return (
     <DigiTypography>
-      <div className={`requirement-details ${twoCols ? 'md:grid md:grid-cols-2 md:gap-6' : ''}`}>
-        <div>
+      <div className="requirement-details flex flex-col xl:flex-row xl:gap-6 mb-4">
+        <div className="mt-4">
           {requirement.statement && (
             <div>
               <HeadingTag>{t('RequirementDetails.Description')}</HeadingTag>
@@ -42,6 +37,22 @@ export default function RequirementDetails({
                 <ReactMarkdown>{requirement.why || ''}</ReactMarkdown>
               </div>
             </div>
+          )}
+        </div>
+        <div className="mt-4">
+          {requirement.howToTest && (
+            <DigiExpandableAccordion
+              afHeading={t('RequirementDetails.HowToTest')}
+              afHeadingLevel={
+                ExpandableAccordionHeaderLevel[
+                  HeadingTag.toUpperCase() as keyof typeof ExpandableAccordionHeaderLevel
+                ]
+              }
+            >
+              <div>
+                <ReactMarkdown>{requirement.howToTest || ''}</ReactMarkdown>
+              </div>
+            </DigiExpandableAccordion>
           )}
           {addition && (
             <div className="mt-4">
@@ -60,20 +71,6 @@ export default function RequirementDetails({
             </div>
           )}
         </div>
-        {requirement.howToTest && (
-          <DigiExpandableAccordion
-            afHeading={t('RequirementDetails.HowToTest')}
-            afHeadingLevel={
-              ExpandableAccordionHeaderLevel[
-                HeadingTag.toUpperCase() as keyof typeof ExpandableAccordionHeaderLevel
-              ]
-            }
-          >
-            <div>
-              <ReactMarkdown>{requirement.howToTest || ''}</ReactMarkdown>
-            </div>
-          </DigiExpandableAccordion>
-        )}
       </div>
     </DigiTypography>
   );

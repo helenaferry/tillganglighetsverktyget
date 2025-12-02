@@ -153,8 +153,7 @@ footer * {
   h3,
   h4,
   h5,
-  h6,
-  button {
-    @apply !text-[1.125rem];
+  h6 {
+    @apply !text-[1.125rem] md:!text-[1.25rem];
   }
 }

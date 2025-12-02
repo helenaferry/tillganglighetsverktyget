@@ -1,10 +1,19 @@
-import { ExpandableAccordionHeaderLevel, FormTextareaVariation } from '@designsystem-se/af';
 import {
+  ButtonVariation,
+  ExpandableAccordionHeaderLevel,
+  FormTextareaVariation,
+  InfoCardHeadingLevel,
+  InfoCardVariation,
+} from '@designsystem-se/af';
+import {
+  DigiButton,
   DigiExpandableAccordion,
   DigiFormFieldset,
   DigiFormRadiobutton,
   DigiFormRadiogroup,
   DigiFormTextarea,
+  DigiIconCopy,
+  DigiInfoCard,
 } from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,15 +38,14 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
     setLocalStatus(check?.status ?? undefined);
     setLocalComment(check?.comment ?? '');
   }, [check]);
-
-  const useText = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const button = e.currentTarget;
-    const copiedText = button.innerText;
+  const useText = (text: string) => () => {
     const currentValue = localComment.trim();
-    const newComment = currentValue + (currentValue.length > 0 ? '\n\n' + copiedText : copiedText);
+    const newComment = currentValue + (currentValue.length > 0 ? '\n\n' + text : text);
 
     setLocalComment(newComment);
+
+    const textArea = document.getElementById('motivation') as HTMLTextAreaElement | null;
+    textArea?.focus();
 
     const input: UpsertCheckInput = {
       reviewId: Number(reviewId),
@@ -54,101 +62,124 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
 
   return (
     <form id="requirement-form">
-      <DigiFormFieldset afForm="requirement-form" afLegend={t('RequirementForm.Legend')}>
-        <DigiFormRadiogroup
-          afName="fulfillment"
-          onAfOnGroupChange={(e: CustomEvent) => {
-            const status = Number(e.detail.target.value);
-            setLocalStatus(status);
-            if (status === Status.NOT_ASSESSED && check && !check.comment) {
-              deleteCheck.mutate(String(check.id));
-            }
-            const input: UpsertCheckInput = {
-              reviewId: Number(reviewId),
-              requirement: requirementId,
-              status,
-              comment: check?.comment ?? '',
-            };
-            upsertCheck.mutate(input, {
-              onError: (err) => {
-                console.error('Fel vid sparande:', err);
-              },
-            });
-          }}
-        >
-          <DigiFormRadiobutton
-            value={Status.NOT_ASSESSED.toString()}
-            afLabel={StatusText.NOT_ASSESSED}
-            afChecked={!check || check.status === Status.NOT_ASSESSED}
-          />
-          <DigiFormRadiobutton
-            value={Status.PASS.toString()}
-            afLabel={StatusText.PASS}
-            afChecked={check?.status === Status.PASS}
-          />
-          <DigiFormRadiobutton
-            value={Status.FAIL.toString()}
-            afLabel={StatusText.FAIL}
-            afChecked={check?.status === Status.FAIL}
-          />
-          <DigiFormRadiobutton
-            value={Status.IRRELEVANT.toString()}
-            afLabel={StatusText.IRRELEVANT}
-            afChecked={check?.status === Status.IRRELEVANT}
-          />
-        </DigiFormRadiogroup>
-      </DigiFormFieldset>
-      <DigiFormTextarea
-        afId="motivation"
-        afValue={localComment}
-        afLabel={t('RequirementForm.Label')}
-        afLabelDescription={t('RequirementForm.LabelDescription')}
-        afVariation={FormTextareaVariation.LARGE}
-        onAfOnInput={(event) => {
-          setLocalComment(event.detail.target.value);
-        }}
-        onBlur={() => {
-          const input: UpsertCheckInput = {
-            reviewId: Number(reviewId),
-            requirement: String(requirementId),
-            status: localStatus ?? Status.NOT_ASSESSED,
-            comment: localComment,
-          };
-          upsertCheck.mutate(input, {
-            onError: (err) => {
-              console.error('Fel vid sparande:', err);
-            },
-          });
-        }}
-      />
-      {upsertCheck.isError ? t('RequirementForm.SaveError') : ''}
-      <DigiExpandableAccordion
-        afHeading={t('RequirementForm.SuggestionsHeading')}
-        afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+      <DigiInfoCard
+        afVariation={InfoCardVariation.SECONDARY}
+        afHeading={t('RequirementForm.Heading')}
+        afHeadingLevel={InfoCardHeadingLevel.H3}
       >
-        <div>
-          <p>{t('RequirementForm.SuggestionsDescription')}</p>
-          {[
-            '[Tillgänglighetsfunktion] går inte att aktivera utan [funktionsförmåga].',
-            'Identifiering är bara möjlig med [biometrisk metod].',
-            'Tjänsten har tvåvägs röstkommunikation men saknar stöd för kommunikation genom realtidstext.',
-            'Det finns knappar med samma text men som utför olika funktion på olika sidor. Det finns också knappar med samma funktion på flera sidor där knapptexterna är olika.',
-          ].map((text, index) => (
-            <button
-              aria-description={t('RequirementForm.CopyTextAriaDescription')}
-              key={index}
-              className="bg-grayscale-100 w-full p-3 mb-3 rounded text-stratos-500 hover:underline text-left"
-              onClick={useText}
+        <div className="flex flex-col xl:flex-row xl:gap-6">
+          <div className="basis-[14rem] shrink-0">
+            <DigiFormFieldset afForm="requirement-form" afLegend={t('RequirementForm.Legend')}>
+              <DigiFormRadiogroup
+                afName="fulfillment"
+                onAfOnGroupChange={(e: CustomEvent) => {
+                  const status = Number(e.detail.target.value);
+                  setLocalStatus(status);
+                  if (status === Status.NOT_ASSESSED && check && !check.comment) {
+                    deleteCheck.mutate(String(check.id));
+                  }
+                  const input: UpsertCheckInput = {
+                    reviewId: Number(reviewId),
+                    requirement: requirementId,
+                    status,
+                    comment: check?.comment ?? '',
+                  };
+                  upsertCheck.mutate(input, {
+                    onError: (err) => {
+                      console.error('Fel vid sparande:', err);
+                    },
+                  });
+                }}
+              >
+                <DigiFormRadiobutton
+                  value={Status.NOT_ASSESSED.toString()}
+                  afLabel={StatusText.NOT_ASSESSED}
+                  afChecked={!check || check.status === Status.NOT_ASSESSED}
+                />
+                <DigiFormRadiobutton
+                  value={Status.PASS.toString()}
+                  afLabel={StatusText.PASS}
+                  afChecked={check?.status === Status.PASS}
+                />
+                <DigiFormRadiobutton
+                  value={Status.FAIL.toString()}
+                  afLabel={StatusText.FAIL}
+                  afChecked={check?.status === Status.FAIL}
+                />
+                <DigiFormRadiobutton
+                  value={Status.IRRELEVANT.toString()}
+                  afLabel={StatusText.IRRELEVANT}
+                  afChecked={check?.status === Status.IRRELEVANT}
+                />
+              </DigiFormRadiogroup>
+            </DigiFormFieldset>
+          </div>
+          <div>
+            <DigiFormTextarea
+              afId="motivation"
+              afValue={localComment}
+              afLabel={t('RequirementForm.Label')}
+              afLabelDescription={t('RequirementForm.LabelDescription')}
+              afVariation={FormTextareaVariation.LARGE}
+              onAfOnInput={(event) => {
+                setLocalComment(event.detail.target.value);
+              }}
+              onBlur={() => {
+                const input: UpsertCheckInput = {
+                  reviewId: Number(reviewId),
+                  requirement: String(requirementId),
+                  status: localStatus ?? Status.NOT_ASSESSED,
+                  comment: localComment,
+                };
+                upsertCheck.mutate(input, {
+                  onError: (err) => {
+                    console.error('Fel vid sparande:', err);
+                  },
+                });
+              }}
+            />
+            {upsertCheck.isError ? t('RequirementForm.SaveError') : ''}
+
+            <DigiExpandableAccordion
+              afHeading={t('RequirementForm.SuggestionsHeading')}
+              afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
             >
-              {text}
-            </button>
-          ))}
-          <p className="italic text-sm text-grayscale-600">
-            (Just nu är detta ett slumpmässigt urval av Annas texter och samma texter ligger för
-            alla krav.)
-          </p>
+              <div>
+                <p>{t('RequirementForm.SuggestionsDescription')}</p>
+                {[
+                  '[Tillgänglighetsfunktion] går inte att aktivera utan [funktionsförmåga].',
+                  'Identifiering är bara möjlig med [biometrisk metod].',
+                  'Tjänsten har tvåvägs röstkommunikation men saknar stöd för kommunikation genom realtidstext.',
+                  'Det finns knappar med samma text men som utför olika funktion på olika sidor. Det finns också knappar med samma funktion på flera sidor där knapptexterna är olika.',
+                ].map((text, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col xl:flex-row xl:items-center xl:gap-2 my-6 xl:my-4"
+                  >
+                    <div aria-hidden="true" className="bg-white py-2 px-4 rounded">
+                      {text}
+                    </div>
+                    <div>
+                      <DigiButton
+                        afVariation={ButtonVariation.FUNCTION}
+                        onAfOnClick={useText(text)}
+                        afAriaLabel={t('RequirementForm.CopyTextAriaDescription', { text })}
+                      >
+                        <DigiIconCopy slot="icon" />
+                        {t('RequirementForm.CopyButtonText')}
+                      </DigiButton>
+                    </div>
+                  </div>
+                ))}
+                <p className="italic text-sm text-grayscale-600">
+                  (Just nu är detta ett slumpmässigt urval av Annas texter och samma texter ligger
+                  för alla krav.)
+                </p>
+              </div>
+            </DigiExpandableAccordion>
+          </div>
         </div>
-      </DigiExpandableAccordion>
+      </DigiInfoCard>
     </form>
   );
 }

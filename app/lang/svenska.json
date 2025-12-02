@@ -33,8 +33,7 @@
   },
   "CategoryOverview": {
     "ToggleCategoryNav": "Kravkategorier",
-    "CategoryLabel": "Kravkategori: {{category}}",
-    "ProgressText": "{{checked}} av {{total}} krav granskade i denna kategori"
+    "ProgressText": "{{category}}: {{checked}} av {{total}} krav granskade"
   },
   "CardsOrTable": {
     "SearchAndFilterLabel": "Sök och filtrera"
@@ -126,12 +125,12 @@
     "ReviewAccessibilityButton": "Granska tillgänglighet",
     "HeadingRequirement": "Krav",
     "HeadingCategory": "Kravkategori",
-    "HeadingStatus": "Bedömningsstatus",
+    "HeadingStatus": "Bedömning",
     "Flagged": "Flaggad",
     "ItemsName": "krav",
     "SearchLabel": "Sök på krav",
     "FilterCategories": "Kravkategorier",
-    "FilterStatus": "Bedömningsstatus",
+    "FilterStatus": "Bedömning",
     "ToggleLegend": "Toggla flaggade eller alla krav",
     "ShowAllRequirements": "Visa alla krav",
     "ShowFlaggedRequirements": "Visa flaggade krav ({{count}})",
@@ -162,13 +161,15 @@
     "HowToTest": "Hur du kan testa"
   },
   "RequirementForm": {
-    "Legend": "Bedömning av kravet",
+    "Heading": "Bedömning av kravet",
+    "Legend": "Bedömning",
     "Label": "Motivera bedömning",
     "LabelDescription": "Skriv inte personuppgifter eller känslig information, eftersom texten är underlag till en tillgänglighetsredogörelse.",
     "SaveError": "Fel vid sparande",
     "SuggestionsHeading": "Förslag på texter",
     "SuggestionsDescription": "Dessa texter ger exempel på vanliga fel och du kan utgå från dem när du skriver din motivering. Klicka på en text för att kopiera den till textfältet.",
-    "CopyTextAriaDescription": "Kopiera textförslag till motivering"
+    "CopyButtonText": "Kopiera till textfält",
+    "CopyTextAriaDescription": "Kopiera till textfält: {{text}}"
   },
   "PrevNextRequirement": {
     "PreviousRequirement": "Föregående ogranskade krav",

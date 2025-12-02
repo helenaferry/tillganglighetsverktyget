@@ -552,7 +552,7 @@ export function ReviewForm({ review }: Props) {
           <div role="alert" id="prefill-warning-message">
             {showRemovePrefillConfirmation && (
               <DigiFormValidationMessage afVariation={FormValidationMessageVariation.WARNING}>
-                {t('ReviewForm.prefillWarning')}
+                {t('ReviewForm.PrefillWarning')}
               </DigiFormValidationMessage>
             )}
           </div>
