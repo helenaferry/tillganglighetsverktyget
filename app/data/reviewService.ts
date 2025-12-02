@@ -141,7 +141,6 @@ export const ReviewService = {
   },
 
   async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
-    console.log('Enabling checks for reviewId:', reviewId, 'requirements:', requirements);
     const { error } = await supabase
       .from('checks')
       .delete()
