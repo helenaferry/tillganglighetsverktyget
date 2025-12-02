@@ -10,8 +10,8 @@ import { useTranslation } from 'react-i18next';
 
 import { envVars } from '~/helpers';
 
-import { StyledLink } from './StyledLink';
 import { InfoCard } from './InfoCard';
+import { StyledLink } from './StyledLink';
 
 export default function Footer() {
   const { t } = useTranslation();
