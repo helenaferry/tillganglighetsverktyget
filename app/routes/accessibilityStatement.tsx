@@ -66,15 +66,13 @@ export default function AccessibilityStatementPage() {
                 Den här webbplatsen är inte förenlig med lagen om tillgänglighet till digital
                 offentlig service, på grund av de brister som beskrivs nedan.
               </p>
-              <p>
-                <ul>
-                  <li>
-                    Webbplatsen respekterar inte användares behov vid nedsatt synförmåga då det inte
-                    går att använda mörkt läge. Vår ambition är att mörkt läge ska gå att använda
-                    under 2026.
-                  </li>
-                </ul>
-              </p>
+              <ul>
+                <li>
+                  Webbplatsen respekterar inte användares behov vid nedsatt synförmåga då det inte
+                  går att använda mörkt läge. Vår ambition är att mörkt läge ska gå att använda
+                  under 2026.
+                </li>
+              </ul>
               <h2>Hur vi har testat webbplatsen</h2>
               <p>Vi har gjort en självskattning (intern testning) av arbetsformedlingen.se.</p>
               <h2>Hur vi jobbar med digital tillgänglighet</h2>

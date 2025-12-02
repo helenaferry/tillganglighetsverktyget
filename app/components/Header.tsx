@@ -18,8 +18,6 @@ export default function Header() {
   const { applicationTitle, logo } = envVars();
   const location = useLocation();
 
-  console.log(logo);
-
   return (
     <header className="bg-white">
       <DigiTypography>

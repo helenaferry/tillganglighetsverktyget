@@ -224,5 +224,57 @@
     "CopySuccessMessage": "Texten har kopierats till urklipp.",
     "CopyFailMessage": "Kunde inte kopiera texten.",
     "SaveCsvButtonText": "Spara som .csv"
+  },
+  "InfoCard": {
+    "1": {
+      "Title": "Varför finns det här verktyget?",
+      "Text": "Tillgänglighet är allas ansvar, men alla kan inte vara experter. Verktyget gör det lättare för dig som är utvecklare, designer eller produktledare att leva upp till lagkraven och skapa tjänster som fungerar för alla.",
+      "Image": "/info-cards/1.svg"
+    },
+    "2": {
+      "Title": "Engagera hela teamet",
+      "Text": "Det här verktyget är till för hela teamet. Genom att involvera utvecklare, designers och produktledare skapar ni tillsammans en mer inkluderande tjänst.",
+      "Image": "/info-cards/2.svg"
+    },
+    "3": {
+      "Title": "Mer än bara lagkrav",
+      "Text": "Tillgänglighet handlar om mycket mer än att följa regler. En tillgänglig webbplats ger en bättre användarupplevelse för alla, och hjälper dig att nå ut med ditt budskap på ett sätt som fungerar för så många som möjligt.",
+      "Image": "/info-cards/3.svg"
+    },
+    "4": {
+      "Title": "Alla ska kunna hitta rätt",
+      "Text": "Med en väl fungerande navigering hjälper du alla användare att hitta det de söker, oavsett funktionsnedsättning eller förutsättningar.",
+      "Image": "/info-cards/4.svg"
+    },
+    "5": {
+      "Title": "Gör dig förstådd",
+      "Text": "Tydligt språk och bra kontraster gör det lättare för alla att ta till sig informationen i din tjänst och utföra det de behöver göra.",
+      "Image": "/info-cards/5.svg"
+    },
+    "6": {
+      "Title": "Sökbarhet och struktur lönar sig",
+      "Text": "En tydlig struktur gör inte bara tjänsten mer tillgänglig – det gör den också lättare att använda och hitta i, för alla användare.",
+      "Image": "/info-cards/6.svg"
+    },
+    "7": {
+      "Title": "Visa att du är på väg",
+      "Text": "Allt behöver inte vara perfekt från början. En ärlig redogörelse visar att du arbetar aktivt med tillgänglighet. Det skapar förtroende och transparens.",
+      "Image": "/info-cards/7.svg"
+    },
+    "8": {
+      "Title": "Alla är någon gång funktionsnedsatta",
+      "Text": "Funktionsnedsättningar kan vara tillfälliga, som en bruten arm, eller situationella, som att använda en mobil i starkt solljus. De kan också komma med åldern, som nedsatt syn eller hörsel.",
+      "Image": "/info-cards/8.svg"
+    },
+    "9": {
+      "Title": "En tillgänglig webbplats är bättre för alla",
+      "Text": "När du gör din webbplats tillgänglig för personer med funktionsnedsättningar förbättrar du samtidigt användarupplevelsen för alla.",
+      "Image": "/info-cards/9.svg"
+    },
+    "10": {
+      "Title": "Testa med olika hjälpmedel",
+      "Text": "Testa att använda din tjänst med bara tangentbordet, eller med en skärmläsare. Du kommer att upptäcka nya sätt att förbättra användarupplevelsen för alla.",
+      "Image": "/info-cards/9.svg"
+    }
   }
 }
