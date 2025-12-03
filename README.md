@@ -14,6 +14,9 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 <tr>
 <td>
 <img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida" width="400">
+- Visa alla granskningar
+- Sök efter en granskning
+- Spara favoritgranskningar i din webbläsare
 </td>
 <td>[screenshot]<br/>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
 </tr>
