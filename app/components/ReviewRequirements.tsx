@@ -122,8 +122,8 @@ export default function ReviewRequirements({ reviewId }: Props) {
 
   enum SortBy {
     REQUIREMENT = 0,
-    CATEGORY = 1,
-    STATUS = 2,
+    CATEGORY = 2,
+    STATUS = 3,
   }
 
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
@@ -446,6 +446,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               key="Bedömningsstatus"
                             />,
                           ]}
+                          sortedByThIndex={sortBy}
                           cardsHeadings={[
                             t('ReviewRequirements.HeadingRequirement'),
                             '',

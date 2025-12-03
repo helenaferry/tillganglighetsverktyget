@@ -43,10 +43,10 @@ export function ReviewsList() {
   } = useRequirements('');
 
   enum SortBy {
-    REVIEW = 0,
-    CREATED = 1,
-    UPDATED = 2,
-    REVIEWED = 3,
+    REVIEW = 1,
+    CREATED = 2,
+    UPDATED = 3,
+    REVIEWED = 4,
   }
 
   const [filterFreeText, setFilterFreeText] = useState('');
