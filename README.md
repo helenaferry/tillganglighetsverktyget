@@ -20,13 +20,13 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 <tbody>
 <tr>
 <td>
-<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida" width="400">
+<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
 <ul><li>Visa alla granskningar</li>
 <li>Sök efter en granskning</li>
 <li>Spara favoritgranskningar i din webbläsare</li>
 </ul>
 </td>
-<td><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning" width="400">
+<td><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning">
 <br/>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
 </tr>
 </tbody>
