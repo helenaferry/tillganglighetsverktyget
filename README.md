@@ -6,6 +6,13 @@ Granska tillgänglighet är ett verktyg från Arbetsförmedlingen för att under
 
 Granska tillgänglighet är skapat för att vägleda användare utan expertkunskaper genom processen att granska en webbtjänst mot tillgänglighetskrav och skapa en tillgänglighetsredogörelse. Verktyget baseras på EN 301 549 och WCAG 2.2 nivå AA. Arbetsförmedlingen har gjort en egen bearbetning och sammanställning av dessa krav.
 
+### Funktioner
+
+- **Vägledda granskningar** – Information och vägledning för varje tillgänglighetskrav.
+- **Strukturerad dokumentation** – Samla alla granskningsresultat på ett ställe.
+- **Tillgänglighetsredogörelser** – Hjälp att formulera tillgänglighetsredogörelser.
+- **Exportfunktion** – Skapa buggar i Jira från en exportfil.
+
 <table>
 <thead>
 <th>Startsida</th><th>Skapa granskning</th>
@@ -19,17 +26,11 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 <li>Spara favoritgranskningar i din webbläsare</li>
 </ul>
 </td>
-<td>[screenshot]<br/>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
+<td><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning" width="400">
+<br/>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
 </tr>
 </tbody>
 </table>
-
-### Funktioner
-
-- **Vägledda granskningar** – Information och vägledning för varje tillgänglighetskrav
-- **Strukturerad dokumentation** – Samla alla granskningsresultat på ett ställe
-- **Tillgänglighetsredogörelser** – Hjälp att formulera tillgänglighetsredogörelser
-- **Exportfunktion** – Exportera dina resultat som .csv för att till exempel importera som buggar i Jira
 
 ### Användning och flexibilitet
 
