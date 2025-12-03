@@ -10,11 +10,10 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 
 ### Funktioner
 
-- **Vägledda granskningar** – Steg-för-steg-instruktioner för varje tillgänglighetskrav
+- **Vägledda granskningar** – Information och vägledning för varje tillgänglighetskrav
 - **Strukturerad dokumentation** – Samla alla granskningsresultat på ett ställe
-- **Tillgänglighetsredogörelser** – Generera redogörelser baserat på dina granskningar
+- **Tillgänglighetsredogörelser** – Hjälp att formulera tillgänglighetsredogörelser
 - **Exportfunktion** – Exportera dina resultat som .csv för att till exempel importera som buggar i Jira
-- **Hjälpkort** – Tips och vägledning om tillgänglighet direkt i verktyget
 
 ### Användning och flexibilitet
 
