@@ -205,9 +205,6 @@ export function ReviewsList() {
               ></DigiLoaderSkeleton>
             )}
             {reviewsError && <p>{t('ReviewsList.LoadingError')}</p>}
-            {fetched && (!filteredReviews || filteredReviews?.length === 0) && (
-              <p>{t('ReviewsList.NoReviewsFound')}</p>
-            )}
             {fetched && filteredReviews && (
               <DigiLayoutBlock afMarginTop={true} afMarginBottom={false} afVerticalPadding={true}>
                 <CardsOrTable

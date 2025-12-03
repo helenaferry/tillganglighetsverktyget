@@ -40,7 +40,6 @@
   },
   "ReviewsList": {
     "LoadingError": "Fel vid hämtning av granskningar",
-    "NoReviewsFound": "Inga granskningar hittades.",
     "HeadingReviewName": "Granskningsnamn",
     "HeadingCreated": "Skapad",
     "HeadingUpdated": "Uppdaterad",
