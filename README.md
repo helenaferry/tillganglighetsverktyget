@@ -49,6 +49,7 @@ Mer om detta när vi har en färdig lösning.
 - **React Router** – Routing och navigering
 - **TypeScript** – Typsäkerhet
 - **Vite** – Byggverktyg
+- **Arbetsförmedlingens designsystem** - Design och komponenter
 - **Tailwind CSS** – Styling
 - **i18next** – Internationalisering
 - **Supabase** – Databas och backend KOMMER ATT BYTAS UT
