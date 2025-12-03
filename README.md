@@ -6,7 +6,7 @@ Granska tillgänglighet är ett verktyg från Arbetsförmedlingen för att under
 
 Granska tillgänglighet är skapat för att vägleda användare utan expertkunskaper genom processen att granska en webbtjänst mot tillgänglighetskrav och skapa en tillgänglighetsredogörelse. Verktyget baseras på EN 301 549 och WCAG 2.2 nivå AA. Arbetsförmedlingen har gjort en egen bearbetning och sammanställning av dessa krav.
 
-<img src="./public/logoHeader.svg" alt="Granska tillgänglighet" width="400">
+<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida" width="400">
 
 ### Funktioner
 
