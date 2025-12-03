@@ -19,17 +19,22 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 </thead>
 <tbody>
 <tr>
-<td>
-<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
-<ul><li>Visa alla granskningar</li>
+<td><ul><li>Visa alla granskningar</li>
 <li>Sök efter en granskning</li>
 <li>Spara favoritgranskningar i din webbläsare</li>
-</ul>
+</ul></td>
+<td>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
+<td>Sök fram krav och se status för granskningen som helhet.</td>
+<td>Få stöd i att bedöma varje krav.</td>
+</tr>
+<tr>
+<td>
+<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
+
 </td>
-<td><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning">
-<br/>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
-<td><img src="./public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt">
-<br/>Sök fram krav och se status för granskningen som helhet.</td>
+<td><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning"></td>
+<td><img src="./public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt"></td>
+<td><img src="./public/screenshots/granska-tillganglighet-granskningsvy.png" alt="Granska tillgänglighet - översikt"></td>
 </tr>
 </tbody>
 </table>
