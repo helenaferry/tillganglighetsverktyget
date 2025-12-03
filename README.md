@@ -28,7 +28,7 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 </td>
 <td><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning">
 <br/>Minska mängden krav att granska genom att ange vad din tjänst innehåller.</td>
-<td><img src="./public/screenshots/granska-tillganglighet-oversikt.png" alt="Granska tillgänglighet - översikt">
+<td><img src="./public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt">
 <br/>Sök fram krav och se status för granskningen som helhet.</td>
 </tr>
 </tbody>
