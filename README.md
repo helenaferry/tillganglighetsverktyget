@@ -15,7 +15,7 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 
 <table>
 <thead>
-<th>Startsida</th><th>Skapa granskning</th><th>Granskningsöversikt</th>
+<th>Startsida</th><th>Skapa granskning</th><th>Granskningsöversikt</th><th>Granskningsvy</th>
 </thead>
 <tbody>
 <tr>
