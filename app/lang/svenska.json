@@ -232,7 +232,7 @@
     },
     "2": {
       "Title": "Engagera hela teamet",
-      "Text": "Det här verktyget är till för hela teamet. Genom att involvera utvecklare, designers och produktledare skapar ni tillsammans en mer inkluderande tjänst.",
+      "Text": "Det här verktyget är till för hela teamet. Genom att involvera alla oavsett roll skapar ni tillsammans en mer inkluderande tjänst.",
       "Image": "/info-cards/2.svg"
     },
     "3": {
@@ -273,7 +273,7 @@
     "10": {
       "Title": "Testa med olika hjälpmedel",
       "Text": "Testa att använda din tjänst med bara tangentbordet, eller med en skärmläsare. Du kommer att upptäcka nya sätt att förbättra användarupplevelsen för alla.",
-      "Image": "/info-cards/9.svg"
+      "Image": "/info-cards/10.svg"
     }
   }
 }
