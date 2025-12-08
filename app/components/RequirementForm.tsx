@@ -24,9 +24,10 @@ import { useCheck, useDeleteCheck, useUpsertCheck } from '~/hooks/useReviewData'
 type Props = {
   requirementId: string;
   reviewId: string;
+  textSuggestions: string[];
 };
 
-export default function RequirementForm({ requirementId, reviewId }: Props) {
+export default function RequirementForm({ requirementId, reviewId, textSuggestions }: Props) {
   const { t } = useTranslation();
   const upsertCheck = useUpsertCheck();
   const deleteCheck = useDeleteCheck();
@@ -140,43 +141,36 @@ export default function RequirementForm({ requirementId, reviewId }: Props) {
             />
             {upsertCheck.isError ? t('RequirementForm.SaveError') : ''}
 
-            <DigiExpandableAccordion
-              afHeading={t('RequirementForm.SuggestionsHeading')}
-              afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
-            >
-              <div>
-                <p>{t('RequirementForm.SuggestionsDescription')}</p>
-                {[
-                  '[Tillgänglighetsfunktion] går inte att aktivera utan [funktionsförmåga].',
-                  'Identifiering är bara möjlig med [biometrisk metod].',
-                  'Tjänsten har tvåvägs röstkommunikation men saknar stöd för kommunikation genom realtidstext.',
-                  'Det finns knappar med samma text men som utför olika funktion på olika sidor. Det finns också knappar med samma funktion på flera sidor där knapptexterna är olika.',
-                ].map((text, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col xl:flex-row xl:items-center xl:gap-2 my-6 xl:my-4"
-                  >
-                    <div aria-hidden="true" className="bg-white py-2 px-4 rounded">
-                      {text}
+            {textSuggestions && textSuggestions.length > 0 && (
+              <DigiExpandableAccordion
+                afHeading={t('RequirementForm.SuggestionsHeading')}
+                afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+              >
+                <div>
+                  <p>{t('RequirementForm.SuggestionsDescription')}</p>
+                  {textSuggestions.map((text, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col xl:flex-row xl:items-center xl:gap-2 my-6 xl:my-4 max-w-p-medium"
+                    >
+                      <div aria-hidden="true" className="bg-white py-2 px-4 rounded">
+                        {text}
+                      </div>
+                      <div>
+                        <DigiButton
+                          afVariation={ButtonVariation.FUNCTION}
+                          onAfOnClick={useText(text)}
+                          afAriaLabel={t('RequirementForm.CopyTextAriaDescription', { text })}
+                        >
+                          <DigiIconCopy slot="icon" />
+                          {t('RequirementForm.CopyButtonText')}
+                        </DigiButton>
+                      </div>
                     </div>
-                    <div>
-                      <DigiButton
-                        afVariation={ButtonVariation.FUNCTION}
-                        onAfOnClick={useText(text)}
-                        afAriaLabel={t('RequirementForm.CopyTextAriaDescription', { text })}
-                      >
-                        <DigiIconCopy slot="icon" />
-                        {t('RequirementForm.CopyButtonText')}
-                      </DigiButton>
-                    </div>
-                  </div>
-                ))}
-                <p className="italic text-sm text-grayscale-600">
-                  (Just nu är detta ett slumpmässigt urval av Annas texter och samma texter ligger
-                  för alla krav.)
-                </p>
-              </div>
-            </DigiExpandableAccordion>
+                  ))}
+                </div>
+              </DigiExpandableAccordion>
+            )}
           </div>
         </div>
       </DigiInfoCard>

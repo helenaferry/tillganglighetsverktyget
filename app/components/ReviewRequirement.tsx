@@ -529,7 +529,17 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                               </div>
                             </div>
                             <RequirementDetails requirement={requirement} headingLevel="h3" />
-                            <RequirementForm requirementId={requirement.id} reviewId={reviewId} />
+                            <RequirementForm
+                              requirementId={requirement.id}
+                              reviewId={reviewId}
+                              textSuggestions={'Lorem ipsum dolor sit amet, consectetur adipiscing elit.;Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'.split(
+                                ';',
+                              )}
+                              //  requirement.textSuggestions
+                              //    ? requirement.textSuggestions.split(';')
+                              //    : []
+                              //}
+                            />
                           </DigiTypography>
                         </DigiLayoutBlock>
                       </DigiLayoutContainer>
