@@ -67,4 +67,4 @@ Detta projekt är licensierat under Apache License 2.0 - se [LICENSE](LICENSE) f
 
 ## Kontakt
 
-Arbetsförmedlingen
+Arbetsförmedlingen - [designsystem@arbetsformedlingen.se](mailto:designsystem@arbetsformedlingen.se)
