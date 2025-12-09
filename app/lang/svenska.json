@@ -242,7 +242,7 @@
     },
     "4": {
       "Title": "Alla ska kunna hitta rätt",
-      "Text": "Med en väl fungerande navigering hjälper du alla användare att hitta det de söker, oavsett funktionsnedsättning eller förutsättningar.",
+      "Text": "Skapa en navigering som är tydlig och konsekvent. Använd beskrivande länktexter och logisk struktur så att användare enkelt hittar rätt, även med skärmläsare eller tangentbordsnavigering.",
       "Image": "/info-cards/4.svg"
     },
     "5": {
@@ -252,7 +252,7 @@
     },
     "6": {
       "Title": "Sökbarhet och struktur lönar sig",
-      "Text": "En tydlig struktur gör inte bara tjänsten mer tillgänglig – det gör den också lättare att använda och hitta i, för alla användare.",
+      "Text": "Organisera innehållet med en klar hierarki och tydliga rubriker. Det gör tjänsten mer tillgänglig, lättare att söka i och enklare att förstå för alla användare.",
       "Image": "/info-cards/6.svg"
     },
     "7": {
