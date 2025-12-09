@@ -62,9 +62,11 @@ export function ReviewForm({ review }: Props) {
   const { data: regulatoryFrameworks, isLoading: isLoadingRegulatoryFrameworks } =
     useRegulatoryFrameworks(objectType);
   const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingRegulatoryFrameworks;
-  const allPrefillRequirements = JSON.parse(
-    import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}',
-  ) as PrefillRequirementSetting[];
+  const allPrefillRequirements = useMemo(
+    () =>
+      JSON.parse(import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}') as PrefillRequirementSetting[],
+    [],
+  );
 
   const upsertReview = useUpsertReview();
   const prefillChecks = usePrefillRequirements();
@@ -188,22 +190,21 @@ export function ReviewForm({ review }: Props) {
   }, [contentTypePrefills, selectedPrefills, automaticPrefillSettings]);
 
   useEffect(() => {
-    if (review) {
+    if (review && allPrefillRequirements.length > 0) {
       setTitle(review.title || '');
       setRegulatoryFramework(review.regulatoryFramework || '');
       setExcludedContentTypes(
         (review.excludedContentTypes?.split(';').filter((s) => s !== '') as string[]) || [],
       );
-      setSelectedPrefills(
-        prefillRequirements.filter((p) =>
-          (review.selectedPrefillIds?.split(';').filter((s) => s !== '') as string[]).includes(
-            String(p.id),
-          ),
-        ) || [],
-      );
       setObjectType((review.objectType as ObjectType) || ObjectType.WEB);
+
+      const selectedIds = review.selectedPrefillIds?.split(';').filter((s) => s !== '') || [];
+      const matchedPrefills = allPrefillRequirements.filter((p) =>
+        selectedIds.includes(String(p.id)),
+      );
+      setSelectedPrefills(matchedPrefills);
     }
-  }, [review]);
+  }, [review, allPrefillRequirements]);
 
   useEffect(() => {
     if (saving) {
@@ -233,6 +234,8 @@ export function ReviewForm({ review }: Props) {
       },
     });
   };
+
+  console.log('Selected prefills:', selectedPrefills);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -504,7 +507,6 @@ export function ReviewForm({ review }: Props) {
                 })}
             </div>
           )}
-
           {prefillRequirements
             .filter((prefill: PrefillRequirementSetting) => prefill.automatic === 'false')
             .map((prefill: PrefillRequirementSetting) => (
@@ -548,7 +550,6 @@ export function ReviewForm({ review }: Props) {
                 </DigiFormFieldset>
               </div>
             ))}
-
           <div role="alert" id="prefill-warning-message">
             {showRemovePrefillConfirmation && (
               <DigiFormValidationMessage afVariation={FormValidationMessageVariation.WARNING}>
@@ -556,7 +557,6 @@ export function ReviewForm({ review }: Props) {
               </DigiFormValidationMessage>
             )}
           </div>
-
           <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4">
             <span role="status">
               <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span>{' '}
@@ -567,7 +567,6 @@ export function ReviewForm({ review }: Props) {
               {t('ReviewForm.AutomaticPrefillInfo', { number: numberAutomaticPrefillRequirements })}
             </span>
           </p>
-
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <DigiButton
               afVariation={ButtonVariation.SECONDARY}
@@ -602,7 +601,6 @@ export function ReviewForm({ review }: Props) {
               {t('ReviewForm.SaveErrorText')}
             </DigiNotificationAlert>
           )}
-
           <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showAbortConfirmation}
@@ -616,7 +614,6 @@ export function ReviewForm({ review }: Props) {
               navigate('/');
             }}
           ></DigiDialog>
-
           <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showDeleteConfirmation && review !== undefined}
