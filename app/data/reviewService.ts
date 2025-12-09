@@ -75,28 +75,23 @@ export const ReviewService = {
     comment?: string;
   }): Promise<Check> {
     const { reviewId, requirement, status, comment } = input;
-    const { data: existing, error: findError } = await supabase
+
+    const { data, error } = await supabase
       .from('checks')
-      .select('*')
-      .eq('review', Number(reviewId))
-      .eq('requirement', requirement);
-    if (findError) throw findError;
-    if (existing && existing.length > 0) {
-      const { data, error } = await supabase
-        .from('checks')
-        .update({ status, comment })
-        .eq('id', existing[0].id)
-        .select();
-      if (error) throw error;
-      return data[0] as Check;
-    } else {
-      const { data, error } = await supabase
-        .from('checks')
-        .insert({ review: reviewId, requirement, status, comment })
-        .select();
-      if (error) throw error;
-      return data[0] as Check;
-    }
+      .upsert(
+        {
+          review: Number(reviewId),
+          requirement,
+          status,
+          comment,
+        },
+        { onConflict: 'review,requirement' },
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Check;
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
@@ -155,7 +150,12 @@ export const ReviewService = {
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
     // 1. Gather all requirement IDs and their intended status/comment
-    const toPrefill: Array<{ requirement: string; status: Status; comment: string }> = [];
+    const toPrefill: Array<{
+      review: number;
+      requirement: string;
+      status: Status;
+      comment: string;
+    }> = [];
     for (const prefillReq of prefills) {
       for (const requirementId of prefillReq.ids) {
         let status: Status;
@@ -172,66 +172,23 @@ export const ReviewService = {
           default:
             status = Status.NOT_ASSESSED;
         }
-        toPrefill.push({ requirement: requirementId, status, comment: prefillReq.comment || '' });
-      }
-    }
-
-    // 2. Fetch all existing checks for this review in one go
-    const { data: existingChecks, error: fetchError } = await supabase
-      .from('checks')
-      .select('id, requirement')
-      .eq('review', Number(reviewId));
-    if (fetchError) throw fetchError;
-    const existingMap = new Map<string, number>(); // requirementId -> checkId
-    for (const check of existingChecks ?? []) {
-      existingMap.set(check.requirement, check.id);
-    }
-
-    // 3. Split into updates and inserts
-    const updates: Array<{ id: number; status: Status; comment: string }> = [];
-    const inserts: Array<{ review: number; requirement: string; status: Status; comment: string }> =
-      [];
-    for (const item of toPrefill) {
-      const checkId = existingMap.get(item.requirement);
-      if (checkId) {
-        updates.push({ id: checkId, status: item.status, comment: item.comment });
-      } else {
-        inserts.push({
+        toPrefill.push({
           review: Number(reviewId),
-          requirement: item.requirement,
-          status: item.status,
-          comment: item.comment,
+          requirement: requirementId,
+          status,
+          comment: prefillReq.comment || '',
         });
       }
     }
 
-    // 4. Bulk insert new checks
-    let inserted: Check[] = [];
-    if (inserts.length > 0) {
-      const { data, error } = await supabase.from('checks').insert(inserts).select();
-      if (error) throw error;
-      inserted = data as Check[];
-    }
+    // 2. Bulk upsert all checks
+    const { data, error } = await supabase
+      .from('checks')
+      .upsert(toPrefill, { onConflict: 'review,requirement' })
+      .select();
 
-    // 5. Parallelize updates (Supabase doesn't support bulk update, so update one by one)
-    const updated: Check[] = [];
-    if (updates.length > 0) {
-      const updatePromises = updates.map((u) =>
-        supabase
-          .from('checks')
-          .update({ status: u.status, comment: u.comment })
-          .eq('id', u.id)
-          .select(),
-      );
-      const updateResults = await Promise.all(updatePromises);
-      for (const res of updateResults) {
-        if (res.error) throw res.error;
-        if (res.data && res.data.length > 0) updated.push(res.data[0] as Check);
-      }
-    }
-
-    // 6. Return all affected checks
-    return [...inserted, ...updated];
+    if (error) throw error;
+    return data as Check[];
   },
 
   async upsertReview(input: {
@@ -283,35 +240,21 @@ export const ReviewService = {
   },
 
   async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
-    const { data: existing } = await supabase
+    const { data, error } = await supabase
       .from('checks')
-      .select('*')
-      .eq('review', Number(reviewId))
-      .eq('requirement', requirementId)
-      .single();
-
-    if (existing) {
-      const { data, error } = await supabase
-        .from('checks')
-        .update({ flag })
-        .eq('id', existing.id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Check;
-    } else {
-      const { data, error } = await supabase
-        .from('checks')
-        .insert({
+      .upsert(
+        {
           review: Number(reviewId),
           requirement: requirementId,
           status: Status.NOT_ASSESSED,
           flag,
-        })
-        .select()
-        .single();
-      if (error) throw error;
-      return data as Check;
-    }
+        },
+        { onConflict: 'review,requirement' },
+      )
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Check;
   },
 };
