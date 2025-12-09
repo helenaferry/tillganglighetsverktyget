@@ -36,9 +36,37 @@ export function numberRemaining(requirements: RequirementWithCheck[]) {
 }
 
 export function envVars() {
+  const defaultLogo: LogoConfig = {
+    header: {
+      mobileUrl: '/logoHeaderMobile.svg',
+      desktopUrl: '/logoHeader.svg',
+    },
+    footer: {
+      mobileUrl: '/logoFooterMobile.svg',
+      desktopUrl: '/logoFooter.svg',
+    },
+  };
+  const parseLogo = (): LogoConfig => {
+    const raw = import.meta.env.VITE_LOGO;
+    if (!raw) return defaultLogo;
+    try {
+      const parsed = JSON.parse(raw);
+      if (
+        parsed?.header?.mobileUrl &&
+        parsed?.header?.desktopUrl &&
+        parsed?.footer?.mobileUrl &&
+        parsed?.footer?.desktopUrl
+      ) {
+        return parsed as LogoConfig;
+      }
+      return defaultLogo;
+    } catch {
+      return defaultLogo;
+    }
+  };
   return {
     applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle'),
-    logo: JSON.parse(import.meta.env.VITE_LOGO || '{}') as LogoConfig,
+    logo: parseLogo(),
     footerLinks: import.meta.env.VITE_FOOTER_LINKS
       ? JSON.parse(import.meta.env.VITE_FOOTER_LINKS)
       : [],
