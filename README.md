@@ -14,6 +14,12 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 - **Exportfunktion** – Skapa buggar i Jira från en exportfil.
 
 <table>
+<colgroup>
+	<col style="width:25%">
+	<col style="width:25%">
+	<col style="width:25%">
+	<col style="width:25%">
+</colgroup>
 <thead>
 <th>Startsida</th><th>Skapa granskning</th><th>Granskningsöversikt</th><th>Granskningsvy</th>
 </thead>
