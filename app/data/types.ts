@@ -16,6 +16,7 @@ export type Requirement = {
   statement: string;
   why: string;
   howToTest: string;
+  textSuggestions?: string[];
 };
 
 export enum Status {

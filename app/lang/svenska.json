@@ -166,7 +166,7 @@
     "LabelDescription": "Skriv inte personuppgifter eller känslig information, eftersom texten är underlag till en tillgänglighetsredogörelse.",
     "SaveError": "Fel vid sparande",
     "SuggestionsHeading": "Förslag på texter",
-    "SuggestionsDescription": "Dessa texter ger exempel på vanliga fel och du kan utgå från dem när du skriver din motivering. Klicka på en text för att kopiera den till textfältet.",
+    "SuggestionsDescription": "Dessa texter ger exempel på vanliga fel och du kan utgå från dem när du skriver din motivering. Komplettera med mer specifik information om bristen och var den förekommer, samt tidplan för åtgärd om möjligt.",
     "CopyButtonText": "Kopiera till textfält",
     "CopyTextAriaDescription": "Kopiera till textfält: {{text}}"
   },

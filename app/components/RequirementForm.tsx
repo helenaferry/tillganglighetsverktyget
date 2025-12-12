@@ -153,7 +153,7 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
                       key={index}
                       className="flex flex-col xl:flex-row xl:items-center xl:gap-2 my-6 xl:my-4 max-w-p-medium"
                     >
-                      <div aria-hidden="true" className="bg-white py-2 px-4 rounded">
+                      <div aria-hidden="true" className="bg-white py-2 px-4 rounded grow-1">
                         {text}
                       </div>
                       <div>
