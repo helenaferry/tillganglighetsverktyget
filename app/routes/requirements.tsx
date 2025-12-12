@@ -320,6 +320,7 @@ export default function RequirementsPage() {
                       <RequirementDetails
                         requirement={requirement}
                         headingLevel="h3"
+                        textSuggestions={requirement.textSuggestions || []}
                       ></RequirementDetails>
                     </article>
                   </DigiLayoutBlock>

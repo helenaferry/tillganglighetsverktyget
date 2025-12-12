@@ -8,9 +8,14 @@ import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
 export type Props = {
   requirement: Requirement;
   headingLevel?: 'h2' | 'h3' | 'h4';
+  textSuggestions?: string[];
 };
 
-export default function RequirementDetails({ requirement, headingLevel = 'h4' }: Props) {
+export default function RequirementDetails({
+  requirement,
+  headingLevel = 'h4',
+  textSuggestions = [],
+}: Props) {
   const { t } = useTranslation();
   const requirementAdditions = JSON.parse(
     import.meta.env.VITE_REQUIREMENT_ADDITIONS || '{}',
@@ -52,6 +57,18 @@ export default function RequirementDetails({ requirement, headingLevel = 'h4' }:
               <div>
                 <ReactMarkdown>{requirement.howToTest || ''}</ReactMarkdown>
               </div>
+            </DigiExpandableAccordion>
+          )}
+          {textSuggestions && textSuggestions.length > 0 && (
+            <DigiExpandableAccordion
+              afHeading={t('RequirementForm.SuggestionsHeadingExtended')}
+              afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+            >
+              <ul>
+                {textSuggestions.map((text) => (
+                  <li key={text}>{text}</li>
+                ))}
+              </ul>
             </DigiExpandableAccordion>
           )}
           {addition && (
