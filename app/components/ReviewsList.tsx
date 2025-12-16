@@ -351,50 +351,19 @@ export function ReviewsList() {
                     setFilterFaves(false);
                   }}
                   choicesMade={filterFreeText.length > 0 || sortBy !== undefined || filterFaves}
-                  toggleButtons={
-                    <div>
-                      {/* TODO decide which way to go and fix permanently (and for flagged requirements) */}
-                      <DigiFormCheckbox
-                        afLabel="Visa bara mina favoritmarkerade granskningar"
-                        onAfOnChange={(e) => {
-                          setFilterFaves(e.detail.target.checked);
-                          setUrlParams(
-                            filterFreeText,
-                            sortBy,
-                            sortDirection,
-                            e.detail.target.checked,
-                          );
-                        }}
-                      ></DigiFormCheckbox>
-                      {/*<fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
-                        <legend className="sr-only">{t('ReviewsList.ToggleFaves')}</legend>
-                        <DigiButton
-                          afVariation={
-                            filterFaves ? ButtonVariation.SECONDARY : ButtonVariation.PRIMARY
-                          }
-                          afAriaPressed={!filterFaves}
-                          onAfOnClick={() => {
-                            setFilterFaves(false);
-                            setUrlParams(filterFreeText, sortBy!, sortDirection, false);
-                          }}
-                        >
-                          {t('ReviewsList.ShowAllReviews')}
-                        </DigiButton>
-                        <DigiButton
-                          key={favoriteReviews.length}
-                          afVariation={
-                            filterFaves ? ButtonVariation.PRIMARY : ButtonVariation.SECONDARY
-                          }
-                          afAriaPressed={filterFaves}
-                          onAfOnClick={() => {
-                            setFilterFaves(true);
-                            setUrlParams(filterFreeText, sortBy, sortDirection, true);
-                          }}
-                        >
-                          {t('ReviewsList.ShowFavorites', { count: favoriteReviews.length })}
-                        </DigiButton>
-                      </fieldset>*/}
-                    </div>
+                  slotBelow={
+                    <DigiFormCheckbox
+                      afLabel={t('ReviewsList.ShowFavorites')}
+                      onAfOnChange={(e) => {
+                        setFilterFaves(e.detail.target.checked);
+                        setUrlParams(
+                          filterFreeText,
+                          sortBy,
+                          sortDirection,
+                          e.detail.target.checked,
+                        );
+                      }}
+                    ></DigiFormCheckbox>
                   }
                   mainColumnIndex={1}
                 />

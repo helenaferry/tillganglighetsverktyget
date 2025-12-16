@@ -53,9 +53,7 @@
     "ItemsName": "granskningar",
     "ItemsNameSingular": "granskning",
     "SearchLabel": "Sök på granskningsnamn",
-    "ToggleFaves": "Toggla favoriter eller alla granskningar",
-    "ShowAllReviews": "Visa alla granskningar",
-    "ShowFavorites": "Visa favoriter ({{count}})"
+    "ShowFavorites": "Visa endast favoritmarkerade granskningar"
   },
   "addReview": {
     "Title": "Skapa granskning",
@@ -130,9 +128,7 @@
     "SearchLabel": "Sök på krav",
     "FilterCategories": "Kravkategorier",
     "FilterStatus": "Bedömning",
-    "ToggleLegend": "Toggla flaggade eller alla krav",
-    "ShowAllRequirements": "Visa alla krav",
-    "ShowFlaggedRequirements": "Visa flaggade krav ({{count}})",
+    "ShowFlaggedRequirements": "Visa endast flaggade krav",
     "NotFoundHeading": "Granskningen hittades inte",
     "NotFoundText": "Den kan ha tagits bort, eller så har ett fel uppstått.",
     "ReviewOverview": "Kravöversikt"

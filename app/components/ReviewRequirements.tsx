@@ -1,5 +1,4 @@
 import {
-  ButtonVariation,
   ErrorPageStatusCodes,
   LayoutBlockVariation,
   LoaderSkeletonVariation,
@@ -7,7 +6,7 @@ import {
   NotificationAlertVariation,
 } from '@designsystem-se/af';
 import {
-  DigiButton,
+  DigiFormCheckbox,
   DigiLayoutBlock,
   DigiLayoutContainer,
   DigiLoaderSkeleton,
@@ -575,57 +574,21 @@ export default function ReviewRequirements({ reviewId }: Props) {
                             sortBy !== undefined ||
                             filterFlagged
                           }
-                          toggleButtons={
-                            <fieldset className="flex flex-col lg:flex-row gap-4 mb-8">
-                              <legend className="sr-only">
-                                {t('ReviewRequirements.ToggleLegend')}
-                              </legend>
-                              <DigiButton
-                                afVariation={
-                                  filterFlagged
-                                    ? ButtonVariation.SECONDARY
-                                    : ButtonVariation.PRIMARY
-                                }
-                                afAriaPressed={!filterFlagged}
-                                onAfOnClick={() => {
-                                  setFilterFlagged(false);
-                                  setUrlParams(
-                                    filterFreeText,
-                                    filterCategories,
-                                    filterStatus,
-                                    sortBy,
-                                    sortDirection,
-                                    false,
-                                  );
-                                }}
-                              >
-                                {t('ReviewRequirements.ShowAllRequirements')}
-                              </DigiButton>
-                              <DigiButton
-                                afVariation={
-                                  filterFlagged
-                                    ? ButtonVariation.PRIMARY
-                                    : ButtonVariation.SECONDARY
-                                }
-                                afAriaPressed={filterFlagged}
-                                onAfOnClick={() => {
-                                  setFilterFlagged(true);
-                                  setUrlParams(
-                                    filterFreeText,
-                                    filterCategories,
-                                    filterStatus,
-                                    sortBy,
-                                    sortDirection,
-                                    true,
-                                  );
-                                }}
-                              >
-                                {t('ReviewRequirements.ShowFlaggedRequirements', {
-                                  count: requirementsWithChecks.filter((req) => req.check?.flag)
-                                    .length,
-                                })}
-                              </DigiButton>
-                            </fieldset>
+                          slotBelow={
+                            <DigiFormCheckbox
+                              afLabel={t('ReviewRequirements.ShowFlaggedRequirements')}
+                              onAfOnChange={(e) => {
+                                setFilterFlagged(e.detail.target.checked);
+                                setUrlParams(
+                                  filterFreeText,
+                                  filterCategories,
+                                  filterStatus,
+                                  sortBy,
+                                  sortDirection,
+                                  e.detail.target.checked,
+                                );
+                              }}
+                            ></DigiFormCheckbox>
                           }
                         />
                       </div>

@@ -46,7 +46,7 @@ interface Props {
   displayHeadingsAboveCards?: boolean;
   resetChoices?: () => void;
   choicesMade?: boolean;
-  toggleButtons?: ReactNode;
+  slotBelow?: ReactNode;
   mainColumnIndex?: number;
 }
 
@@ -64,7 +64,7 @@ export function CardsOrTable({
   displayHeadingsAboveCards = true,
   resetChoices,
   choicesMade = false,
-  toggleButtons,
+  slotBelow,
   mainColumnIndex = 0,
 }: Props) {
   const { t } = useTranslation();
@@ -154,7 +154,7 @@ export function CardsOrTable({
         </form>
       )}
 
-      {toggleButtons && <div className="mt-4">{toggleButtons}</div>}
+      {slotBelow && <div className="mt-4">{slotBelow}</div>}
 
       <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4">
         <ScreenReaderAlert
