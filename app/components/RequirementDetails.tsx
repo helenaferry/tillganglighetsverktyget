@@ -61,7 +61,7 @@ export default function RequirementDetails({
           )}
           {textSuggestions && textSuggestions.length > 0 && (
             <DigiExpandableAccordion
-              afHeading={t('RequirementForm.SuggestionsHeadingExtended')}
+              afHeading={t('RequirementForm.SuggestionsHeading')}
               afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
             >
               <ul>

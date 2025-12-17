@@ -454,57 +454,56 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                 <div>
                                   <RequirementLegal headingLevel="h3" requirement={requirement} />
                                 </div>
-                                <div
-                                  key={`flag-${check?.flag}`}
-                                  className="lg:text-right lg:basis-[20rem] lg:shrink-0 flex flex-col lg:items-end lg:pt-3"
-                                >
-                                  {check?.flag ? (
-                                    <>
-                                      <span className="hidden lg:inline-block">
-                                        <DigiButton
-                                          afVariation={ButtonVariation.FUNCTION}
-                                          onAfOnClick={() => flagRequirement(false)}
-                                        >
-                                          <span slot="icon">
-                                            <FilledFlag />
-                                          </span>
-                                          {t('ReviewRequirement.Flagged')}
-                                        </DigiButton>
+                                <div className="lg:text-right lg:basis-[20rem] lg:shrink-0 flex flex-col lg:items-end lg:pt-3">
+                                  <span className="hidden lg:inline-block">
+                                    <DigiButton
+                                      afVariation={ButtonVariation.FUNCTION}
+                                      onAfOnClick={() => flagRequirement(!check?.flag)}
+                                      afAriaPressed={check?.flag || false}
+                                    >
+                                      <span
+                                        slot="icon"
+                                        style={{ display: check?.flag ? 'inline' : 'none' }}
+                                      >
+                                        <FilledFlag />
                                       </span>
-                                      <span className="lg:hidden mb-3">
-                                        <DigiButton
-                                          afVariation={ButtonVariation.SECONDARY}
-                                          onAfOnClick={() => flagRequirement(false)}
-                                        >
-                                          <span slot="icon">
-                                            <FilledFlag />
-                                          </span>
-                                          {t('ReviewRequirement.Flagged')}
-                                        </DigiButton>
+                                      <DigiIconComunicationFlag
+                                        slot="icon"
+                                        style={{ display: !check?.flag ? 'inline' : 'none' }}
+                                      />
+                                      <span style={{ display: check?.flag ? 'inline' : 'none' }}>
+                                        {t('ReviewRequirement.Flagged')}
                                       </span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <span className="hidden lg:inline-block">
-                                        <DigiButton
-                                          afVariation={ButtonVariation.FUNCTION}
-                                          onAfOnClick={() => flagRequirement(true)}
-                                        >
-                                          <DigiIconComunicationFlag slot="icon" />
-                                          {t('ReviewRequirement.Flag')}
-                                        </DigiButton>
+                                      <span style={{ display: !check?.flag ? 'inline' : 'none' }}>
+                                        {t('ReviewRequirement.Flag')}
                                       </span>
-                                      <span className="lg:hidden mb-3">
-                                        <DigiButton
-                                          afVariation={ButtonVariation.SECONDARY}
-                                          onAfOnClick={() => flagRequirement(true)}
-                                        >
-                                          <DigiIconComunicationFlag slot="icon" />
-                                          {t('ReviewRequirement.Flag')}
-                                        </DigiButton>
+                                    </DigiButton>
+                                  </span>
+                                  <span className="lg:hidden mb-3">
+                                    <DigiButton
+                                      afVariation={ButtonVariation.SECONDARY}
+                                      onAfOnClick={() => flagRequirement(!check?.flag)}
+                                      afAriaPressed={check?.flag || false}
+                                    >
+                                      <span
+                                        slot="icon"
+                                        style={{ display: check?.flag ? 'inline' : 'none' }}
+                                      >
+                                        <FilledFlag />
                                       </span>
-                                    </>
-                                  )}
+                                      <DigiIconComunicationFlag
+                                        slot="icon"
+                                        style={{ display: !check?.flag ? 'inline' : 'none' }}
+                                      />
+                                      <span style={{ display: check?.flag ? 'inline' : 'none' }}>
+                                        {t('ReviewRequirement.Flagged')}
+                                      </span>
+                                      <span style={{ display: !check?.flag ? 'inline' : 'none' }}>
+                                        {t('ReviewRequirement.Flag')}
+                                      </span>
+                                    </DigiButton>
+                                  </span>
+
                                   <ScreenReaderAlert
                                     updateOnChange={flagErrorMessage + flagMessage}
                                   >
