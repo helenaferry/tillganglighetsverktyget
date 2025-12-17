@@ -339,48 +339,60 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 afVerticalPadding={true}
               >
                 <div className="flex flex-col sm:flex-row mb-6">
-                  <div
-                    className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).notAssessedCount} ${t('ReviewRequirements.StatusLabelNotAssessed')}`}
-                  >
-                    <div className="flex flex-col items-center" aria-hidden="true">
-                      <p className="!text-2xl !mb-2">
+                  <div className="basis-1/4">
+                    <div className="flex flex-col items-center">
+                      <span className="sr-only">
+                        {numberPerStatus(requirementsWithChecks).notAssessedCount}{' '}
+                        {t('ReviewRequirements.StatusLabelNotAssessed')}
+                      </span>
+                      <p className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).notAssessedCount}
                       </p>
-                      <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
+                      <div aria-hidden="true">
+                        <StatusBadge status={Status.NOT_ASSESSED} plural noMinWidth />
+                      </div>
                     </div>
                   </div>
-                  <div
-                    className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).passCount} ${t('ReviewRequirements.StatusLabelPass')}`}
-                  >
-                    <div className="flex flex-col items-center" aria-hidden="true">
-                      <p className="!text-2xl !mb-2">
+                  <div className="basis-1/4">
+                    <div className="flex flex-col items-center">
+                      <span className="sr-only">
+                        {numberPerStatus(requirementsWithChecks).passCount}{' '}
+                        {t('ReviewRequirements.StatusLabelPass')}
+                      </span>
+                      <p className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).passCount}
                       </p>
-                      <StatusBadge status={Status.PASS} plural noMinWidth />
+                      <div aria-hidden="true">
+                        <StatusBadge status={Status.PASS} plural noMinWidth />
+                      </div>
                     </div>
                   </div>
-                  <div
-                    className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).failCount} ${t('ReviewRequirements.StatusLabelFail')}`}
-                  >
-                    <div className="flex flex-col items-center" aria-hidden="true">
-                      <p className="!text-2xl !mb-2">
+                  <div className="basis-1/4">
+                    <div className="flex flex-col items-center">
+                      <span className="sr-only">
+                        {numberPerStatus(requirementsWithChecks).failCount}{' '}
+                        {t('ReviewRequirements.StatusLabelFail')}
+                      </span>
+                      <p className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).failCount}
                       </p>
-                      <StatusBadge status={Status.FAIL} plural noMinWidth />
+                      <div aria-hidden="true">
+                        <StatusBadge status={Status.FAIL} plural noMinWidth />
+                      </div>
                     </div>
                   </div>
-                  <div
-                    className="basis-1/4"
-                    aria-label={`${numberPerStatus(requirementsWithChecks).irrelevantCount} ${t('ReviewRequirements.StatusLabelIrrelevant')}`}
-                  >
-                    <div className="flex flex-col items-center" aria-hidden="true">
-                      <p className="!text-2xl !mb-2">
+                  <div className="basis-1/4">
+                    <div className="flex flex-col items-center">
+                      <span className="sr-only">
+                        {numberPerStatus(requirementsWithChecks).irrelevantCount}{' '}
+                        {t('ReviewRequirements.StatusLabelIrrelevant')}
+                      </span>
+                      <p className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).irrelevantCount}
                       </p>
-                      <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
+                      <div aria-hidden="true">
+                        <StatusBadge status={Status.IRRELEVANT} plural noMinWidth />
+                      </div>
                     </div>
                   </div>
                 </div>
