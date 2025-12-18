@@ -3,6 +3,7 @@ import {
   ButtonVariation,
   FormInputSearchVariation,
   FormInputType,
+  FormValidationMessageVariation,
   LayoutBlockVariation,
   LayoutContainerVariation,
   LoaderSkeletonVariation,
@@ -11,6 +12,7 @@ import {
   DigiButton,
   DigiFormCategoryFilter,
   DigiFormInputSearch,
+  DigiFormValidationMessage,
   DigiIconShareAlt,
   DigiLayoutBlock,
   DigiLayoutContainer,
@@ -70,6 +72,9 @@ export default function RequirementsPage() {
       ? requirementsAll?.filter((req) => req.objectType === ObjectType.WEB)
       : requirementsAll?.filter((req) => req.objectType === ObjectType.DOCUMENT);
   }, [showObjectType, requirementsAll]);
+  const [shareMessage, setShareMessage] = useState('');
+  const [shareId, setShareId] = useState('');
+  const [shareCount, setShareCount] = useState(0);
 
   const searchMatches = (requirement: Requirement, search: string) => {
     const nameMatch = requirement.name.toLowerCase().includes(search.toLowerCase());
@@ -294,10 +299,9 @@ export default function RequirementsPage() {
                               afType="button"
                               afAriaLabel={`${t('requirements.Share')} ${requirement.name}`}
                               onAfOnClick={() => {
-                                const target = document.querySelector(`#share-${requirement.id}`);
-                                if (target) {
-                                  target.innerHTML = `<a href="${window.location.origin}${window.location.pathname}?id=${requirement.id}">${t('requirements.LinkCopied')}</a>`;
-                                }
+                                setShareMessage(t('requirements.LinkCopied'));
+                                setShareId(String(requirement.id));
+                                setShareCount(shareCount + 1);
                                 navigator.clipboard.writeText(
                                   window.location.origin +
                                     window.location.pathname +
@@ -308,11 +312,15 @@ export default function RequirementsPage() {
                               {t('requirements.ShareButton')}
                               <DigiIconShareAlt slot="icon" />
                             </DigiButton>
-                            <p
-                              className="!text-xs h-2"
-                              id={`share-${requirement.id}`}
-                              role="status"
-                            ></p>
+                            <ScreenReaderAlert updateOnChange={shareMessage + shareId + shareCount}>
+                              {shareMessage && shareId === requirement.id && (
+                                <DigiFormValidationMessage
+                                  afVariation={FormValidationMessageVariation.SUCCESS}
+                                >
+                                  {shareMessage}
+                                </DigiFormValidationMessage>
+                              )}
+                            </ScreenReaderAlert>
                           </div>
                         </div>
                         <RequirementLegal requirement={requirement} headingLevel="h3" />
