@@ -28,7 +28,12 @@ export function InfoCard() {
               className="w-[12rem] h-auto flex-shrink-0"
             />
             <div>
-              <h2>{t(`InfoCard.${current}.Title`)}</h2>
+              <p aria-hidden="true" className="text-grayscale-700 !mb-0 uppercase !text-sm">
+                {t('InfoCard.Heading')}
+              </p>
+              <h2 aria-label={`${t('InfoCard.Heading')}: ${t(`InfoCard.${current}.Title`)}`}>
+                {t(`InfoCard.${current}.Title`)}
+              </h2>
               <p>{t(`InfoCard.${current}.Text`)}</p>
             </div>
           </div>

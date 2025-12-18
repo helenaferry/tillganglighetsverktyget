@@ -221,6 +221,7 @@
     "SaveCsvButtonText": "Spara som .csv"
   },
   "InfoCard": {
+    "Heading": "Inspiration",
     "1": {
       "Title": "Varför finns det här verktyget?",
       "Text": "Tillgänglighet är allas ansvar, men alla kan inte vara experter. Verktyget gör det lättare för dig som är utvecklare, designer eller produktledare att leva upp till lagkraven och skapa tjänster som fungerar för alla.",
