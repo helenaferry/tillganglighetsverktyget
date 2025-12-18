@@ -354,6 +354,7 @@ export function ReviewsList() {
                   slotBelow={
                     <DigiFormCheckbox
                       afLabel={t('ReviewsList.ShowFavorites')}
+                      afChecked={filterFaves}
                       onAfOnChange={(e) => {
                         setFilterFaves(e.detail.target.checked);
                         setUrlParams(

@@ -589,6 +589,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
                           slotBelow={
                             <DigiFormCheckbox
                               afLabel={t('ReviewRequirements.ShowFlaggedRequirements')}
+                              afChecked={filterFlagged}
                               onAfOnChange={(e) => {
                                 setFilterFlagged(e.detail.target.checked);
                                 setUrlParams(
