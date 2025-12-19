@@ -84,6 +84,8 @@ export function ReviewForm({ review }: Props) {
     useState<boolean>(false);
   const [showRemovePrefillConfirmationNo, setShowRemovePrefillConfirmationNo] =
     useState<boolean>(false);
+  const [contentTypePrefillsUpdatedYes, setContentTypePrefillsUpdatedYes] = useState<string[]>([]);
+  const [contentTypePrefillsUpdatedNo, setContentTypePrefillsUpdatedNo] = useState<string[]>([]);
   const [saving, setSaving] = useState<boolean>(false);
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
@@ -218,7 +220,18 @@ export function ReviewForm({ review }: Props) {
 
   const handleContentChange = (contentType: string, included: string) => {
     setContentTypePrefillsUpdated(true);
-    const excluded = included == 'false';
+    const excluded = included === 'false';
+    const excludedInSave = review?.excludedContentTypes?.includes(contentType);
+    if (review && excludedInSave !== excluded) {
+      if (excluded) {
+        setContentTypePrefillsUpdatedNo((prev) => [...prev, contentType]);
+      } else {
+        setContentTypePrefillsUpdatedYes((prev) => [...prev, contentType]);
+      }
+    } else {
+      setContentTypePrefillsUpdatedNo((prev) => prev.filter((type) => type !== contentType));
+      setContentTypePrefillsUpdatedYes((prev) => prev.filter((type) => type !== contentType));
+    }
     if (excluded) {
       if (excludedContentTypes.includes(contentType)) return;
       setExcludedContentTypes((prev) => [...prev, contentType]);
@@ -236,8 +249,6 @@ export function ReviewForm({ review }: Props) {
       },
     });
   };
-
-  console.log('Selected prefills:', selectedPrefills);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -466,12 +477,6 @@ export function ReviewForm({ review }: Props) {
               <h2>{t('ReviewForm.ContentTypes.Question')}</h2>
               <p>{t('ReviewForm.ContentTypes.Description')}</p>
 
-              {review && (
-                <p className="mt-4">
-                  <strong>{t('ReviewForm.ContentTypes.NoteTitle')}</strong>{' '}
-                  {t('ReviewForm.ContentTypes.Note')}
-                </p>
-              )}
               {contentTypes &&
                 contentTypes.map((contentType) => {
                   const questionText =
@@ -496,13 +501,28 @@ export function ReviewForm({ review }: Props) {
                             afLabel={t('Yes')}
                             afValue="true"
                             afChecked={excludedContentTypes.includes(contentType) ? false : true}
+                            afAriaDescribedby={`content-prefill-warning-${contentType}`}
                           ></DigiFormRadiobutton>
                           <DigiFormRadiobutton
                             afLabel={t('No')}
                             afValue="false"
                             afChecked={excludedContentTypes.includes(contentType) ? true : false}
+                            afAriaDescribedby={`content-prefill-warning-${contentType}`}
                           ></DigiFormRadiobutton>
                         </DigiFormRadiogroup>
+                        <p role="alert" id={`content-prefill-warning-${contentType}`}>
+                          {review &&
+                            (contentTypePrefillsUpdatedNo.includes(contentType) ||
+                              contentTypePrefillsUpdatedYes.includes(contentType)) && (
+                              <DigiFormValidationMessage
+                                afVariation={FormValidationMessageVariation.WARNING}
+                              >
+                                {contentTypePrefillsUpdatedYes.includes(contentType)
+                                  ? t('ReviewForm.ContentTypes.ContentChangeWarningYes')
+                                  : t('ReviewForm.ContentTypes.ContentChangeWarningNo')}
+                              </DigiFormValidationMessage>
+                            )}
+                        </p>
                       </DigiFormFieldset>
                     </div>
                   );

@@ -82,8 +82,8 @@
     "ContentTypes": {
       "Question": "Vad innehåller din tjänst?",
       "Description": "Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
-      "NoteTitle": "Observera!",
-      "Note": "Ändringar i en påbörjad granskning kan påverka krav som redan har bedömts.",
+      "ContentChangeWarningYes": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare nollställs bedömningen för alla krav relaterade till detta val.",
+      "ContentChangeWarningNo": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare markeras alla krav relaterade till detta val som irrelevanta.",
       "PrefillWarningYes": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare kommer bedömningen för alla krav relaterade till detta val att följa inställningen.",
       "PrefillWarningNo": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare kommer bedömningen för alla krav relaterade till detta val att nollställas.",
       "FallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
