@@ -80,7 +80,9 @@ export function ReviewForm({ review }: Props) {
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [showAbortConfirmation, setShowAbortConfirmation] = useState<boolean>(false);
-  const [showRemovePrefillConfirmation, setShowRemovePrefillConfirmation] =
+  const [showRemovePrefillConfirmationYes, setShowRemovePrefillConfirmationYes] =
+    useState<boolean>(false);
+  const [showRemovePrefillConfirmationNo, setShowRemovePrefillConfirmationNo] =
     useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
@@ -524,13 +526,17 @@ export function ReviewForm({ review }: Props) {
                     onAfOnGroupChange={(e) => {
                       setConfigPrefillsUpdated(true);
                       const value = (e.target as HTMLInputElement)?.value;
+                      setShowRemovePrefillConfirmationYes(
+                        value === 'true' &&
+                          Boolean(!review?.selectedPrefillIds?.includes(prefill.id)),
+                      );
+                      setShowRemovePrefillConfirmationNo(
+                        value === 'false' &&
+                          Boolean(review?.selectedPrefillIds?.includes(prefill.id)),
+                      );
                       if (value === 'true') {
-                        setShowRemovePrefillConfirmation(false);
                         setSelectedPrefills([...selectedPrefills, prefill]);
                       } else {
-                        if (review) {
-                          setShowRemovePrefillConfirmation(true);
-                        }
                         setSelectedPrefills(selectedPrefills.filter((p) => p.id !== prefill.id));
                       }
                     }}
@@ -539,6 +545,7 @@ export function ReviewForm({ review }: Props) {
                       afLabel={t('Yes')}
                       afValue="true"
                       afChecked={selectedPrefills.some((p) => p.id === prefill.id)}
+                      afAriaDescribedby="prefill-warning-message"
                     ></DigiFormRadiobutton>
                     <DigiFormRadiobutton
                       afLabel={t('No')}
@@ -550,13 +557,15 @@ export function ReviewForm({ review }: Props) {
                 </DigiFormFieldset>
               </div>
             ))}
-          <div role="alert" id="prefill-warning-message">
-            {showRemovePrefillConfirmation && (
+          <p role="alert" id="prefill-warning-message" className="!-mt-4">
+            {review && (showRemovePrefillConfirmationYes || showRemovePrefillConfirmationNo) && (
               <DigiFormValidationMessage afVariation={FormValidationMessageVariation.WARNING}>
-                {t('ReviewForm.ContentTypes.PrefillWarning')}
+                {showRemovePrefillConfirmationYes
+                  ? t('ReviewForm.ContentTypes.PrefillWarningYes')
+                  : t('ReviewForm.ContentTypes.PrefillWarningNo')}
               </DigiFormValidationMessage>
             )}
-          </div>
+          </p>
           <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4">
             <span role="status">
               <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span>{' '}

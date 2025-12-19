@@ -84,7 +84,8 @@
       "Description": "Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
       "NoteTitle": "Observera!",
       "Note": "Ändringar i en påbörjad granskning kan påverka krav som redan har bedömts.",
-      "PrefillWarning": "Denna ändring kan påverka tidigare granskade krav. Om du går vidare kommer status för alla krav relaterade till detta val att nollställas.",
+      "PrefillWarningYes": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare kommer bedömningen för alla krav relaterade till detta val att följa inställningen.",
+      "PrefillWarningNo": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare kommer bedömningen för alla krav relaterade till detta val att nollställas.",
       "FallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
     },
     "RequirementsToReview": "krav att granska",
@@ -221,7 +222,7 @@
     "SaveCsvButtonText": "Spara som .csv"
   },
   "InfoCard": {
-    "Heading": "Inspiration",
+    "Heading": "Inspiration:",
     "1": {
       "Title": "Varför finns det här verktyget?",
       "Text": "Tillgänglighet är allas ansvar, men alla kan inte vara experter. Verktyget gör det lättare för dig som är utvecklare, designer eller produktledare att leva upp till lagkraven och skapa tjänster som fungerar för alla.",
