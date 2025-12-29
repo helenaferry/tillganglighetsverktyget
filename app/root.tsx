@@ -38,15 +38,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="min-h-screen flex flex-col gap-0">
-        <SkipLink />
         <ClientOnly>
+          <SkipLink />
           <Header />
           <QueryClientProvider client={queryClient}>
             <div className="bg-grayscale-100 grow">{children}</div>
           </QueryClientProvider>
           <Footer />
+          <ScrollRestoration />
         </ClientOnly>
-        <ScrollRestoration />
         <Scripts />
       </body>
     </html>
