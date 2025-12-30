@@ -3,8 +3,8 @@
 **/node_modules/**
 
 # React Router
-/.react-router/
-/build/
+./client/.react-router/
+**/build/**
 
 .env.local
 /.idea/*
