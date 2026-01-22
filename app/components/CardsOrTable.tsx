@@ -321,20 +321,22 @@ export function CardsOrTable({
             ))}
           </ul>
         </div>
-        {pageSize > 0 && rows.length > pageSize && (
-          <div className="mt-10 min-h-[20rem] md:min-h-0" key={`pagination-${paginationKey}`}>
-            <div className="absolute md:relative left-0 right-0 w-screen md:w-full">
-              <DigiNavigationPagination
-                afTotalPages={Math.ceil(rows.length / pageSize)}
-                afInitActivePage={currentPage}
-                afCurrentResultStart={paginationStart}
-                afCurrentResultEnd={paginationEnd}
-                afTotalResults={rows.length}
-                onAfOnPageChange={(e) => setCurrentPage(e.detail)}
-              ></DigiNavigationPagination>
+        <div>
+          {pageSize > 0 && rows.length > pageSize && (
+            <div className="mt-10 min-h-[20rem] md:min-h-0" key={`pagination-${paginationKey}`}>
+              <div className="absolute md:relative left-0 right-0 w-screen md:w-full">
+                <DigiNavigationPagination
+                  afTotalPages={Math.ceil(rows.length / pageSize)}
+                  afInitActivePage={currentPage}
+                  afCurrentResultStart={paginationStart}
+                  afCurrentResultEnd={paginationEnd}
+                  afTotalResults={rows.length}
+                  onAfOnPageChange={(e) => setCurrentPage(e.detail)}
+                ></DigiNavigationPagination>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </DigiTypography>
     </div>
   );
