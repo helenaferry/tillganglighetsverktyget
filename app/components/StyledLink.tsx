@@ -21,7 +21,6 @@ type Props = {
     | 'plain';
   hideIcon?: boolean;
   className?: string;
-  onClick?: (event: CustomEvent) => void;
   overrideLink?: boolean;
 };
 
@@ -33,7 +32,6 @@ export function StyledLink({
   styleVariant = 'link',
   hideIcon,
   className,
-  onClick,
   overrideLink = false,
 }: Props) {
   const navigate = useNavigate();
@@ -48,7 +46,7 @@ export function StyledLink({
     if (overrideLink) {
       overrideClick(e);
     } else {
-      if (onClick) onClick(e as CustomEvent);
+      window.location.href = to; // Non-SPA navigation
     }
   };
 
@@ -60,7 +58,6 @@ export function StyledLink({
       | React.MouseEvent<HTMLAnchorElement>,
   ) => {
     e.preventDefault();
-    onClick?.(e as CustomEvent);
     navigate(to);
   };
 

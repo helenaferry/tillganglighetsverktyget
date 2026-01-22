@@ -236,12 +236,22 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   const location = useLocation();
 
   useEffect(() => {
-    if (requirement && location.hash) {
+    if (!location.hash) return;
+    let frame = 0;
+    let attempts = 0;
+    const tryScroll = () => {
       const el = document.querySelector(location.hash);
       if (el) {
         el.scrollIntoView({ behavior: 'auto' });
+        return;
       }
-    }
+      if (attempts < 10) {
+        attempts += 1;
+        frame = requestAnimationFrame(tryScroll);
+      }
+    };
+    tryScroll();
+    return () => cancelAnimationFrame(frame);
   }, [requirement, location.hash]);
 
   const flagRequirement = (flag: boolean) => {
