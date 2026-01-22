@@ -10,6 +10,7 @@ import {
   DigiFormInputSearch,
   DigiNavigationPagination,
   DigiTable,
+  DigiTypography,
 } from '@designsystem-se/af-react';
 import { type ReactNode, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -109,230 +110,232 @@ export function CardsOrTable({
 
   return (
     <div className="cards-or-table w-full">
-      {filters && filters.length > 0 && (
-        <form
-          className="cards-or-table__filters flex flex-col lg:flex-row gap-4 justify-between"
-          aria-label={t('CardsOrTable.SearchAndFilterLabel')}
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="flex flex-col lg:flex-row gap-4 lg:items-end">
-            {filters &&
-              filters.map((filter) => (
-                <div key={filter.label} className="max-w-[14rem] sm:max-w-none">
-                  {filter.type === 'freeText' && (
-                    <DigiFormInputSearch
-                      afId="search-input"
-                      afLabel={filter.label}
-                      afVariation={FormInputSearchVariation.MEDIUM}
-                      afType={FormInputType.SEARCH}
-                      afValue={searchTerm}
-                      afButtonText="Sök"
-                      onAfOnSubmitSearch={(e) => {
-                        setSearchTerm(e.detail);
-                        filter.onChange(e);
-                        setTimesFiltered(timesFiltered + 1);
-                      }}
-                    ></DigiFormInputSearch>
-                  )}
-                  {filter.type === 'select' && filter.options && filter.options.length > 1 && (
-                    <div key={filter.label + filterKey} className="mb-[0.4rem]">
-                      <DigiFormFilter
-                        afFilterButtonText={filter.label}
-                        afSubmitButtonText="Filtrera"
-                        afListItems={filter.options}
-                        onAfSubmitFilter={(e) => {
+      <DigiTypography>
+        {filters && filters.length > 0 && (
+          <form
+            className="cards-or-table__filters flex flex-col lg:flex-row gap-4 justify-between"
+            aria-label={t('CardsOrTable.SearchAndFilterLabel')}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <div className="flex flex-col lg:flex-row gap-4 lg:items-end">
+              {filters &&
+                filters.map((filter) => (
+                  <div key={filter.label} className="max-w-[14rem] sm:max-w-none">
+                    {filter.type === 'freeText' && (
+                      <DigiFormInputSearch
+                        afId="search-input"
+                        afLabel={filter.label}
+                        afVariation={FormInputSearchVariation.MEDIUM}
+                        afType={FormInputType.SEARCH}
+                        afValue={searchTerm}
+                        afButtonText="Sök"
+                        onAfOnSubmitSearch={(e) => {
+                          setSearchTerm(e.detail);
                           filter.onChange(e);
                           setTimesFiltered(timesFiltered + 1);
                         }}
-                        afCheckItems={filter.values}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-          </div>
-        </form>
-      )}
-
-      {slotBelow && <div className="mt-4">{slotBelow}</div>}
-
-      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4">
-        <ScreenReaderAlert
-          className="flex flex-col md:flex-row md:items-center"
-          updateOnChange={timesFiltered}
-        >
-          <span className="font-bold">{hitsText}</span>
-          {choicesMade && (
-            <span className="inline-flex md:ml-4">
-              <ResetButton
-                onClick={() => {
-                  reset();
-                }}
-                focusOnReset={document.getElementById('search-input')}
-              />
-            </span>
-          )}
-        </ScreenReaderAlert>
-        {pageSize > -1 && (
-          <div>
-            <DigiContextMenu
-              afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
-              afMenuPosition="left-bottom"
-              afMenuItems={[
-                { id: 5, title: '5' },
-                { id: 10, title: '10' },
-                { id: 20, title: '20' },
-                { id: 50, title: '50' },
-                { id: 100, title: '100' },
-                { id: 150, title: '150' },
-                { id: 200, title: '200' },
-                { id: 0, title: 'Alla' },
-              ].filter((item) => item.id === 0 || (rows.length > 0 && item.id <= rows.length))}
-              onAfChangeItem={(e) => {
-                if (e.detail.item.id === 0) {
-                  setPageSize(0);
-                  setPaginationStart(1);
-                  setPaginationEnd(rows.length);
-                  setCurrentPage(1);
-                  setPaginationKey(paginationKey + 1);
-                } else {
-                  setPageSize(Number(e.detail.item.id));
-                  setPaginationStart(1);
-                  setPaginationEnd(Number(e.detail.item.id));
-                  setCurrentPage(1);
-                  setPaginationKey(paginationKey + 1);
-                }
-              }}
-            ></DigiContextMenu>
-          </div>
-        )}
-      </div>
-
-      <div className="hidden lg:block">
-        <DigiTable afSize={TableSize.MEDIUM}>
-          <h2 className="sr-only">Tabell med {itemsName}</h2>
-          <table aria-rowcount={rows.length} className="mt-6">
-            <caption className="sr-only">Tabell med {itemsName}</caption>
-            <thead>
-              <tr>
-                {headings.map((heading, index) => (
-                  <th
-                    scope="col"
-                    key={`${index}-${headings.length}`}
-                    aria-label={
-                      cardsHeadings && typeof cardsHeadings[index] === 'string'
-                        ? (cardsHeadings[index] as string)
-                        : undefined
-                    }
-                    aria-sort={
-                      sortedByThIndex === index
-                        ? sortDirection === 'stigande'
-                          ? 'ascending'
-                          : 'descending'
-                        : undefined
-                    }
-                    className={`${sortedByThIndex === index ? '!border-b-2 !border-sapphire-500' : ''}`}
-                    onClick={() => {
-                      if (heading && pageSize > 0 && rows.length > pageSize) {
-                        setCurrentPage(1);
-                        setPaginationKey(paginationKey + 1);
-                      }
-                    }}
-                  >
-                    {heading}
-                  </th>
+                      ></DigiFormInputSearch>
+                    )}
+                    {filter.type === 'select' && filter.options && filter.options.length > 1 && (
+                      <div key={filter.label + filterKey} className="mb-[0.4rem]">
+                        <DigiFormFilter
+                          afFilterButtonText={filter.label}
+                          afSubmitButtonText="Filtrera"
+                          afListItems={filter.options}
+                          onAfSubmitFilter={(e) => {
+                            filter.onChange(e);
+                            setTimesFiltered(timesFiltered + 1);
+                          }}
+                          afCheckItems={filter.values}
+                        />
+                      </div>
+                    )}
+                  </div>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedRows.map((row) => (
-                <tr
-                  key={`row-${row.id}`}
-                  aria-rowindex={row.posInSet}
-                  className="has-[.flag]:bg-grayscale-100"
-                >
-                  {row.content.map((cell, cellIndex) => (
-                    <td
-                      key={`cell-${row.id}-${cellIndex}`}
-                      className={cellIndex === mainColumnIndex ? 'w-full' : undefined}
-                    >
-                      {cell}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </DigiTable>
-      </div>
-      {/* Cards view */}
-      <div className="lg:hidden space-y-4">
-        <fieldset>
-          <legend className="font-bold py-5">Sortera på:</legend>
-          {displayHeadingsAboveCards && (
+            </div>
+          </form>
+        )}
+
+        {slotBelow && <div className="mt-2">{slotBelow}</div>}
+
+        <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between mt-4">
+          <ScreenReaderAlert
+            className="flex flex-col md:flex-row md:items-center"
+            updateOnChange={timesFiltered}
+          >
+            <span className="font-bold">{hitsText}</span>
+            {choicesMade && (
+              <span className="inline-flex md:ml-4">
+                <ResetButton
+                  onClick={() => {
+                    reset();
+                  }}
+                  focusOnReset={document.getElementById('search-input')}
+                />
+              </span>
+            )}
+          </ScreenReaderAlert>
+          {pageSize > -1 && (
             <div>
-              {headings.map(
-                (heading, index) =>
-                  heading && (
-                    <div
-                      key={`hac-${index}-${headings.length}`}
+              <DigiContextMenu
+                afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
+                afMenuPosition="left-bottom"
+                afMenuItems={[
+                  { id: 5, title: '5' },
+                  { id: 10, title: '10' },
+                  { id: 20, title: '20' },
+                  { id: 50, title: '50' },
+                  { id: 100, title: '100' },
+                  { id: 150, title: '150' },
+                  { id: 200, title: '200' },
+                  { id: 0, title: 'Alla' },
+                ].filter((item) => item.id === 0 || (rows.length > 0 && item.id <= rows.length))}
+                onAfChangeItem={(e) => {
+                  if (e.detail.item.id === 0) {
+                    setPageSize(0);
+                    setPaginationStart(1);
+                    setPaginationEnd(rows.length);
+                    setCurrentPage(1);
+                    setPaginationKey(paginationKey + 1);
+                  } else {
+                    setPageSize(Number(e.detail.item.id));
+                    setPaginationStart(1);
+                    setPaginationEnd(Number(e.detail.item.id));
+                    setCurrentPage(1);
+                    setPaginationKey(paginationKey + 1);
+                  }
+                }}
+              ></DigiContextMenu>
+            </div>
+          )}
+        </div>
+
+        <div className="hidden lg:block">
+          <DigiTable afSize={TableSize.MEDIUM}>
+            <h2 className="sr-only">Tabell med {itemsName}</h2>
+            <table aria-rowcount={rows.length} className="mt-2">
+              <caption className="sr-only">Tabell med {itemsName}</caption>
+              <thead>
+                <tr>
+                  {headings.map((heading, index) => (
+                    <th
+                      scope="col"
+                      key={`${index}-${headings.length}`}
                       aria-label={
                         cardsHeadings && typeof cardsHeadings[index] === 'string'
                           ? (cardsHeadings[index] as string)
                           : undefined
                       }
-                      className={`${index === 0 ? 'w-full' : ''} pb-5`}
+                      aria-sort={
+                        sortedByThIndex === index
+                          ? sortDirection === 'stigande'
+                            ? 'ascending'
+                            : 'descending'
+                          : undefined
+                      }
+                      className={`${sortedByThIndex === index ? '!border-b-2 !border-sapphire-500' : ''}`}
+                      onClick={() => {
+                        if (heading && pageSize > 0 && rows.length > pageSize) {
+                          setCurrentPage(1);
+                          setPaginationKey(paginationKey + 1);
+                        }
+                      }}
                     >
                       {heading}
-                    </div>
-                  ),
-              )}
-            </div>
-          )}
-        </fieldset>
-        <ul
-          className="!list-none border-t-1 mt-6 !p-0"
-          aria-label={
-            pageSize > 0 && rows.length > pageSize
-              ? `Sida ${currentPage} av ${Math.ceil(rows.length / pageSize)}`
-              : undefined
-          }
-          aria-describedby="list-description"
-        >
-          {paginatedRows.map((row) => (
-            <li
-              key={`card-${row.id}`}
-              aria-setsize={rows.length}
-              aria-posinset={row.posInSet}
-              className="border-b-1 py-4 has-[.flag]:bg-grayscale-100 has-[.flag]:px-4 has-[.flag]:border-x-1"
-            >
-              <p className="my-4!">{row.content[0]}</p>
-              {row.content.slice(1).map((cell, cellIndex) => (
-                <div key={`${row.id}-cell-${cellIndex + 1}`} className="mb-2">
-                  {cardsHeadings && cardsHeadings[cellIndex + 1] && (
-                    <div className="font-bold mb-0">{cardsHeadings[cellIndex + 1]}: </div>
-                  )}
-                  <div>{cell}</div>
-                </div>
-              ))}
-            </li>
-          ))}
-        </ul>
-      </div>
-      {pageSize > 0 && rows.length > pageSize && (
-        <div className="mt-10 min-h-[20rem] md:min-h-0" key={`pagination-${paginationKey}`}>
-          <div className="absolute md:relative left-0 right-0 w-screen md:w-full">
-            <DigiNavigationPagination
-              afTotalPages={Math.ceil(rows.length / pageSize)}
-              afInitActivePage={currentPage}
-              afCurrentResultStart={paginationStart}
-              afCurrentResultEnd={paginationEnd}
-              afTotalResults={rows.length}
-              onAfOnPageChange={(e) => setCurrentPage(e.detail)}
-            ></DigiNavigationPagination>
-          </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedRows.map((row) => (
+                  <tr
+                    key={`row-${row.id}`}
+                    aria-rowindex={row.posInSet}
+                    className="has-[.flag]:bg-grayscale-100"
+                  >
+                    {row.content.map((cell, cellIndex) => (
+                      <td
+                        key={`cell-${row.id}-${cellIndex}`}
+                        className={cellIndex === mainColumnIndex ? 'w-full' : undefined}
+                      >
+                        {cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </DigiTable>
         </div>
-      )}
+        {/* Cards view */}
+        <div className="lg:hidden space-y-4">
+          <fieldset>
+            <legend className="font-bold py-5">Sortera på:</legend>
+            {displayHeadingsAboveCards && (
+              <div>
+                {headings.map(
+                  (heading, index) =>
+                    heading && (
+                      <div
+                        key={`hac-${index}-${headings.length}`}
+                        aria-label={
+                          cardsHeadings && typeof cardsHeadings[index] === 'string'
+                            ? (cardsHeadings[index] as string)
+                            : undefined
+                        }
+                        className={`${index === 0 ? 'w-full' : ''} pb-5`}
+                      >
+                        {heading}
+                      </div>
+                    ),
+                )}
+              </div>
+            )}
+          </fieldset>
+          <ul
+            className="!list-none border-t-1 mt-6 !p-0"
+            aria-label={
+              pageSize > 0 && rows.length > pageSize
+                ? `Sida ${currentPage} av ${Math.ceil(rows.length / pageSize)}`
+                : undefined
+            }
+            aria-describedby="list-description"
+          >
+            {paginatedRows.map((row) => (
+              <li
+                key={`card-${row.id}`}
+                aria-setsize={rows.length}
+                aria-posinset={row.posInSet}
+                className="border-b-1 py-4 has-[.flag]:bg-grayscale-100 has-[.flag]:px-4 has-[.flag]:border-x-1"
+              >
+                <p className="my-4!">{row.content[0]}</p>
+                {row.content.slice(1).map((cell, cellIndex) => (
+                  <div key={`${row.id}-cell-${cellIndex + 1}`} className="mb-2">
+                    {cardsHeadings && cardsHeadings[cellIndex + 1] && (
+                      <div className="font-bold mb-0">{cardsHeadings[cellIndex + 1]}: </div>
+                    )}
+                    <div>{cell}</div>
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {pageSize > 0 && rows.length > pageSize && (
+          <div className="mt-10 min-h-[20rem] md:min-h-0" key={`pagination-${paginationKey}`}>
+            <div className="absolute md:relative left-0 right-0 w-screen md:w-full">
+              <DigiNavigationPagination
+                afTotalPages={Math.ceil(rows.length / pageSize)}
+                afInitActivePage={currentPage}
+                afCurrentResultStart={paginationStart}
+                afCurrentResultEnd={paginationEnd}
+                afTotalResults={rows.length}
+                onAfOnPageChange={(e) => setCurrentPage(e.detail)}
+              ></DigiNavigationPagination>
+            </div>
+          </div>
+        )}
+      </DigiTypography>
     </div>
   );
 }

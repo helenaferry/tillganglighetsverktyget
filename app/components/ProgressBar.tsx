@@ -1,3 +1,5 @@
+import { DigiTypography } from '@designsystem-se/af-react';
+
 interface Props {
   progress: number;
   text?: string;
@@ -6,11 +8,13 @@ interface Props {
 export default function ProgressBar({ progress, text }: Props) {
   return (
     <div>
-      {text && (
-        <p className="!mb-2" role="alert">
-          <strong>{text}</strong>
-        </p>
-      )}
+      <DigiTypography>
+        {text && (
+          <p className="!mb-2" role="alert">
+            <strong>{text}</strong>
+          </p>
+        )}
+      </DigiTypography>
       <div className="relative w-full h-6" aria-hidden="true">
         <div className="absolute top-0 left-0 h-full w-full border-dashed border-2 border-grayscale-700 rounded" />
         <div
