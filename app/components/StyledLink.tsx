@@ -46,6 +46,7 @@ export function StyledLink({
     if (overrideLink) {
       overrideClick(e);
     } else {
+      window.scrollTo(0, 0);
       window.location.href = to; // Non-SPA navigation
     }
   };
@@ -58,6 +59,7 @@ export function StyledLink({
       | React.MouseEvent<HTMLAnchorElement>,
   ) => {
     e.preventDefault();
+    window.scrollTo(0, 0);
     navigate(to);
   };
 
