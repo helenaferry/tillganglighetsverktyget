@@ -3,6 +3,18 @@ const path = require('path');
 const clipboardy = require('clipboardy');
 
 const envPath = path.join(__dirname, '.env.local');
+
+// Check if .env.local exists
+if (!fs.existsSync(envPath)) {
+  console.error('❌ Error: .env.local not found!');
+  console.error('');
+  console.error('Please create it first:');
+  console.error('  cd client');
+  console.error('  cp .env.example .env.local');
+  console.error('');
+  process.exit(1);
+}
+
 const envContent = fs.readFileSync(envPath, 'utf8');
 
 const varName = 'VITE_REQUIREMENT_ADDITIONS';

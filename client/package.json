@@ -10,7 +10,10 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint-fix": "eslint --fix",
     "prepare": "husky install",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "minify:additions": "node minifyEnvAdd.cjs",
+    "minify:footer": "node minifyEnvFooterLinks.cjs",
+    "minify:prefill": "node minifyEnvPrefill.cjs"
   },
   "dependencies": {
     "@designsystem-se/af": "32.4.0",

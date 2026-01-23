@@ -100,11 +100,11 @@ DB_PASSWORD=DittSakraAppLösenord456!
 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
-**💡 Valfritt - Frontend-anpassning:**
-Om du vill anpassa applikationens utseende (logotyper, texter, länkar):
+**Konfigurera frontend:**
 ```bash
+# Kopiera frontend-konfiguration (KRÄVS)
 cp client/.env.example client/.env.local
-# Redigera client/.env.local med dina anpassningar
+# Redigera client/.env.local för att anpassa logotyper, texter, länkar etc.
 # Se client/.env.example för alla tillgängliga alternativ
 ```
 
@@ -160,9 +160,9 @@ Projektet använder tre separata `.env`-filer för att hålla konfiguration orga
 
 | Fil | Syfte | När behövs | Känslig data |
 |-----|-------|------------|--------------|
-| `.env` (root) | Container-orkestrering | Alltid med Podman Compose | Ja (lösenord) |
-| `server/.env` | Backend-utveckling | Lokal backend utan containers | Ja (lösenord) |
-| `client/.env.local` | Frontend-anpassning | Anpassa branding/UI | Nej |
+| `.env` (root) | Container-orkestrering | ✅ Alltid med Podman Compose | Ja (lösenord) |
+| `server/.env` | Backend-utveckling | Endast lokal backend-utveckling | Ja (lösenord) |
+| `client/.env.local` | Frontend-konfiguration | ✅ Alltid (krävs av frontend) | Nej |
 
 ### 1. Root `.env` - Container-orkestrering
 
@@ -190,10 +190,11 @@ cd server && cp .env.example .env
 
 **När:** Endast vid lokal backend-utveckling utan containers
 
-### 3. Client `.env.local` - Frontend-anpassning
+### 3. Client `.env.local` - Frontend-konfiguration
 
 **Kopieras från:** `client/.env.example`  
-**Används av:** React + Vite
+**Används av:** React + Vite  
+**Krävs:** ✅ Ja (frontend kräver denna fil)
 
 ```bash
 cd client && cp .env.example .env.local
@@ -206,7 +207,9 @@ cd client && cp .env.example .env.local
 
 **Scenario 1: Containers (vanligast)**
 ```bash
-cp .env.example .env  # Sätt lösenord här
+cp .env.example .env                        # Orkestrering
+cp client/.env.example client/.env.local    # Frontend
+# Redigera båda filerna
 podman compose -f compose.dev.yml up
 ```
 

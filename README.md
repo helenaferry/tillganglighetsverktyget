@@ -54,6 +54,7 @@ Arbetsförmedlingen tillhandahåller kravdata baserat på tillgänglighetslagarn
 ```bash
 # Kopiera och konfigurera miljövariabler
 cp .env.example .env
+cp client/.env.example client/.env.local
 # Redigera .env och sätt ORACLE_PWD och DB_PASSWORD
 
 # Starta alla tjänster

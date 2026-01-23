@@ -29,11 +29,12 @@ ORACLE_PWD=MinSakraOracle123!
 DB_PASSWORD=MinSakraApp456!
 ```
 
-**💡 Frivilligt - Anpassa frontend:**
+**Konfigurera frontend:**
 ```bash
-# Om du vill anpassa logotyper, texter, länkar etc.
+# Kopiera frontend-konfiguration
 cp client/.env.example client/.env.local
-# Redigera client/.env.local med dina anpassningar
+# Redigera client/.env.local för att anpassa logotyper, texter, länkar etc.
+# (Kan användas med standardvärden, men filen måste finnas)
 ```
 
 ### 2. Starta tjänster
@@ -125,17 +126,17 @@ Projektet använder tre olika `.env`-filer för olika ändamål:
 ### `.env` (root) - Container-orkestrering
 **När:** Alltid vid användning av Podman Compose  
 **Innehåller:** Databaslösenord, portar, grundläggande konfiguration  
-**Krävs:** Ja, för att starta containers
+**Krävs:** ✅ Ja, för att starta containers
 
 ### `server/.env` - Backend-utveckling
 **När:** Lokal backend-utveckling utan containers  
 **Innehåller:** Databasanslutning, CORS, server-konfiguration  
-**Krävs:** Nej (om du använder containers)
+**Krävs:** Endast vid lokal backend-utveckling
 
-### `client/.env.local` - Frontend-anpassning
-**När:** Anpassa branding, logotyper, UI-texter  
+### `client/.env.local` - Frontend-konfiguration
+**När:** Alltid (även med containers)  
 **Innehåller:** Applikationstitel, logotyper, footer-länkar, förifyllningskonfiguration  
-**Krävs:** Nej (standardvärden finns inbyggda)
+**Krävs:** ✅ Ja, frontend kräver denna fil
 
 **Regel:** För de flesta fall räcker root `.env`-filen!
 
