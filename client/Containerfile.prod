@@ -8,10 +8,12 @@ FROM node:20-slim AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json ./
 
 # Install dependencies
-RUN npm ci
+# Note: Using npm install instead of npm ci because this is part of a monorepo workspace
+# and doesn't have its own package-lock.json
+RUN npm install
 
 # Copy source code
 COPY . .
