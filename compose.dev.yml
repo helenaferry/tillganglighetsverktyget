@@ -41,7 +41,8 @@ services:
     volumes:
       - ./server/src:/app/src:ro
       - ./server/package.json:/app/package.json:ro
-      - ./server/tsconfig.json:/app/tsconfig.json:ro
+      # Note: Using tsconfig.container.json from image build (not mounted)
+      # to avoid monorepo extends issues
     networks:
       - tillgang-network
     depends_on:
@@ -64,7 +65,8 @@ services:
       - ./client/public:/app/public:ro
       - ./client/package.json:/app/package.json:ro
       - ./client/vite.config.ts:/app/vite.config.ts:ro
-      - ./client/tsconfig.json:/app/tsconfig.json:ro
+      # Note: Using tsconfig.container.json from image build (not mounted)
+      # to avoid monorepo extends issues
       - ./client/react-router.config.ts:/app/react-router.config.ts:ro
     networks:
       - tillgang-network
