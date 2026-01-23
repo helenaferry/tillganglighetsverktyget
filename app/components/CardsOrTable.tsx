@@ -82,10 +82,15 @@ export function CardsOrTable({
 
   const paginatedRows = useMemo(() => {
     if (!pageSize || pageSize <= 0) return rows;
-    const start = (currentPage - 1) * pageSize;
+    let start = (currentPage - 1) * pageSize;
+    if (start >= rows.length && rows.length > 0) {
+      start = 0;
+      setCurrentPage(1);
+    }
     const end = start + pageSize;
     setPaginationStart(start + 1);
     setPaginationEnd(end > rows.length ? rows.length : end);
+    setPaginationKey(paginationKey + 1);
     return rows.slice(start, end);
   }, [rows, pageSize, currentPage]);
 
