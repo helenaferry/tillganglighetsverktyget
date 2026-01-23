@@ -19,6 +19,13 @@ COPY vite.config.ts ./
 COPY tsconfig.json ./
 COPY react-router.config.ts ./
 
+# Copy source code and public assets
+COPY app ./app
+COPY public ./public
+
+# Note: In development, app, public, and config files will be volume-mounted
+# from compose.dev.yml, allowing hot-reload on file changes
+
 # Expose Vite dev server port
 EXPOSE 5173
 
