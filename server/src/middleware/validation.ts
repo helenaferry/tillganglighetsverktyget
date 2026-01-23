@@ -73,15 +73,26 @@ export const checkSchemas = {
   }),
 };
 
-// Param validation
+// Param validation with parsing
+// Parses and validates ID params, attaching parsed values to req.params
 export const validateIdParam = (req: Request, res: Response, next: NextFunction) => {
-  const id = parseInt(req.params.id || req.params.reviewId, 10);
+  const idString = req.params.id || req.params.reviewId;
+  const id = parseInt(idString, 10);
   
   if (isNaN(id) || id <= 0) {
     return res.status(400).json({ 
       error: 'Invalid ID parameter',
       details: 'ID must be a positive number',
     });
+  }
+  
+  // Attach parsed ID back to params as a number
+  // Note: Express types define params as strings, but we know this is validated
+  if (req.params.id) {
+    (req.params as any).id = id;
+  }
+  if (req.params.reviewId) {
+    (req.params as any).reviewId = id;
   }
   
   next();

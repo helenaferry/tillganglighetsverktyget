@@ -48,7 +48,6 @@ export const getAllReviews = async (req: Request, res: Response) => {
       ],
       order: [['created_at', 'DESC']],
       raw: true,
-      nest: true,
     });
 
     res.json(reviews);

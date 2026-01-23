@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import reviewRoutes from './routes/reviewRoutes';
+import { sequelize } from './database/database';
 
 const app = express();
 
@@ -30,13 +31,28 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
+// Health check endpoint with database connectivity check
+app.get('/health', async (req, res) => {
+  try {
+    // Check database connection with a simple query
+    await sequelize.query('SELECT 1 FROM DUAL');
+    
+    res.json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      database: 'connected'
+    });
+  } catch (error) {
+    console.error('Health check failed - database unreachable:', error);
+    res.status(503).json({ 
+      status: 'error',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      database: 'disconnected',
+      error: 'Database is not reachable'
+    });
+  }
 });
 
 // API routes
