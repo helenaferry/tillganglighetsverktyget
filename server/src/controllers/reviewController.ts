@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Review, Check } from '../models';
-import { Op } from 'sequelize';
+import { Op, fn, col, literal } from 'sequelize';
+import { sequelize } from '../database/database';
 
 // Status enum matching frontend
 enum Status {
@@ -10,54 +11,47 @@ enum Status {
   NOT_ASSESSED = 3,
 }
 
-// Helper function to calculate review summary statistics
-const calculateReviewSummary = async (reviewId: number) => {
-  const checks = await Check.findAll({
-    where: { review: reviewId },
-  });
-
-  const reviewedCount = checks.filter((c) => c.status !== Status.NOT_ASSESSED).length;
-  const passCount = checks.filter((c) => c.status === Status.PASS).length;
-  const failCount = checks.filter((c) => c.status === Status.FAIL).length;
-  const irrelevantCount = checks.filter((c) => c.status === Status.IRRELEVANT).length;
-
-  // Calculate latest update timestamp
-  const times = checks
-    .map((c) => (c.updated_at ? new Date(c.updated_at).getTime() : null))
-    .filter((t) => t !== null);
-  
-  const review = await Review.findByPk(reviewId);
-  const latestUpdate = times.length > 0 
-    ? new Date(Math.max(...times)).toISOString() 
-    : review?.created_at?.toISOString() || new Date().toISOString();
-
-  return {
-    latestUpdate,
-    reviewedCount,
-    passCount,
-    failCount,
-    irrelevantCount,
-  };
-};
-
 // GET /api/reviews - Get all reviews with summaries
+// Optimized to avoid N+1 query problem by using aggregations
 export const getAllReviews = async (req: Request, res: Response) => {
   try {
     const reviews = await Review.findAll({
+      include: [{
+        model: Check,
+        as: 'checks',
+        attributes: [], // Don't fetch check details, only use for aggregation
+        required: false, // LEFT JOIN to include reviews without checks
+      }],
+      attributes: [
+        'id',
+        'created_at',
+        'title',
+        'excludedContentTypes',
+        'objectType',
+        'regulatoryFramework',
+        'selectedPrefillIds',
+        // Use COALESCE to handle reviews with no checks
+        [fn('COALESCE', fn('MAX', col('checks.updated_at')), col('Review.created_at')), 'latestUpdate'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status IS NOT NULL AND checks.status != 3 THEN 1 ELSE 0 END')), 0), 'reviewedCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status = 1 THEN 1 ELSE 0 END')), 0), 'passCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status = 0 THEN 1 ELSE 0 END')), 0), 'failCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status = 2 THEN 1 ELSE 0 END')), 0), 'irrelevantCount'],
+      ],
+      group: [
+        'Review.id',
+        'Review.created_at',
+        'Review.title',
+        'Review.excludedContentTypes',
+        'Review.objectType',
+        'Review.regulatoryFramework',
+        'Review.selectedPrefillIds',
+      ],
       order: [['created_at', 'DESC']],
+      raw: true,
+      nest: true,
     });
 
-    const summaries = await Promise.all(
-      reviews.map(async (review) => {
-        const stats = await calculateReviewSummary(review.id);
-        return {
-          ...review.toJSON(),
-          ...stats,
-        };
-      })
-    );
-
-    res.json(summaries);
+    res.json(reviews);
   } catch (error) {
     console.error('Error fetching reviews:', error);
     res.status(500).json({ error: 'Failed to fetch reviews' });
@@ -181,12 +175,11 @@ export const upsertCheck = async (req: Request, res: Response) => {
 
     let check;
     if (existingCheck) {
-      // Update existing check
+      // Update existing check (updated_at handled by database trigger)
       await existingCheck.update({
         status,
         comment,
         flag: flag !== undefined ? flag : existingCheck.flag,
-        updated_at: new Date(),
       });
       check = existingCheck;
     } else {
@@ -250,6 +243,7 @@ export const deleteCheck = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-disable - Disable multiple checks
 export const disableChecks = async (req: Request, res: Response) => {
+  const t = await sequelize.transaction();
   try {
     const { reviewId } = req.params;
     const { requirements } = req.body; // Array of requirement IDs
@@ -272,17 +266,20 @@ export const disableChecks = async (req: Request, res: Response) => {
             comment: '',
             flag: 0,
           },
+          transaction: t,
         }).then(([check, created]) => {
           if (!created) {
-            return check.update({ status: Status.IRRELEVANT });
+            return check.update({ status: Status.IRRELEVANT }, { transaction: t });
           }
           return check;
         })
       )
     );
 
+    await t.commit();
     res.json(checks);
   } catch (error) {
+    await t.rollback();
     console.error('Error disabling checks:', error);
     res.status(500).json({ error: 'Failed to disable checks' });
   }
@@ -290,6 +287,7 @@ export const disableChecks = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-enable - Enable (delete irrelevant) checks
 export const enableChecks = async (req: Request, res: Response) => {
+  const t = await sequelize.transaction();
   try {
     const { reviewId } = req.params;
     const { requirements } = req.body; // Array of requirement IDs
@@ -306,10 +304,13 @@ export const enableChecks = async (req: Request, res: Response) => {
         },
         status: Status.IRRELEVANT,
       },
+      transaction: t,
     });
 
+    await t.commit();
     res.status(204).send();
   } catch (error) {
+    await t.rollback();
     console.error('Error enabling checks:', error);
     res.status(500).json({ error: 'Failed to enable checks' });
   }
@@ -317,6 +318,7 @@ export const enableChecks = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-delete - Delete multiple checks
 export const deleteChecks = async (req: Request, res: Response) => {
+  const t = await sequelize.transaction();
   try {
     const { reviewId } = req.params;
     const { requirements } = req.body; // Array of requirement IDs
@@ -332,10 +334,13 @@ export const deleteChecks = async (req: Request, res: Response) => {
           [Op.in]: requirements,
         },
       },
+      transaction: t,
     });
 
+    await t.commit();
     res.status(204).send();
   } catch (error) {
+    await t.rollback();
     console.error('Error deleting checks:', error);
     res.status(500).json({ error: 'Failed to delete checks' });
   }
@@ -343,6 +348,7 @@ export const deleteChecks = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-prefill - Bulk prefill checks
 export const prefillChecks = async (req: Request, res: Response) => {
+  const t = await sequelize.transaction();
   try {
     const { reviewId } = req.params;
     const { prefills } = req.body; // Array of { status, ids, comment }
@@ -379,7 +385,7 @@ export const prefillChecks = async (req: Request, res: Response) => {
       }
     }
 
-    // Upsert all checks
+    // Upsert all checks within transaction
     const checks = await Promise.all(
       checksToUpsert.map((checkData) =>
         Check.findOne({
@@ -387,22 +393,24 @@ export const prefillChecks = async (req: Request, res: Response) => {
             review: checkData.review,
             requirement: checkData.requirement,
           },
+          transaction: t,
         }).then((existingCheck) => {
           if (existingCheck) {
             return existingCheck.update({
               status: checkData.status,
               comment: checkData.comment,
-              updated_at: new Date(),
-            });
+            }, { transaction: t });
           } else {
-            return Check.create(checkData);
+            return Check.create(checkData, { transaction: t });
           }
         })
       )
     );
 
+    await t.commit();
     res.json(checks);
   } catch (error) {
+    await t.rollback();
     console.error('Error prefilling checks:', error);
     res.status(500).json({ error: 'Failed to prefill checks' });
   }
@@ -428,9 +436,9 @@ export const toggleCheckFlag = async (req: Request, res: Response) => {
     });
 
     if (!created) {
+      // Update flag (updated_at handled by database trigger)
       await check.update({
         flag: flag ? 1 : 0,
-        updated_at: new Date(),
       });
     }
 
