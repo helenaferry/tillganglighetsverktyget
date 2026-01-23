@@ -72,6 +72,7 @@ Check.init(
     comment: {
       type: DataTypes.TEXT, // CLOB in Oracle
       allowNull: true,
+      field: 'check_comment', // Maps to check_comment in database (comment is Oracle reserved word)
     },
     flag: {
       type: DataTypes.INTEGER,

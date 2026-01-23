@@ -32,19 +32,19 @@ export const getAllReviews = async (req: Request, res: Response) => {
         'selectedPrefillIds',
         // Use COALESCE to handle reviews with no checks
         [fn('COALESCE', fn('MAX', col('checks.updated_at')), col('Review.created_at')), 'latestUpdate'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status IS NOT NULL AND checks.status != 3 THEN 1 ELSE 0 END')), 0), 'reviewedCount'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status = 1 THEN 1 ELSE 0 END')), 0), 'passCount'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status = 0 THEN 1 ELSE 0 END')), 0), 'failCount'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN checks.status = 2 THEN 1 ELSE 0 END')), 0), 'irrelevantCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" IS NOT NULL AND "checks"."status" != 3 THEN 1 ELSE 0 END')), 0), 'reviewedCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" = 1 THEN 1 ELSE 0 END')), 0), 'passCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" = 0 THEN 1 ELSE 0 END')), 0), 'failCount'],
+        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" = 2 THEN 1 ELSE 0 END')), 0), 'irrelevantCount'],
       ],
       group: [
         'Review.id',
         'Review.created_at',
         'Review.title',
-        'Review.excludedContentTypes',
-        'Review.objectType',
-        'Review.regulatoryFramework',
-        'Review.selectedPrefillIds',
+        col('Review.excluded_content_types'),
+        col('Review.object_type'),
+        col('Review.regulatory_framework'),
+        col('Review.selected_prefill_ids'),
       ],
       order: [['created_at', 'DESC']],
       raw: true,
@@ -104,6 +104,23 @@ export const createReview = async (req: Request, res: Response) => {
       objectType,
       regulatoryFramework,
     });
+
+    // Oracle RETURNING clause doesn't populate ID in Sequelize
+    // Fetch the created review to get the generated ID
+    if (!review.id) {
+      const createdReview = await Review.findOne({
+        where: {
+          title,
+          created_at: review.created_at,
+        },
+      });
+      
+      if (!createdReview) {
+        throw new Error('Failed to fetch created review after insert');
+      }
+      
+      return res.status(201).json(createdReview);
+    }
 
     res.status(201).json(review);
   } catch (error) {
