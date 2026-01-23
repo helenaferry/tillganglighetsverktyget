@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # Oracle XE Database
+  oracle-db:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: tillgang-oracle-dev
+    ports:
+      - "1521:1521"  # Database port
+      - "5500:5500"  # Enterprise Manager (web UI)
+    environment:
+      - ORACLE_PWD=${ORACLE_PWD:-OraclePassword123!}
+      - ORACLE_CHARACTERSET=AL32UTF8
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./database/init:/opt/oracle/scripts/setup:ro
+    networks:
+      - tillgang-network
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/$$ORACLE_PWD@XEPDB1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    restart: unless-stopped
+
+  # Backend API
+  backend-api:
+    build:
+      context: ./server
+      dockerfile: Containerfile.dev
+    container_name: tillgang-backend-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=oracle-db
+      - DB_PORT=1521
+      - DB_SERVICE=XEPDB1
+      - DB_USER=${DB_USER:-tillgang_user}
+      - DB_PASSWORD=${DB_PASSWORD:-TillgangDev2026!}
+    volumes:
+      - ./server/src:/app/src:ro
+      - ./server/package.json:/app/package.json:ro
+      - ./server/tsconfig.json:/app/tsconfig.json:ro
+    networks:
+      - tillgang-network
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Containerfile.dev
+    container_name: tillgang-frontend-dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000/api
+    volumes:
+      - ./client/app:/app/app:ro
+      - ./client/public:/app/public:ro
+      - ./client/package.json:/app/package.json:ro
+      - ./client/vite.config.ts:/app/vite.config.ts:ro
+      - ./client/tsconfig.json:/app/tsconfig.json:ro
+      - ./client/react-router.config.ts:/app/react-router.config.ts:ro
+    networks:
+      - tillgang-network
+    depends_on:
+      - backend-api
+    restart: unless-stopped
+
+volumes:
+  oracle-data:
+    name: tillgang-oracle-data-dev
+
+networks:
+  tillgang-network:
+    name: tillgang-network-dev
+    driver: bridge
