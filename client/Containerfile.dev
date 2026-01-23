@@ -16,7 +16,7 @@ RUN npm install
 
 # Copy configuration files
 COPY vite.config.ts ./
-COPY tsconfig.json ./
+COPY tsconfig.container.json ./tsconfig.json
 COPY react-router.config.ts ./
 
 # Copy source code and public assets

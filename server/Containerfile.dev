@@ -35,8 +35,9 @@ COPY package.json ./
 # and doesn't have its own package-lock.json
 RUN npm install
 
-# Copy TypeScript configuration and source code
-COPY tsconfig.json ./
+# Copy TypeScript configuration (standalone version for container)
+# Note: Container uses a standalone tsconfig without monorepo extends
+COPY tsconfig.container.json ./tsconfig.json
 COPY src ./src
 
 # Note: In development, src and tsconfig.json will be volume-mounted

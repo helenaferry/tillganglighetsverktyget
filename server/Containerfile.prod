@@ -38,8 +38,8 @@ COPY package.json ./
 # and doesn't have its own package-lock.json
 RUN npm install
 
-# Copy source code
-COPY tsconfig.json ./
+# Copy source code and standalone tsconfig
+COPY tsconfig.container.json ./tsconfig.json
 COPY src ./src
 
 # Build TypeScript to JavaScript

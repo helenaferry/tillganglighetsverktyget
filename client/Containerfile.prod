@@ -15,8 +15,9 @@ COPY package.json ./
 # and doesn't have its own package-lock.json
 RUN npm install
 
-# Copy source code
+# Copy source code (use standalone tsconfig for container)
 COPY . .
+COPY tsconfig.container.json ./tsconfig.json
 
 # Build production bundle
 RUN npm run build
