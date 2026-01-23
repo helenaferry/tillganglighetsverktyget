@@ -98,6 +98,14 @@ DB_PASSWORD=DittSakraAppLösenord456!
 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
+**💡 Valfritt - Frontend-anpassning:**
+Om du vill anpassa applikationens utseende (logotyper, texter, länkar):
+```bash
+cp client/.env.example client/.env.local
+# Redigera client/.env.local med dina anpassningar
+# Se client/.env.example för alla tillgängliga alternativ
+```
+
 ### 2. Starta applikationen
 
 ```bash
@@ -141,6 +149,77 @@ podman compose -f compose.dev.yml ps
 - **Frontend:** http://localhost:5173
 - **Backend API:** http://localhost:3000/health
 - **Oracle EM:** http://localhost:5500/em (användare: `system`, lösenord: från `.env`)
+
+## Miljövariabler - Komplett guide
+
+Projektet använder tre separata `.env`-filer för att hålla konfiguration organiserad och tydlig.
+
+### Översikt
+
+| Fil | Syfte | När behövs | Känslig data |
+|-----|-------|------------|--------------|
+| `.env` (root) | Container-orkestrering | Alltid med Podman Compose | Ja (lösenord) |
+| `server/.env` | Backend-utveckling | Lokal backend utan containers | Ja (lösenord) |
+| `client/.env.local` | Frontend-anpassning | Anpassa branding/UI | Nej |
+
+### 1. Root `.env` - Container-orkestrering
+
+**Kopieras från:** `.env.example`  
+**Används av:** `compose.dev.yml`, `compose.prod.yml`
+
+```bash
+cp .env.example .env
+```
+
+**Viktiga variabler:**
+- `ORACLE_PWD` - Oracle SYSTEM-lösenord (KRÄVS)
+- `DB_PASSWORD` - App-databas lösenord (KRÄVS)
+- `ALLOWED_ORIGINS` - CORS tillåtna domäner
+- `VITE_API_URL` - API URL för frontend
+
+### 2. Server `.env` - Backend-utveckling
+
+**Kopieras från:** `server/.env.example`  
+**Används av:** Node.js backend direkt
+
+```bash
+cd server && cp .env.example .env
+```
+
+**När:** Endast vid lokal backend-utveckling utan containers
+
+### 3. Client `.env.local` - Frontend-anpassning
+
+**Kopieras från:** `client/.env.example`  
+**Används av:** React + Vite
+
+```bash
+cd client && cp .env.example .env.local
+```
+
+**Innehåller:** Applikationstitel, logotyper, footer-länkar, förifyllningskonfiguration  
+**OBS:** Alla `VITE_*` variabler är publika - lagra aldrig hemligheter här!
+
+### Vanliga scenarier
+
+**Scenario 1: Containers (vanligast)**
+```bash
+cp .env.example .env  # Sätt lösenord här
+podman compose -f compose.dev.yml up
+```
+
+**Scenario 2: Lokal backend**
+```bash
+podman compose -f compose.dev.yml up oracle-db  # Endast databas
+cd server && cp .env.example .env  # Konfigurera backend
+npm run dev
+```
+
+**Scenario 3: Anpassad frontend**
+```bash
+cd client && cp .env.example .env.local  # Anpassa branding
+# Ändra logotyper, texter etc
+```
 
 ## Utvecklingsarbetsflöde
 
