@@ -10,6 +10,14 @@ Få igång applikationen i 3 steg!
 
 **💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Podman Desktop eller WSL2.
 
+**🍎 macOS-användare?** Efter installation av Podman, kör följande:
+```bash
+# Initiera och starta Podman machine (krävs på macOS)
+podman machine init --cpus 4 --memory 8192 --disk-size 50
+podman machine start
+```
+Se [docs/SETUP.md](docs/SETUP.md#macos-initiera-podman-machine) för mer information.
+
 ## Steg
 
 ### 1. Konfigurera miljö

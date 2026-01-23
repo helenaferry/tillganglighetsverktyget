@@ -41,6 +41,40 @@ Denna guide hjälper dig att få igång Tillgänglighetsverktyget med Podman-con
 
 3. **Git** (för att klona repositoryt)
 
+### macOS: Initiera Podman Machine
+
+**⚠️ VIKTIGT för macOS-användare:** På macOS kör Podman containers i en lättviktig virtuell maskin (VM). Denna måste initieras och startas innan du kan köra containers.
+
+```bash
+# 1. Initiera Podman machine (engångskonfiguration)
+podman machine init --cpus 4 --memory 8192 --disk-size 50
+
+# 2. Starta Podman machine
+podman machine start
+
+# 3. Verifiera att maskinen körs
+podman machine list
+# Output ska visa en maskin med status "Running"
+```
+
+**Resurskonfiguration:**
+- `--cpus 4`: Antal CPU-kärnor (anpassa efter ditt system)
+- `--memory 8192`: RAM i MB (8GB rekommenderat för Oracle)
+- `--disk-size 50`: Diskutrymme i GB
+
+**Kommande körningar:**
+- Maskinen stoppar vid omstart av datorn
+- Starta igen med: `podman machine start`
+- Stoppa med: `podman machine stop`
+
+**Auto-start vid inloggning (valfritt):**
+
+Lägg till i `~/.zshrc`:
+```bash
+# Auto-starta Podman machine om den inte körs
+podman machine start 2>/dev/null || true
+```
+
 ### Systemkrav
 
 - **Minimum:** 8GB RAM, 20GB ledigt diskutrymme
@@ -402,6 +436,36 @@ podman cp tillgang-oracle-dev:/opt/oracle/admin/XE/dpdump/tillgang_backup.dmp ./
 ```
 
 ## Felsökning
+
+### macOS: "Cannot connect to Podman socket"
+
+**Problem:** Felmeddelande vid körning av `podman compose`:
+```
+Cannot connect to Podman. Please verify your connection...
+Error: unable to connect to Podman socket
+```
+
+**Orsak:** Podman machine är inte startad (vanligt på macOS)
+
+**Lösning:**
+```bash
+# Kontrollera status
+podman machine list
+
+# Om ingen maskin finns, initiera först
+podman machine init --cpus 4 --memory 8192 --disk-size 50
+
+# Starta maskinen
+podman machine start
+
+# Verifiera att den körs
+podman machine list
+# Output ska visa status "Running"
+```
+
+**Förebyggande:**
+- Maskinen stoppas vid omstart av datorn
+- Lägg till auto-start i `~/.zshrc` (se [macOS: Initiera Podman Machine](#macos-initiera-podman-machine))
 
 ### Oracle-container startar inte
 
