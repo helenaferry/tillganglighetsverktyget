@@ -69,7 +69,7 @@ services:
         - VITE_API_URL=${VITE_API_URL:-/api}
     container_name: tillgang-frontend-prod
     ports:
-      - "80:80"
+      - "80:8080"  # Map host port 80 to container port 8080 (non-privileged)
     networks:
       - tillgang-network
     depends_on:
