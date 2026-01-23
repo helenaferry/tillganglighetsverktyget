@@ -1,8 +1,9 @@
 services:
-  # Oracle Database Free (successor to XE, better ARM support)
+  # Oracle Database 23ai Free
+  # Uses ORACLE_IMAGE_TAG env var (default: latest-lite for ARM Mac)
+  # For x64 systems (Windows/WSL, Intel Mac, Linux): export ORACLE_IMAGE_TAG=latest
   oracle-db:
-    image: container-registry.oracle.com/database/free:latest
-    platform: linux/amd64
+    image: container-registry.oracle.com/database/free:${ORACLE_IMAGE_TAG:-latest-lite}
     container_name: tillgang-oracle-dev
     ports:
       - "1521:1521"  # Database port
@@ -10,13 +11,15 @@ services:
     environment:
       - ORACLE_PWD=${ORACLE_PWD:-OraclePassword123!}
       - ORACLE_CHARACTERSET=AL32UTF8
+      - DB_USER=${DB_USER:-tillgang_user}
+      - DB_PASSWORD=${DB_PASSWORD:-TillgangDev2026!}
     volumes:
       - oracle-data:/opt/oracle/oradata
-      - ./database/init:/opt/oracle/scripts/setup:ro
+      - ./database/init:/opt/oracle/scripts/startup:ro
     networks:
       - tillgang-network
     healthcheck:
-      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/$$ORACLE_PWD@XEPDB1 || exit 1"]
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/$$ORACLE_PWD@FREEPDB1 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 10
@@ -36,7 +39,7 @@ services:
       - PORT=3000
       - DB_HOST=oracle-db
       - DB_PORT=1521
-      - DB_SERVICE=XEPDB1
+      - DB_SERVICE=FREEPDB1
       - DB_USER=${DB_USER:-tillgang_user}
       - DB_PASSWORD=${DB_PASSWORD:-TillgangDev2026!}
     volumes:
@@ -66,6 +69,7 @@ services:
       - ./client/public:/app/public:ro
       - ./client/package.json:/app/package.json:ro
       - ./client/vite.config.ts:/app/vite.config.ts:ro
+      - ./client/.env.local:/app/.env.local:ro
       # Note: Using tsconfig.container.json from image build (not mounted)
       # to avoid monorepo extends issues
       - ./client/react-router.config.ts:/app/react-router.config.ts:ro
