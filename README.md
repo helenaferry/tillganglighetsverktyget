@@ -1,4 +1,4 @@
-![Granska tillgänglighet](./public/logoHeader.svg)
+![Granska tillgänglighet](./client/public/logoHeader.svg)
 
 Granska tillgänglighet är ett verktyg från Arbetsförmedlingen för att underlätta granskning av webbtjänsters tillgänglighet och skapa tillgänglighetsredogörelser.
 
@@ -29,12 +29,12 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 </tr>
 <tr>
 <td valign="top" width="25%">
-<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
+<img src="./client/public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
 
 </td>
-<td valign="top" width="25%"><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning"></td>
-<td valign="top" width="25%"><img src="./public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt"></td>
-<td valign="top" width="25%"><img src="./public/screenshots/granska-tillganglighet-granskningsvy.png" alt="Granska tillgänglighet - översikt"></td>
+<td valign="top" width="25%"><img src="./client/public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning"></td>
+<td valign="top" width="25%"><img src="./client/public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt"></td>
+<td valign="top" width="25%"><img src="./client/public/screenshots/granska-tillganglighet-granskningsvy.png" alt="Granska tillgänglighet - översikt"></td>
 </tr>
 </tbody>
 </table>
