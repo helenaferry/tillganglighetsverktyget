@@ -67,14 +67,17 @@ Detta skript:
 5. Skapar index för prestanda
 6. Beviljar nödvändiga behörigheter
 
-## Standarduppgifter
+## Uppgifter
 
-**Utvecklingsmiljö:**
+**Utvecklingsmiljö och Produktion:**
 - Systemanvändare: `system` / `<ORACLE_PWD från .env>`
-- Applikationsanvändare: `tillgang_user` / `TillgangDev2026!`
+- Applikationsanvändare: `tillgang_user` / `<DB_PASSWORD från .env>`
 - Databas: `XEPDB1` (Pluggable Database)
 
-**⚠️ Produktion:** Ändra alla lösenord och använd sekretesshantering!
+**⚠️ SÄKERHET:** 
+- Inga standardlösenord finns - du MÅSTE sätta ORACLE_PWD och DB_PASSWORD i .env
+- För produktion: Använd starka, unika lösenord och sekretesshantering
+- Använd aldrig samma lösenord i utveckling och produktion
 
 ## Ansluta till databasen
 
@@ -82,7 +85,7 @@ Detta skript:
 
 Med SQLPlus:
 ```bash
-sqlplus tillgang_user/TillgangDev2026!@localhost:1521/XEPDB1
+sqlplus tillgang_user/<DITT_DB_PASSWORD>@localhost:1521/XEPDB1
 ```
 
 Med SQL Developer:
@@ -90,12 +93,13 @@ Med SQL Developer:
 - Port: `1521`
 - Tjänstnamn: `XEPDB1`
 - Användarnamn: `tillgang_user`
-- Lösenord: `TillgangDev2026!`
+- Lösenord: `<ditt DB_PASSWORD från .env>`
 
 ### Från containern
 
 ```bash
-podman exec -it oracle-db sqlplus tillgang_user/TillgangDev2026!@XEPDB1
+# Använd lösenordet du satte i .env
+podman exec -it oracle-db sqlplus tillgang_user/<DITT_DB_PASSWORD>@XEPDB1
 ```
 
 ## Vanliga frågor

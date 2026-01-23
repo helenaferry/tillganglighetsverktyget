@@ -16,8 +16,15 @@ Få igång applikationen i 3 steg!
 # Kopiera miljövariabelmall
 cp .env.example .env
 
-# Standardvärdena fungerar för lokal utveckling
-# Inga ändringar behövs om du inte vill ha anpassade lösenord
+# VIKTIGT: Redigera .env och sätt lösenord
+# ORACLE_PWD och DB_PASSWORD MÅSTE sättas (inga standardvärden av säkerhetsskäl)
+# För lokal utveckling, använd valfria säkra lösenord
+```
+
+**⚠️ SÄKERHET:** Du MÅSTE sätta lösenord i `.env` innan du startar. Exempel:
+```bash
+ORACLE_PWD=MinSakraOracle123!
+DB_PASSWORD=MinSakraApp456!
 ```
 
 ### 2. Starta tjänster

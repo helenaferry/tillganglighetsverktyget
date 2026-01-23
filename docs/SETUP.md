@@ -86,8 +86,16 @@ cd tillganglighetsverktyget
 # Kopiera miljövariabelfil
 cp .env.example .env
 
-# Granska och modifiera .env om det behövs
-# Standardvärdena fungerar bra för lokal utveckling
+# VIKTIGT: Redigera .env och sätt OBLIGATORISKA lösenord
+# ORACLE_PWD och DB_PASSWORD har INGA standardvärden av säkerhetsskäl
+```
+
+**⚠️ KRITISKT:** Före start måste du sätta lösenord i `.env`:
+```bash
+# Redigera .env och sätt:
+ORACLE_PWD=DittSakraOracleLösenord123!
+DB_PASSWORD=DittSakraAppLösenord456!
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
 ### 2. Starta applikationen
