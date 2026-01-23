@@ -13,13 +13,13 @@ if [ -z "$DB_PASSWORD" ]; then
 fi
 
 # Wait for database to be ready
-until echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@XEPDB1 > /dev/null 2>&1; do
+until echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; do
   echo "Waiting for database to be ready..."
   sleep 5
 done
 
 # Create user if it doesn't exist
-sqlplus -s system/${ORACLE_PWD}@XEPDB1 <<EOF
+sqlplus -s system/${ORACLE_PWD}@FREEPDB1 <<EOF
 SET HEADING OFF
 SET FEEDBACK OFF
 SET VERIFY OFF
@@ -29,12 +29,13 @@ DECLARE
 BEGIN
   SELECT COUNT(*) INTO user_exists FROM dba_users WHERE username = 'TILLGANG_USER';
   IF user_exists = 0 THEN
-    EXECUTE IMMEDIATE 'CREATE USER tillgang_user IDENTIFIED BY "${DB_PASSWORD}" DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp QUOTA UNLIMITED ON users';
+    EXECUTE IMMEDIATE 'CREATE USER tillgang_user IDENTIFIED BY "${DB_PASSWORD}"';
     EXECUTE IMMEDIATE 'GRANT CONNECT, RESOURCE TO tillgang_user';
     EXECUTE IMMEDIATE 'GRANT CREATE SESSION TO tillgang_user';
     EXECUTE IMMEDIATE 'GRANT CREATE TABLE TO tillgang_user';
     EXECUTE IMMEDIATE 'GRANT CREATE SEQUENCE TO tillgang_user';
     EXECUTE IMMEDIATE 'GRANT CREATE VIEW TO tillgang_user';
+    EXECUTE IMMEDIATE 'GRANT UNLIMITED TABLESPACE TO tillgang_user';
     DBMS_OUTPUT.PUT_LINE('User tillgang_user created successfully');
   ELSE
     DBMS_OUTPUT.PUT_LINE('User tillgang_user already exists');
@@ -46,3 +47,82 @@ EXIT;
 EOF
 
 echo "User creation completed"
+
+# Now create the schema as the application user
+echo "Creating database schema..."
+
+sqlplus -s tillgang_user/${DB_PASSWORD}@FREEPDB1 <<'SCHEMA_EOF'
+SET SERVEROUTPUT ON
+
+-- Create sequences
+CREATE SEQUENCE reviews_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+CREATE SEQUENCE checks_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+
+-- Create reviews table (quoted lowercase for Sequelize compatibility)
+CREATE TABLE "reviews" (
+  "id" NUMBER PRIMARY KEY,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  "title" VARCHAR2(500),
+  "excluded_content_types" VARCHAR2(4000),
+  "object_type" VARCHAR2(100),
+  "regulatory_framework" VARCHAR2(100),
+  "selected_prefill_ids" VARCHAR2(4000)
+);
+
+-- Create checks table (quoted lowercase for Sequelize compatibility)
+CREATE TABLE "checks" (
+  "id" NUMBER PRIMARY KEY,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  "updated_at" TIMESTAMP,
+  "review" NUMBER NOT NULL,
+  "requirement" VARCHAR2(100),
+  "status" NUMBER,
+  "check_comment" CLOB,
+  "flag" NUMBER(1) DEFAULT 0,
+  CONSTRAINT fk_checks_review FOREIGN KEY ("review") REFERENCES "reviews"("id") ON DELETE CASCADE,
+  CONSTRAINT uq_checks_review_req UNIQUE ("review", "requirement")
+);
+
+-- Create triggers
+CREATE OR REPLACE TRIGGER reviews_bir
+BEFORE INSERT ON "reviews"
+FOR EACH ROW
+BEGIN
+  IF :new."id" IS NULL THEN
+    SELECT reviews_seq.NEXTVAL INTO :new."id" FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER checks_bir
+BEFORE INSERT ON "checks"
+FOR EACH ROW
+BEGIN
+  IF :new."id" IS NULL THEN
+    SELECT checks_seq.NEXTVAL INTO :new."id" FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER checks_bur
+BEFORE UPDATE ON "checks"
+FOR EACH ROW
+BEGIN
+  :new."updated_at" := CURRENT_TIMESTAMP;
+END;
+/
+
+-- Create indexes
+CREATE INDEX idx_checks_review ON "checks"("review");
+CREATE INDEX idx_checks_requirement ON "checks"("requirement");
+CREATE INDEX idx_checks_status ON "checks"("status");
+CREATE INDEX idx_reviews_created_at ON "reviews"("created_at");
+
+COMMIT;
+
+DBMS_OUTPUT.PUT_LINE('Schema created successfully');
+
+EXIT;
+SCHEMA_EOF
+
+echo "Schema creation completed"

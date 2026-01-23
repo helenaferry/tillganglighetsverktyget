@@ -97,59 +97,59 @@ EXCEPTION
 END;
 /
 
--- Create reviews table
-CREATE TABLE reviews (
-  id NUMBER PRIMARY KEY,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  title VARCHAR2(500),
-  excluded_content_types VARCHAR2(2000),
-  object_type VARCHAR2(50),
-  regulatory_framework VARCHAR2(100),
-  selected_prefill_ids VARCHAR2(2000)
+-- Create reviews table (quoted lowercase for Sequelize compatibility)
+CREATE TABLE "reviews" (
+  "id" NUMBER PRIMARY KEY,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  "title" VARCHAR2(500),
+  "excluded_content_types" VARCHAR2(4000),
+  "object_type" VARCHAR2(100),
+  "regulatory_framework" VARCHAR2(100),
+  "selected_prefill_ids" VARCHAR2(4000)
 );
 
 -- Create trigger for auto-increment on reviews
 CREATE OR REPLACE TRIGGER reviews_bir
-BEFORE INSERT ON reviews
+BEFORE INSERT ON "reviews"
 FOR EACH ROW
 BEGIN
-  IF :new.id IS NULL THEN
-    SELECT reviews_seq.NEXTVAL INTO :new.id FROM dual;
+  IF :new."id" IS NULL THEN
+    SELECT reviews_seq.NEXTVAL INTO :new."id" FROM dual;
   END IF;
 END;
 /
 
--- Create checks table
-CREATE TABLE checks (
-  id NUMBER PRIMARY KEY,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP,
-  review NUMBER NOT NULL,
-  requirement VARCHAR2(100),
-  status NUMBER,
-  comment CLOB,
-  flag NUMBER(1) DEFAULT 0,
-  CONSTRAINT fk_checks_review FOREIGN KEY (review) REFERENCES reviews(id) ON DELETE CASCADE,
-  CONSTRAINT uq_checks_review_req UNIQUE (review, requirement)
+-- Create checks table (quoted lowercase for Sequelize compatibility)
+CREATE TABLE "checks" (
+  "id" NUMBER PRIMARY KEY,
+  "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  "updated_at" TIMESTAMP,
+  "review" NUMBER NOT NULL,
+  "requirement" VARCHAR2(100),
+  "status" NUMBER,
+  "check_comment" CLOB,
+  "flag" NUMBER(1) DEFAULT 0,
+  CONSTRAINT fk_checks_review FOREIGN KEY ("review") REFERENCES "reviews"("id") ON DELETE CASCADE,
+  CONSTRAINT uq_checks_review_req UNIQUE ("review", "requirement")
 );
 
 -- Create trigger for auto-increment on checks
 CREATE OR REPLACE TRIGGER checks_bir
-BEFORE INSERT ON checks
+BEFORE INSERT ON "checks"
 FOR EACH ROW
 BEGIN
-  IF :new.id IS NULL THEN
-    SELECT checks_seq.NEXTVAL INTO :new.id FROM dual;
+  IF :new."id" IS NULL THEN
+    SELECT checks_seq.NEXTVAL INTO :new."id" FROM dual;
   END IF;
 END;
 /
 
--- Create trigger to update updated_at on checks
+-- Create trigger for updating updated_at on checks
 CREATE OR REPLACE TRIGGER checks_bur
-BEFORE UPDATE ON checks
+BEFORE UPDATE ON "checks"
 FOR EACH ROW
 BEGIN
-  :new.updated_at := CURRENT_TIMESTAMP;
+  :new."updated_at" := CURRENT_TIMESTAMP;
 END;
 /
 
@@ -158,16 +158,16 @@ END;
 -- =====================================================
 
 -- Index on foreign key for better join performance
-CREATE INDEX idx_checks_review ON checks(review);
+CREATE INDEX idx_checks_review ON "checks"("review");
 
 -- Index on requirement for faster lookups
-CREATE INDEX idx_checks_requirement ON checks(requirement);
+CREATE INDEX idx_checks_requirement ON "checks"("requirement");
 
 -- Index on status for filtering
-CREATE INDEX idx_checks_status ON checks(status);
+CREATE INDEX idx_checks_status ON "checks"("status");
 
 -- Index on created_at for sorting
-CREATE INDEX idx_reviews_created_at ON reviews(created_at);
+CREATE INDEX idx_reviews_created_at ON "reviews"("created_at");
 
 -- =====================================================
 -- 6. INSERT TEST DATA (Optional - for development)
