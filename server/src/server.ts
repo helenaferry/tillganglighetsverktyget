@@ -1,10 +1,25 @@
 import app from './app';
-import { connectDB, sequelize } from './database/database';
+import { connectDB } from './database/database';
 
 const PORT = process.env.PORT || 3000;
 
 (async () => {
-  await connectDB();
-  await sequelize.sync(); // skapar tabeller automatiskt
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  try {
+    // Connect to database
+    await connectDB();
+    
+    // Import models to ensure associations are registered
+    await import('./models');
+    
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`   Health check: http://localhost:${PORT}/health`);
+      console.log(`   API endpoint: http://localhost:${PORT}/api/reviews`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
 })();

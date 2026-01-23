@@ -10,7 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "types": ["node"]
   },
   "include": ["src", "../shared/types"],
   "exclude": ["node_modules", "dist"]
