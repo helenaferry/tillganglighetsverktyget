@@ -15,15 +15,24 @@ ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'YYYY-MM-DD HH24:MI:SS.FF';
 -- We create a dedicated user for the application (not using SYSTEM)
 
 -- Create user if it doesn't exist (Oracle 12c+ syntax)
+-- NOTE: Password should be set via DB_PASSWORD environment variable
+-- This script expects the user to be created externally or password to be changed immediately
 DECLARE
   user_exists INTEGER;
 BEGIN
   SELECT COUNT(*) INTO user_exists FROM dba_users WHERE username = 'TILLGANG_USER';
   IF user_exists = 0 THEN
-    EXECUTE IMMEDIATE 'CREATE USER tillgang_user IDENTIFIED BY "TillgangDev2026!" DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp QUOTA UNLIMITED ON users';
+    -- User will be created by container entrypoint or must be created manually
+    -- If creating manually: CREATE USER tillgang_user IDENTIFIED BY <secure-password>
+    -- For development, you can set a password via environment variable
+    NULL; -- User creation handled externally
   END IF;
 END;
 /
+
+-- NOTE: If user doesn't exist, you must create it manually before running this script:
+-- CREATE USER tillgang_user IDENTIFIED BY "<your-secure-password>" 
+--   DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp QUOTA UNLIMITED ON users;
 
 -- Grant necessary privileges
 GRANT CONNECT, RESOURCE TO tillgang_user;

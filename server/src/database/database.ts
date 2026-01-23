@@ -1,6 +1,14 @@
 import { Sequelize } from 'sequelize';
 import { DB_CONFIG } from './CONFIG';
 
+// Validate required environment variables
+if (!process.env.DB_PASSWORD) {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('CRITICAL: DB_PASSWORD environment variable is required in production');
+  }
+  console.warn('⚠️  WARNING: DB_PASSWORD not set. This is only acceptable in local development.');
+}
+
 // Initialize Sequelize for Oracle database
 export const sequelize = new Sequelize({
   dialect: 'oracle',
