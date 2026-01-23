@@ -179,15 +179,15 @@ export function usePrefillRequirements() {
 // Update or add review
 export function useUpsertReview() {
   const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (input: {
-      title: string;
-      id?: string;
-      excludedContentTypes: string[];
-      selectedPrefillIds: string;
-      objectType: string;
-      regulatoryFramework: string;
-    }) => ReviewService.upsertReview(input),
+  return useMutation<Review, Error, {
+    title: string;
+    id?: string;
+    excludedContentTypes: string[];
+    selectedPrefillIds: string;
+    objectType: string;
+    regulatoryFramework: string;
+  }>({
+    mutationFn: (input) => ReviewService.upsertReview(input),
     onSuccess: (_newReview, input) => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['check'] });
