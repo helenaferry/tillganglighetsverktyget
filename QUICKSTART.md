@@ -8,6 +8,8 @@ Få igång applikationen i 3 steg!
 - 8GB+ RAM tillgängligt
 - 20GB+ ledigt diskutrymme
 
+**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Podman Desktop eller WSL2.
+
 ## Steg
 
 ### 1. Konfigurera miljö

@@ -49,7 +49,23 @@ Arbetsförmedlingen tillhandahåller kravdata baserat på tillgänglighetslagarn
 
 ## Kom igång
 
-Mer om detta när vi har en färdig lösning.
+### Snabbstart
+
+```bash
+# Kopiera och konfigurera miljövariabler
+cp .env.example .env
+# Redigera .env och sätt ORACLE_PWD och DB_PASSWORD
+
+# Starta alla tjänster
+podman compose -f compose.dev.yml up -d
+
+# Öppna i webbläsaren
+open http://localhost:5173
+```
+
+**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) först.
+
+📖 **Fullständig guide:** [QUICKSTART.md](QUICKSTART.md)
 
 ## Teknisk stack
 
@@ -59,7 +75,9 @@ Mer om detta när vi har en färdig lösning.
 - **Arbetsförmedlingens designsystem** - Design och komponenter
 - **Tailwind CSS** – Styling
 - **i18next** – Internationalisering
-- **Supabase** – Databas och backend KOMMER ATT BYTAS UT
+- **Oracle Database** – Databas
+- **Express.js** – REST API backend
+- **Podman/Docker** – Containerisering
 
 ## Licens
 

@@ -13,15 +13,17 @@ Denna guide hjälper dig att få igång Tillgänglighetsverktyget med Podman-con
 7. [Felsökning](#felsökning)
 8. [Produktionsdistribution](#produktionsdistribution)
 
+**💻 Windows-användare:** Se [WINDOWS_WSL_SETUP.md](WINDOWS_WSL_SETUP.md) för specifika instruktioner om Podman Desktop eller WSL2-installation.
+
 ## Förutsättningar
 
 ### Nödvändig programvara
 
 1. **Podman** (eller Docker)
-   - Installera Podman: https://podman.io/getting-started/installation
-   - macOS: `brew install podman`
-   - Linux: Pakethanterare-specifik (t.ex. `sudo apt install podman`)
-   - Windows: Använd Podman Desktop
+   - **macOS:** `brew install podman`
+   - **Linux:** Pakethanterare (t.ex. `sudo apt install podman`)
+   - **Windows:** Se [WINDOWS_WSL_SETUP.md](WINDOWS_WSL_SETUP.md) för detaljerad guide
+   - Allmän info: https://podman.io/getting-started/installation
 
 2. **Podman Compose** (för orkestrering)
    ```bash
