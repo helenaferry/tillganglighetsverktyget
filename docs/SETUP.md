@@ -26,13 +26,18 @@ Denna guide hjälper dig att få igång Tillgänglighetsverktyget med Podman-con
    - Allmän info: https://podman.io/getting-started/installation
 
 2. **Podman Compose** (för orkestrering)
-   ```bash
-   # Installera podman-compose
-   pip3 install podman-compose
    
-   # Eller använd docker-compose med Podman
-   # (fungerar transparent med Podman socket)
+   **macOS (Homebrew - rekommenderat):**
+   ```bash
+   brew install podman-compose
    ```
+   
+   **Linux/Windows eller alternativt för macOS:**
+   ```bash
+   pip3 install podman-compose
+   ```
+   
+   **Alternativ:** Använd `docker-compose` med Podman (fungerar transparent med Podman socket)
 
 3. **Git** (för att klona repositoryt)
 
