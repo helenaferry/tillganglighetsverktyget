@@ -1,5 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
+import { apiClient } from './apiClient';
 import {
   type Check,
   type PrefillRequirement,
@@ -7,65 +6,21 @@ import {
   type ReviewSummary,
   Status,
 } from './types';
-const supabaseUrl = import.meta.env.VITE_DATABASE_URL;
-const supabaseKey = import.meta.env.VITE_DATABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
-    const { data: reviews, error: reviewError } = await supabase.from('reviews').select('*');
-    if (reviewError) throw reviewError;
-
-    const summaries = await Promise.all(
-      (reviews as ReviewSummary[]).map(async (review) => {
-        const reviewChecks = await supabase
-          .from('checks')
-          .select('*')
-          .eq('review', review.id)
-          .then(({ data, error }) => {
-            if (error) throw error;
-            return data as Check[];
-          });
-        const times = reviewChecks
-          .map((c: Check) =>
-            c.updated_at && !isNaN(new Date(c.updated_at).getTime())
-              ? new Date(c.updated_at).getTime()
-              : null,
-          )
-          .filter((t: number | null) => t !== null);
-        const latestUpdate =
-          times.length > 0 ? new Date(Math.max(...times)).toISOString() : review.created_at;
-
-        return {
-          ...review,
-          latestUpdate,
-          reviewedCount: reviewChecks.filter((c: Check) => c.status !== Status.NOT_ASSESSED).length,
-          passCount: reviewChecks.filter((c: Check) => c.status === Status.PASS).length,
-          failCount: reviewChecks.filter((c: Check) => c.status === Status.FAIL).length,
-          irrelevantCount: reviewChecks.filter((c: Check) => c.status === Status.IRRELEVANT).length,
-        };
-      }),
-    );
-    return summaries;
+    const reviews = await apiClient.reviews.getAll() as ReviewSummary[];
+    return reviews;
   },
 
   async getReviewById(reviewId: string): Promise<Review> {
-    const { data, error } = await supabase
-      .from('reviews')
-      .select('*')
-      .eq('id', Number(reviewId))
-      .single();
-    if (error) throw error;
-    return data as Review;
+    const review = await apiClient.reviews.getById(reviewId) as Review;
+    return review;
   },
 
   async getChecksForReview(reviewId: string): Promise<Check[]> {
-    const { data, error } = await supabase
-      .from('checks')
-      .select('*')
-      .eq('review', Number(reviewId));
-    if (error) throw error;
-    return data as Check[];
+    const checks = await apiClient.checks.getForReview(reviewId) as Check[];
+    return checks;
   },
 
   async upsertCheck(input: {
@@ -76,119 +31,49 @@ export const ReviewService = {
   }): Promise<Check> {
     const { reviewId, requirement, status, comment } = input;
 
-    const { data, error } = await supabase
-      .from('checks')
-      .upsert(
-        {
-          review: Number(reviewId),
-          requirement,
-          status,
-          comment,
-        },
-        { onConflict: 'review,requirement' },
-      )
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Check;
+    const check = await apiClient.checks.upsert(reviewId, {
+      requirement,
+      status,
+      comment,
+    }) as Check;
+    
+    return check;
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
-    const { data, error } = await supabase
-      .from('checks')
-      .select('*')
-      .eq('review', Number(reviewId))
-      .eq('requirement', requirementId);
-    if (error) throw error;
-    return data.length > 0 ? (data[0] as Check) : null;
+    try {
+      const check = await apiClient.checks.getByRequirement(reviewId, requirementId) as Check;
+      return check;
+    } catch (error: any) {
+      if (error.status === 404) {
+        return null;
+      }
+      throw error;
+    }
   },
 
   async deleteCheck(checkId: string): Promise<boolean> {
-    const { error } = await supabase.from('checks').delete().eq('id', Number(checkId));
-    if (error) throw error;
+    await apiClient.checks.delete(Number(checkId));
     return true;
   },
 
   async deleteChecks(reviewId: number, requirementIds: string[]): Promise<boolean> {
-    const { error } = await supabase
-      .from('checks')
-      .delete()
-      .eq('review', Number(reviewId))
-      .in(
-        'requirement',
-        requirementIds.map((r) => r),
-      );
-    if (error) throw error;
+    await apiClient.checks.bulkDelete(reviewId, requirementIds);
     return true;
   },
 
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
-    const inserts = requirements.map((requirement) => ({
-      review: Number(reviewId),
-      requirement: requirement,
-      status: Status.IRRELEVANT,
-      comment: '',
-    }));
-    const { data, error } = await supabase.from('checks').insert(inserts).select();
-    if (error) throw error;
-    return data as Check[];
+    const checks = await apiClient.checks.bulkDisable(reviewId, requirements) as Check[];
+    return checks;
   },
 
   async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
-    const { error } = await supabase
-      .from('checks')
-      .delete()
-      .eq('review', Number(reviewId))
-      .in(
-        'requirement',
-        requirements.map((r) => r),
-      )
-      .eq('status', Status.IRRELEVANT);
-    if (error) throw error;
+    await apiClient.checks.bulkEnable(reviewId, requirements);
   },
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
-    // 1. Gather all requirement IDs and their intended status/comment
-    const toPrefill: Array<{
-      review: number;
-      requirement: string;
-      status: Status;
-      comment: string;
-    }> = [];
-    for (const prefillReq of prefills) {
-      for (const requirementId of prefillReq.ids) {
-        let status: Status;
-        switch (prefillReq.status) {
-          case 'PASS':
-            status = Status.PASS;
-            break;
-          case 'FAIL':
-            status = Status.FAIL;
-            break;
-          case 'IRRELEVANT':
-            status = Status.IRRELEVANT;
-            break;
-          default:
-            status = Status.NOT_ASSESSED;
-        }
-        toPrefill.push({
-          review: Number(reviewId),
-          requirement: requirementId,
-          status,
-          comment: prefillReq.comment || '',
-        });
-      }
-    }
-
-    // 2. Bulk upsert all checks
-    const { data, error } = await supabase
-      .from('checks')
-      .upsert(toPrefill, { onConflict: 'review,requirement' })
-      .select();
-
-    if (error) throw error;
-    return data as Check[];
+    const checks = await apiClient.checks.bulkPrefill(reviewId, prefills) as Check[];
+    return checks;
   },
 
   async upsertReview(input: {
@@ -201,60 +86,35 @@ export const ReviewService = {
   }): Promise<Review> {
     const { title, id, excludedContentTypes, selectedPrefillIds, objectType, regulatoryFramework } =
       input;
+    
+    const reviewData = {
+      title,
+      excludedContentTypes,
+      selectedPrefillIds,
+      objectType,
+      regulatoryFramework,
+    };
+    
     if (id) {
-      const { data, error } = await supabase
-        .from('reviews')
-        .update({
-          title,
-          excludedContentTypes: excludedContentTypes.join(';'),
-          selectedPrefillIds,
-          objectType,
-          regulatoryFramework,
-        })
-        .eq('id', Number(id))
-        .select();
-      if (error) throw error;
-      return data[0] as Review;
+      const review = await apiClient.reviews.update(id, reviewData) as Review;
+      return review;
     } else {
-      const { data, error } = await supabase
-        .from('reviews')
-        .insert({
-          title,
-          excludedContentTypes: excludedContentTypes.join(';'),
-          selectedPrefillIds,
-          objectType,
-          regulatoryFramework,
-        })
-        .select();
-      if (error) throw error;
-      return data[0] as Review;
+      const review = await apiClient.reviews.create(reviewData) as Review;
+      return review;
     }
   },
 
   async deleteChecksForReview(reviewId: number): Promise<void> {
-    await supabase.from('checks').delete().eq('review', Number(reviewId));
+    // Checks are deleted automatically via CASCADE constraint in database
+    // This method kept for API compatibility
   },
 
   async deleteReview(reviewId: number): Promise<void> {
-    await supabase.from('reviews').delete().eq('id', Number(reviewId));
+    await apiClient.reviews.delete(reviewId);
   },
 
   async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
-    const { data, error } = await supabase
-      .from('checks')
-      .upsert(
-        {
-          review: Number(reviewId),
-          requirement: requirementId,
-          status: Status.NOT_ASSESSED,
-          flag,
-        },
-        { onConflict: 'review,requirement' },
-      )
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as Check;
+    const check = await apiClient.checks.toggleFlag(reviewId, requirementId, flag) as Check;
+    return check;
   },
 };
