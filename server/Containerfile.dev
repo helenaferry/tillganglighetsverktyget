@@ -35,8 +35,12 @@ COPY package.json ./
 # and doesn't have its own package-lock.json
 RUN npm install
 
-# Copy TypeScript configuration
+# Copy TypeScript configuration and source code
 COPY tsconfig.json ./
+COPY src ./src
+
+# Note: In development, src and tsconfig.json will be volume-mounted
+# from compose.dev.yml, allowing hot-reload on file changes
 
 # Expose port
 EXPOSE 3000
