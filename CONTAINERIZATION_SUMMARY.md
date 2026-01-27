@@ -285,7 +285,7 @@ curl http://localhost:5173
 3. Lägg till några kontroller
 4. Verifiera data i databasen:
    ```bash
-   podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@XEPDB1
+   podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
    SELECT * FROM reviews;
    SELECT * FROM checks;
    ```

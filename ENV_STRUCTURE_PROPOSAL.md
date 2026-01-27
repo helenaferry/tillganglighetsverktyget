@@ -57,7 +57,7 @@ VITE_API_URL=http://localhost:3000/api
 # Database Configuration
 DB_HOST=oracle-db              # Use 'localhost' for local dev
 DB_PORT=1521
-DB_SERVICE=XEPDB1
+DB_SERVICE=FREEPDB1
 DB_USER=tillgang_user
 DB_PASSWORD=                   # REQUIRED
 
