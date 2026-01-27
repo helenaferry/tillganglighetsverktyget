@@ -16,6 +16,8 @@ services:
     volumes:
       - oracle-data:/opt/oracle/oradata
       - ./database/init:/opt/oracle/scripts/startup:ro
+      # Mount host timezone to ensure time synchronization
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - tillgang-network
     healthcheck:

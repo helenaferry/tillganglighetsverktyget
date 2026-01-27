@@ -19,35 +19,66 @@ if [ -z "$ORACLE_PWD" ]; then
 fi
 
 # Wait for database to be ready (with timeout)
-echo "Waiting for Oracle database and FREEPDB1 to be ready..."
+echo "Waiting for Oracle database instance to be ready..."
 MAX_WAIT=300  # 5 minutes max
 WAITED=0
 
-# Wait for Oracle instance and FREEPDB1 to be ready
-# Oracle Free should automatically open FREEPDB1, but it may take time
-while [ $WAITED -lt $MAX_WAIT ]; do
-  # Try to connect to FREEPDB1 directly first
-  if echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; then
-    echo "FREEPDB1 is ready!"
+# Step 1: Wait for Oracle instance to be fully started and available
+# This is critical - the instance must be "OPEN" before we can connect
+echo "Step 1: Waiting for Oracle instance to be available..."
+INSTANCE_READY=false
+while [ $WAITED -lt $MAX_WAIT ] && [ "$INSTANCE_READY" = false ]; do
+  # Try to connect as sysdba to check if instance is ready
+  export ORACLE_SID=FREE
+  INSTANCE_STATUS=$(echo "SELECT status FROM v\$instance;" | sqlplus -s / as sysdba 2>/dev/null | grep -i "OPEN" || echo "")
+  unset ORACLE_SID
+  
+  if echo "$INSTANCE_STATUS" | grep -qi "OPEN"; then
+    echo "Oracle instance is OPEN and ready!"
+    INSTANCE_READY=true
     break
   fi
   
-  # FREEPDB1 is not ready yet
-  # Oracle Free should automatically open FREEPDB1 during initialization
-  # Listener registration can take additional time after PDB is open
+  echo "Waiting for Oracle instance to be OPEN... (${WAITED}s/${MAX_WAIT}s)"
+  sleep 5
+  WAITED=$((WAITED + 5))
+done
+
+if [ "$INSTANCE_READY" = false ]; then
+  echo "ERROR: Oracle instance did not become available within ${MAX_WAIT} seconds"
+  echo "Check Oracle logs for details"
+  exit 1
+fi
+
+# Step 2: Wait for FREEPDB1 to be open and registered with listener
+echo "Step 2: Waiting for FREEPDB1 to be open and registered..."
+WAITED=0  # Reset wait counter
+FREEPDB1_READY=false
+
+while [ $WAITED -lt $MAX_WAIT ] && [ "$FREEPDB1_READY" = false ]; do
+  # Try to connect to FREEPDB1 via listener (this checks both PDB open and listener registration)
+  if echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; then
+    echo "FREEPDB1 is ready and registered with listener!"
+    FREEPDB1_READY=true
+    break
+  fi
+  
+  # FREEPDB1 might not be open yet, or listener hasn't registered it
   echo "Waiting for FREEPDB1 to be available... (${WAITED}s/${MAX_WAIT}s)"
   
-  # After 90 seconds, try to help by opening FREEPDB1 if it's not open
-  if [ $WAITED -ge 90 ]; then
-    # Try to open FREEPDB1 via local connection (using ORACLE_SID)
-    echo "Checking if FREEPDB1 needs to be opened..."
+  # After 30 seconds, check PDB status and try to open if needed
+  if [ $WAITED -ge 30 ]; then
     export ORACLE_SID=FREE
-    PDB_OPEN_MODE=$(echo "SELECT open_mode FROM v\$pdbs WHERE name='FREEPDB1';" | sqlplus -s / as sysdba 2>/dev/null | grep -iE "READ WRITE|MOUNTED" || echo "")
+    PDB_STATUS=$(echo "SELECT name, open_mode FROM v\$pdbs WHERE name='FREEPDB1';" | sqlplus -s / as sysdba 2>/dev/null | grep -iE "FREEPDB1|READ WRITE|MOUNTED" || echo "")
     
-    if echo "$PDB_OPEN_MODE" | grep -qi "MOUNTED"; then
-      echo "Opening FREEPDB1..."
+    if echo "$PDB_STATUS" | grep -qi "MOUNTED"; then
+      echo "FREEPDB1 is MOUNTED but not OPEN. Opening it..."
       echo "ALTER PLUGGABLE DATABASE FREEPDB1 OPEN;" | sqlplus -s / as sysdba > /dev/null 2>&1 || true
-      sleep 5  # Give listener time to register the service
+      echo "Waiting for listener to register FREEPDB1..."
+      sleep 10  # Give listener time to register the service
+    elif echo "$PDB_STATUS" | grep -qi "READ WRITE"; then
+      echo "FREEPDB1 is OPEN but listener may not have registered it yet..."
+      sleep 5
     fi
     unset ORACLE_SID
   fi
@@ -56,17 +87,16 @@ while [ $WAITED -lt $MAX_WAIT ]; do
   WAITED=$((WAITED + 5))
 done
 
-# Final check
-if ! echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; then
+if [ "$FREEPDB1_READY" = false ]; then
   echo "ERROR: FREEPDB1 did not become available within ${MAX_WAIT} seconds"
   echo "Diagnostic information:"
-  echo "Checking PDB status..."
   export ORACLE_SID=FREE
+  echo "Instance status:"
+  echo "SELECT status FROM v\$instance;" | sqlplus -s / as sysdba 2>/dev/null || echo "Could not check instance status"
+  echo ""
+  echo "PDB status:"
   echo "SELECT name, open_mode FROM v\$pdbs;" | sqlplus -s / as sysdba 2>/dev/null || echo "Could not check PDB status"
   unset ORACLE_SID
-  echo ""
-  echo "Check Oracle logs for more details:"
-  echo "  podman compose -f compose.dev.yml logs oracle-db | grep -E 'FREEPDB1|listener|DATABASE IS READY'"
   exit 1
 fi
 

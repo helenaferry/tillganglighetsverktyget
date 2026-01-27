@@ -82,7 +82,78 @@ podman compose -f compose.dev.yml down -v
 podman compose -f compose.dev.yml up -d
 ```
 
-### 5. Line endings (CRLF vs LF) - Windows/WSL-problem
+### 5. Oracle-instans avslutas på grund av tidsdrift (ORA-12752)
+
+**Symptom:**
+```
+--ATTENTION--
+Time drifted forward by (XXXXXX) micro seconds
+PMON (ospid: XX): terminating the instance due to ORA error 12752
+Instance terminated by PMON
+```
+
+**Orsak:** Oracle är mycket känslig för tidsändringar. Om systemklockan hoppar framåt eller bakåt avslutas instansen automatiskt för att skydda dataintegriteten.
+
+**Lösning:**
+
+1. **Kontrollera att systemklockan är synkroniserad:**
+   ```bash
+   # macOS
+   sntp -sS time.apple.com
+   
+   # Linux
+   sudo timedatectl set-ntp true
+   sudo systemctl restart systemd-timesyncd
+   
+   # Windows/WSL
+   wsl --shutdown
+   # Starta om WSL och kontrollera att Windows-tid är korrekt
+   ```
+
+2. **Kontrollera tidszon-inställningar:**
+   ```bash
+   # Kontrollera tidszon i containern
+   podman exec tillgang-oracle-dev date
+   
+   # Kontrollera tidszon på värdsystemet
+   date
+   
+   # Om de skiljer sig, sätt samma tidszon
+   ```
+
+3. **Starta om containers efter tidsändringar:**
+   ```bash
+   # Stoppa alla containers
+   podman compose -f compose.dev.yml down -v
+   
+   # Vänta några sekunder för att säkerställa tidsstabilitet
+   sleep 5
+   
+   # Starta om
+   podman compose -f compose.dev.yml up -d
+   ```
+
+4. **Om problemet kvarstår - kontrollera Podman/Docker-tidsinställningar:**
+   ```bash
+   # macOS med Podman Machine
+   podman machine ssh
+   # I VM: kontrollera att NTP är aktiverat
+   timedatectl status
+   
+   # Om NTP inte är aktiverat:
+   sudo timedatectl set-ntp true
+   ```
+
+5. **Undvik att ändra systemtid medan Oracle kör:**
+   - Ändra aldrig systemklockan medan Oracle-containern är igång
+   - Om du måste ändra tid, stoppa först Oracle-containern
+
+**Förebyggande:**
+- Aktivera automatisk NTP-synkronisering på värdsystemet
+- Undvik manuella tidsändringar när Oracle kör
+- Använd samma tidszon för värdsystemet och containern
+
+### 6. Line endings (CRLF vs LF) - Windows/WSL-problem
 
 **Symptom:** Skriptet misslyckas med konstiga fel
 
