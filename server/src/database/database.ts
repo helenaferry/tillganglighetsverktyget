@@ -10,19 +10,42 @@ if (!process.env.DB_PASSWORD) {
 }
 
 // Initialize Sequelize for Oracle database
+// For Oracle, we use connectString in dialectOptions as the primary connection method
+// The database field is kept for compatibility but connectString takes precedence
 export const sequelize = new Sequelize({
   dialect: 'oracle',
   host: DB_CONFIG.host,
   port: DB_CONFIG.port,
   username: DB_CONFIG.username,
   password: DB_CONFIG.password,
-  database: DB_CONFIG.databaseName,
+  database: DB_CONFIG.databaseName, // Used as fallback, but connectString takes precedence
   pool: DB_CONFIG.pool,
   logging: process.env.NODE_ENV === 'development' ? console.log : false,
   dialectOptions: {
+    // Use Easy Connect format: host:port/service_name
+    // This is the recommended way for Oracle connections
     connectString: `${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.databaseName}`,
   },
 });
+
+// Validate that required config values are set
+if (!DB_CONFIG.databaseName || DB_CONFIG.databaseName === 'Default' || DB_CONFIG.databaseName.trim() === '') {
+  console.error('❌ Invalid database service name:', DB_CONFIG.databaseName);
+  console.error('   DB_SERVICE environment variable:', process.env.DB_SERVICE || '(not set)');
+  console.error('   DB_HOST environment variable:', process.env.DB_HOST || '(not set)');
+  console.error('   DB_CONFIG values:', {
+    host: DB_CONFIG.host,
+    port: DB_CONFIG.port,
+    databaseName: DB_CONFIG.databaseName,
+    username: DB_CONFIG.username,
+  });
+  throw new Error(`Invalid database service name: "${DB_CONFIG.databaseName}". DB_SERVICE must be set to FREEPDB1`);
+}
+
+// Log the actual connectString being used (for debugging)
+if (process.env.NODE_ENV === 'development') {
+  console.log(`🔗 Database connectString: ${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.databaseName}`);
+}
 
 /**
  * Connect to the database with exponential backoff retry logic.
@@ -59,6 +82,22 @@ export const connectDB = async (
         error?.parent?.message?.includes('ECONNREFUSED') ||
         error?.message?.includes('ENOTFOUND') ||
         error?.parent?.message?.includes('ENOTFOUND');
+      
+      // Check for "Service Default" error - indicates DB_SERVICE not set correctly
+      const isDefaultServiceError = 
+        error?.message?.includes('Service Default') ||
+        error?.parent?.message?.includes('Service Default') ||
+        error?.original?.message?.includes('Service Default');
+      
+      if (isDefaultServiceError) {
+        console.error('❌ Configuration error: Service name is "Default"');
+        console.error('   This usually means DB_SERVICE environment variable is not set correctly');
+        console.error('   Current DB_CONFIG.databaseName:', DB_CONFIG.databaseName);
+        console.error('   process.env.DB_SERVICE:', process.env.DB_SERVICE || '(not set)');
+        console.error('   Expected: FREEPDB1');
+        console.error('   Check that DB_SERVICE=FREEPDB1 is set in compose.dev.yml or .env');
+        throw new Error('Database service name is "Default". Set DB_SERVICE=FREEPDB1 in environment variables.');
+      }
       
       // Don't retry authentication errors or other non-transient errors
       const isAuthenticationError = 
