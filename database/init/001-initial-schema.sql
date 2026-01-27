@@ -11,7 +11,7 @@ ALTER SESSION SET NLS_TIMESTAMP_FORMAT = 'YYYY-MM-DD HH24:MI:SS.FF';
 -- =====================================================
 -- 1. CREATE APPLICATION USER
 -- =====================================================
--- Note: The tablespace USERS should already exist in Oracle XE
+-- Note: Oracle Database Free handles tablespace allocation automatically
 -- We create a dedicated user for the application (not using SYSTEM)
 
 -- Create user if it doesn't exist (Oracle 12c+ syntax)

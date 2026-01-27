@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and install Oracle Instant Client
-# Using version 21.13 which is compatible with Oracle XE 21c
+# Using version 21.13 which is compatible with Oracle Database Free
 WORKDIR /opt/oracle
 RUN wget https://download.oracle.com/otn_software/linux/instantclient/2113000/instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
     unzip instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
