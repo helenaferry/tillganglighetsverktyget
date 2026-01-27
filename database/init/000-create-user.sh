@@ -12,17 +12,73 @@ if [ -z "$DB_PASSWORD" ]; then
   exit 1
 fi
 
-# Wait for database to be ready
-until echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; do
-  echo "Waiting for database to be ready..."
+# Check ORACLE_PWD is set
+if [ -z "$ORACLE_PWD" ]; then
+  echo "ERROR: ORACLE_PWD environment variable is not set"
+  exit 1
+fi
+
+# Wait for database to be ready (with timeout)
+echo "Waiting for Oracle database and FREEPDB1 to be ready..."
+MAX_WAIT=300  # 5 minutes max
+WAITED=0
+
+# Wait for Oracle instance and FREEPDB1 to be ready
+# Oracle Free should automatically open FREEPDB1, but it may take time
+while [ $WAITED -lt $MAX_WAIT ]; do
+  # Try to connect to FREEPDB1 directly first
+  if echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; then
+    echo "FREEPDB1 is ready!"
+    break
+  fi
+  
+  # FREEPDB1 is not ready yet
+  # Oracle Free should automatically open FREEPDB1 during initialization
+  # Listener registration can take additional time after PDB is open
+  echo "Waiting for FREEPDB1 to be available... (${WAITED}s/${MAX_WAIT}s)"
+  
+  # After 90 seconds, try to help by opening FREEPDB1 if it's not open
+  if [ $WAITED -ge 90 ]; then
+    # Try to open FREEPDB1 via local connection (using ORACLE_SID)
+    echo "Checking if FREEPDB1 needs to be opened..."
+    export ORACLE_SID=FREE
+    PDB_OPEN_MODE=$(echo "SELECT open_mode FROM v\$pdbs WHERE name='FREEPDB1';" | sqlplus -s / as sysdba 2>/dev/null | grep -iE "READ WRITE|MOUNTED" || echo "")
+    
+    if echo "$PDB_OPEN_MODE" | grep -qi "MOUNTED"; then
+      echo "Opening FREEPDB1..."
+      echo "ALTER PLUGGABLE DATABASE FREEPDB1 OPEN;" | sqlplus -s / as sysdba > /dev/null 2>&1 || true
+      sleep 5  # Give listener time to register the service
+    fi
+    unset ORACLE_SID
+  fi
+  
   sleep 5
+  WAITED=$((WAITED + 5))
 done
 
+# Final check
+if ! echo "SELECT 1 FROM DUAL;" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 > /dev/null 2>&1; then
+  echo "ERROR: FREEPDB1 did not become available within ${MAX_WAIT} seconds"
+  echo "Diagnostic information:"
+  echo "Checking PDB status..."
+  export ORACLE_SID=FREE
+  echo "SELECT name, open_mode FROM v\$pdbs;" | sqlplus -s / as sysdba 2>/dev/null || echo "Could not check PDB status"
+  unset ORACLE_SID
+  echo ""
+  echo "Check Oracle logs for more details:"
+  echo "  podman compose -f compose.dev.yml logs oracle-db | grep -E 'FREEPDB1|listener|DATABASE IS READY'"
+  exit 1
+fi
+
+echo "Database is ready. Creating user..."
+
 # Create user if it doesn't exist
-sqlplus -s system/${ORACLE_PWD}@FREEPDB1 <<EOF
+# Capture output for debugging
+sqlplus -S system/${ORACLE_PWD}@FREEPDB1 <<EOF > /tmp/user-creation.log 2>&1
 SET HEADING OFF
 SET FEEDBACK OFF
 SET VERIFY OFF
+SET SERVEROUTPUT ON
 
 DECLARE
   user_exists INTEGER;
@@ -46,12 +102,37 @@ END;
 EXIT;
 EOF
 
-echo "User creation completed"
+# Check if user creation was successful
+SQL_EXIT_CODE=$?
+if [ $SQL_EXIT_CODE -ne 0 ]; then
+  echo "ERROR: sqlplus failed with exit code $SQL_EXIT_CODE"
+  echo "Output:"
+  cat /tmp/user-creation.log
+  exit 1
+fi
+
+# Check for Oracle errors in output
+if grep -qi "ORA-" /tmp/user-creation.log || grep -qi "ERROR" /tmp/user-creation.log; then
+  echo "ERROR: Oracle errors detected during user creation:"
+  cat /tmp/user-creation.log
+  exit 1
+fi
+
+# Verify user was created
+USER_EXISTS=$(echo "SELECT COUNT(*) FROM all_users WHERE username='TILLGANG_USER';" | sqlplus -s system/${ORACLE_PWD}@FREEPDB1 | grep -E '^\s*1\s*$' || echo "0")
+if [ "$USER_EXISTS" != "1" ]; then
+  echo "ERROR: User tillgang_user was not created successfully"
+  echo "User creation log:"
+  cat /tmp/user-creation.log
+  exit 1
+fi
+
+echo "User creation completed successfully"
 
 # Now create the schema as the application user
 echo "Creating database schema..."
 
-sqlplus -s tillgang_user/${DB_PASSWORD}@FREEPDB1 <<'SCHEMA_EOF'
+sqlplus -S tillgang_user/${DB_PASSWORD}@FREEPDB1 <<'SCHEMA_EOF' > /tmp/schema-creation.log 2>&1
 SET SERVEROUTPUT ON
 
 -- Create sequences (drop if exists first for idempotency)
@@ -181,4 +262,29 @@ DBMS_OUTPUT.PUT_LINE('Schema created successfully');
 EXIT;
 SCHEMA_EOF
 
-echo "Schema creation completed"
+# Check if schema creation was successful
+SCHEMA_EXIT_CODE=$?
+if [ $SCHEMA_EXIT_CODE -ne 0 ]; then
+  echo "ERROR: sqlplus failed with exit code $SCHEMA_EXIT_CODE"
+  echo "Schema creation output:"
+  cat /tmp/schema-creation.log
+  exit 1
+fi
+
+# Check for Oracle errors in output
+if grep -qi "ORA-" /tmp/schema-creation.log || grep -qi "ERROR" /tmp/schema-creation.log; then
+  echo "ERROR: Oracle errors detected during schema creation:"
+  cat /tmp/schema-creation.log
+  exit 1
+fi
+
+# Verify tables were created
+TABLES_COUNT=$(echo "SELECT COUNT(*) FROM user_tables WHERE table_name IN ('REVIEWS', 'CHECKS');" | sqlplus -s tillgang_user/${DB_PASSWORD}@FREEPDB1 | grep -E '^\s*2\s*$' || echo "0")
+if [ "$TABLES_COUNT" != "2" ]; then
+  echo "ERROR: Tables were not created successfully. Found $TABLES_COUNT tables instead of 2"
+  echo "Schema creation log:"
+  cat /tmp/schema-creation.log
+  exit 1
+fi
+
+echo "Schema creation completed successfully"
