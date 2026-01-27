@@ -2,6 +2,8 @@
 
 Detta fel uppstår när Oracle-containerns init-skript (`000-create-user.sh`) misslyckas. Här är en systematisk guide för att identifiera problemet.
 
+**💡 Om setup fungerar på en maskin men inte på en annan:** Se [ENVIRONMENT_DIFFERENCES.md](ENVIRONMENT_DIFFERENCES.md) för en omfattande guide om miljöskillnader.
+
 ## Steg 1: Kontrollera Oracle-loggar
 
 ```bash
