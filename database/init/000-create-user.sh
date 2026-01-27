@@ -54,9 +54,37 @@ echo "Creating database schema..."
 sqlplus -s tillgang_user/${DB_PASSWORD}@FREEPDB1 <<'SCHEMA_EOF'
 SET SERVEROUTPUT ON
 
--- Create sequences
+-- Create sequences (drop if exists first for idempotency)
+BEGIN
+  EXECUTE IMMEDIATE 'DROP SEQUENCE reviews_seq';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
 CREATE SEQUENCE reviews_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP SEQUENCE checks_seq';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
 CREATE SEQUENCE checks_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+
+-- Drop tables if they exist (for idempotency)
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE checks CASCADE CONSTRAINTS';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE reviews CASCADE CONSTRAINTS';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
 
 -- Create reviews table (quoted lowercase for Sequelize compatibility)
 CREATE TABLE "reviews" (
@@ -112,7 +140,35 @@ BEGIN
 END;
 /
 
--- Create indexes
+-- Create indexes (drop if exists first for idempotency)
+BEGIN
+  EXECUTE IMMEDIATE 'DROP INDEX idx_checks_review';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP INDEX idx_checks_requirement';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP INDEX idx_checks_status';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+
+BEGIN
+  EXECUTE IMMEDIATE 'DROP INDEX idx_reviews_created_at';
+EXCEPTION
+  WHEN OTHERS THEN NULL;
+END;
+/
+
 CREATE INDEX idx_checks_review ON "checks"("review");
 CREATE INDEX idx_checks_requirement ON "checks"("requirement");
 CREATE INDEX idx_checks_status ON "checks"("status");
