@@ -19,11 +19,13 @@ services:
     networks:
       - tillgang-network
     healthcheck:
+      # Check that Oracle is accessible (init scripts may still be running)
+      # Backend has retry logic to wait for user creation
       test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/$$ORACLE_PWD@FREEPDB1 || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 120s
+      retries: 15
+      start_period: 180s
     restart: unless-stopped
 
   # Backend API

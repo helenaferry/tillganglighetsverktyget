@@ -11,7 +11,7 @@ services:
       - ORACLE_CHARACTERSET=AL32UTF8
     volumes:
       - oracle-data:/opt/oracle/oradata
-      - ./database/init:/opt/oracle/scripts/setup:ro
+      - ./database/init:/opt/oracle/scripts/startup:ro
     networks:
       - tillgang-network
     healthcheck:
