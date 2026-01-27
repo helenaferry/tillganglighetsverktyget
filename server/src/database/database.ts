@@ -74,6 +74,8 @@ export const connectDB = async (
       return;
     } catch (error: any) {
       // Check if this is a transient connection error that should be retried
+      // ORA-12514: Service not registered with listener - FREEPDB1 might not be ready yet
+      // This happens when Oracle init scripts are still running or listener hasn't registered FREEPDB1
       const isTransientConnectionError = 
         error?.code === 'NJS-503' || 
         error?.parent?.code === 'NJS-503' ||
@@ -81,7 +83,29 @@ export const connectDB = async (
         error?.message?.includes('ECONNREFUSED') ||
         error?.parent?.message?.includes('ECONNREFUSED') ||
         error?.message?.includes('ENOTFOUND') ||
-        error?.parent?.message?.includes('ENOTFOUND');
+        error?.parent?.message?.includes('ENOTFOUND') ||
+        error?.message?.includes('ORA-12514') ||
+        error?.parent?.message?.includes('ORA-12514') ||
+        error?.original?.message?.includes('ORA-12514') ||
+        error?.message?.includes('not registered with the listener') ||
+        error?.parent?.message?.includes('not registered with the listener') ||
+        error?.original?.message?.includes('not registered with the listener');
+      
+      // Log specific ORA-12514 errors for better debugging
+      // This error means FREEPDB1 exists but listener hasn't registered it yet
+      const isServiceNotRegistered = 
+        error?.message?.includes('ORA-12514') || 
+        error?.parent?.message?.includes('ORA-12514') || 
+        error?.original?.message?.includes('ORA-12514') ||
+        error?.message?.includes('not registered with the listener') ||
+        error?.parent?.message?.includes('not registered with the listener') ||
+        error?.original?.message?.includes('not registered with the listener');
+      
+      if (isServiceNotRegistered) {
+        console.log(`⏳ FREEPDB1 not registered with listener yet (attempt ${attempt}/${maxRetries})`);
+        console.log(`   This is normal during Oracle initialization. Waiting for listener to register FREEPDB1...`);
+        console.log(`   The IP address shown (e.g., 10.89.0.2) is the internal container network IP - this is correct.`);
+      }
       
       // Check for "Service Default" error - indicates DB_SERVICE not set correctly
       const isDefaultServiceError = 
