@@ -69,9 +69,14 @@ cat .env | grep ORACLE_IMAGE_TAG
 
 ### Problem: Otillräckligt minne eller CPU
 
+**⚠️ KRITISKT:** Oracle Database Free kräver minst 2GB RAM bara för sig själv. Med bara 2GB totalt i Podman Machine kommer Oracle inte att fungera!
+
 **Kontrollera:**
 ```bash
-# Tillgängligt minne
+# Kontrollera Podman Machine-minne
+podman machine inspect podman-machine-default | grep -i memory
+
+# Tillgängligt minne på värdmaskinen
 sysctl hw.memsize
 vm_stat | grep "Pages free"
 
@@ -83,19 +88,30 @@ df -h
 ```
 
 **Oracle-krav:**
-- Minst 8GB RAM tillgängligt (inte bara totalt)
+- **Minst 8GB RAM i Podman Machine** (Oracle behöver ~2GB, systemet behöver ~1GB, resten för buffertar)
 - Minst 2 CPU-kärnor
 - Minst 20GB ledigt diskutrymme
 
 **Lösning:**
-- Stäng andra resurskrävande applikationer
-- Öka Podman Machine-minne:
+- **Om Podman Machine har för lite minne (t.ex. 2GB):**
   ```bash
+  # Stoppa och ta bort den gamla maskinen
   podman machine stop
   podman machine rm podman-machine-default
-  podman machine init --cpus 4 --memory 8192
+  
+  # Skapa ny maskin med tillräckligt minne
+  podman machine init --cpus 4 --memory 8192 --disk-size 50
+  
+  # Starta den nya maskinen
   podman machine start
+  
+  # Verifiera att minnet är korrekt
+  podman machine inspect podman-machine-default | grep -i memory
   ```
+
+- **Om värdmaskinen har för lite RAM:**
+  - Stäng andra resurskrävande applikationer
+  - Överväg att minska till 6GB om systemet har begränsat RAM (men 8GB är rekommenderat)
 
 ### Problem: Diskutrymme i Podman Machine
 

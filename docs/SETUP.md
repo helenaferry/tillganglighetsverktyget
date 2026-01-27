@@ -77,9 +77,10 @@ podman machine start 2>/dev/null || true
 
 ### Systemkrav
 
-- **Minimum:** 8GB RAM, 20GB ledigt diskutrymme
-- **Rekommenderat:** 16GB RAM, 50GB ledigt diskutrymme
-- Oracle Database Free kräver minst 2GB RAM för att köra korrekt
+- **Minimum:** 8GB RAM i Podman Machine, 20GB ledigt diskutrymme
+- **Rekommenderat:** 16GB RAM totalt på värdmaskinen, 50GB ledigt diskutrymme
+- **⚠️ VIKTIGT:** Oracle Database Free kräver minst 2GB RAM bara för sig själv. Med bara 2GB totalt i Podman Machine kommer Oracle **inte** att fungera!
+- Podman Machine bör konfigureras med minst 8GB RAM (`--memory 8192`)
 
 ## Arkitekturöversikt
 
