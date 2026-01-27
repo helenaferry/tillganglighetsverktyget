@@ -213,7 +213,7 @@ podman compose -f compose.dev.yml logs -f oracle-db
 podman cp oracle-import.sql tillgang-oracle-dev:/tmp/
 
 # Importera data
-podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@XEPDB1 <<EOF
+podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1 <<EOF
 @/tmp/oracle-import.sql
 EXIT;
 EOF
@@ -224,9 +224,11 @@ EOF
 1. Anslut till Oracle:
    - Värd: localhost
    - Port: 1521
-   - Tjänst: XEPDB1
+   - Tjänst: FREEPDB1
    - Användare: tillgang_user
    - Lösenord: TillgangDev2026!
+
+**⚠️ VIKTIGT:** Oracle Database Free använder `FREEPDB1` som tjänstnamn (inte `XEPDB1` som används i Oracle XE).
 
 2. Öppna `oracle-import.sql`
 3. Kör som skript
@@ -235,7 +237,7 @@ EOF
 
 ```bash
 # Anslut till Oracle
-podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@XEPDB1
+podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
 
 # Verifiera antal
 SELECT COUNT(*) FROM reviews;

@@ -358,7 +358,7 @@ sed -i 's/\r$//' database/init/*.sh
 # Kontrollera tillgängligt minne
 free -h
 
-# Oracle XE kräver minst 2GB RAM
+# Oracle Database Free kräver minst 2GB RAM
 # Om WSL har för lite minne, öka i .wslconfig
 ```
 

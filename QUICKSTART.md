@@ -152,7 +152,10 @@ Projektet använder tre olika `.env`-filer för olika ändamål:
 
 1. Skapa din första granskning på http://localhost:5173
 2. Utforska API:et på http://localhost:3000/api/reviews
-3. Anslut till databasen med SQL Developer (localhost:1521/XEPDB1)
+3. Anslut till databasen med SQL Developer (localhost:1521/FREEPDB1)
+   - **⚠️ VIKTIGT:** Oracle Database Free använder `FREEPDB1` som tjänstnamn
+   - Användarnamn: `tillgang_user`
+   - Lösenord: Värdet från `DB_PASSWORD` i `.env`
 4. Läs den fullständiga dokumentationen i `docs/`
 
 Behöver du hjälp? Kolla [docs/SETUP.md](docs/SETUP.md) för detaljerad felsökning.

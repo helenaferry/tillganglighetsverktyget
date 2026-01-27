@@ -72,7 +72,9 @@ Detta skript:
 **Utvecklingsmiljö och Produktion:**
 - Systemanvändare: `system` / `<ORACLE_PWD från .env>`
 - Applikationsanvändare: `tillgang_user` / `<DB_PASSWORD från .env>`
-- Databas: `XEPDB1` (Pluggable Database)
+- Databas: `FREEPDB1` (Pluggable Database)
+
+**⚠️ VIKTIGT:** Oracle Database Free använder `FREEPDB1` som tjänstnamn (inte `XEPDB1` som används i Oracle XE).
 
 **⚠️ SÄKERHET:** 
 - Inga standardlösenord finns - du MÅSTE sätta ORACLE_PWD och DB_PASSWORD i .env
@@ -85,13 +87,13 @@ Detta skript:
 
 Med SQLPlus:
 ```bash
-sqlplus tillgang_user/<DITT_DB_PASSWORD>@localhost:1521/XEPDB1
+sqlplus tillgang_user/<DITT_DB_PASSWORD>@localhost:1521/FREEPDB1
 ```
 
 Med SQL Developer:
 - Värdnamn: `localhost`
 - Port: `1521`
-- Tjänstnamn: `XEPDB1`
+- Tjänstnamn: `FREEPDB1`
 - Användarnamn: `tillgang_user`
 - Lösenord: `<ditt DB_PASSWORD från .env>`
 
@@ -99,7 +101,7 @@ Med SQL Developer:
 
 ```bash
 # Använd lösenordet du satte i .env
-podman exec -it oracle-db sqlplus tillgang_user/<DITT_DB_PASSWORD>@XEPDB1
+podman exec -it oracle-db sqlplus tillgang_user/<DITT_DB_PASSWORD>@FREEPDB1
 ```
 
 ## Vanliga frågor
@@ -128,7 +130,7 @@ COMMIT;
 
 ### Exportera data:
 ```bash
-podman exec oracle-db expdp tillgang_user/TillgangDev2026!@XEPDB1 \
+podman exec oracle-db expdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=tillgang_backup.dmp \
   logfile=tillgang_backup.log
@@ -136,7 +138,7 @@ podman exec oracle-db expdp tillgang_user/TillgangDev2026!@XEPDB1 \
 
 ### Importera data:
 ```bash
-podman exec oracle-db impdp tillgang_user/TillgangDev2026!@XEPDB1 \
+podman exec oracle-db impdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=tillgang_backup.dmp \
   logfile=tillgang_import.log

@@ -79,7 +79,7 @@ podman machine start 2>/dev/null || true
 
 - **Minimum:** 8GB RAM, 20GB ledigt diskutrymme
 - **Rekommenderat:** 16GB RAM, 50GB ledigt diskutrymme
-- Oracle XE kräver minst 2GB RAM för att köra korrekt
+- Oracle Database Free kräver minst 2GB RAM för att köra korrekt
 
 ## Arkitekturöversikt
 
@@ -368,18 +368,20 @@ curl -X POST http://localhost:3000/api/reviews \
 Med SQLPlus:
 ```bash
 # Anslut som systemanvändare
-sqlplus system/OraclePassword123!@localhost:1521/XEPDB1
+sqlplus system/OraclePassword123!@localhost:1521/FREEPDB1
 
 # Anslut som applikationsanvändare
-sqlplus tillgang_user/TillgangDev2026!@localhost:1521/XEPDB1
+sqlplus tillgang_user/TillgangDev2026!@localhost:1521/FREEPDB1
 ```
 
 Med SQL Developer eller DBeaver:
 - **Värd:** localhost
 - **Port:** 1521
-- **Tjänstnamn:** XEPDB1
+- **Tjänstnamn:** FREEPDB1
 - **Användarnamn:** tillgang_user
 - **Lösenord:** TillgangDev2026!
+
+**⚠️ VIKTIGT:** Oracle Database Free använder `FREEPDB1` som tjänstnamn (inte `XEPDB1` som används i Oracle XE).
 
 #### Från containern
 
@@ -388,7 +390,7 @@ Med SQL Developer eller DBeaver:
 podman exec -it tillgang-oracle-dev bash
 
 # Använd sedan sqlplus
-sqlplus tillgang_user/TillgangDev2026!@XEPDB1
+sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
 ```
 
 ### Vanliga databasuppgifter
@@ -426,7 +428,7 @@ podman compose -f compose.dev.yml up -d
 ```bash
 # Exportera data
 podman exec tillgang-oracle-dev expdp \
-  tillgang_user/TillgangDev2026!@XEPDB1 \
+   tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=tillgang_backup.dmp \
   logfile=tillgang_backup.log

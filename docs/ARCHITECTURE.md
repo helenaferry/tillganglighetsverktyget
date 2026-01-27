@@ -234,7 +234,7 @@ Användare → Frontend → Backend API → Database
 
 **Oracle Database:**
 ```bash
-sqlplus system/$ORACLE_PWD@XEPDB1 -S "SELECT 1 FROM DUAL"
+sqlplus system/$ORACLE_PWD@FREEPDB1 -S "SELECT 1 FROM DUAL"
 ```
 
 **Backend API:**
@@ -448,7 +448,7 @@ Response: 201 Created
 ```bash
 # Exportera
 podman exec oracle-db expdp \
-  tillgang_user/password@XEPDB1 \
+  tillgang_user/password@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=backup.dmp
 
