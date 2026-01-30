@@ -59,7 +59,7 @@ Lagrar individuella tillgänglighetskravkontroller för varje granskning.
 
 ## Initialiseringsskript
 
-Skripten i katalogen `init/` körs automatiskt när Oracle-containern startar för första gången. Endast körbara filer (t.ex. `.sh`) och vissa `.sql`-filer körs; filer med suffix `.reference` körs inte.
+Skripten i katalogen `init/` körs automatiskt när Oracle-containern startar för första gången. Endast körbara filer (t.ex. `.sh`) och vissa `.sql`-filer körs. Filer som slutar på `.sql.reference` ignoreras av Oracle-containerns startskript, vilket gör dem säkra att använda för dokumentations- och referensändamål.
 
 ### 000-create-user.sh
 

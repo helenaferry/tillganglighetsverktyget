@@ -100,8 +100,8 @@ export const validateIdParam = (
     });
   }
 
-  // Attach parsed ID back to params as a number
-  // Note: Express types define params as strings, but we know this is validated
+  // Attach parsed ID back to params as a number.
+  // Override Express's string-only param type after validation (as any is intentional).
   if (req.params.id) {
     (req.params as any).id = id;
   }

@@ -205,6 +205,8 @@ git config core.autocrlf input
 - `Pass'word` → Använd `Pass''word` eller undvik `'`
 - `Pass"word` → Undvik `"`
 
+**Init-skript (000-create-user.sh):** Lösenordet skickas med dubbla citattecken i SQL. Ett literal dubbeltecken (`"`) eller enkelt citattecken (`'`) i lösenordet kan göra SQL:en ogiltig. Undvik därför `"` och `'` i `DB_PASSWORD` och `ORACLE_PWD`.
+
 ### 7. FREEPDB1 är inte registrerad hos listenern (ORA-12514)
 
 **Symptom:**
