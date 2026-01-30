@@ -41,6 +41,16 @@ cp client/.env.example client/.env.local
 
 ### 2. Starta tjänster
 
+**Rekommenderat:** Använd dev-up-scriptet – det startar tjänsterna och väntar tills Database, API och Client är redo. Du får tydlig status (spinner medan tjänster startar, grön bock när redo) och slutligen URL:er samt kommandon för att stoppa.
+
+```bash
+./scripts/dev-up.sh
+```
+
+Scriptet kräver att `curl` och `nc` (netcat) finns installerade. Vid första starten kan Oracle ta 2–3 minuter.
+
+**Manuellt:** Om du föredrar att starta utan scriptet:
+
 ```bash
 # Starta alla containers
 docker compose -f compose.dev.yml up -d
@@ -49,7 +59,7 @@ docker compose -f compose.dev.yml up -d
 docker compose -f compose.dev.yml logs -f
 ```
 
-**Vänta på:**
+**Vänta på (vid manuell start):**
 - Oracle: "DATABASE IS READY TO USE!" (~2-3 minuter vid första starten)
 - Backend: "✅ Database connected successfully"
 - Frontend: "Local: http://localhost:5173/"
@@ -63,7 +73,10 @@ Klart! 🎉
 ## Daglig användning
 
 ```bash
-# Starta
+# Starta (rekommenderat: väntar tills alla tjänster är redo)
+./scripts/dev-up.sh
+
+# Eller starta utan att vänta på status
 docker compose -f compose.dev.yml up -d
 
 # Stoppa (containers tas bort, datavolumes behålls – nästa "up" återanvänder samma data)

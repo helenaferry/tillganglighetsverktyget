@@ -57,8 +57,8 @@ cp .env.example .env
 cp client/.env.example client/.env.local
 # Redigera .env och sätt ORACLE_PWD och DB_PASSWORD
 
-# Starta alla tjänster
-docker compose -f compose.dev.yml up -d
+# Starta alla tjänster (rekommenderat: väntar tills Database, API och Client är redo)
+./scripts/dev-up.sh
 
 # Öppna i webbläsaren
 open http://localhost:5173
