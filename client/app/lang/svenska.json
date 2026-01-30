@@ -29,7 +29,9 @@
   },
   "CategoryNav": {
     "Heading": "Kravkategorier",
-    "Close": "Stäng"
+    "Close": "Stäng",
+    "NoCategoriesAvailable": "Inga kravkategorier tillgängliga",
+    "NoRequirementsAvailable": "Inga krav tillgängliga"
   },
   "CategoryOverview": {
     "ToggleCategoryNav": "Kravkategorier",
