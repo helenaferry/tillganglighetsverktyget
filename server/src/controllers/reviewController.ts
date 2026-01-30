@@ -3,6 +3,11 @@ import { Review, Check } from '../models';
 import { Op, fn, col, literal } from 'sequelize';
 import { sequelize } from '../database/database';
 
+/** Normalize Express param (string | string[]) to string for parseInt/usage. */
+function paramString(value: string | string[] | undefined): string {
+  return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
+}
+
 // Status enum matching frontend
 enum Status {
   FAIL = 0,
@@ -15,13 +20,19 @@ enum Status {
 // Optimized to avoid N+1 query problem by using aggregations
 export const getAllReviews = async (req: Request, res: Response) => {
   try {
+    // Short-circuit when no reviews: use simple query to avoid GROUP BY on empty table (Oracle/Sequelize)
+    const hasAny = await Review.findOne({ attributes: ['id'], raw: true });
+    if (!hasAny) return res.json([]);
+
     const reviews = await Review.findAll({
-      include: [{
-        model: Check,
-        as: 'checks',
-        attributes: [], // Don't fetch check details, only use for aggregation
-        required: false, // LEFT JOIN to include reviews without checks
-      }],
+      include: [
+        {
+          model: Check,
+          as: 'checks',
+          attributes: [], // Don't fetch check details, only use for aggregation
+          required: false, // LEFT JOIN to include reviews without checks
+        },
+      ],
       attributes: [
         'id',
         'created_at',
@@ -31,11 +42,60 @@ export const getAllReviews = async (req: Request, res: Response) => {
         'regulatoryFramework',
         'selectedPrefillIds',
         // Use COALESCE to handle reviews with no checks
-        [fn('COALESCE', fn('MAX', col('checks.updated_at')), col('Review.created_at')), 'latestUpdate'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" IS NOT NULL AND "checks"."status" != 3 THEN 1 ELSE 0 END')), 0), 'reviewedCount'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" = 1 THEN 1 ELSE 0 END')), 0), 'passCount'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" = 0 THEN 1 ELSE 0 END')), 0), 'failCount'],
-        [fn('COALESCE', fn('SUM', literal('CASE WHEN "checks"."status" = 2 THEN 1 ELSE 0 END')), 0), 'irrelevantCount'],
+        [
+          fn(
+            'COALESCE',
+            fn('MAX', col('checks.updated_at')),
+            col('Review.created_at'),
+          ),
+          'latestUpdate',
+        ],
+        [
+          fn(
+            'COALESCE',
+            fn(
+              'SUM',
+              literal(
+                'CASE WHEN "checks"."status" IS NOT NULL AND "checks"."status" != 3 THEN 1 ELSE 0 END',
+              ),
+            ),
+            0,
+          ),
+          'reviewedCount',
+        ],
+        [
+          fn(
+            'COALESCE',
+            fn(
+              'SUM',
+              literal('CASE WHEN "checks"."status" = 1 THEN 1 ELSE 0 END'),
+            ),
+            0,
+          ),
+          'passCount',
+        ],
+        [
+          fn(
+            'COALESCE',
+            fn(
+              'SUM',
+              literal('CASE WHEN "checks"."status" = 0 THEN 1 ELSE 0 END'),
+            ),
+            0,
+          ),
+          'failCount',
+        ],
+        [
+          fn(
+            'COALESCE',
+            fn(
+              'SUM',
+              literal('CASE WHEN "checks"."status" = 2 THEN 1 ELSE 0 END'),
+            ),
+            0,
+          ),
+          'irrelevantCount',
+        ],
       ],
       group: [
         'Review.id',
@@ -52,15 +112,20 @@ export const getAllReviews = async (req: Request, res: Response) => {
 
     res.json(reviews);
   } catch (error) {
-    console.error('Error fetching reviews:', error);
-    res.status(500).json({ error: 'Failed to fetch reviews' });
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error('Error fetching reviews:', err.message, err.stack);
+    const isDev = process.env.NODE_ENV === 'development';
+    res.status(500).json({
+      error: 'Failed to fetch reviews',
+      ...(isDev && { detail: err.message }),
+    });
   }
 };
 
 // GET /api/reviews/:id - Get single review by ID
 export const getReviewById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = paramString(req.params.id);
     const review = await Review.findByPk(parseInt(id, 10));
 
     if (!review) {
@@ -77,7 +142,7 @@ export const getReviewById = async (req: Request, res: Response) => {
 // GET /api/reviews/:id/checks - Get all checks for a review
 export const getChecksForReview = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = paramString(req.params.id);
     const checks = await Check.findAll({
       where: { review: parseInt(id, 10) },
       order: [['requirement', 'ASC']],
@@ -93,12 +158,18 @@ export const getChecksForReview = async (req: Request, res: Response) => {
 // POST /api/reviews - Create new review
 export const createReview = async (req: Request, res: Response) => {
   try {
-    const { title, excludedContentTypes, selectedPrefillIds, objectType, regulatoryFramework } = req.body;
+    const {
+      title,
+      excludedContentTypes,
+      selectedPrefillIds,
+      objectType,
+      regulatoryFramework,
+    } = req.body;
 
     const review = await Review.create({
       title,
-      excludedContentTypes: Array.isArray(excludedContentTypes) 
-        ? excludedContentTypes.join(';') 
+      excludedContentTypes: Array.isArray(excludedContentTypes)
+        ? excludedContentTypes.join(';')
         : excludedContentTypes,
       selectedPrefillIds,
       objectType,
@@ -114,11 +185,11 @@ export const createReview = async (req: Request, res: Response) => {
           created_at: review.created_at,
         },
       });
-      
+
       if (!createdReview) {
         throw new Error('Failed to fetch created review after insert');
       }
-      
+
       return res.status(201).json(createdReview);
     }
 
@@ -132,8 +203,14 @@ export const createReview = async (req: Request, res: Response) => {
 // PUT /api/reviews/:id - Update review
 export const updateReview = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const { title, excludedContentTypes, selectedPrefillIds, objectType, regulatoryFramework } = req.body;
+    const id = paramString(req.params.id);
+    const {
+      title,
+      excludedContentTypes,
+      selectedPrefillIds,
+      objectType,
+      regulatoryFramework,
+    } = req.body;
 
     const review = await Review.findByPk(parseInt(id, 10));
     if (!review) {
@@ -142,8 +219,8 @@ export const updateReview = async (req: Request, res: Response) => {
 
     await review.update({
       title,
-      excludedContentTypes: Array.isArray(excludedContentTypes) 
-        ? excludedContentTypes.join(';') 
+      excludedContentTypes: Array.isArray(excludedContentTypes)
+        ? excludedContentTypes.join(';')
         : excludedContentTypes,
       selectedPrefillIds,
       objectType,
@@ -160,7 +237,7 @@ export const updateReview = async (req: Request, res: Response) => {
 // DELETE /api/reviews/:id - Delete review (cascade deletes checks)
 export const deleteReview = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = paramString(req.params.id);
     const review = await Review.findByPk(parseInt(id, 10));
 
     if (!review) {
@@ -178,7 +255,7 @@ export const deleteReview = async (req: Request, res: Response) => {
 // POST /api/reviews/:reviewId/checks - Upsert check
 export const upsertCheck = async (req: Request, res: Response) => {
   try {
-    const { reviewId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
     const { requirement, status, comment, flag } = req.body;
 
     // Check if check already exists
@@ -219,7 +296,8 @@ export const upsertCheck = async (req: Request, res: Response) => {
 // GET /api/reviews/:reviewId/checks/:requirementId - Get specific check
 export const getCheckByRequirement = async (req: Request, res: Response) => {
   try {
-    const { reviewId, requirementId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
+    const requirementId = paramString(req.params.requirementId);
 
     const check = await Check.findOne({
       where: {
@@ -242,7 +320,7 @@ export const getCheckByRequirement = async (req: Request, res: Response) => {
 // DELETE /api/checks/:id - Delete specific check
 export const deleteCheck = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = paramString(req.params.id);
     const check = await Check.findByPk(parseInt(id, 10));
 
     if (!check) {
@@ -261,7 +339,7 @@ export const deleteCheck = async (req: Request, res: Response) => {
 export const disableChecks = async (req: Request, res: Response) => {
   const t = await sequelize.transaction();
   try {
-    const { reviewId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
     const { requirements } = req.body; // Array of requirement IDs
 
     if (!Array.isArray(requirements)) {
@@ -285,11 +363,14 @@ export const disableChecks = async (req: Request, res: Response) => {
           transaction: t,
         }).then(([check, created]) => {
           if (!created) {
-            return check.update({ status: Status.IRRELEVANT }, { transaction: t });
+            return check.update(
+              { status: Status.IRRELEVANT },
+              { transaction: t },
+            );
           }
           return check;
-        })
-      )
+        }),
+      ),
     );
 
     await t.commit();
@@ -305,7 +386,7 @@ export const disableChecks = async (req: Request, res: Response) => {
 export const enableChecks = async (req: Request, res: Response) => {
   const t = await sequelize.transaction();
   try {
-    const { reviewId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
     const { requirements } = req.body; // Array of requirement IDs
 
     if (!Array.isArray(requirements)) {
@@ -336,7 +417,7 @@ export const enableChecks = async (req: Request, res: Response) => {
 export const deleteChecks = async (req: Request, res: Response) => {
   const t = await sequelize.transaction();
   try {
-    const { reviewId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
     const { requirements } = req.body; // Array of requirement IDs
 
     if (!Array.isArray(requirements)) {
@@ -366,7 +447,7 @@ export const deleteChecks = async (req: Request, res: Response) => {
 export const prefillChecks = async (req: Request, res: Response) => {
   const t = await sequelize.transaction();
   try {
-    const { reviewId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
     const { prefills } = req.body; // Array of { status, ids, comment }
 
     if (!Array.isArray(prefills)) {
@@ -412,15 +493,18 @@ export const prefillChecks = async (req: Request, res: Response) => {
           transaction: t,
         }).then((existingCheck) => {
           if (existingCheck) {
-            return existingCheck.update({
-              status: checkData.status,
-              comment: checkData.comment,
-            }, { transaction: t });
+            return existingCheck.update(
+              {
+                status: checkData.status,
+                comment: checkData.comment,
+              },
+              { transaction: t },
+            );
           } else {
             return Check.create(checkData, { transaction: t });
           }
-        })
-      )
+        }),
+      ),
     );
 
     await t.commit();
@@ -435,7 +519,8 @@ export const prefillChecks = async (req: Request, res: Response) => {
 // POST /api/reviews/:reviewId/checks/:requirementId/toggle-flag - Toggle check flag
 export const toggleCheckFlag = async (req: Request, res: Response) => {
   try {
-    const { reviewId, requirementId } = req.params;
+    const reviewId = paramString(req.params.reviewId);
+    const requirementId = paramString(req.params.requirementId);
     const { flag } = req.body;
 
     const [check, created] = await Check.findOrCreate({

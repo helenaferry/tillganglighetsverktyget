@@ -14,8 +14,8 @@ export const validate = (schema: Joi.ObjectSchema) => {
         field: detail.path.join('.'),
         message: detail.message,
       }));
-      
-      return res.status(400).json({ 
+
+      return res.status(400).json({
         error: 'Validation failed',
         details: errors,
       });
@@ -59,13 +59,18 @@ export const checkSchemas = {
   }),
 
   bulkPrefill: Joi.object({
-    prefills: Joi.array().items(
-      Joi.object({
-        status: Joi.string().valid('PASS', 'FAIL', 'IRRELEVANT', 'NOT_ASSESSED').required(),
-        ids: Joi.array().items(Joi.string().max(100)).min(1).required(),
-        comment: Joi.string().allow('').default(''),
-      })
-    ).min(1).required(),
+    prefills: Joi.array()
+      .items(
+        Joi.object({
+          status: Joi.string()
+            .valid('PASS', 'FAIL', 'IRRELEVANT', 'NOT_ASSESSED')
+            .required(),
+          ids: Joi.array().items(Joi.string().max(100)).min(1).required(),
+          comment: Joi.string().allow('').default(''),
+        }),
+      )
+      .min(1)
+      .required(),
   }),
 
   toggleFlag: Joi.object({
@@ -75,17 +80,26 @@ export const checkSchemas = {
 
 // Param validation with parsing
 // Parses and validates ID params, attaching parsed values to req.params
-export const validateIdParam = (req: Request, res: Response, next: NextFunction) => {
-  const idString = req.params.id || req.params.reviewId;
+function paramString(value: string | string[] | undefined): string {
+  return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
+}
+
+export const validateIdParam = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const idString =
+    paramString(req.params.id) || paramString(req.params.reviewId);
   const id = parseInt(idString, 10);
-  
+
   if (isNaN(id) || id <= 0) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       error: 'Invalid ID parameter',
       details: 'ID must be a positive number',
     });
   }
-  
+
   // Attach parsed ID back to params as a number
   // Note: Express types define params as strings, but we know this is validated
   if (req.params.id) {
@@ -94,6 +108,6 @@ export const validateIdParam = (req: Request, res: Response, next: NextFunction)
   if (req.params.reviewId) {
     (req.params as any).reviewId = id;
   }
-  
+
   next();
 };
