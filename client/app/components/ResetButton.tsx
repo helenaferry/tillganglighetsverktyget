@@ -24,7 +24,7 @@ export default function ResetButton({
   };
   return (
     <DigiButton
-      afType="button"
+      afType="reset"
       afVariation={ButtonVariation.FUNCTION}
       onAfOnClick={reset}
       afFullWidth={false}

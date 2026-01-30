@@ -30,6 +30,9 @@
   "CategoryNav": {
     "Heading": "Kravkategorier",
     "Close": "Stäng",
+    "CheckedLabel": "Granskat krav:",
+    "UncheckedLabel": "Ej granskat krav:",
+    "RequirementsChecked": "{{checked}} av {{total}} krav granskade",
     "NoCategoriesAvailable": "Inga kravkategorier tillgängliga",
     "NoRequirementsAvailable": "Inga krav tillgängliga"
   },

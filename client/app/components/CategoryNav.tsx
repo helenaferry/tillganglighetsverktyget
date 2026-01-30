@@ -23,10 +23,20 @@ type Props = {
   onToggleNav?: () => void;
   focusTrap?: boolean;
 };
-const StatusIndicator = ({ checked, active }: { checked: boolean; active: boolean }) => {
+const StatusIndicator = ({
+  checked,
+  active,
+  checkedLabel,
+  uncheckedLabel,
+}: {
+  checked: boolean;
+  active: boolean;
+  checkedLabel: string;
+  uncheckedLabel: string;
+}) => {
   return (
     <div
-      aria-label={`${checked ? 'Granskat' : 'Ej granskat'} krav:`}
+      aria-label={checked ? checkedLabel : uncheckedLabel}
       className={`flex items-center justify-center text-center w-[1.5rem] h-[1.5rem] p-[0.2rem] rounded-full border border-2 border-dashed
         ${!active && !checked ? 'border-grayscale-700' : ''}
         ${active && checked ? 'bg-white border-transparent' : ''}
@@ -89,7 +99,10 @@ export default function CategoryNav({
         py-[0.1875rem] 
         px-[0.6875rem]
         mt-2`}
-        aria-label={`${checked} av ${requirements.length} krav granskade`}
+        aria-label={t('CategoryNav.RequirementsChecked', {
+          checked: String(checked),
+          total: String(requirements.length),
+        })}
       >{`${checked}/${requirements.length}`}</span>
     );
   };
@@ -112,7 +125,7 @@ export default function CategoryNav({
         </div>
         <ul className={`px-2 py-2 ${showCategoryNav ? '' : 'hidden'} md:block`}>
           {categories.length === 0 ? (
-            <li>Inga kravkategorier tillgängliga</li>
+            <li>{t('CategoryNav.NoCategoriesAvailable')}</li>
           ) : (
             categories.map((category, buttonIndex: number) => {
               const isExpanded = expandedCategories.includes(category.category);
@@ -161,7 +174,7 @@ export default function CategoryNav({
                     }}
                   >
                     {!category.requirements || category.requirements.length === 0 ? (
-                      <li>Inga krav tillgängliga</li>
+                      <li>{t('CategoryNav.NoRequirementsAvailable')}</li>
                     ) : (
                       category.requirements.map((req, linkIndex) => {
                         const done =
@@ -186,7 +199,12 @@ export default function CategoryNav({
                         bg-${selected ? 'stratos-500' : 'white'}`}
                             >
                               <div className="h-full flex items-center">
-                                <StatusIndicator checked={done} active={selected} />
+                                <StatusIndicator
+                              checked={done}
+                              active={selected}
+                              checkedLabel={t('CategoryNav.CheckedLabel')}
+                              uncheckedLabel={t('CategoryNav.UncheckedLabel')}
+                            />
                               </div>
                               <div
                                 className={`text-sm text-left no-underline hover:underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}
