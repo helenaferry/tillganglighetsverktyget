@@ -22,11 +22,11 @@ services:
       - tillgang-network
     healthcheck:
       # Check that app user can connect so backend only starts after init scripts (user + schema) have run
-      # Full path to sqlplus so healthcheck does not depend on PATH (path may vary by Oracle image version)
+      # Use sqlplus from PATH so healthcheck works across Oracle image versions (23ai, 26ai, etc.)
       test:
         [
           'CMD-SHELL',
-          "echo 'SELECT 1 FROM DUAL;' | /opt/oracle/product/23ai/dbhomeFree/bin/sqlplus -s $$DB_USER/$$DB_PASSWORD@FREEPDB1 > /dev/null 2>&1 || exit 1",
+          "echo 'SELECT 1 FROM DUAL;' | sqlplus -s $$DB_USER/$$DB_PASSWORD@FREEPDB1 > /dev/null 2>&1 || exit 1",
         ]
       interval: 30s
       timeout: 10s

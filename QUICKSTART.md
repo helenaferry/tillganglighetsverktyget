@@ -66,16 +66,18 @@ Klart! 🎉
 # Starta
 docker compose -f compose.dev.yml up -d
 
-# Stoppa
+# Stoppa (containers tas bort, datavolumes behålls – nästa "up" återanvänder samma data)
 docker compose -f compose.dev.yml down
 
 # Visa loggar
 docker compose -f compose.dev.yml logs -f
 
-# Nystart (tar bort all data)
+# Nystart från scratch (tar bort containers och alla datavolumes – all data försvinner)
 docker compose -f compose.dev.yml down -v
 docker compose -f compose.dev.yml up -d
 ```
+
+**Alternativ:** Vill du bara stoppa utan att ta bort containers? Använd `docker compose -f compose.dev.yml stop`. Starta igen med `start` eller `up -d`.
 
 ## Åtkomstpunkter
 

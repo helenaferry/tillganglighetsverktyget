@@ -237,12 +237,22 @@ cd client && cp .env.example .env.local  # Anpassa branding
 # Starta tjänster
 docker compose -f compose.dev.yml up -d
 
-# Stoppa tjänster (behåller data)
+# Stoppa och ta bort containers (datavolumes behålls – nästa "up" återanvänder samma data)
 docker compose -f compose.dev.yml down
 
-# Stoppa och ta bort volumes (nystart)
+# Stoppa och ta bort containers + volumes (nystart från scratch – all data försvinner)
 docker compose -f compose.dev.yml down -v
 ```
+
+**Bara stoppa** (containers kvar, starta igen med `start` eller `up -d`): `docker compose -f compose.dev.yml stop`
+
+### Compose-kommandon – stopp och data
+
+| Kommando | Containers | Volumes / data | När du använder det |
+|----------|------------|----------------|---------------------|
+| `docker compose -f compose.dev.yml stop` | Stoppade, kvar | Kvar | Bara pausa – starta igen med `start` eller `up -d`. |
+| `docker compose -f compose.dev.yml down` | Borttagna | Kvar | Stoppa och städa bort containers; datan (t.ex. Oracle) ligger kvar. Nästa `up` skapar nya containers som använder samma data. |
+| `docker compose -f compose.dev.yml down -v` | Borttagna | Borttagna | Nystart från scratch – all data (inkl. databas) försvinner. Använd vid felsökning eller om du vill börja om. |
 
 ### Kodändringar
 
@@ -590,7 +600,7 @@ Om du stöter på problem:
 # Starta
 docker compose -f compose.dev.yml up -d
 
-# Stoppa
+# Stoppa (containers bort, data kvar)
 docker compose -f compose.dev.yml down
 
 # Loggar
@@ -602,7 +612,7 @@ docker compose -f compose.dev.yml ps
 # Bygg om
 docker compose -f compose.dev.yml up -d --build
 
-# Nystart
+# Nystart (containers + volumes bort – all data borta)
 docker compose -f compose.dev.yml down -v && \
 docker compose -f compose.dev.yml up -d
 ```
