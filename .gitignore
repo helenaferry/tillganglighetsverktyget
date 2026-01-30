@@ -4,7 +4,14 @@
 
 # React Router
 ./client/.react-router/
+./client/build/
+
+# Test coverage
+./client/coverage/
+
 **/build/**
+**/dist/**
+**/coverage/**
 
 # Environment files
 .env
