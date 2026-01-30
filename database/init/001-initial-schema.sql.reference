@@ -3,10 +3,10 @@
 -- =====================================================
 -- This script is a REFERENCE/STANDALONE version of the schema
 -- NOTE: The actual schema is created by 000-create-user.sh
--- This file can be used for manual schema recreation or reference
+-- This file is NOT run by the container (.sql.reference = reference only)
 --
 -- To use this script manually:
---   sqlplus tillgang_user/<password>@FREEPDB1 @001-initial-schema.sql
+--   sqlplus tillgang_user/<password>@FREEPDB1 @001-initial-schema.sql.reference
 --
 -- This script is IDEMPOTENT - safe to run multiple times
 -- =====================================================

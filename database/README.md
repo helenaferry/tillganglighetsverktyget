@@ -7,8 +7,9 @@ Denna katalog innehåller Oracle-databasens initialiseringsskript och dokumentat
 ```
 database/
 ├── init/
-│   └── 001-initial-schema.sql   # Initialt databasschema
-└── README.md                     # Denna fil
+│   ├── 000-create-user.sh              # Skapar användare + schema (körs av containern)
+│   └── 001-initial-schema.sql.reference  # Referens/manuell körning (körs INTE av containern)
+└── README.md
 ```
 
 ## Databasschema
@@ -16,33 +17,36 @@ database/
 ### Tabeller
 
 #### reviews
+
 Lagrar metadata för tillgänglighetsgranskningar.
 
-| Kolumn | Typ | Beskrivning |
-|--------|------|-------------|
-| id | NUMBER | Primärnyckel (auto-increment) |
-| created_at | TIMESTAMP | Skapad tidsstämpel |
-| title | VARCHAR2(500) | Granskningsrubrik |
+| Kolumn                 | Typ            | Beskrivning                                              |
+| ---------------------- | -------------- | -------------------------------------------------------- |
+| id                     | NUMBER         | Primärnyckel (auto-increment)                            |
+| created_at             | TIMESTAMP      | Skapad tidsstämpel                                       |
+| title                  | VARCHAR2(500)  | Granskningsrubrik                                        |
 | excluded_content_types | VARCHAR2(2000) | Semikolonseparerad lista över exkluderade innehållstyper |
-| object_type | VARCHAR2(50) | Typ av objekt som granskas (web, doc, app) |
-| regulatory_framework | VARCHAR2(100) | Tillämpligt regelverk |
-| selected_prefill_ids | VARCHAR2(2000) | Semikolonseparerad lista över prefill-ID:n |
+| object_type            | VARCHAR2(50)   | Typ av objekt som granskas (web, doc, app)               |
+| regulatory_framework   | VARCHAR2(100)  | Tillämpligt regelverk                                    |
+| selected_prefill_ids   | VARCHAR2(2000) | Semikolonseparerad lista över prefill-ID:n               |
 
 #### checks
+
 Lagrar individuella tillgänglighetskravkontroller för varje granskning.
 
-| Kolumn | Typ | Beskrivning |
-|--------|------|-------------|
-| id | NUMBER | Primärnyckel (auto-increment) |
-| created_at | TIMESTAMP | Skapad tidsstämpel |
-| updated_at | TIMESTAMP | Senaste uppdateringstidsstämpel (uppdateras automatiskt) |
-| review | NUMBER | Främmande nyckel till reviews.id |
-| requirement | VARCHAR2(100) | Kravidentifierare |
-| status | NUMBER | Kontrollstatus (0=FAIL, 1=PASS, 2=IRRELEVANT, 3=NOT_ASSESSED) |
-| comment | CLOB | Kommentar/anteckningar om kontrollen |
-| flag | NUMBER(1) | Boolean-flagga (0 eller 1) |
+| Kolumn      | Typ           | Beskrivning                                                   |
+| ----------- | ------------- | ------------------------------------------------------------- |
+| id          | NUMBER        | Primärnyckel (auto-increment)                                 |
+| created_at  | TIMESTAMP     | Skapad tidsstämpel                                            |
+| updated_at  | TIMESTAMP     | Senaste uppdateringstidsstämpel (uppdateras automatiskt)      |
+| review      | NUMBER        | Främmande nyckel till reviews.id                              |
+| requirement | VARCHAR2(100) | Kravidentifierare                                             |
+| status      | NUMBER        | Kontrollstatus (0=FAIL, 1=PASS, 2=IRRELEVANT, 3=NOT_ASSESSED) |
+| comment     | CLOB          | Kommentar/anteckningar om kontrollen                          |
+| flag        | NUMBER(1)     | Boolean-flagga (0 eller 1)                                    |
 
 **Begränsningar:**
+
 - Främmande nyckel: `checks.review` → `reviews.id` (ON DELETE CASCADE)
 - Unik: (review, requirement) - förhindrar dubbletter av kontroller för samma krav i en granskning
 
@@ -55,28 +59,31 @@ Lagrar individuella tillgänglighetskravkontroller för varje granskning.
 
 ## Initialiseringsskript
 
-Skripten i katalogen `init/` körs automatiskt när Oracle-containern startar för första gången. De måste namnges med numeriskt prefix för att kontrollera körningsordningen.
+Skripten i katalogen `init/` körs automatiskt när Oracle-containern startar för första gången. Endast körbara filer (t.ex. `.sh`) och vissa `.sql`-filer körs; filer med suffix `.reference` körs inte.
 
-### 001-initial-schema.sql
+### 000-create-user.sh
 
-Detta skript:
-1. Skapar applikationsanvändaren `tillgang_user`
-2. Skapar sekvenser för auto-increment-ID:n
-3. Skapar tabellerna `reviews` och `checks`
-4. Konfigurerar triggers för auto-increment och tidsstämpeluppdateringar
-5. Skapar index för prestanda
-6. Beviljar nödvändiga behörigheter
+Detta skript (körs av containern):
+
+1. Skapar applikationsanvändaren `tillgang_user` med lösenord från `DB_PASSWORD`
+2. Skapar sekvenser, tabellerna `reviews` och `checks`, triggers och index
+
+### 001-initial-schema.sql.reference
+
+Referensversion av schemat för manuell körning eller dokumentation. Körs **inte** av containern. För manuell körning: `sqlplus tillgang_user/<password>@FREEPDB1 @001-initial-schema.sql.reference`
 
 ## Uppgifter
 
 **Utvecklingsmiljö och Produktion:**
+
 - Systemanvändare: `system` / `<ORACLE_PWD från .env>`
 - Applikationsanvändare: `tillgang_user` / `<DB_PASSWORD från .env>`
 - Databas: `FREEPDB1` (Pluggable Database)
 
 **⚠️ VIKTIGT:** Oracle Database Free använder `FREEPDB1` som tjänstnamn (inte `XEPDB1` som används i Oracle XE).
 
-**⚠️ SÄKERHET:** 
+**⚠️ SÄKERHET:**
+
 - Inga standardlösenord finns - du MÅSTE sätta ORACLE_PWD och DB_PASSWORD i .env
 - För produktion: Använd starka, unika lösenord och sekretesshantering
 - Använd aldrig samma lösenord i utveckling och produktion
@@ -86,11 +93,13 @@ Detta skript:
 ### Från värdmaskinen
 
 Med SQLPlus:
+
 ```bash
 sqlplus tillgang_user/<DITT_DB_PASSWORD>@localhost:1521/FREEPDB1
 ```
 
 Med SQL Developer:
+
 - Värdnamn: `localhost`
 - Port: `1521`
 - Tjänstnamn: `FREEPDB1`
@@ -107,6 +116,7 @@ podman exec -it oracle-db sqlplus tillgang_user/<DITT_DB_PASSWORD>@FREEPDB1
 ## Vanliga frågor
 
 ### Kontrollera tabellstruktur:
+
 ```sql
 SELECT table_name FROM user_tables;
 DESC reviews;
@@ -114,12 +124,14 @@ DESC checks;
 ```
 
 ### Visa data:
+
 ```sql
 SELECT * FROM reviews;
 SELECT * FROM checks;
 ```
 
 ### Återställ databas (endast utveckling):
+
 ```sql
 DELETE FROM checks;
 DELETE FROM reviews;
@@ -129,6 +141,7 @@ COMMIT;
 ## Säkerhetskopiering och återställning
 
 ### Exportera data:
+
 ```bash
 podman exec oracle-db expdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
@@ -137,6 +150,7 @@ podman exec oracle-db expdp tillgang_user/TillgangDev2026!@FREEPDB1 \
 ```
 
 ### Importera data:
+
 ```bash
 podman exec oracle-db impdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
@@ -150,7 +164,7 @@ Om du har befintlig data i Supabase (PostgreSQL):
 
 1. Exportera data från Supabase
 2. Transformera dataformatet (tidsstämplar, booleska värden, etc.)
-3. Använd SQL*Loader eller bulk INSERT-satser
+3. Använd SQL\*Loader eller bulk INSERT-satser
 4. Verifiera dataintegritet
 
 Kontakta utvecklingsteamet för migreringsskript om det behövs.

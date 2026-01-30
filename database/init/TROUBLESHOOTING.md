@@ -19,11 +19,13 @@ podman compose -f compose.dev.yml logs oracle-db | grep -E "ERROR|create-user|DA
 ### 1. DB_PASSWORD miljövariabel saknas eller är tom
 
 **Symptom:**
+
 ```
 ERROR: DB_PASSWORD environment variable is not set
 ```
 
 **Lösning:**
+
 ```bash
 # Kontrollera att .env finns och innehåller DB_PASSWORD
 cat .env | grep DB_PASSWORD
@@ -39,11 +41,13 @@ podman compose -f compose.dev.yml up -d
 ### 2. ORACLE_PWD miljövariabel saknas eller är felaktig
 
 **Symptom:**
+
 ```
 ORA-01017: invalid username/password
 ```
 
 **Lösning:**
+
 ```bash
 # Kontrollera .env
 cat .env | grep ORACLE_PWD
@@ -57,12 +61,14 @@ cat .env | grep ORACLE_PWD
 **Symptom:** Inga tydliga fel, men "DATABASE SETUP WAS NOT SUCCESSFUL"
 
 **Diagnos:**
+
 ```bash
 # Kör skriptet manuellt för att se fel
 podman exec tillgang-oracle-dev bash -c 'cd /opt/oracle/scripts/startup && bash -x 000-create-user.sh'
 ```
 
 **Vanliga SQL-fel:**
+
 - **ORA-01017:** Fel lösenord för SYSTEM-användare
 - **ORA-00959:** Tablespace finns inte (ska inte hända med Oracle Free)
 - **ORA-01917:** Användare finns redan (ska hanteras av skriptet)
@@ -72,6 +78,7 @@ podman exec tillgang-oracle-dev bash -c 'cd /opt/oracle/scripts/startup && bash 
 **Symptom:** Skriptet körs inte alls
 
 **Lösning:**
+
 ```bash
 # Kontrollera filrättigheter lokalt
 ls -la database/init/000-create-user.sh
@@ -87,6 +94,7 @@ podman compose -f compose.dev.yml up -d
 ### 5. Oracle-instans avslutas på grund av tidsdrift (ORA-12752)
 
 **Symptom:**
+
 ```
 --ATTENTION--
 Time drifted forward by (XXXXXX) micro seconds
@@ -99,49 +107,53 @@ Instance terminated by PMON
 **Lösning:**
 
 1. **Kontrollera att systemklockan är synkroniserad:**
+
    ```bash
    # macOS
    sntp -sS time.apple.com
-   
+
    # Linux
    sudo timedatectl set-ntp true
    sudo systemctl restart systemd-timesyncd
-   
+
    # Windows/WSL
    wsl --shutdown
    # Starta om WSL och kontrollera att Windows-tid är korrekt
    ```
 
 2. **Kontrollera tidszon-inställningar:**
+
    ```bash
    # Kontrollera tidszon i containern
    podman exec tillgang-oracle-dev date
-   
+
    # Kontrollera tidszon på värdsystemet
    date
-   
+
    # Om de skiljer sig, sätt samma tidszon
    ```
 
 3. **Starta om containers efter tidsändringar:**
+
    ```bash
    # Stoppa alla containers
    podman compose -f compose.dev.yml down -v
-   
+
    # Vänta några sekunder för att säkerställa tidsstabilitet
    sleep 5
-   
+
    # Starta om
    podman compose -f compose.dev.yml up -d
    ```
 
 4. **Om problemet kvarstår - kontrollera Podman/Docker-tidsinställningar:**
+
    ```bash
    # macOS med Podman Machine
    podman machine ssh
    # I VM: kontrollera att NTP är aktiverat
    timedatectl status
-   
+
    # Om NTP inte är aktiverat:
    sudo timedatectl set-ntp true
    ```
@@ -151,6 +163,7 @@ Instance terminated by PMON
    - Om du måste ändra tid, stoppa först Oracle-containern
 
 **Förebyggande:**
+
 - Aktivera automatisk NTP-synkronisering på värdsystemet
 - Undvik manuella tidsändringar när Oracle kör
 - Använd samma tidszon för värdsystemet och containern
@@ -160,6 +173,7 @@ Instance terminated by PMON
 **Symptom:** Skriptet misslyckas med konstiga fel
 
 **Diagnos:**
+
 ```bash
 # Kontrollera line endings
 file database/init/000-create-user.sh
@@ -171,6 +185,7 @@ sed -i 's/\r$//' database/init/000-create-user.sh
 ```
 
 **Förebyggande:** Konfigurera Git:
+
 ```bash
 git config core.autocrlf input
 ```
@@ -180,17 +195,20 @@ git config core.autocrlf input
 **Symptom:** SQL-kommandon misslyckas när lösenord innehåller `$`, `'`, `"`, etc.
 
 **Lösning:**
+
 - Undvik specialtecken i lösenord, ELLER
 - Escape korrekt i SQL (se nedan)
 
 **Exempel på problematiska lösenord:**
+
 - `Pass$word` → Använd `Pass$$word` eller undvik `$`
 - `Pass'word` → Använd `Pass''word` eller undvik `'`
 - `Pass"word` → Undvik `"`
 
 ### 7. FREEPDB1 är inte registrerad hos listenern (ORA-12514)
 
-**Symptom:** 
+**Symptom:**
+
 ```
 ORA-12514: Cannot connect to database. Service FREEPDB1 is not registered with the listener
 ```
@@ -198,8 +216,10 @@ ORA-12514: Cannot connect to database. Service FREEPDB1 is not registered with t
 **Orsak:** Pluggable database FREEPDB1 är inte öppen eller inte registrerad hos listenern när init-skriptet körs.
 
 **Lösning:**
+
 - Skriptet försöker nu automatiskt öppna FREEPDB1 om den inte är öppen
 - Om problemet kvarstår, kontrollera PDB-status manuellt:
+
 ```bash
 # Kontrollera PDB-status
 podman exec tillgang-oracle-dev bash -c "echo 'SELECT name, open_mode FROM v\$pdbs;' | sqlplus -s system/\${ORACLE_PWD}@localhost:1521"
@@ -215,7 +235,9 @@ podman exec tillgang-oracle-dev bash -c "echo 'ALTER PLUGGABLE DATABASE FREEPDB1
 **Symptom:** "Waiting for database to be ready..." loopar för evigt
 
 **Lösning:**
+
 - Detta borde inte hända, men om det gör:
+
 ```bash
 # Kontrollera att Oracle faktiskt startar
 podman compose -f compose.dev.yml logs oracle-db | grep "DATABASE IS READY"
@@ -230,6 +252,7 @@ podman compose -f compose.dev.yml logs oracle-db | grep "DATABASE IS READY"
 **Symptom:** Användaren skapas men schema-skapandet misslyckas
 
 **Diagnos:**
+
 ```bash
 # Kör SQL-delen manuellt
 podman exec tillgang-oracle-dev bash -c 'sqlplus -s tillgang_user/<DB_PASSWORD>@FREEPDB1 <<EOF
@@ -240,6 +263,7 @@ EOF'
 ```
 
 **Vanliga SQL-fel:**
+
 - **ORA-00955:** Objekt finns redan (ska hanteras av DROP-statements)
 - **ORA-00942:** Tabell saknas (om DROP misslyckades)
 - **ORA-22848:** CLOB-begränsningar (ska inte hända längre)
@@ -263,9 +287,10 @@ podman exec tillgang-oracle-dev ls -la /opt/oracle/scripts/startup/
 ```
 
 **Förväntat resultat:**
+
 ```
 -rw-r--r-- 1 root root 4553 Jan 27 12:24 000-create-user.sh
--rw-r--r-- 1 root root 5778 Jan 27 12:25 001-initial-schema.sql
+-rw-r--r-- 1 root root 5778 Jan 27 12:25 001-initial-schema.sql.reference
 ```
 
 ### 3. Kör skriptet manuellt med debug-output
@@ -323,22 +348,25 @@ podman compose -f compose.dev.yml logs oracle-db -f
 Om problemet kvarstår efter att ha följt denna guide:
 
 1. Kopiera fullständiga Oracle-loggar:
+
    ```bash
    podman compose -f compose.dev.yml logs oracle-db > oracle-logs.txt
    ```
 
 2. Kontrollera systemresurser:
+
    ```bash
    # RAM
    free -h  # Linux
    # eller
    vm_stat  # macOS
-   
+
    # Diskutrymme
    df -h
    ```
 
 3. Kontrollera Podman/Docker-version:
+
    ```bash
    podman --version
    podman compose version
