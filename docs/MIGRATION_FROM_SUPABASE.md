@@ -1,11 +1,11 @@
 # Migreringsguide från Supabase till Oracle
 
-Denna guide förklarar hur man migrerar befintlig data från Supabase (PostgreSQL) till den nya Oracle XE containeriserade installationen.
+Denna guide förklarar hur man migrerar befintlig data från Supabase (PostgreSQL) till den nya Oracle Database Free containeriserade installationen.
 
 ## Översikt
 
 Applikationen har migrerats från:
-- **Database:** Supabase (PostgreSQL) → Oracle XE 21c
+- **Database:** Supabase (PostgreSQL) → Oracle Database Free 23ai
 - **API:** Supabase auto-genererad → Anpassad Express REST API
 - **Distribution:** Molntjänst → Självhostade containers
 
@@ -39,7 +39,7 @@ CREATE TABLE checks (
 );
 ```
 
-### Oracle XE Schema
+### Oracle Database Free Schema
 
 ```sql
 -- reviews table
@@ -203,17 +203,17 @@ node transform-data.js
 
 ```bash
 # Starta Oracle-container
-podman compose -f compose.dev.yml up -d oracle-db
+docker compose -f compose.dev.yml up -d oracle-db
 
 # Vänta tills databasen är redo
-podman compose -f compose.dev.yml logs -f oracle-db
+docker compose -f compose.dev.yml logs -f oracle-db
 # Vänta på "DATABASE IS READY TO USE!"
 
 # Kopiera importfil till container
-podman cp oracle-import.sql tillgang-oracle-dev:/tmp/
+docker cp oracle-import.sql tillgang-oracle-dev:/tmp/
 
 # Importera data
-podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1 <<EOF
+docker exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1 <<EOF
 @/tmp/oracle-import.sql
 EXIT;
 EOF
@@ -237,7 +237,7 @@ EOF
 
 ```bash
 # Anslut till Oracle
-podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
+docker exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
 
 # Verifiera antal
 SELECT COUNT(*) FROM reviews;
@@ -258,7 +258,7 @@ GROUP BY r.id, r.title;
 
 1. Starta alla tjänster:
    ```bash
-   podman compose -f compose.dev.yml up -d
+   docker compose -f compose.dev.yml up -d
    ```
 
 2. Öppna frontend: http://localhost:5173
@@ -309,7 +309,7 @@ Om migreringen misslyckas kan du snabbt återställa:
 
 1. Stoppa nya containers:
    ```bash
-   podman compose -f compose.dev.yml down
+   docker compose -f compose.dev.yml down
    ```
 
 2. Återställ git-ändringar:
@@ -329,7 +329,7 @@ Om migreringen misslyckas kan du snabbt återställa:
 - Inbyggd anslutningspoolning
 - Real-time-prenumerationer
 
-### Oracle XE (Självhostad)
+### Oracle Database Free (Självhostad)
 - Manuella säkerhetskopior krävs
 - Manuella uppdateringar
 - Konfigurera anslutningspoolning i Sequelize
@@ -342,7 +342,7 @@ Om migreringen misslyckas kan du snabbt återställa:
 - Pro: $25/månad (8GB databas, 50GB bandbredd)
 - Ytterligare: $0.125/GB databas, $0.09/GB bandbredd
 
-### Oracle XE (Självhostad)
+### Oracle Database Free (Självhostad)
 - Gratis programvarulicens (Express Edition)
 - Endast infrastrukturkostnader (server/moln)
 - Inga per-GB-avgifter
@@ -417,7 +417,7 @@ Om du stöter på problem under migreringen:
 
 1. Kontrollera [SETUP.md](SETUP.md) felsökningssektion
 2. Verifiera att Oracle-container är healthy
-3. Kontrollera backend-loggar: `podman logs tillgang-backend-dev`
+3. Kontrollera backend-loggar: `docker logs tillgang-backend-dev`
 4. Granska databasschema: `DESC reviews; DESC checks;`
 5. Testa API direkt: `curl http://localhost:3000/api/reviews`
 

@@ -8,7 +8,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                     Docker/Podman Host                     │
+│                     Docker Host                     │
 │                                                             │
 │  ┌──────────────────┐                                      │
 │  │    Frontend      │                                      │
@@ -36,7 +36,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 │  │    Database      │                                      │
 │  │   Container      │                                      │
 │  │                  │                                      │
-│  │  • Oracle XE 21c │                                      │
+│  │  • Oracle Database Free 23ai │                                      │
 │  │  • Port: 1521    │                                      │
 │  │  • Volume Mount  │                                      │
 │  └──────────────────┘                                      │
@@ -103,7 +103,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 ### Database Container
 
 **Teknologi:**
-- Oracle Database Express Edition 21c
+- Oracle Database Free 23ai
 
 **Schema:**
 - `reviews` tabell - Granskningsmetadata
@@ -228,7 +228,7 @@ Användare → Frontend → Backend API → Database
 - Prod: Multi-stage (build + runtime med kompilerad JS)
 
 **Database:**
-- Båda: Officiell Oracle XE image från Oracle Container Registry
+- Båda: Officiell Oracle Database Free image från Oracle Container Registry
 
 ### Health Checks
 
@@ -282,7 +282,7 @@ wget --spider http://localhost/
 
 Åtkomst via:
 ```bash
-podman compose -f compose.dev.yml logs -f [service]
+docker compose -f compose.dev.yml logs -f [service]
 ```
 
 ### Mätvärden (Framtid)
@@ -301,9 +301,9 @@ podman compose -f compose.dev.yml logs -f [service]
 
 ### Lokalt utvecklingsloop
 
-1. Starta containers: `podman compose -f compose.dev.yml up -d`
+1. Starta containers: `docker compose -f compose.dev.yml up -d`
 2. Redigera kod i `client/app/` eller `server/src/`
-3. Ändringar laddas om automatiskt (HMR för frontend, nodemon för backend)
+3. Ändringar laddas om automatiskt (HMR för frontend, ts-node-dev för backend)
 4. Testa i webbläsare på http://localhost:5173
 5. Kontrollera loggar om det behövs
 6. Committa ändringar
@@ -315,8 +315,8 @@ podman compose -f compose.dev.yml logs -f [service]
 cd client
 npm install <package>
 # Bygg om container för att installera i container
-podman compose -f compose.dev.yml build frontend
-podman compose -f compose.dev.yml up -d frontend
+docker compose -f compose.dev.yml build frontend
+docker compose -f compose.dev.yml up -d frontend
 ```
 
 **Backend:**
@@ -324,8 +324,8 @@ podman compose -f compose.dev.yml up -d frontend
 cd server
 npm install <package>
 # Bygg om container för att installera i container
-podman compose -f compose.dev.yml build backend-api
-podman compose -f compose.dev.yml up -d backend-api
+docker compose -f compose.dev.yml build backend-api
+docker compose -f compose.dev.yml up -d backend-api
 ```
 
 ## Databasschema
@@ -446,31 +446,34 @@ Response: 201 Created
 ### Databassäkerhetskopiering
 
 ```bash
-# Exportera
-podman exec oracle-db expdp \
+# Exportera (använd container-namn: tillgang-oracle-dev för dev, tillgang-oracle-prod för prod)
+docker exec tillgang-oracle-dev expdp \
   tillgang_user/password@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=backup.dmp
 
-# Kopiera ut
-podman cp oracle-db:/opt/oracle/admin/XE/dpdump/backup.dmp ./
+# Kopiera ut (DATA_PUMP_DIR-plats varierar; hitta filen t.ex. med: docker exec tillgang-oracle-dev find /opt/oracle -name "*.dmp" -mmin -5)
+docker cp tillgang-oracle-dev:<sökväg-till-dumpfil> ./backup.dmp
 ```
 
 ### Volume-säkerhetskopiering
 
-```bash
-# Säkerhetskopiera volume
-podman volume export tillgang-oracle-data-dev > backup.tar
+Docker har inte inbyggda `volume export`/`import`-kommandon. Använd tillfällig container med tar:
 
-# Återställ volume
-podman volume import tillgang-oracle-data-dev < backup.tar
+```bash
+# Säkerhetskopiera volume (stoppa containern först om du behöver konsekvent data)
+docker run --rm -v tillgang-oracle-data-dev:/data -v "$(pwd)":/backup ubuntu tar -czf /backup/oracle-data-backup.tar.gz -C /data .
+
+# Återställ till nytt volume
+docker volume create tillgang-oracle-data-dev-new
+docker run --rm -v tillgang-oracle-data-dev-new:/data -v "$(pwd)":/backup ubuntu tar -xzf /backup/oracle-data-backup.tar.gz -C /data
 ```
 
 ## Migrering från Supabase
 
 ### Viktiga skillnader
 
-| Aspekt | Supabase | Oracle XE |
+| Aspekt | Supabase | Oracle Database Free |
 |--------|----------|-----------|
 | Database | PostgreSQL | Oracle |
 | Auth | Inbyggd | Anpassad |
@@ -488,7 +491,7 @@ podman volume import tillgang-oracle-data-dev < backup.tar
 
 ## Teknologibeslut
 
-### Varför Oracle XE?
+### Varför Oracle Database Free?
 
 - Krav från projektintressenter
 - Gratis för utveckling
@@ -502,7 +505,7 @@ podman volume import tillgang-oracle-data-dev < backup.tar
 - Aktivt underhåll
 - Bra dokumentation
 
-### Varför Podman/Docker Compose?
+### Varför Docker Compose?
 
 - Enkel orkestrering
 - Lätt lokal utveckling

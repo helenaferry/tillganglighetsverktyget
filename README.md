@@ -58,7 +58,7 @@ cp client/.env.example client/.env.local
 # Redigera .env och sätt ORACLE_PWD och DB_PASSWORD
 
 # Starta alla tjänster
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml up -d
 
 # Öppna i webbläsaren
 open http://localhost:5173
@@ -78,7 +78,7 @@ open http://localhost:5173
 - **i18next** – Internationalisering
 - **Oracle Database** – Databas
 - **Express.js** – REST API backend
-- **Podman/Docker** – Containerisering
+- **Docker** – Containerisering
 
 ## Licens
 

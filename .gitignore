@@ -16,5 +16,5 @@
 # IDE
 /.idea/*
 
-# Docker/Podman
+# Docker
 .dockerignore

@@ -1,6 +1,6 @@
 # Windows och WSL - Installationsguide
 
-Guide för att köra Tillgänglighetsverktyget på Windows med WSL2 och Podman.
+Guide för att köra Tillgänglighetsverktyget på Windows med WSL2 och Docker.
 
 ## Innehållsförteckning
 
@@ -16,14 +16,14 @@ Guide för att köra Tillgänglighetsverktyget på Windows med WSL2 och Podman.
 
 Det finns två huvudsakliga sätt att köra applikationen på Windows:
 
-### Alternativ 1: Podman Desktop (Rekommenderat)
+### Alternativ 1: Docker Desktop (Rekommenderat)
 - ✅ Enklast att komma igång
 - ✅ Bra prestanda
 - ✅ Inbyggt GUI
 - ✅ Fungerar som native Windows-applikation
 - ⚠️ Kräver Hyper-V eller WSL2 backend
 
-### Alternativ 2: WSL2 med Podman
+### Alternativ 2: WSL2 med Docker
 - ✅ Mer flexibelt för avancerade användare
 - ✅ Bättre integration med Linux-verktyg
 - ✅ Lättare att använda med terminalen
@@ -32,41 +32,39 @@ Det finns två huvudsakliga sätt att köra applikationen på Windows:
 
 ## Rekommenderad Setup
 
-**För de flesta utvecklare:** Använd **Podman Desktop** för enklast möjliga upplevelse.
+**För de flesta utvecklare:** Använd **Docker Desktop** för enklast möjliga upplevelse.
 
 ## Installation
 
-### Alternativ 1: Podman Desktop (Rekommenderat)
+### Alternativ 1: Docker Desktop (Rekommenderat)
 
-#### 1. Installera Podman Desktop
+#### 1. Installera Docker Desktop
 
 ```powershell
 # Via winget (om du har Windows Package Manager)
-winget install RedHat.Podman-Desktop
+winget install Docker.DockerDesktop
 
 # Eller ladda ner från:
-# https://podman-desktop.io/downloads/windows
+# https://docs.docker.com/desktop/install/windows-install/
 ```
 
-#### 2. Första gången du startar Podman Desktop
-- Öppna Podman Desktop
+#### 2. Första gången du startar Docker Desktop
+- Öppna Docker Desktop
 - Följ setup-guiden
 - Välj WSL2 som backend (rekommenderat) eller Hyper-V
-- Vänta tills Podman machine startar
+- Vänta tills Docker Desktop startar
 
 #### 3. Verifiera installationen
 
 Öppna PowerShell eller Windows Terminal:
 
 ```powershell
-# Kontrollera att podman fungerar
-podman --version
-podman ps
+# Kontrollera att docker fungerar
+docker --version
+docker ps
 
-# Installera podman-compose (om det inte följde med)
-pip install podman-compose
-# eller
-pipx install podman-compose
+# Docker Compose ingår i Docker Desktop - verifiera:
+docker compose version
 ```
 
 #### 4. Klona repositoryt
@@ -88,7 +86,7 @@ Nu kan du följa [QUICKSTART.md](../QUICKSTART.md) från steg 1 (konfigurera mil
 
 ---
 
-### Alternativ 2: WSL2 med Podman
+### Alternativ 2: WSL2 med Docker
 
 #### 1. Installera WSL2
 
@@ -113,7 +111,7 @@ wsl --set-default-version 2
 wsl --set-version Ubuntu 2
 ```
 
-#### 3. Installera Podman i WSL
+#### 3. Installera Docker i WSL
 
 Öppna WSL terminal (Ubuntu):
 
@@ -121,25 +119,26 @@ wsl --set-version Ubuntu 2
 # Uppdatera paketlistan
 sudo apt update && sudo apt upgrade -y
 
-# Installera Podman
-sudo apt install -y podman
+# Installera Docker Engine och Compose plugin
+sudo apt install -y docker.io docker-compose-plugin
 
-# Installera podman-compose
-pip3 install podman-compose
+# Lägg till din användare i docker-gruppen (för att köra utan sudo)
+sudo usermod -aG docker $USER
+# Logga ut och in igen, eller kör: newgrp docker
 
 # Verifiera installation
-podman --version
+docker --version
+docker compose version
 ```
 
-#### 4. Konfigurera Podman i WSL
+#### 4. Starta Docker-tjänsten i WSL
 
 ```bash
-# Sätt rootless mode (rekommenderat)
-echo "export DOCKER_HOST=unix:///run/user/$(id -u)/podman/podman.sock" >> ~/.bashrc
-source ~/.bashrc
+# Starta Docker daemon (vid behov)
+sudo service docker start
 
-# Starta podman socket
-systemctl --user enable --now podman.socket
+# Eller med systemd (nyare WSL):
+sudo systemctl start docker
 ```
 
 #### 5. Klona repositoryt i WSL
@@ -164,7 +163,7 @@ Nu kan du följa [QUICKSTART.md](../QUICKSTART.md) från steg 1 (konfigurera mil
 
 ### 1. Filsystem och Prestanda
 
-#### Med Podman Desktop (Windows-filsystem)
+#### Med Docker Desktop (Windows-filsystem)
 ```powershell
 # Du arbetar i Windows-filsystemet
 C:\Users\username\projects\tillganglighetsverktyget
@@ -210,11 +209,11 @@ git add --renormalize .
 git commit -m "Normalize line endings"
 ```
 
-### 3. Sökvägar i Docker/Podman
+### 3. Sökvägar i Docker/Docker
 
 Volume mounts fungerar annorlunda:
 
-#### Podman Desktop (Windows)
+#### Docker Desktop (Windows)
 ```yaml
 # Automatisk konvertering av Windows-sökvägar
 volumes:
@@ -270,7 +269,7 @@ wsl --shutdown
 
 | Scenario | Filsystem | Prestanda |
 |----------|-----------|-----------|
-| Podman Desktop | Windows (C:) | ✅ Bra |
+| Docker Desktop | Windows (C:) | ✅ Bra |
 | WSL2 | WSL (`/home/`) | ✅✅ Utmärkt |
 | WSL2 | Windows via `/mnt/c/` | ❌ Dålig |
 
@@ -283,7 +282,7 @@ Oracle-databasen presterar bäst med:
 Standardkonfigurationen i `compose.dev.yml` använder named volumes och är optimal:
 ```yaml
 volumes:
-  oracle-data:  # Named volume, hanteras av Podman
+  oracle-data:  # Named volume, hanteras av Docker Desktop
 ```
 
 #### 3. Node Modules
@@ -301,7 +300,7 @@ Detta förhindrar att node_modules synkas mellan Windows och container.
 
 ### Prestandajämförelse
 
-| Operation | Podman Desktop | WSL2 (/home) | WSL2 (/mnt/c) |
+| Operation | Docker Desktop | WSL2 (/home) | WSL2 (/mnt/c) |
 |-----------|----------------|--------------|---------------|
 | Oracle start | ~2-3 min | ~2-3 min | ~4-5 min |
 | npm install | ~30 sek | ~20 sek | ~60 sek |
@@ -310,22 +309,20 @@ Detta förhindrar att node_modules synkas mellan Windows och container.
 
 ## Vanliga Problem och Lösningar
 
-### Problem 1: "Cannot connect to Podman"
+### Problem 1: "Cannot connect to Docker daemon"
 
-**Med Podman Desktop:**
-```powershell
-# Starta om Podman machine
-podman machine stop
-podman machine start
-```
+**Med Docker Desktop:**
+- Starta om Docker Desktop från programmenyn (högerklicka på ikonen → Quit, sedan starta igen)
 
 **Med WSL2:**
 ```bash
-# Starta podman socket
-systemctl --user start podman.socket
+# Starta Docker-tjänsten
+sudo service docker start
+# eller
+sudo systemctl start docker
 
 # Verifiera
-podman ps
+docker ps
 ```
 
 ### Problem 2: "Permission denied" för shell-scripts
@@ -384,7 +381,7 @@ mv /mnt/c/projects/tillganglighetsverktyget ~/
 cd ~/tillganglighetsverktyget
 ```
 
-**För Podman Desktop:** Detta är sällan ett problem, men om det händer:
+**För Docker Desktop:** Detta är sällan ett problem, men om det händer:
 - Stäng antivirusprogram temporärt (kan skanna filer)
 - Lägg till projekt-mappen i antivirus-undantag
 
@@ -419,7 +416,7 @@ cd ~/tillganglighetsverktyget
 3. VS Code öppnas med WSL-integration ✅
 
 **Extensions att installera i WSL:**
-- Docker (fungerar med Podman)
+- Docker
 - ESLint
 - Prettier
 - TypeScript and JavaScript Language Features
@@ -432,29 +429,29 @@ cd ~/tillganglighetsverktyget
 
 ## Snabbkommando-referens
 
-### Podman Desktop (PowerShell)
+### Docker Desktop (PowerShell)
 
 ```powershell
 # Starta applikationen
-podman-compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml up -d
 
 # Stoppa applikationen
-podman-compose -f compose.dev.yml down
+docker compose -f compose.dev.yml down
 
 # Se loggar
-podman-compose -f compose.dev.yml logs -f
+docker compose -f compose.dev.yml logs -f
 
 # Starta om en tjänst
-podman-compose -f compose.dev.yml restart backend-api
+docker compose -f compose.dev.yml restart backend-api
 ```
 
 ### WSL2 (Bash)
 
 ```bash
 # Samma kommandon som på Linux/macOS
-podman compose -f compose.dev.yml up -d
-podman compose -f compose.dev.yml down
-podman compose -f compose.dev.yml logs -f
+docker compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml down
+docker compose -f compose.dev.yml logs -f
 ```
 
 ## Checklist för Windows-utvecklare
@@ -462,7 +459,7 @@ podman compose -f compose.dev.yml logs -f
 Innan du börjar, verifiera:
 
 - [ ] WSL2 installerat och uppdaterat (om du använder WSL)
-- [ ] Podman Desktop installerat ELLER Podman i WSL
+- [ ] Docker Desktop installerat ELLER Docker Engine i WSL
 - [ ] Git konfigurerat: `core.autocrlf = input`
 - [ ] Minst 8GB RAM tillgängligt för WSL2
 - [ ] Portarna 5173, 3000, 1521, 5500 är lediga
@@ -474,7 +471,7 @@ Innan du börjar, verifiera:
 
 ### ✅ Vad som fungerar bra på Windows
 
-- Podman Desktop med WSL2 backend
+- Docker Desktop med WSL2 backend
 - All funktionalitet fungerar identiskt som på macOS/Linux
 - Hot reload och HMR fungerar
 - Alla containers startar normalt
@@ -489,7 +486,7 @@ Innan du börjar, verifiera:
 
 ### 🚀 Rekommenderad Workflow
 
-1. **Installera Podman Desktop** (enklast)
+1. **Installera Docker Desktop** (enklast)
 2. **Klona repo** i Windows eller WSL (välj ett!)
 3. **Använd VS Code med Remote WSL** (om du använder WSL)
 4. **Följ standard QUICKSTART.md** - allt annat fungerar likadant

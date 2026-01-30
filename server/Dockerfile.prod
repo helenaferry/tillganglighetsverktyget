@@ -1,4 +1,4 @@
-# Production Containerfile for Backend API
+# Production Dockerfile for Backend API
 # Multi-stage build for optimized image size
 
 # Stage 1: Build

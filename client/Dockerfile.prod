@@ -1,4 +1,4 @@
-# Production Containerfile for Frontend
+# Production Dockerfile for Frontend
 # Multi-stage build: Build React app and serve with Nginx
 
 # Stage 1: Build

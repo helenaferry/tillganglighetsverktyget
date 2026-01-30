@@ -28,7 +28,8 @@ Kontrollera om API-servern körs.
 {
   "status": "ok",
   "timestamp": "2026-01-23T10:00:00.000Z",
-  "environment": "development"
+  "environment": "development",
+  "database": "connected"
 }
 ```
 

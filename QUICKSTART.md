@@ -4,19 +4,13 @@ Få igång applikationen i 3 steg!
 
 ## Förutsättningar
 
-- Podman eller Docker installerat
+- Docker installerat
 - 8GB+ RAM tillgängligt
 - 20GB+ ledigt diskutrymme
 
-**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Podman Desktop eller WSL2.
+**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Docker Desktop eller WSL2.
 
-**🍎 macOS-användare?** Efter installation av Podman, kör följande:
-```bash
-# Initiera och starta Podman machine (krävs på macOS)
-podman machine init --cpus 4 --memory 8192 --disk-size 50
-podman machine start
-```
-Se [docs/SETUP.md](docs/SETUP.md#macos-initiera-podman-machine) för mer information.
+**🍎 macOS-användare?** Efter installation av Docker, starta Docker Desktop och säkerställ att den körs innan du kör compose-kommandon. Se [docs/SETUP.md](docs/SETUP.md) för mer information.
 
 ## Steg
 
@@ -49,10 +43,10 @@ cp client/.env.example client/.env.local
 
 ```bash
 # Starta alla containers
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml up -d
 
 # Övervaka startloggar (rekommenderas vid första körningen)
-podman compose -f compose.dev.yml logs -f
+docker compose -f compose.dev.yml logs -f
 ```
 
 **Vänta på:**
@@ -70,17 +64,17 @@ Klart! 🎉
 
 ```bash
 # Starta
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml up -d
 
 # Stoppa
-podman compose -f compose.dev.yml down
+docker compose -f compose.dev.yml down
 
 # Visa loggar
-podman compose -f compose.dev.yml logs -f
+docker compose -f compose.dev.yml logs -f
 
 # Nystart (tar bort all data)
-podman compose -f compose.dev.yml down -v
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml down -v
+docker compose -f compose.dev.yml up -d
 ```
 
 ## Åtkomstpunkter
@@ -95,11 +89,11 @@ podman compose -f compose.dev.yml up -d
 ### Oracle startar inte
 - Se till att du har 8GB+ RAM tillgängligt
 - Vänta längre (~3-5 minuter vid första starten)
-- Kontrollera loggar: `podman logs tillgang-oracle-dev`
+- Kontrollera loggar: `docker logs tillgang-oracle-dev`
 
 ### Backend kan inte ansluta
 - Vänta tills Oracle är helt redo
-- Starta om backend: `podman compose -f compose.dev.yml restart backend-api`
+- Starta om backend: `docker compose -f compose.dev.yml restart backend-api`
 
 ### Frontend visar nätverksfel
 - Kontrollera att backend körs: `curl http://localhost:3000/health`
@@ -107,9 +101,9 @@ podman compose -f compose.dev.yml up -d
 
 ### Starta om från början
 ```bash
-podman compose -f compose.dev.yml down -v
-podman system prune -a --volumes
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml down -v
+docker system prune -a --volumes
+docker compose -f compose.dev.yml up -d
 ```
 
 ## Mer dokumentation
@@ -132,7 +126,7 @@ Ingen behov av att bygga om containers för kodändringar!
 Projektet använder tre olika `.env`-filer för olika ändamål:
 
 ### `.env` (root) - Container-orkestrering
-**När:** Alltid vid användning av Podman Compose  
+**När:** Alltid vid användning av Docker Compose  
 **Innehåller:** Databaslösenord, portar, grundläggande konfiguration  
 **Krävs:** ✅ Ja, för att starta containers
 

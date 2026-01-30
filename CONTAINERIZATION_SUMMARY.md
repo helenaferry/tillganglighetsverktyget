@@ -4,10 +4,10 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 
 ## Vad som implementerades
 
-### 1. Databasinstallation (Oracle XE)
+### 1. Databasinstallation (Oracle Database Free)
 
 ✅ **Skapade:**
-- `database/init/001-initial-schema.sql` - Komplett databasschema med:
+- `database/init/001-initial-schema.sql.reference` - Komplett databasschema (referens, körs inte av containern) med:
   - Applikationsanvändarskapande (`tillgang_user`)
   - Tabeller: `reviews` och `checks`
   - Sekvenser för auto-increment-ID:n
@@ -46,9 +46,9 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 - Uppdaterad `server/src/database/database.ts` - Oracle Sequelize-installation
 - Uppdaterad `server/src/server.ts` - Förbättrad startloggning
 
-✅ **Containerfiles:**
-- `server/Containerfile.dev` - Utveckling med hot-reload
-- `server/Containerfile.prod` - Produktion multi-stage build
+✅ **Dockerfiles:**
+- `server/Dockerfile.dev` - Utveckling med hot-reload
+- `server/Dockerfile.prod` - Produktion multi-stage build
 - Båda inkluderar Oracle Instant Client-installation
 
 ✅ **Beroenden:**
@@ -63,9 +63,9 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 - Uppdaterad `client/app/data/reviewService.ts` - Alla metoder använder nu REST API
 - Behållit samma gränssnitt för minimala frontend-ändringar
 
-✅ **Containerfiles:**
-- `client/Containerfile.dev` - Vite dev server med HMR
-- `client/Containerfile.prod` - Multi-stage build med Nginx
+✅ **Dockerfiles:**
+- `client/Dockerfile.dev` - Vite dev server med HMR
+- `client/Dockerfile.prod` - Multi-stage build med Nginx
 - `client/nginx.conf` - SPA-routing + API-proxykonfiguration
 
 ✅ **Beroenden:**
@@ -76,7 +76,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 
 ✅ **Utveckling:**
 - `compose.dev.yml` - Utvecklingsinstallation med:
-  - Oracle XE med persisterande volume
+  - Oracle Database Free med persisterande volume
   - Backend med hot-reload och källkodsmounts
   - Frontend med HMR och källkodsmounts
   - Alla portar exponerade för felsökning
@@ -108,7 +108,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 ### 6. Git-konfiguration
 
 ✅ **Uppdaterade:**
-- `.gitignore` - Lade till Docker/Podman och miljöfiler
+- `.gitignore` - Lade till Docker och miljöfiler
 - Skapade `.dockerignore`-filer för client och server
 
 ## Filstruktur
@@ -120,8 +120,8 @@ tillganglighetsverktyget/
 │   │   └── data/
 │   │       ├── apiClient.ts          [NY]
 │   │       └── reviewService.ts      [MODIFIERAD]
-│   ├── Containerfile.dev             [NY]
-│   ├── Containerfile.prod              [NY]
+│   ├── Dockerfile.dev             [NY]
+│   ├── Dockerfile.prod              [NY]
 │   ├── nginx.conf                    [NY]
 │   ├── .dockerignore                 [NY]
 │   ├── .env.example                  [NY]
@@ -141,14 +141,14 @@ tillganglighetsverktyget/
 │   │   │   └── database.ts           [MODIFIERAD]
 │   │   ├── app.ts                    [MODIFIERAD]
 │   │   └── server.ts                 [MODIFIERAD]
-│   ├── Containerfile.dev             [NY]
-│   ├── Containerfile.prod              [NY]
+│   ├── Dockerfile.dev             [NY]
+│   ├── Dockerfile.prod              [NY]
 │   ├── .dockerignore                 [NY]
 │   ├── .env.example                  [NY]
 │   └── package.json                  [MODIFIERAD]
 ├── database/                         [NY]
 │   ├── init/
-│   │   └── 001-initial-schema.sql
+│   │   └── 001-initial-schema.sql.reference
 │   └── README.md
 ├── docs/                             [NY]
 │   ├── SETUP.md
@@ -169,7 +169,7 @@ tillganglighetsverktyget/
 1. **En-kommando-installation:**
    ```bash
    cp .env.example .env
-   podman compose -f compose.dev.yml up -d
+   docker compose -f compose.dev.yml up -d
    ```
 
 2. **Hot Reload:**
@@ -205,7 +205,7 @@ tillganglighetsverktyget/
 
 ### Databas
 
-- **Oracle XE 21c** med automatisk schemainitialisering
+- **Oracle Database Free 23ai** med automatisk schemainitialisering
 - **Persisterande volumes** för datasurvival
 - **Triggers** för auto-increment och tidsstämplar
 - **Främmande nycklar** med CASCADE delete
@@ -252,7 +252,7 @@ Alla endpoints dokumenterade i `docs/API.md`:
 ## Migrering från Supabase
 
 Framgångsrikt migrerat från:
-- PostgreSQL → Oracle XE
+- PostgreSQL → Oracle Database Free
 - Supabase-klient → Anpassad REST API
 - Auto-genererat API → Express-controllers
 - Inbyggd auth → Anpassad (framtid)
@@ -263,10 +263,10 @@ Framgångsrikt migrerat från:
 
 ```bash
 # Starta tjänster
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml up -d
 
 # Vänta på health checks
-podman compose -f compose.dev.yml ps
+docker compose -f compose.dev.yml ps
 
 # Testa backend
 curl http://localhost:3000/health
@@ -285,7 +285,7 @@ curl http://localhost:5173
 3. Lägg till några kontroller
 4. Verifiera data i databasen:
    ```bash
-   podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
+   docker exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
    SELECT * FROM reviews;
    SELECT * FROM checks;
    ```
@@ -295,7 +295,7 @@ curl http://localhost:5173
 ### För utveckling:
 
 1. Kör `cp .env.example .env`
-2. Kör `podman compose -f compose.dev.yml up -d`
+2. Kör `docker compose -f compose.dev.yml up -d`
 3. Vänta tills tjänster är healthy (~3 minuter första gången)
 4. Öppna http://localhost:5173
 5. Börja koda!
@@ -306,7 +306,7 @@ curl http://localhost:5173
 2. Konfigurera SSL/TLS-certifikat
 3. Sätt upp brandväggsregler
 4. Konfigurera säkerhetskopieringsprocedurer
-5. Kör `podman compose -f compose.prod.yml up -d`
+5. Kör `docker compose -f compose.prod.yml up -d`
 6. Övervaka loggar och health endpoints
 
 ### Framtida förbättringar:
@@ -343,10 +343,10 @@ curl http://localhost:5173
 ## Slutsats
 
 Applikationen är nu helt containeriserad med:
-- **Oracle XE** databas med korrekt schema
+- **Oracle Database Free** databas med korrekt schema
 - **Express + Sequelize** backend med komplett API
 - **React Router** frontend med REST-klient
-- **Podman Compose** orkestrering för enkel distribution
+- **Docker Compose** orkestrering för enkel distribution
 - **Omfattande dokumentation** för utvecklare
 
 Allt som behövs för utveckling och produktion är på plats! 🎉

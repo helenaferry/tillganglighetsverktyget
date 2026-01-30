@@ -1,4 +1,4 @@
-# Development Containerfile for Frontend
+# Development Dockerfile for Frontend
 # This image runs Vite dev server with Hot Module Replacement (HMR)
 
 FROM node:20-slim

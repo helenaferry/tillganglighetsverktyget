@@ -128,7 +128,7 @@ npm run dev
 **Container-utveckling:**
 ```bash
 # Från root-katalogen
-podman compose -f compose.dev.yml up frontend
+docker compose -f compose.dev.yml up frontend
 # → http://localhost:5173
 ```
 
@@ -155,7 +155,7 @@ npm start
 
 ### Container (Produktion)
 ```dockerfile
-# Multi-stage build i Containerfile.prod:
+# Multi-stage build i Dockerfile.prod:
 # 1. Bygg React-appen med Vite
 # 2. Servera med Nginx
 ```
@@ -196,10 +196,10 @@ npx react-router typegen
 ### HMR fungerar inte i container
 ```bash
 # Kontrollera att volumes är korrekt monterade
-podman compose -f compose.dev.yml config
+docker compose -f compose.dev.yml config
 
 # Starta om frontend-containern
-podman compose -f compose.dev.yml restart frontend
+docker compose -f compose.dev.yml restart frontend
 ```
 
 ### .env.local saknas

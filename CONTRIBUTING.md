@@ -2,7 +2,7 @@
 
 ## Sätt upp env-variabler
 
-Följ instruktionerna i .env.local.example filen
+Följ instruktionerna i [QUICKSTART.md](QUICKSTART.md) eller [docs/SETUP.md](docs/SETUP.md). Kopiera `.env.example` till `.env` (root) och `client/.env.example` till `client/.env.local`, och sätt lösenord (ORACLE_PWD, DB_PASSWORD).
 
 ## Installation
 

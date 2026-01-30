@@ -2,45 +2,36 @@
 
 Detta dokument beskriver vanliga skillnader mellan miljöer som kan orsaka att Oracle-setup fungerar på en maskin men inte på en annan.
 
-## 1. Podman Machine-konfiguration
+## 1. Docker Desktop / Docker Engine-konfiguration
 
-### Problem: Olika Podman Machine-inställningar
+### Problem: Olika Docker-inställningar
 
 **Kontrollera:**
 ```bash
-# Jämför Podman Machine-versioner
-podman machine list
-podman --version
+# Jämför Docker-versioner
+docker --version
+docker compose version
 
-# Kontrollera Podman Machine-resurser
-podman machine inspect podman-machine-default | grep -A 10 "ResourceLimits"
-
-# Kontrollera att Podman Machine är igång
-podman machine list
+# macOS: Docker Desktop → Settings → Resources (minne, CPU, disk)
+# Linux: docker info
 ```
 
 **Lösning:**
-```bash
-# Om Podman Machine inte är igång eller har fel konfiguration:
-podman machine stop
-podman machine rm podman-machine-default
-podman machine init --cpus 4 --memory 8192 --disk-size 50
-podman machine start
-```
+- **macOS:** Starta Docker Desktop och kontrollera Settings → Resources (minst 8GB RAM rekommenderat för Oracle)
+- **Linux:** Säkerställ att Docker-tjänsten körs: `sudo systemctl status docker`
 
-### Problem: Olika Podman Machine-versioner
+### Problem: Olika Docker-versioner
 
 **Kontrollera:**
 ```bash
 # På båda maskinerna:
-podman --version
-podman-compose --version
+docker --version
+docker compose version
 ```
 
 **Lösning:** Uppdatera till samma version på båda maskinerna:
-```bash
-brew upgrade podman podman-compose
-```
+- **macOS:** Uppdatera Docker Desktop från programmenyn
+- **Linux:** `sudo apt update && sudo apt upgrade docker.io docker-compose-plugin` (eller motsvarande)
 
 ## 2. macOS-version och arkitektur
 
@@ -69,12 +60,12 @@ cat .env | grep ORACLE_IMAGE_TAG
 
 ### Problem: Otillräckligt minne eller CPU
 
-**⚠️ KRITISKT:** Oracle Database Free kräver minst 2GB RAM bara för sig själv. Med bara 2GB totalt i Podman Machine kommer Oracle inte att fungera!
+**⚠️ KRITISKT:** Oracle Database Free kräver minst 2GB RAM bara för sig själv. Med bara 2GB totalt tillgängligt för Docker kommer Oracle inte att fungera!
 
 **Kontrollera:**
 ```bash
-# Kontrollera Podman Machine-minne
-podman machine inspect podman-machine-default | grep -i memory
+# macOS: Docker Desktop → Settings → Resources
+# Linux: Tillgängligt minne
 
 # Tillgängligt minne på värdmaskinen
 sysctl hw.memsize
@@ -88,36 +79,22 @@ df -h
 ```
 
 **Oracle-krav:**
-- **Minst 8GB RAM i Podman Machine** (Oracle behöver ~2GB, systemet behöver ~1GB, resten för buffertar)
+- **Minst 8GB RAM tillgängligt för Docker** (Oracle behöver ~2GB, systemet behöver ~1GB, resten för buffertar)
 - Minst 2 CPU-kärnor
 - Minst 20GB ledigt diskutrymme
 
 **Lösning:**
-- **Om Podman Machine har för lite minne (t.ex. 2GB):**
-  ```bash
-  # Stoppa och ta bort den gamla maskinen
-  podman machine stop
-  podman machine rm podman-machine-default
-  
-  # Skapa ny maskin med tillräckligt minne
-  podman machine init --cpus 4 --memory 8192 --disk-size 50
-  
-  # Starta den nya maskinen
-  podman machine start
-  
-  # Verifiera att minnet är korrekt
-  podman machine inspect podman-machine-default | grep -i memory
-  ```
-
+- **macOS (Docker Desktop):** Öka minne i Settings → Resources (t.ex. 8GB). Starta om Docker Desktop.
+- **Linux:** Säkerställ att värdmaskinen har tillräckligt RAM; Docker använder värdens resurser direkt.
 - **Om värdmaskinen har för lite RAM:**
   - Stäng andra resurskrävande applikationer
   - Överväg att minska till 6GB om systemet har begränsat RAM (men 8GB är rekommenderat)
 
-### Problem: Diskutrymme i Podman Machine
+### Problem: Diskutrymme
 
 **Kontrollera:**
 ```bash
-podman machine ssh
+df -h
 df -h
 exit
 ```
@@ -125,13 +102,9 @@ exit
 **Lösning:**
 ```bash
 # Rensa oanvända images och volumes
-podman system prune -a --volumes
+docker system prune -a --volumes
 
-# Om det inte hjälper, öka diskstorlek:
-podman machine stop
-podman machine rm podman-machine-default
-podman machine init --disk-size 100  # Öka från 50GB till 100GB
-podman machine start
+# macOS (Docker Desktop): Öka diskutrymme i Settings → Resources → Disk image size
 ```
 
 ## 4. Nätverkskonfiguration
@@ -152,7 +125,7 @@ scutil --nc list
 
 **Lösning:**
 - Stäng av VPN när du startar containers första gången
-- Kontrollera att inga brandväggsregler blockerar Podman
+- Kontrollera att inga brandväggsregler blockerar Docker
 - Testa med olika nätverk (WiFi vs Ethernet)
 
 ### Problem: Port-konflikter
@@ -240,18 +213,18 @@ echo "Test: ${ORACLE_PWD}"
 **Kontrollera:**
 ```bash
 # Lista volumes
-podman volume ls | grep oracle
+docker volume ls | grep oracle
 
 # Kontrollera volume-storlek
-podman volume inspect tillgang-oracle-data-dev
+docker volume inspect tillgang-oracle-data-dev
 ```
 
 **Lösning:**
 ```bash
 # Ta bort alla volumes och starta om (VARNING: Tar bort all data)
-podman compose -f compose.dev.yml down -v
-podman volume prune -f
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml down -v
+docker volume prune -f
+docker compose -f compose.dev.yml up -d
 ```
 
 ## 8. Oracle Image Cache
@@ -261,26 +234,26 @@ podman compose -f compose.dev.yml up -d
 **Kontrollera:**
 ```bash
 # Lista Oracle-images
-podman images | grep oracle
+docker images | grep oracle
 
 # Kontrollera image-taggar
-podman images container-registry.oracle.com/database/free
+docker images container-registry.oracle.com/database/free
 ```
 
 **Lösning:**
 ```bash
 # Ta bort och hämta image igen
-podman rmi container-registry.oracle.com/database/free:latest-lite
-podman rmi container-registry.oracle.com/database/free:latest
+docker rmi container-registry.oracle.com/database/free:latest-lite
+docker rmi container-registry.oracle.com/database/free:latest
 
 # Hämta rätt image baserat på arkitektur
 # För ARM Mac:
 export ORACLE_IMAGE_TAG=latest-lite
-podman compose -f compose.dev.yml pull oracle-db
+docker compose -f compose.dev.yml pull oracle-db
 
 # För Intel Mac:
 export ORACLE_IMAGE_TAG=latest
-podman compose -f compose.dev.yml pull oracle-db
+docker compose -f compose.dev.yml pull oracle-db
 ```
 
 ## 9. Filrättigheter och line endings
@@ -314,10 +287,10 @@ sed -i '' 's/\r$//' database/init/000-create-user.sh
 **Kontrollera:**
 ```bash
 # Lista alla containers
-podman ps -a
+docker ps -a
 
 # Kontrollera om andra Oracle-containers kör
-podman ps | grep oracle
+docker ps | grep oracle
 
 # Kontrollera Docker-containers (om Docker är installerat)
 docker ps -a 2>/dev/null || echo "Docker not running"
@@ -326,8 +299,8 @@ docker ps -a 2>/dev/null || echo "Docker not running"
 **Lösning:**
 ```bash
 # Stoppa alla containers
-podman stop $(podman ps -q)
-podman compose -f compose.dev.yml down
+docker stop $(docker ps -q)
+docker compose -f compose.dev.yml down
 
 # Om Docker körs och använder samma portar:
 docker stop $(docker ps -q) 2>/dev/null || true
@@ -360,17 +333,17 @@ git config core.eol lf
 **Kontrollera på den fungerande maskinen:**
 ```bash
 # Oracle-loggar
-podman compose -f compose.dev.yml logs oracle-db | tail -50
+docker compose -f compose.dev.yml logs oracle-db | tail -50
 
 # Systemloggar
-log show --predicate 'process == "podman"' --last 1h | tail -50
+log show --predicate 'process == "docker"' --last 1h | tail -50
 ```
 
 **Jämför med den icke-fungerande maskinen:**
 ```bash
 # Samma kommandon på den andra maskinen
-podman compose -f compose.dev.yml logs oracle-db | tail -50
-log show --predicate 'process == "podman"' --last 1h | tail -50
+docker compose -f compose.dev.yml logs oracle-db | tail -50
+log show --predicate 'process == "docker"' --last 1h | tail -50
 ```
 
 ## Systematisk diagnostik-checklista
@@ -385,12 +358,11 @@ uname -m
 sysctl hw.memsize hw.ncpu
 df -h | head -5
 
-# 2. Podman-info
-echo "=== Podman Info ==="
-podman --version
-podman-compose --version
-podman machine list
-podman machine inspect podman-machine-default | grep -E "CPUs|Memory|DiskSize"
+# 2. Docker-info
+echo "=== Docker Info ==="
+docker --version
+docker compose version
+docker info
 
 # 3. Miljövariabler
 echo "=== Environment ==="
@@ -399,8 +371,8 @@ env | grep -E "ORACLE|DB_" | head -5
 
 # 4. Images och volumes
 echo "=== Images & Volumes ==="
-podman images | grep oracle
-podman volume ls | grep oracle
+docker images | grep oracle
+docker volume ls | grep oracle
 
 # 5. Nätverk och portar
 echo "=== Network & Ports ==="
@@ -420,30 +392,27 @@ Om inget annat fungerar, prova detta på den icke-fungerande maskinen:
 
 ```bash
 # 1. Stoppa allt
-podman compose -f compose.dev.yml down -v
-podman stop $(podman ps -q) 2>/dev/null || true
+docker compose -f compose.dev.yml down -v
+docker stop $(docker ps -q) 2>/dev/null || true
 
 # 2. Rensa allt
-podman system prune -a --volumes -f
+docker system prune -a --volumes -f
 
-# 3. Ta bort och återskapa Podman Machine
-podman machine stop
-podman machine rm podman-machine-default
-podman machine init --cpus 4 --memory 8192 --disk-size 50
-podman machine start
+# 3. macOS: Starta om Docker Desktop (Settings → Troubleshoot → Reset / Restart)
+# Linux: sudo systemctl restart docker
 
 # 4. Kopiera .env från fungerande maskin
 # (kopiera manuellt eller via git)
 
 # 5. Hämta rätt Oracle-image
 export ORACLE_IMAGE_TAG=latest-lite  # eller latest för Intel Mac
-podman compose -f compose.dev.yml pull oracle-db
+docker compose -f compose.dev.yml pull oracle-db
 
 # 6. Starta containers
-podman compose -f compose.dev.yml up -d
+docker compose -f compose.dev.yml up -d
 
 # 7. Följ loggarna
-podman compose -f compose.dev.yml logs -f oracle-db
+docker compose -f compose.dev.yml logs -f oracle-db
 ```
 
 ## Vanligaste orsaker
@@ -451,7 +420,7 @@ podman compose -f compose.dev.yml logs -f oracle-db
 Baserat på erfarenhet är de vanligaste orsakerna:
 
 1. **Olika Oracle-image-taggar** (ARM vs Intel) - 40%
-2. **Otillräckligt minne i Podman Machine** - 25%
+2. **Otillräckligt minne tillgängligt för Docker** - 25%
 3. **Olika .env-filer eller lösenord** - 15%
 4. **Korrupt volume-data** - 10%
 5. **Port-konflikter** - 5%
