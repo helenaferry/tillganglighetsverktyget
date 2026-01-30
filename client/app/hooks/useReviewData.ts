@@ -62,21 +62,25 @@ export function useChecksForReview(reviewId: string): {
 }
 
 // Get a check by reviewId and requirementId
+// Normalize to string so query key is stable (avoids duplicate requests when id is sometimes number/string)
 export function useCheck(
-  reviewId: string,
+  reviewId: string | number,
   requirementId: string,
 ): { check?: Check | null; isLoading: boolean; isFetched: boolean } {
+  const keyReviewId = String(reviewId);
+  const keyRequirementId = String(requirementId);
   const {
     data: checkData,
     isLoading,
     isFetched,
   } = useQuery<Check | null, Error>({
-    queryKey: ['check', reviewId, requirementId],
-    queryFn: () => ReviewService.getCheckById(reviewId, requirementId),
-    enabled: !!reviewId && !!requirementId,
-    staleTime: 0,
-    refetchOnMount: true,
+    queryKey: ['check', keyReviewId, keyRequirementId],
+    queryFn: () => ReviewService.getCheckById(keyReviewId, keyRequirementId),
+    enabled: !!keyReviewId && !!keyRequirementId,
+    staleTime: 60 * 1000, // 1 min – avoid refetch on every mount when two components use this
+    refetchOnMount: false, // avoid duplicate request when RequirementForm mounts after ReviewRequirement
     refetchOnWindowFocus: false,
+    retry: false, // 404 means "no check yet" – don't retry
   });
   return { check: checkData, isLoading, isFetched };
 }
@@ -179,14 +183,18 @@ export function usePrefillRequirements() {
 // Update or add review
 export function useUpsertReview() {
   const queryClient = useQueryClient();
-  return useMutation<Review, Error, {
-    title: string;
-    id?: string;
-    excludedContentTypes: string[];
-    selectedPrefillIds: string;
-    objectType: string;
-    regulatoryFramework: string;
-  }>({
+  return useMutation<
+    Review,
+    Error,
+    {
+      title: string;
+      id?: string;
+      excludedContentTypes: string[];
+      selectedPrefillIds: string;
+      objectType: string;
+      regulatoryFramework: string;
+    }
+  >({
     mutationFn: (input) => ReviewService.upsertReview(input),
     onSuccess: (_newReview, input) => {
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
