@@ -13,7 +13,11 @@
     "format": "prettier --write .",
     "minify:additions": "node minifyEnvAdd.cjs",
     "minify:footer": "node minifyEnvFooterLinks.cjs",
-    "minify:prefill": "node minifyEnvPrefill.cjs"
+    "minify:prefill": "node minifyEnvPrefill.cjs",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@designsystem-se/af": "32.4.0",
@@ -38,22 +42,30 @@
     "@eslint/js": "9.35.0",
     "@react-router/dev": "7.10.1",
     "@tailwindcss/vite": "4.1.13",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "22",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "8.43.0",
     "@typescript-eslint/parser": "8.43.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "eslint": "9.35.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "16.4.0",
+    "happy-dom": "^20.3.7",
     "husky": "9.1.7",
+    "jsdom": "^27.0.1",
     "prettier": "3.6.2",
     "tailwindcss": "4.1.13",
     "typescript": "5.9.2",
     "vite": "7.1.7",
-    "vite-tsconfig-paths": "5.1.4"
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md}": [
