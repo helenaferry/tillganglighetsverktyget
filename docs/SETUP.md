@@ -153,7 +153,7 @@ docker compose -f compose.dev.yml ps
 Öppna din webbläsare:
 - **Frontend:** http://localhost:5173
 - **Backend API:** http://localhost:3000/health
-- **Oracle EM:** http://localhost:5500/em (användare: `system`, lösenord: från `.env`)
+- **Oracle EM (valfritt):** http://localhost:5500/em – webbgränssnitt för databasen (användare: `system`, lösenord: från `.env`). EM Express ingår inte i alla Oracle-containeravbildningar och är ofta inte tillgängligt i dev; använd sqlplus eller appen för att arbeta med databasen.
 
 ## Miljövariabler - Komplett guide
 
@@ -310,7 +310,7 @@ docker compose -f compose.dev.yml up -d backend-api
 | Frontend | http://localhost:5173 | Huvudapplikation |
 | Backend API | http://localhost:3000/api/reviews | REST API |
 | Health Check | http://localhost:3000/health | Backend-status |
-| Oracle EM | http://localhost:5500/em | Databas webbgränssnitt |
+| Oracle EM (valfritt) | http://localhost:5500/em | Databas webbgränssnitt – ofta inte tillgängligt i containerbilder |
 
 ### API-exempel
 
@@ -622,4 +622,4 @@ docker compose -f compose.dev.yml up -d
 - Frontend: http://localhost:5173
 - Backend: http://localhost:3000
 - Health: http://localhost:3000/health
-- Oracle EM: http://localhost:5500/em
+- Oracle EM (valfritt, ofta ej tillgängligt i container): http://localhost:5500/em

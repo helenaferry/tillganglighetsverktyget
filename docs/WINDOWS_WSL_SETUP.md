@@ -236,7 +236,7 @@ volumes:
 ```
 http://localhost:5173      - Frontend
 http://localhost:3000/api  - Backend API
-http://localhost:5500/em   - Oracle EM
+http://localhost:5500/em   - Oracle EM (valfritt; ofta ej tillgängligt i container)
 ```
 
 **Det fungerar!** WSL2 delar nätverket med Windows automatiskt.

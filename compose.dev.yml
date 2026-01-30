@@ -7,7 +7,7 @@ services:
     container_name: tillgang-oracle-dev
     ports:
       - '1521:1521' # Database port
-      - '5500:5500' # Enterprise Manager (web UI)
+      - '5500:5500' # Oracle EM Express (optional; often not available in container images)
     environment:
       - ORACLE_PWD=${ORACLE_PWD:-OraclePassword123!}
       - ORACLE_CHARACTERSET=AL32UTF8

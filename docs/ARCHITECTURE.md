@@ -113,7 +113,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 
 **Containerkonfiguration:**
 - **Image:** Oracle officiella container registry
-- **Port:** 1521 (databas), 5500 (Enterprise Manager)
+- **Port:** 1521 (databas), 5500 (Enterprise Manager Express, valfritt – ofta ej tillgängligt i container)
 - **Volume:** Persisterande datalagring
 - **Init Scripts:** Kör SQL automatiskt vid första starten
 
@@ -162,7 +162,7 @@ Användare → Frontend → Backend API → Database
    - 5173 → frontend
    - 3000 → backend-api
    - 1521 → oracle-db
-   - 5500 → oracle-db (EM)
+   - 5500 → oracle-db (EM Express, om tillgängligt)
 ```
 
 ### Produktion (compose.prod.yml)

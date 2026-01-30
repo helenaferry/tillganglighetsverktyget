@@ -84,7 +84,7 @@ docker compose -f compose.dev.yml up -d
 - **Frontend:** http://localhost:5173
 - **Backend API:** http://localhost:3000/api/reviews
 - **Health Check:** http://localhost:3000/health
-- **Oracle EM:** http://localhost:5500/em (användare: system, lösenord från .env)
+- **Oracle EM (valfritt):** http://localhost:5500/em – webbgränssnitt för databasen; ingår ofta inte i Oracle-containerbilder, använd sqlplus eller appen för dev.
 
 ## Felsökning
 
