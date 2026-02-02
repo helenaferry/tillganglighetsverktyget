@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Start dev stack and wait until Database, API, and Client are actually ready.
 # Run from repo root, or from any directory (script will cd to repo root).
-# Requires: docker compose, curl, nc (netcat).
+# Requires: podman compose, curl, nc (netcat).
 
 set -e
 
@@ -31,8 +31,8 @@ check_dependencies() {
     echo "Install them (e.g. curl, netcat-openbsd or nmap-ncat) and try again." >&2
     exit 1
   fi
-  if ! docker compose version &>/dev/null; then
-    echo "Error: docker compose failed or not found. Install Docker and try again." >&2
+  if ! podman compose version &>/dev/null; then
+    echo "Error: podman compose failed or not found. Install Podman and try again." >&2
     exit 1
   fi
 }
@@ -51,7 +51,7 @@ check_client() {
 
 check_dependencies
 
-# Docker Compose–style output: spinner when waiting, green checkmark when ready (only if stdout is a TTY)
+# Compose-style output: spinner when waiting, green checkmark when ready (only if stdout is a TTY)
 if [[ -t 1 ]]; then
   GREEN='\033[32m'
   RESET='\033[0m'
@@ -64,8 +64,8 @@ else
   SPINNER_CHARS="|/-\\"
 fi
 
-echo "Starting services (docker compose -f $COMPOSE_FILE up -d)..."
-docker compose -f "$COMPOSE_FILE" up -d
+echo "Starting services (podman compose -f $COMPOSE_FILE up -d)..."
+podman compose -f "$COMPOSE_FILE" up -d
 
 echo ""
 echo "Waiting for services to become ready (timeout ${TIMEOUT_SEC}s)..."
@@ -86,7 +86,7 @@ while true; do
     printf "  API:       %s\n" "$([ $api_ready -eq 1 ] && echo 'Ready' || echo 'Not ready')" >&2
     printf "  Client:    %s\n" "$([ $client_ready -eq 1 ] && echo 'Ready' || echo 'Not ready')" >&2
     echo "" >&2
-    echo "Check logs: docker compose -f $COMPOSE_FILE logs -f" >&2
+    echo "Check logs: podman compose -f $COMPOSE_FILE logs -f" >&2
     exit 1
   fi
 
@@ -131,8 +131,8 @@ while true; do
     echo "  Client:         http://localhost:5173"
     echo "  Backend health: http://localhost:3000/health"
     echo ""
-    echo "  Stop services:  docker compose -f $COMPOSE_FILE down"
-    echo "  (stop only:     docker compose -f $COMPOSE_FILE stop)"
+    echo "  Stop services:  podman compose -f $COMPOSE_FILE down"
+    echo "  (stop only:     podman compose -f $COMPOSE_FILE stop)"
     echo ""
     exit 0
   fi
