@@ -110,7 +110,7 @@ Med SQL Developer:
 
 ```bash
 # Använd lösenordet du satte i .env
-docker exec -it tillgang-oracle-dev sqlplus tillgang_user/<DITT_DB_PASSWORD>@FREEPDB1
+podman exec -it tillgang-oracle-dev sqlplus tillgang_user/<DITT_DB_PASSWORD>@FREEPDB1
 ```
 
 ## Vanliga frågor
@@ -143,7 +143,7 @@ COMMIT;
 ### Exportera data:
 
 ```bash
-docker exec tillgang-oracle-dev expdp tillgang_user/TillgangDev2026!@FREEPDB1 \
+podman exec tillgang-oracle-dev expdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=tillgang_backup.dmp \
   logfile=tillgang_backup.log
@@ -152,7 +152,7 @@ docker exec tillgang-oracle-dev expdp tillgang_user/TillgangDev2026!@FREEPDB1 \
 ### Importera data:
 
 ```bash
-docker exec tillgang-oracle-dev impdp tillgang_user/TillgangDev2026!@FREEPDB1 \
+podman exec tillgang-oracle-dev impdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=tillgang_backup.dmp \
   logfile=tillgang_import.log

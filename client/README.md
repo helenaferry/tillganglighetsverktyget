@@ -55,12 +55,14 @@ npm run minify:prefill     # Minifiera VITE_PREFILL_REQUIREMENTS
 ```
 
 **Användning:**
+
 1. Redigera motsvarande variabel i `.env.local`
 2. Kör relevant minify-script
 3. Den minifierade JSON:en kopieras till urklipp
 4. Klistra in där den behövs (t.ex. CI/CD-konfiguration)
 
 **Exempel:**
+
 ```bash
 # Redigera VITE_FOOTER_LINKS i .env.local med nya länkar
 npm run minify:footer
@@ -111,6 +113,7 @@ export const apiClient = {
 ```
 
 API URL konfigureras i `.env.local`:
+
 ```bash
 VITE_API_URL=http://localhost:3000/api
 ```
@@ -120,15 +123,17 @@ VITE_API_URL=http://localhost:3000/api
 Frontend kan köras både lokalt och i container:
 
 **Lokal utveckling:**
+
 ```bash
 npm run dev
 # → http://localhost:5173
 ```
 
 **Container-utveckling:**
+
 ```bash
 # Från root-katalogen
-docker compose -f compose.dev.yml up frontend
+podman compose -f compose.dev.yml up frontend
 # → http://localhost:5173
 ```
 
@@ -137,6 +142,7 @@ Båda metoderna har hot module replacement (HMR) aktiverat.
 ## Byggprocess
 
 ### Utveckling
+
 ```bash
 npm run dev
 # Vite dev server med HMR
@@ -144,6 +150,7 @@ npm run dev
 ```
 
 ### Produktion
+
 ```bash
 npm run build
 # Bygger till build/client/ (statiska filer)
@@ -154,6 +161,7 @@ npm start
 ```
 
 ### Container (Produktion)
+
 ```dockerfile
 # Multi-stage build i Dockerfile.prod:
 # 1. Bygg React-appen med Vite
@@ -167,8 +175,8 @@ HMR fungerar både lokalt och i container tack vare:
 ```yaml
 # compose.dev.yml
 volumes:
-  - ./client:/app              # Synka källkod
-  - /app/node_modules          # Isolera node_modules
+  - ./client:/app # Synka källkod
+  - /app/node_modules # Isolera node_modules
 ```
 
 Ändringar i källkoden reflekteras omedelbart i webbläsaren.
@@ -176,6 +184,7 @@ volumes:
 ## Felsökning
 
 ### Port redan används
+
 ```bash
 # Hitta process som använder port 5173
 lsof -i :5173
@@ -185,6 +194,7 @@ kill -9 <PID>
 ```
 
 ### TypeScript-fel
+
 ```bash
 # Kör type-checking
 npm run typecheck
@@ -194,15 +204,17 @@ npx react-router typegen
 ```
 
 ### HMR fungerar inte i container
+
 ```bash
 # Kontrollera att volumes är korrekt monterade
-docker compose -f compose.dev.yml config
+podman compose -f compose.dev.yml config
 
 # Starta om frontend-containern
-docker compose -f compose.dev.yml restart frontend
+podman compose -f compose.dev.yml restart frontend
 ```
 
 ### .env.local saknas
+
 ```bash
 # Kopiera från mall
 cp .env.example .env.local

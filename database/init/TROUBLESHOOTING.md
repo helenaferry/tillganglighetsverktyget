@@ -8,10 +8,10 @@ Detta fel uppstår när Oracle-containerns init-skript (`000-create-user.sh`) mi
 
 ```bash
 # Visa alla Oracle-loggar
-docker compose -f compose.dev.yml logs oracle-db
+podman compose -f compose.dev.yml logs oracle-db
 
 # Filtrera efter fel och init-skript
-docker compose -f compose.dev.yml logs oracle-db | grep -E "ERROR|create-user|DATABASE SETUP|exit"
+podman compose -f compose.dev.yml logs oracle-db | grep -E "ERROR|create-user|DATABASE SETUP|exit"
 ```
 
 ## Vanliga orsaker och lösningar
@@ -34,8 +34,8 @@ cat .env | grep DB_PASSWORD
 echo "DB_PASSWORD=MinSakraLösenord123!" >> .env
 
 # Starta om containers
-docker compose -f compose.dev.yml down -v
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml down -v
+podman compose -f compose.dev.yml up -d
 ```
 
 ### 2. ORACLE_PWD miljövariabel saknas eller är felaktig
@@ -64,7 +64,7 @@ cat .env | grep ORACLE_PWD
 
 ```bash
 # Kör skriptet manuellt för att se fel
-docker exec tillgang-oracle-dev bash -c 'cd /opt/oracle/scripts/startup && bash -x 000-create-user.sh'
+podman exec tillgang-oracle-dev bash -c 'cd /opt/oracle/scripts/startup && bash -x 000-create-user.sh'
 ```
 
 **Vanliga SQL-fel:**
@@ -87,8 +87,8 @@ ls -la database/init/000-create-user.sh
 chmod +x database/init/000-create-user.sh
 
 # Starta om
-docker compose -f compose.dev.yml down -v
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml down -v
+podman compose -f compose.dev.yml up -d
 ```
 
 ### 5. Oracle-instans avslutas på grund av tidsdrift (ORA-12752)
@@ -125,7 +125,7 @@ Instance terminated by PMON
 
    ```bash
    # Kontrollera tidszon i containern
-   docker exec tillgang-oracle-dev date
+   podman exec tillgang-oracle-dev date
 
    # Kontrollera tidszon på värdsystemet
    date
@@ -137,16 +137,16 @@ Instance terminated by PMON
 
    ```bash
    # Stoppa alla containers
-   docker compose -f compose.dev.yml down -v
+   podman compose -f compose.dev.yml down -v
 
    # Vänta några sekunder för att säkerställa tidsstabilitet
    sleep 5
 
    # Starta om
-   docker compose -f compose.dev.yml up -d
+   podman compose -f compose.dev.yml up -d
    ```
 
-4. **Om problemet kvarstår - kontrollera Docker-tidsinställningar:**
+4. **Om problemet kvarstår - kontrollera Podman/container-tidsinställningar:**
 
    ```bash
    # macOS: Kontrollera att systemtid är korrekt i Systeminställningar → Datum och tid
@@ -223,10 +223,10 @@ ORA-12514: Cannot connect to database. Service FREEPDB1 is not registered with t
 
 ```bash
 # Kontrollera PDB-status
-docker exec tillgang-oracle-dev bash -c "echo 'SELECT name, open_mode FROM v\$pdbs;' | sqlplus -s system/\${ORACLE_PWD}@localhost:1521"
+podman exec tillgang-oracle-dev bash -c "echo 'SELECT name, open_mode FROM v\$pdbs;' | sqlplus -s system/\${ORACLE_PWD}@localhost:1521"
 
 # Öppna FREEPDB1 manuellt om den är stängd
-docker exec tillgang-oracle-dev bash -c "echo 'ALTER PLUGGABLE DATABASE FREEPDB1 OPEN;' | sqlplus -s system/\${ORACLE_PWD}@localhost:1521"
+podman exec tillgang-oracle-dev bash -c "echo 'ALTER PLUGGABLE DATABASE FREEPDB1 OPEN;' | sqlplus -s system/\${ORACLE_PWD}@localhost:1521"
 ```
 
 **Förebyggande:** Skriptet väntar nu aktivt på att FREEPDB1 ska bli tillgänglig och försöker öppna den om nödvändigt.
@@ -241,7 +241,7 @@ docker exec tillgang-oracle-dev bash -c "echo 'ALTER PLUGGABLE DATABASE FREEPDB1
 
 ```bash
 # Kontrollera att Oracle faktiskt startar
-docker compose -f compose.dev.yml logs oracle-db | grep "DATABASE IS READY"
+podman compose -f compose.dev.yml logs oracle-db | grep "DATABASE IS READY"
 
 # Om Oracle inte startar, kontrollera resurser:
 # - Minst 8GB RAM tillgängligt
@@ -256,7 +256,7 @@ docker compose -f compose.dev.yml logs oracle-db | grep "DATABASE IS READY"
 
 ```bash
 # Kör SQL-delen manuellt
-docker exec tillgang-oracle-dev bash -c 'sqlplus -s tillgang_user/<DB_PASSWORD>@FREEPDB1 <<EOF
+podman exec tillgang-oracle-dev bash -c 'sqlplus -s tillgang_user/<DB_PASSWORD>@FREEPDB1 <<EOF
 SET SERVEROUTPUT ON
 SELECT table_name FROM user_tables;
 EXIT;
@@ -284,7 +284,7 @@ cat .env | grep -E "ORACLE_PWD|DB_PASSWORD|DB_USER" | sed 's/=.*/=***/'
 ### 2. Kontrollera att skriptet finns i containern
 
 ```bash
-docker exec tillgang-oracle-dev ls -la /opt/oracle/scripts/startup/
+podman exec tillgang-oracle-dev ls -la /opt/oracle/scripts/startup/
 ```
 
 **Förväntat resultat:**
@@ -298,29 +298,29 @@ docker exec tillgang-oracle-dev ls -la /opt/oracle/scripts/startup/
 
 ```bash
 # Kör med debug-flagga för att se vad som händer
-docker exec tillgang-oracle-dev bash -x /opt/oracle/scripts/startup/000-create-user.sh
+podman exec tillgang-oracle-dev bash -x /opt/oracle/scripts/startup/000-create-user.sh
 ```
 
 ### 4. Kontrollera SQLPlus-anslutning manuellt
 
 ```bash
 # Testa SYSTEM-anslutning
-docker exec tillgang-oracle-dev bash -c "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/\${ORACLE_PWD}@FREEPDB1"
+podman exec tillgang-oracle-dev bash -c "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/\${ORACLE_PWD}@FREEPDB1"
 
 # Testa tillgang_user-anslutning (efter att användaren skapats)
-docker exec tillgang-oracle-dev bash -c "echo 'SELECT 1 FROM DUAL;' | sqlplus -s tillgang_user/\${DB_PASSWORD}@FREEPDB1"
+podman exec tillgang-oracle-dev bash -c "echo 'SELECT 1 FROM DUAL;' | sqlplus -s tillgang_user/\${DB_PASSWORD}@FREEPDB1"
 ```
 
 ### 5. Kontrollera om användaren skapades
 
 ```bash
-docker exec tillgang-oracle-dev bash -c "echo 'SELECT username FROM all_users WHERE username='\"'TILLGANG_USER'\"';' | sqlplus -s system/\${ORACLE_PWD}@FREEPDB1"
+podman exec tillgang-oracle-dev bash -c "echo 'SELECT username FROM all_users WHERE username='\"'TILLGANG_USER'\"';' | sqlplus -s system/\${ORACLE_PWD}@FREEPDB1"
 ```
 
 ### 6. Kontrollera om tabellerna skapades
 
 ```bash
-docker exec tillgang-oracle-dev bash -c "echo 'SELECT table_name FROM user_tables;' | sqlplus -s tillgang_user/\${DB_PASSWORD}@FREEPDB1"
+podman exec tillgang-oracle-dev bash -c "echo 'SELECT table_name FROM user_tables;' | sqlplus -s tillgang_user/\${DB_PASSWORD}@FREEPDB1"
 ```
 
 ## Snabb fix: Starta om från början
@@ -329,19 +329,19 @@ Om inget av ovanstående hjälper:
 
 ```bash
 # Stoppa allt
-docker compose -f compose.dev.yml down -v
+podman compose -f compose.dev.yml down -v
 
 # Ta bort alla volumes
-docker volume prune -f
+podman volume prune -f
 
 # Kontrollera att .env är korrekt konfigurerad
 cat .env
 
 # Starta om
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml up -d
 
 # Övervaka loggar
-docker compose -f compose.dev.yml logs oracle-db -f
+podman compose -f compose.dev.yml logs oracle-db -f
 ```
 
 ## Ytterligare hjälp
@@ -351,7 +351,7 @@ Om problemet kvarstår efter att ha följt denna guide:
 1. Kopiera fullständiga Oracle-loggar:
 
    ```bash
-   docker compose -f compose.dev.yml logs oracle-db > oracle-logs.txt
+   podman compose -f compose.dev.yml logs oracle-db > oracle-logs.txt
    ```
 
 2. Kontrollera systemresurser:
@@ -366,11 +366,11 @@ Om problemet kvarstår efter att ha följt denna guide:
    df -h
    ```
 
-3. Kontrollera Docker-version:
+3. Kontrollera Podman-version:
 
    ```bash
-   docker --version
-   docker compose version
+   podman --version
+   podman compose version
    ```
 
 4. Dela loggar och systeminfo för vidare felsökning.
