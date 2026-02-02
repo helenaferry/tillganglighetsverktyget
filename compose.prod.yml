@@ -5,19 +5,21 @@ services:
     image: container-registry.oracle.com/database/free:latest
     container_name: tillgang-oracle-prod
     ports:
-      - "1521:1521"  # Only database port exposed, no EM
+      - '1521:1521' # Only database port exposed, no EM
     environment:
       - ORACLE_PWD=${ORACLE_PWD}
       - ORACLE_CHARACTERSET=AL32UTF8
     volumes:
       - oracle-data:/opt/oracle/oradata
       - ./database/init:/opt/oracle/scripts/startup:ro
-      # Mount host timezone to ensure time synchronization
-      - /etc/localtime:/etc/localtime:ro
     networks:
       - tillgang-network
     healthcheck:
-      test: ["CMD-SHELL", "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/$$ORACLE_PWD@FREEPDB1 || exit 1"]
+      test:
+        [
+          'CMD-SHELL',
+          "echo 'SELECT 1 FROM DUAL;' | sqlplus -s system/$$ORACLE_PWD@FREEPDB1 || exit 1",
+        ]
       interval: 30s
       timeout: 10s
       retries: 10
@@ -70,7 +72,7 @@ services:
         - VITE_API_URL=${VITE_API_URL:-/api}
     container_name: tillgang-frontend-prod
     ports:
-      - "80:8080"  # Map host port 80 to container port 8080 (non-privileged)
+      - '80:8080' # Map host port 80 to container port 8080 (non-privileged)
     networks:
       - tillgang-network
     depends_on:
