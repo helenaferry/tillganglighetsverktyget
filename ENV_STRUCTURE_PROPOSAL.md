@@ -5,7 +5,8 @@
 ## Nuvarande struktur
 
 Projektet använder tre env-mallar:
-- **Root `.env.example`** – container-orkestrering (Docker Compose)
+
+- **Root `.env.example`** – container-orkestrering (Podman Compose)
 - **`server/.env.example`** – backend vid lokal utveckling utan containers
 - **`client/.env.example`** – frontend; kopieras till `client/.env.local`
 
@@ -15,17 +16,17 @@ Ingen root-fil `.env.local.example` finns; frontend använder `client/.env.examp
 
 ### 1. Root `.env.example` - Container Orchestration Only
 
-**Purpose:** Used by Docker Compose to orchestrate all services  
+**Purpose:** Used by Podman Compose to orchestrate all services  
 **Location:** `/Users/andreas/work/repos/tillganglighetsverktyget/.env.example`  
-**When to use:** When running `docker compose` commands  
+**When to use:** When running `podman compose` commands  
 **Variables:**
 
 ```bash
 # =================================================
-# Tillgänglighetsverktyget - Docker Compose Config
+# Tillgänglighetsverktyget - Podman Compose Config
 # =================================================
 # Copy this file to .env for container orchestration
-# This file is ONLY for Docker Compose, not for local development
+# This file is ONLY for Podman Compose, not for local development
 
 # =================================================
 # DATABASE (Oracle Container)
@@ -206,7 +207,7 @@ cp client/.env.example client/.env.local
 # Edit client/.env.local with branding, logos, etc.
 
 # 3. Start containers
-docker compose -f compose.dev.yml up
+podman compose -f compose.dev.yml up
 ```
 
 ### For Local Backend Development (No Containers)
@@ -225,7 +226,7 @@ npm run dev
 
 ```bash
 # 1. Start backend + database in containers
-docker compose -f compose.dev.yml up oracle-db backend-api
+podman compose -f compose.dev.yml up oracle-db backend-api
 
 # 2. Configure frontend
 cd client
@@ -238,32 +239,37 @@ npm run dev
 
 ## File Summary Table
 
-| File | Purpose | Scope | Required Variables |
-|------|---------|-------|-------------------|
-| `.env.example` | Container orchestration | All services | DB passwords, ports |
-| `server/.env.example` | Backend development | Backend only | DB config, CORS |
+| File                  | Purpose                                     | Scope         | Required Variables           |
+| --------------------- | ------------------------------------------- | ------------- | ---------------------------- |
+| `.env.example`        | Container orchestration                     | All services  | DB passwords, ports          |
+| `server/.env.example` | Backend development                         | Backend only  | DB config, CORS              |
 | `client/.env.example` | Frontend development (copy to `.env.local`) | Frontend only | API URL, branding, UI config |
 
 ## Benefits of This Structure
 
 ✅ **Clear separation of concerns:**
+
 - Root = orchestration
 - Server = backend config
 - Client = frontend config
 
 ✅ **No confusion:**
+
 - One .env.example per directory
 - Each file has a single, clear purpose
 
 ✅ **Easy onboarding:**
+
 - New developers know exactly which file to copy
 - Documentation is straightforward
 
 ✅ **Environment-specific:**
+
 - Can run frontend locally while backend is in container
 - Can customize frontend without affecting orchestration
 
 ✅ **Security:**
+
 - Sensitive data (passwords) only in orchestration file
 - Frontend config is safe to share (no secrets)
 
@@ -275,32 +281,42 @@ Se `QUICKSTART.md` och `docs/SETUP.md` för vilka env-filer som behövs vid olik
 
 Add to `QUICKSTART.md`:
 
-```markdown
+````markdown
 ## Environment Variables
 
 This project uses three `.env` files for different purposes:
 
 ### 1. Root `.env` (from `.env.example`)
-**For:** Running with Docker Compose  
-**Contains:** Database passwords, orchestration config  
+
+**For:** Running with Podman Compose  
+**Contains:** Database passwords, orchestration config
+
 ```bash
 cp .env.example .env
 # Edit: Set ORACLE_PWD and DB_PASSWORD
 ```
+````
 
 ### 2. Server `.env` (from `server/.env.example`)
+
 **For:** Local backend development (without containers)  
-**Contains:** Database connection, CORS config  
+**Contains:** Database connection, CORS config
+
 ```bash
 cd server && cp .env.example .env
 ```
 
 ### 3. Client `.env.local` (from `client/.env.example`)
+
 **For:** Frontend customization (branding, logos, UI)  
-**Contains:** Application title, logos, footer links, prefill config  
+**Contains:** Application title, logos, footer links, prefill config
+
 ```bash
 cd client && cp .env.example .env.local
 ```
 
 **Note:** For most development, you only need the root `.env` file!
+
+```
+
 ```

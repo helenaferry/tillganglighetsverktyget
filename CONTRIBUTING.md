@@ -1,4 +1,4 @@
-# Kom igång med tillgänglighetsverktyget 
+# Kom igång med tillgänglighetsverktyget
 
 ## Sätt upp env-variabler
 
@@ -32,15 +32,15 @@ npm run build
 
 ## Deployment
 
-### Docker Deployment
+### Podman Deployment
 
-To build and run using Docker:
+To build and run using Podman:
 
 ```bash
-docker build -t my-app .
+podman build -t my-app .
 
 # Run the container
-docker run -p 3000:3000 my-app
+podman run -p 3000:3000 my-app
 ```
 
 ### DIY Deployment
