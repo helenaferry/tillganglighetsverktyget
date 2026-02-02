@@ -1,23 +1,21 @@
 services:
-  # Oracle Database 23ai Free
-  # Uses ORACLE_IMAGE_TAG env var (default: latest-lite for ARM Mac)
-  # For x64 systems (Windows/WSL, Intel Mac, Linux): export ORACLE_IMAGE_TAG=latest
+  # Oracle Database Free (gvenzl image – works on Podman/macOS; official image hits ORA-443 on Mac)
+  # See https://hub.docker.com/r/gvenzl/oracle-free
   oracle-db:
-    image: container-registry.oracle.com/database/free:${ORACLE_IMAGE_TAG:-latest-lite}
+    image: gvenzl/oracle-free:latest
     container_name: tillgang-oracle-dev
     ports:
       - '1521:1521' # Database port
-      - '5500:5500' # Oracle EM Express (optional; often not available in container images)
     environment:
+      # gvenzl uses ORACLE_PASSWORD for SYS/SYSTEM; our init script uses ORACLE_PWD
+      - ORACLE_PASSWORD=${ORACLE_PWD:-OraclePassword123!}
       - ORACLE_PWD=${ORACLE_PWD:-OraclePassword123!}
-      - ORACLE_CHARACTERSET=AL32UTF8
+      - ORACLE_SID=FREE
       - DB_USER=${DB_USER:-tillgang_user}
       - DB_PASSWORD=${DB_PASSWORD:-TillgangDev2026!}
     volumes:
       - oracle-data:/opt/oracle/oradata
-      - ./database/init:/opt/oracle/scripts/startup:ro
-      # Mount host timezone to ensure time synchronization
-      - /etc/localtime:/etc/localtime:ro
+      - ./database/init:/container-entrypoint-initdb.d:ro
     networks:
       - tillgang-network
     healthcheck:
