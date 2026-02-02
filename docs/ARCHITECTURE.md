@@ -8,7 +8,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                     Docker Host                     │
+│                     Podman Host                     │
 │                                                             │
 │  ┌──────────────────┐                                      │
 │  │    Frontend      │                                      │
@@ -49,6 +49,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 ### Frontend Container
 
 **Teknologistack:**
+
 - React 19 med React Router 7
 - TypeScript
 - Vite (utveckling) / Nginx (produktion)
@@ -56,6 +57,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 - Arbetsförmedlingens Design System
 
 **Ansvar:**
+
 - Användargränssnittsrendering
 - Klientsidans routing
 - API-kommunikation via REST
@@ -63,6 +65,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 - Tillståndshantering
 
 **Containerkonfiguration:**
+
 - **Utveckling:** Node.js med Vite dev server
 - **Produktion:** Multi-stage build med Nginx
 - **Port:** 5173 (dev), 80 (prod)
@@ -71,6 +74,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 ### Backend Container
 
 **Teknologistack:**
+
 - Node.js 20
 - Express 5
 - TypeScript
@@ -78,6 +82,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 - Oracle Instant Client
 
 **Ansvar:**
+
 - REST API endpoints
 - Affärslogik
 - Datavalidering
@@ -85,6 +90,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 - CORS-hantering
 
 **API Endpoints:**
+
 - `GET /api/reviews` - Lista alla granskningar
 - `GET /api/reviews/:id` - Hämta en granskning
 - `POST /api/reviews` - Skapa granskning
@@ -95,6 +101,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 - Plus bulk-operationer för kontroller
 
 **Containerkonfiguration:**
+
 - **Utveckling:** ts-node-dev för hot-reload
 - **Produktion:** Kompilerad JavaScript
 - **Port:** 3000
@@ -103,15 +110,18 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 ### Database Container
 
 **Teknologi:**
+
 - Oracle Database Free 23ai
 
 **Schema:**
+
 - `reviews` tabell - Granskningsmetadata
 - `checks` tabell - Individuella kravkontroller
 - Sekvenser för auto-increment-ID:n
 - Triggers för tidsstämplar
 
 **Containerkonfiguration:**
+
 - **Image:** Oracle officiella container registry
 - **Port:** 1521 (databas), 5500 (Enterprise Manager Express, valfritt – ofta ej tillgängligt i container)
 - **Volume:** Persisterande datalagring
@@ -185,12 +195,14 @@ Användare → Frontend → Backend API → Database
 ### Volumes
 
 **oracle-data**
+
 - Syfte: Persisterande databaslagring
 - Plats: `/opt/oracle/oradata` i container
 - Livscykel: Överlever containeromstarter/omskapningar
 - Storlek: Växer med data (typiskt 2-10GB)
 
 **Utvecklings Volume Mounts**
+
 - Frontend: `./client/app` → `/app/app`
 - Backend: `./server/src` → `/app/src`
 - Syfte: Aktivera hot-reload utan att bygga om containers
@@ -220,29 +232,35 @@ Användare → Frontend → Backend API → Database
 ### Container Images
 
 **Frontend:**
+
 - Dev: `node:20-slim` + källkodsmount
 - Prod: Multi-stage (build + nginx runtime)
 
 **Backend:**
+
 - Dev: `node:20-slim` + Oracle Instant Client + källkodsmount
 - Prod: Multi-stage (build + runtime med kompilerad JS)
 
 **Database:**
+
 - Båda: Officiell Oracle Database Free image från Oracle Container Registry
 
 ### Health Checks
 
 **Oracle Database:**
+
 ```bash
 sqlplus system/$ORACLE_PWD@FREEPDB1 -S "SELECT 1 FROM DUAL"
 ```
 
 **Backend API:**
+
 ```bash
 curl http://localhost:3000/health
 ```
 
 **Frontend (prod):**
+
 ```bash
 wget --spider http://localhost/
 ```
@@ -281,8 +299,9 @@ wget --spider http://localhost/
 - **Database:** Oracle alert logs
 
 Åtkomst via:
+
 ```bash
-docker compose -f compose.dev.yml logs -f [service]
+podman compose -f compose.dev.yml logs -f [service]
 ```
 
 ### Mätvärden (Framtid)
@@ -301,7 +320,7 @@ docker compose -f compose.dev.yml logs -f [service]
 
 ### Lokalt utvecklingsloop
 
-1. Starta containers: `docker compose -f compose.dev.yml up -d`
+1. Starta containers: `podman compose -f compose.dev.yml up -d`
 2. Redigera kod i `client/app/` eller `server/src/`
 3. Ändringar laddas om automatiskt (HMR för frontend, ts-node-dev för backend)
 4. Testa i webbläsare på http://localhost:5173
@@ -311,21 +330,23 @@ docker compose -f compose.dev.yml logs -f [service]
 ### Lägga till beroenden
 
 **Frontend:**
+
 ```bash
 cd client
 npm install <package>
 # Bygg om container för att installera i container
-docker compose -f compose.dev.yml build frontend
-docker compose -f compose.dev.yml up -d frontend
+podman compose -f compose.dev.yml build frontend
+podman compose -f compose.dev.yml up -d frontend
 ```
 
 **Backend:**
+
 ```bash
 cd server
 npm install <package>
 # Bygg om container för att installera i container
-docker compose -f compose.dev.yml build backend-api
-docker compose -f compose.dev.yml up -d backend-api
+podman compose -f compose.dev.yml build backend-api
+podman compose -f compose.dev.yml up -d backend-api
 ```
 
 ## Databasschema
@@ -370,7 +391,7 @@ enum Status {
   FAIL = 0,
   PASS = 1,
   IRRELEVANT = 2,
-  NOT_ASSESSED = 3
+  NOT_ASSESSED = 3,
 }
 ```
 
@@ -396,6 +417,7 @@ enum Status {
 ### Request/Response-exempel
 
 **Skapa granskning:**
+
 ```http
 POST /api/reviews
 Content-Type: application/json
@@ -422,16 +444,19 @@ Response: 201 Created
 ### Miljövariabler
 
 **Database:**
+
 - `ORACLE_PWD` - Systemlösenord
 - `DB_USER` - Applikationsanvändare
 - `DB_PASSWORD` - Applikationslösenord
 
 **Backend:**
+
 - `NODE_ENV` - development/production
 - `PORT` - Serverport
 - `DB_HOST`, `DB_PORT`, `DB_SERVICE` - Databasanslutning
 
 **Frontend:**
+
 - `VITE_API_URL` - Backend API URL
 
 ### Konfigurationsfiler
@@ -447,45 +472,45 @@ Response: 201 Created
 
 ```bash
 # Exportera (använd container-namn: tillgang-oracle-dev för dev, tillgang-oracle-prod för prod)
-docker exec tillgang-oracle-dev expdp \
+podman exec tillgang-oracle-dev expdp \
   tillgang_user/password@FREEPDB1 \
   directory=DATA_PUMP_DIR \
   dumpfile=backup.dmp
 
-# Kopiera ut (DATA_PUMP_DIR-plats varierar; hitta filen t.ex. med: docker exec tillgang-oracle-dev find /opt/oracle -name "*.dmp" -mmin -5)
-docker cp tillgang-oracle-dev:<sökväg-till-dumpfil> ./backup.dmp
+# Kopiera ut (DATA_PUMP_DIR-plats varierar; hitta filen t.ex. med: podman exec tillgang-oracle-dev find /opt/oracle -name "*.dmp" -mmin -5)
+podman cp tillgang-oracle-dev:<sökväg-till-dumpfil> ./backup.dmp
 ```
 
 ### Volume-säkerhetskopiering
 
-Docker har inte inbyggda `volume export`/`import`-kommandon. Använd tillfällig container med tar:
+Podman har inte inbyggda `volume export`/`import`-kommandon. Använd tillfällig container med tar:
 
 ```bash
 # Säkerhetskopiera volume (stoppa containern först om du behöver konsekvent data)
-docker run --rm -v tillgang-oracle-data-dev:/data -v "$(pwd)":/backup ubuntu tar -czf /backup/oracle-data-backup.tar.gz -C /data .
+podman run --rm -v tillgang-oracle-data-dev:/data -v "$(pwd)":/backup ubuntu tar -czf /backup/oracle-data-backup.tar.gz -C /data .
 
 # Återställ till nytt volume
-docker volume create tillgang-oracle-data-dev-new
-docker run --rm -v tillgang-oracle-data-dev-new:/data -v "$(pwd)":/backup ubuntu tar -xzf /backup/oracle-data-backup.tar.gz -C /data
+podman volume create tillgang-oracle-data-dev-new
+podman run --rm -v tillgang-oracle-data-dev-new:/data -v "$(pwd)":/backup ubuntu tar -xzf /backup/oracle-data-backup.tar.gz -C /data
 ```
 
 ## Migrering från Supabase
 
 ### Viktiga skillnader
 
-| Aspekt | Supabase | Oracle Database Free |
-|--------|----------|-----------|
-| Database | PostgreSQL | Oracle |
-| Auth | Inbyggd | Anpassad |
-| Real-time | Inbyggd | Anpassad |
-| Storage | Inbyggd | Anpassad |
-| API | Auto-genererad | Manuell (Express) |
+| Aspekt    | Supabase       | Oracle Database Free |
+| --------- | -------------- | -------------------- |
+| Database  | PostgreSQL     | Oracle               |
+| Auth      | Inbyggd        | Anpassad             |
+| Real-time | Inbyggd        | Anpassad             |
+| Storage   | Inbyggd        | Anpassad             |
+| API       | Auto-genererad | Manuell (Express)    |
 
 ### Migreringssteg
 
 1. Exportera data från Supabase (PostgreSQL)
 2. Transformera data (boolean → number, tidsstämplar, etc.)
-3. Importera till Oracle med SQL*Loader eller INSERT-satser
+3. Importera till Oracle med SQL\*Loader eller INSERT-satser
 4. Uppdatera frontend för att använda nytt API
 5. Testa grundligt
 
@@ -505,7 +530,7 @@ docker run --rm -v tillgang-oracle-data-dev-new:/data -v "$(pwd)":/backup ubuntu
 - Aktivt underhåll
 - Bra dokumentation
 
-### Varför Docker Compose?
+### Varför Podman Compose?
 
 - Enkel orkestrering
 - Lätt lokal utveckling

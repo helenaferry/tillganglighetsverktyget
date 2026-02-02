@@ -5,6 +5,7 @@ Denna guide förklarar hur man migrerar befintlig data från Supabase (PostgreSQ
 ## Översikt
 
 Applikationen har migrerats från:
+
 - **Database:** Supabase (PostgreSQL) → Oracle Database Free 23ai
 - **API:** Supabase auto-genererad → Anpassad Express REST API
 - **Distribution:** Molntjänst → Självhostade containers
@@ -69,13 +70,13 @@ CREATE TABLE checks (
 
 ## Viktiga skillnader
 
-| Aspekt | PostgreSQL | Oracle | Anteckningar |
-|--------|-----------|--------|-------------|
-| Auto-increment | SERIAL | NUMBER + SEQUENCE + TRIGGER | Oracle använder sekvenser |
-| Boolean | BOOLEAN | NUMBER(1) | 0=false, 1=true |
-| Text | TEXT | VARCHAR2/CLOB | Oracle har storleksbegränsningar |
-| Kolumnnamn | camelCase | snake_case | Konventionsskillnad |
-| Tidsstämplar | NOW() | CURRENT_TIMESTAMP | Funktionsnamn |
+| Aspekt         | PostgreSQL | Oracle                      | Anteckningar                     |
+| -------------- | ---------- | --------------------------- | -------------------------------- |
+| Auto-increment | SERIAL     | NUMBER + SEQUENCE + TRIGGER | Oracle använder sekvenser        |
+| Boolean        | BOOLEAN    | NUMBER(1)                   | 0=false, 1=true                  |
+| Text           | TEXT       | VARCHAR2/CLOB               | Oracle har storleksbegränsningar |
+| Kolumnnamn     | camelCase  | snake_case                  | Konventionsskillnad              |
+| Tidsstämplar   | NOW()      | CURRENT_TIMESTAMP           | Funktionsnamn                    |
 
 ## Migreringssteg
 
@@ -107,15 +108,11 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function exportData() {
   // Exportera granskningar
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*');
-  
+  const { data: reviews } = await supabase.from('reviews').select('*');
+
   // Exportera kontroller
-  const { data: checks } = await supabase
-    .from('checks')
-    .select('*');
-  
+  const { data: checks } = await supabase.from('checks').select('*');
+
   fs.writeFileSync('reviews.json', JSON.stringify(reviews, null, 2));
   fs.writeFileSync('checks.json', JSON.stringify(checks, null, 2));
 }
@@ -136,18 +133,18 @@ const reviews = JSON.parse(fs.readFileSync('reviews.json'));
 const checks = JSON.parse(fs.readFileSync('checks.json'));
 
 // Transformera granskningar
-const transformedReviews = reviews.map(review => ({
+const transformedReviews = reviews.map((review) => ({
   id: review.id,
   created_at: review.created_at,
   title: review.title,
   excluded_content_types: review.excludedContentTypes, // camelCase → snake_case
   object_type: review.objectType,
   regulatory_framework: review.regulatoryFramework,
-  selected_prefill_ids: review.selectedPrefillIds
+  selected_prefill_ids: review.selectedPrefillIds,
 }));
 
 // Transformera kontroller
-const transformedChecks = checks.map(check => ({
+const transformedChecks = checks.map((check) => ({
   id: check.id,
   created_at: check.created_at,
   updated_at: check.updated_at,
@@ -155,20 +152,22 @@ const transformedChecks = checks.map(check => ({
   requirement: check.requirement,
   status: check.status,
   comment: check.comment,
-  flag: check.flag ? 1 : 0 // boolean → number
+  flag: check.flag ? 1 : 0, // boolean → number
 }));
 
 // Generera Oracle SQL INSERT-satser
 function generateInserts(table, data) {
-  const inserts = data.map(row => {
+  const inserts = data.map((row) => {
     const columns = Object.keys(row).join(', ');
-    const values = Object.values(row).map(v => {
-      if (v === null) return 'NULL';
-      if (typeof v === 'number') return v;
-      if (typeof v === 'string') return `'${v.replace(/'/g, "''")}'`;
-      if (v instanceof Date) return `TIMESTAMP '${v.toISOString()}'`;
-      return `'${v}'`;
-    }).join(', ');
+    const values = Object.values(row)
+      .map((v) => {
+        if (v === null) return 'NULL';
+        if (typeof v === 'number') return v;
+        if (typeof v === 'string') return `'${v.replace(/'/g, "''")}'`;
+        if (v instanceof Date) return `TIMESTAMP '${v.toISOString()}'`;
+        return `'${v}'`;
+      })
+      .join(', ');
     return `INSERT INTO ${table} (${columns}) VALUES (${values});`;
   });
   return inserts.join('\n');
@@ -178,7 +177,9 @@ const reviewInserts = generateInserts('reviews', transformedReviews);
 const checkInserts = generateInserts('checks', transformedChecks);
 
 // Skriv till fil
-fs.writeFileSync('oracle-import.sql', `
+fs.writeFileSync(
+  'oracle-import.sql',
+  `
 -- Importskript för Oracle
 -- Genererat från Supabase-export
 
@@ -187,33 +188,35 @@ ${reviewInserts}
 ${checkInserts}
 
 COMMIT;
-`);
+`,
+);
 
 console.log('Genererat oracle-import.sql');
 ```
 
 Kör skriptet:
+
 ```bash
 node transform-data.js
 ```
 
 ### Steg 3: Importera till Oracle
 
-#### Alternativ A: Använda SQL*Plus
+#### Alternativ A: Använda SQL\*Plus
 
 ```bash
 # Starta Oracle-container
-docker compose -f compose.dev.yml up -d oracle-db
+podman compose -f compose.dev.yml up -d oracle-db
 
 # Vänta tills databasen är redo
-docker compose -f compose.dev.yml logs -f oracle-db
+podman compose -f compose.dev.yml logs -f oracle-db
 # Vänta på "DATABASE IS READY TO USE!"
 
 # Kopiera importfil till container
-docker cp oracle-import.sql tillgang-oracle-dev:/tmp/
+podman cp oracle-import.sql tillgang-oracle-dev:/tmp/
 
 # Importera data
-docker exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1 <<EOF
+podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1 <<EOF
 @/tmp/oracle-import.sql
 EXIT;
 EOF
@@ -237,7 +240,7 @@ EOF
 
 ```bash
 # Anslut till Oracle
-docker exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
+podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
 
 # Verifiera antal
 SELECT COUNT(*) FROM reviews;
@@ -257,8 +260,9 @@ GROUP BY r.id, r.title;
 ### Steg 5: Testa applikationen
 
 1. Starta alla tjänster:
+
    ```bash
-   docker compose -f compose.dev.yml up -d
+   podman compose -f compose.dev.yml up -d
    ```
 
 2. Öppna frontend: http://localhost:5173
@@ -275,6 +279,7 @@ GROUP BY r.id, r.title;
 Frontend-koden har uppdaterats för att använda det nya REST API:et, men gränssnittet förblir detsamma:
 
 ### Före (Supabase)
+
 ```typescript
 import { createClient } from '@supabase/supabase-js';
 const supabase = createClient(url, key);
@@ -282,6 +287,7 @@ const { data } = await supabase.from('reviews').select('*');
 ```
 
 ### Efter (REST API)
+
 ```typescript
 import { apiClient } from './apiClient';
 const data = await apiClient.reviews.getAll();
@@ -293,26 +299,28 @@ const data = await apiClient.reviews.getAll();
 
 ### Supabase → Express API
 
-| Supabase-operation | Nytt API-endpoint |
-|-------------------|------------------|
-| `from('reviews').select()` | `GET /api/reviews` |
-| `from('reviews').select().eq('id', x)` | `GET /api/reviews/:id` |
-| `from('reviews').insert()` | `POST /api/reviews` |
-| `from('reviews').update()` | `PUT /api/reviews/:id` |
-| `from('reviews').delete()` | `DELETE /api/reviews/:id` |
-| `from('checks').select().eq('review', x)` | `GET /api/reviews/:id/checks` |
-| `from('checks').upsert()` | `POST /api/reviews/:id/checks` |
+| Supabase-operation                        | Nytt API-endpoint              |
+| ----------------------------------------- | ------------------------------ |
+| `from('reviews').select()`                | `GET /api/reviews`             |
+| `from('reviews').select().eq('id', x)`    | `GET /api/reviews/:id`         |
+| `from('reviews').insert()`                | `POST /api/reviews`            |
+| `from('reviews').update()`                | `PUT /api/reviews/:id`         |
+| `from('reviews').delete()`                | `DELETE /api/reviews/:id`      |
+| `from('checks').select().eq('review', x)` | `GET /api/reviews/:id/checks`  |
+| `from('checks').upsert()`                 | `POST /api/reviews/:id/checks` |
 
 ## Återställningsplan
 
 Om migreringen misslyckas kan du snabbt återställa:
 
 1. Stoppa nya containers:
+
    ```bash
-   docker compose -f compose.dev.yml down
+   podman compose -f compose.dev.yml down
    ```
 
 2. Återställ git-ändringar:
+
    ```bash
    git checkout main  # eller tidigare branch
    ```
@@ -324,12 +332,14 @@ Om migreringen misslyckas kan du snabbt återställa:
 ## Prestandaöverväganden
 
 ### Supabase (Hanterad PostgreSQL)
+
 - Automatiska säkerhetskopior
 - Hanterade uppdateringar
 - Inbyggd anslutningspoolning
 - Real-time-prenumerationer
 
 ### Oracle Database Free (Självhostad)
+
 - Manuella säkerhetskopior krävs
 - Manuella uppdateringar
 - Konfigurera anslutningspoolning i Sequelize
@@ -338,11 +348,13 @@ Om migreringen misslyckas kan du snabbt återställa:
 ## Kostnadsjämförelse
 
 ### Supabase
+
 - Gratis nivå: 500MB databas, 2GB bandbredd
 - Pro: $25/månad (8GB databas, 50GB bandbredd)
 - Ytterligare: $0.125/GB databas, $0.09/GB bandbredd
 
 ### Oracle Database Free (Självhostad)
+
 - Gratis programvarulicens (Express Edition)
 - Endast infrastrukturkostnader (server/moln)
 - Inga per-GB-avgifter
@@ -353,6 +365,7 @@ Om migreringen misslyckas kan du snabbt återställa:
 ### Problem: Datatyper matchar inte
 
 **Lösning:** Uppdatera transformationsskript för att hantera:
+
 - Boolean → Number (0/1)
 - NULL-hantering
 - Strängescaping (enkla citattecken)
@@ -378,6 +391,7 @@ CREATE SEQUENCE checks_seq START WITH 201;
 ### Problem: Främmande nyckelöverträdelser
 
 Se till att granskningar importeras före kontroller:
+
 ```sql
 -- Importordning spelar roll!
 -- 1. Infoga alla granskningar
@@ -389,6 +403,7 @@ INSERT INTO checks ...
 ### Problem: Teckenkodningsproblem
 
 Sätt korrekt teckenuppsättning i anslutningen:
+
 ```javascript
 // I database.ts
 dialectOptions: {
@@ -417,7 +432,7 @@ Om du stöter på problem under migreringen:
 
 1. Kontrollera [SETUP.md](SETUP.md) felsökningssektion
 2. Verifiera att Oracle-container är healthy
-3. Kontrollera backend-loggar: `docker logs tillgang-backend-dev`
+3. Kontrollera backend-loggar: `podman logs tillgang-backend-dev`
 4. Granska databasschema: `DESC reviews; DESC checks;`
 5. Testa API direkt: `curl http://localhost:3000/api/reviews`
 

@@ -78,7 +78,7 @@ open http://localhost:5173
 - **i18next** – Internationalisering
 - **Oracle Database** – Databas
 - **Express.js** – REST API backend
-- **Docker** – Containerisering
+- **Podman** – Containerisering
 
 ## Licens
 

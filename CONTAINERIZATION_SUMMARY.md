@@ -7,6 +7,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 ### 1. Databasinstallation (Oracle Database Free)
 
 ✅ **Skapade:**
+
 - `database/init/001-initial-schema.sql.reference` - Komplett databasschema (referens, körs inte av containern) med:
   - Applikationsanvändarskapande (`tillgang_user`)
   - Tabeller: `reviews` och `checks`
@@ -17,6 +18,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 - `database/README.md` - Databasdokumentation
 
 ✅ **Schema:**
+
 - `reviews` tabell: Lagrar granskningsmetadata
 - `checks` tabell: Lagrar individuella kravkontroller
 - Unik begränsning på (review, requirement)
@@ -25,11 +27,13 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 ### 2. Backend API
 
 ✅ **Sequelize-modeller:**
+
 - `server/src/models/Review.ts` - Review-modell
 - `server/src/models/Check.ts` - Check-modell med associationer
 - `server/src/models/index.ts` - Modelexporter
 
 ✅ **Controllers:**
+
 - `server/src/controllers/reviewController.ts` - Kompletta CRUD-operationer:
   - Reviews: GET, POST, PUT, DELETE
   - Checks: GET, POST, DELETE
@@ -38,20 +42,24 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
   - Sammanfattningsstatistikberäkning
 
 ✅ **Routes:**
+
 - `server/src/routes/reviewRoutes.ts` - Alla API-endpoints
 - Uppdaterad `server/src/app.ts` med CORS, felhantering, health check
 
 ✅ **Konfiguration:**
+
 - `server/src/database/CONFIG.ts` - Oracle-anslutningskonfiguration
 - Uppdaterad `server/src/database/database.ts` - Oracle Sequelize-installation
 - Uppdaterad `server/src/server.ts` - Förbättrad startloggning
 
 ✅ **Dockerfiles:**
+
 - `server/Dockerfile.dev` - Utveckling med hot-reload
 - `server/Dockerfile.prod` - Produktion multi-stage build
 - Båda inkluderar Oracle Instant Client-installation
 
 ✅ **Beroenden:**
+
 - Tillagt: `oracledb`, `cors`
 - Borttaget: `pg`, `pg-hstore`
 - Uppdaterad `server/package.json`
@@ -59,22 +67,26 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 ### 3. Frontend
 
 ✅ **API-klient:**
+
 - `client/app/data/apiClient.ts` - REST API-klient som ersätter Supabase
 - Uppdaterad `client/app/data/reviewService.ts` - Alla metoder använder nu REST API
 - Behållit samma gränssnitt för minimala frontend-ändringar
 
 ✅ **Dockerfiles:**
+
 - `client/Dockerfile.dev` - Vite dev server med HMR
 - `client/Dockerfile.prod` - Multi-stage build med Nginx
 - `client/nginx.conf` - SPA-routing + API-proxykonfiguration
 
 ✅ **Beroenden:**
+
 - Borttaget: `@supabase/supabase-js`, `supabase`
 - Uppdaterad `client/package.json`
 
 ### 4. Containerorkestrering
 
 ✅ **Utveckling:**
+
 - `compose.dev.yml` - Utvecklingsinstallation med:
   - Oracle Database Free med persisterande volume
   - Backend med hot-reload och källkodsmounts
@@ -83,6 +95,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
   - Health checks och beroenden
 
 ✅ **Produktion:**
+
 - `compose.prod.yml` - Produktionsinstallation med:
   - Optimerade builds
   - Resursbegränsningar
@@ -91,6 +104,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
   - Säkerhetshårdning
 
 ✅ **Miljö:**
+
 - `.env.example` - Komplett miljömall
 - `server/.env.example` - Backend-specifika env-variabler
 - `client/.env.example` - Frontend-specifika env-variabler
@@ -98,6 +112,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 ### 5. Dokumentation
 
 ✅ **Skapade:**
+
 - `docs/SETUP.md` - Omfattande installations- och felsökningsguide (100+ rader)
 - `docs/ARCHITECTURE.md` - Systemarkitektur och designbeslut
 - `docs/API.md` - Komplett API-referens med exempel
@@ -108,7 +123,8 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 ### 6. Git-konfiguration
 
 ✅ **Uppdaterade:**
-- `.gitignore` - Lade till Docker och miljöfiler
+
+- `.gitignore` - Lade till Podman/miljöfiler
 - Skapade `.dockerignore`-filer för client och server
 
 ## Filstruktur
@@ -167,9 +183,10 @@ tillganglighetsverktyget/
 ### Utvecklingsupplevelse
 
 1. **En-kommando-installation:**
+
    ```bash
    cp .env.example .env
-   docker compose -f compose.dev.yml up -d
+   podman compose -f compose.dev.yml up -d
    ```
 
 2. **Hot Reload:**
@@ -230,7 +247,7 @@ tillganglighetsverktyget/
 
 ### Orkestrering
 
-- **Docker Compose** kompatibel
+- **Podman Compose** kompatibel
 - **Tjänstberoenden** korrekt konfigurerade
 - **Health checks** säkerställer korrekt startordning
 - **Volume mounts** för utvecklingsbekvämlighet
@@ -252,6 +269,7 @@ Alla endpoints dokumenterade i `docs/API.md`:
 ## Migrering från Supabase
 
 Framgångsrikt migrerat från:
+
 - PostgreSQL → Oracle Database Free
 - Supabase-klient → Anpassad REST API
 - Auto-genererat API → Express-controllers
@@ -263,10 +281,10 @@ Framgångsrikt migrerat från:
 
 ```bash
 # Starta tjänster
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml up -d
 
 # Vänta på health checks
-docker compose -f compose.dev.yml ps
+podman compose -f compose.dev.yml ps
 
 # Testa backend
 curl http://localhost:3000/health
@@ -285,7 +303,7 @@ curl http://localhost:5173
 3. Lägg till några kontroller
 4. Verifiera data i databasen:
    ```bash
-   docker exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
+   podman exec -it tillgang-oracle-dev sqlplus tillgang_user/TillgangDev2026!@FREEPDB1
    SELECT * FROM reviews;
    SELECT * FROM checks;
    ```
@@ -295,7 +313,7 @@ curl http://localhost:5173
 ### För utveckling:
 
 1. Kör `cp .env.example .env`
-2. Kör `docker compose -f compose.dev.yml up -d`
+2. Kör `podman compose -f compose.dev.yml up -d`
 3. Vänta tills tjänster är healthy (~3 minuter första gången)
 4. Öppna http://localhost:5173
 5. Börja koda!
@@ -306,7 +324,7 @@ curl http://localhost:5173
 2. Konfigurera SSL/TLS-certifikat
 3. Sätt upp brandväggsregler
 4. Konfigurera säkerhetskopieringsprocedurer
-5. Kör `docker compose -f compose.prod.yml up -d`
+5. Kör `podman compose -f compose.prod.yml up -d`
 6. Övervaka loggar och health endpoints
 
 ### Framtida förbättringar:
@@ -343,10 +361,11 @@ curl http://localhost:5173
 ## Slutsats
 
 Applikationen är nu helt containeriserad med:
+
 - **Oracle Database Free** databas med korrekt schema
 - **Express + Sequelize** backend med komplett API
 - **React Router** frontend med REST-klient
-- **Docker Compose** orkestrering för enkel distribution
+- **Podman Compose** orkestrering för enkel distribution
 - **Omfattande dokumentation** för utvecklare
 
 Allt som behövs för utveckling och produktion är på plats! 🎉
