@@ -4,55 +4,56 @@ Snabbguide för de viktigaste skillnaderna när man utvecklar på Windows vs mac
 
 ## TL;DR - Vad du behöver veta
 
-1. **Använd Docker Desktop** (rekommenderat) eller WSL2 med Docker
+1. **Använd Podman Desktop** (rekommenderat) eller WSL2 med Podman
 2. **Arbeta i WSL-filsystem** (`/home/user/`) om du använder WSL - INTE `/mnt/c/`
 3. **Konfigurera Git:** `git config core.autocrlf input`
 4. **Allt annat fungerar likadant** - samma kommandon, samma portar, samma workflow
 
 ## Installationsskillnader
 
-| Aspekt | macOS/Linux | Windows |
-|--------|-------------|---------|
-| **Docker** | Native installation | Docker Desktop eller WSL2 |
-| **Terminal** | Terminal.app / bash | PowerShell / Windows Terminal / WSL |
-| **Filsystem** | Unix (/) | Windows (C:) eller WSL (/) |
-| **Kommandon** | Direkt i terminal | Via Docker Desktop eller WSL |
+| Aspekt        | macOS/Linux         | Windows                             |
+| ------------- | ------------------- | ----------------------------------- |
+| **Podman**    | Native installation | Podman Desktop eller WSL2           |
+| **Terminal**  | Terminal.app / bash | PowerShell / Windows Terminal / WSL |
+| **Filsystem** | Unix (/)            | Windows (C:) eller WSL (/)          |
+| **Kommandon** | Direkt i terminal   | Via Podman Desktop eller WSL        |
 
 ## Kommandoskillnader
 
-### Inga skillnader för Docker-kommandon! 🎉
+### Inga skillnader för Podman-kommandon! 🎉
 
 ```bash
 # Samma på alla plattformar:
-docker compose -f compose.dev.yml up -d
-docker compose -f compose.dev.yml down
-docker ps
-docker logs tillgang-frontend-dev
+podman compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml down
+podman ps
+podman logs tillgang-frontend-dev
 ```
 
 ### Sökvägar
 
-| Scenario | macOS/Linux | Windows (PowerShell) | WSL2 |
-|----------|-------------|----------------------|------|
-| Hemkatalog | `/home/user` eller `~` | `C:\Users\username` | `/home/user` eller `~` |
-| Projekt | `~/projects/tillgang...` | `C:\Users\...\tillgang...` | `~/projects/tillgang...` |
-| Mount | `/mnt/c/Users/...` (i WSL) | - | Använd WSL-sökväg! |
+| Scenario   | macOS/Linux                | Windows (PowerShell)       | WSL2                     |
+| ---------- | -------------------------- | -------------------------- | ------------------------ |
+| Hemkatalog | `/home/user` eller `~`     | `C:\Users\username`        | `/home/user` eller `~`   |
+| Projekt    | `~/projects/tillgang...`   | `C:\Users\...\tillgang...` | `~/projects/tillgang...` |
+| Mount      | `/mnt/c/Users/...` (i WSL) | -                          | Använd WSL-sökväg!       |
 
 ## Filsystemprestanda
 
 **VIKTIGT för WSL-användare:**
 
-| Location | Prestanda | Användning |
-|----------|-----------|------------|
-| `/home/user/projekt` | ⚡ Snabbast | ✅ Använd för projekt |
-| `/mnt/c/Users/...` | 🐌 10x långsammare | ❌ Undvik för utveckling |
-| Windows med Docker Desktop | ✅ Bra | ✅ Fungerar bra |
+| Location                   | Prestanda          | Användning               |
+| -------------------------- | ------------------ | ------------------------ |
+| `/home/user/projekt`       | ⚡ Snabbast        | ✅ Använd för projekt    |
+| `/mnt/c/Users/...`         | 🐌 10x långsammare | ❌ Undvik för utveckling |
+| Windows med Podman Desktop | ✅ Bra             | ✅ Fungerar bra          |
 
 ## Radbrytningar (Line Endings)
 
 **Problem:** Windows använder CRLF (`\r\n`), Linux/macOS använder LF (`\n`).
 
 **Lösning:**
+
 ```bash
 # Konfigurera Git (GÖR DETTA FÖRST!)
 git config --global core.autocrlf input
@@ -63,11 +64,11 @@ git add --renormalize .
 
 ## Port-åtkomst
 
-| Service | URL | Fungerar från |
-|---------|-----|---------------|
+| Service  | URL                   | Fungerar från      |
+| -------- | --------------------- | ------------------ |
 | Frontend | http://localhost:5173 | Windows ✅, WSL ✅ |
-| Backend | http://localhost:3000 | Windows ✅, WSL ✅ |
-| Oracle | localhost:1521 | Windows ✅, WSL ✅ |
+| Backend  | http://localhost:3000 | Windows ✅, WSL ✅ |
+| Oracle   | localhost:1521        | Windows ✅, WSL ✅ |
 
 **Det funkar!** WSL2 delar nätverket med Windows automatiskt.
 
@@ -141,7 +142,7 @@ sed -i 's/\r$//' filename.sh
 
 - **Total RAM:** 8GB
 - **WSL2 tilldelat:** 4GB (standard är 50% av total)
-- **Docker Desktop:** Använder WSL2, samma krav
+- **Podman Desktop:** Använder WSL2, samma krav
 
 ### Rekommenderat
 
@@ -161,28 +162,31 @@ swap=4GB
 ```
 
 Starta om WSL:
+
 ```powershell
 wsl --shutdown
 ```
 
 ## Checklist innan Start
 
-- [ ] Docker Desktop installerat ELLER Docker Engine i WSL2
+- [ ] Podman Desktop installerat ELLER Podman i WSL2
 - [ ] Git konfigurerat: `core.autocrlf = input`
-- [ ] Projekt i rätt filsystem (WSL `/home/` eller Windows med Docker Desktop)
+- [ ] Projekt i rätt filsystem (WSL `/home/` eller Windows med Podman Desktop)
 - [ ] WSL2 har minst 8GB RAM (om du använder WSL)
 - [ ] Shell-scripts är körbara (`chmod +x`)
 - [ ] `.env` konfigurerad med lösenord
 
 ## När ska jag använda vad?
 
-### Använd Docker Desktop om:
+### Använd Podman Desktop om:
+
 - ✅ Du vill ha enklast möjliga setup
 - ✅ Du föredrar GUI över terminal
 - ✅ Du är ny på containers
 - ✅ Du vill arbeta i Windows-filsystemet
 
-### Använd WSL2 med Docker om:
+### Använd WSL2 med Podman om:
+
 - ✅ Du är bekväm med Linux-terminal
 - ✅ Du vill ha bästa prestanda
 - ✅ Du behöver Linux-verktyg (sed, awk, grep, etc.)
@@ -198,7 +202,7 @@ För komplett installation och felsökning, se:
 ## Snabbstart för Windows-användare
 
 ```powershell
-# 1. Installera Docker Desktop från https://docs.docker.com/desktop/install/windows-install/
+# 1. Installera Podman Desktop från https://podman-desktop.io/downloads
 # 2. Klona projektet
 git clone https://github.com/[org]/tillganglighetsverktyget.git
 cd tillganglighetsverktyget
@@ -211,7 +215,7 @@ copy .env.example .env
 # Redigera .env och sätt lösenord
 
 # 5. Starta!
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml up -d
 
 # 6. Öppna i webbläsare
 start http://localhost:5173
