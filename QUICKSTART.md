@@ -4,13 +4,13 @@ Få igång applikationen i 3 steg!
 
 ## Förutsättningar
 
-- Docker installerat
+- Podman installerat
 - 8GB+ RAM tillgängligt
 - 20GB+ ledigt diskutrymme
 
-**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Docker Desktop eller WSL2.
+**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Podman Desktop eller WSL2.
 
-**🍎 macOS-användare?** Efter installation av Docker, starta Docker Desktop och säkerställ att den körs innan du kör compose-kommandon. Se [docs/SETUP.md](docs/SETUP.md) för mer information.
+**🍎 macOS-användare?** Efter installation av Podman måste du initiera och starta Podman Machine (eller starta Podman Desktop) innan du kör compose-kommandon. Se [docs/SETUP.md](docs/SETUP.md#macos-podman-desktop--podman-machine) för steg-för-steg (initiera, starta, resurser).
 
 ## Steg
 
@@ -26,12 +26,14 @@ cp .env.example .env
 ```
 
 **⚠️ SÄKERHET:** Du MÅSTE sätta lösenord i `.env` innan du startar. Exempel:
+
 ```bash
 ORACLE_PWD=MinSakraOracle123!
 DB_PASSWORD=MinSakraApp456!
 ```
 
 **Konfigurera frontend:**
+
 ```bash
 # Kopiera frontend-konfiguration
 cp client/.env.example client/.env.local
@@ -53,13 +55,14 @@ Scriptet kräver att `curl` och `nc` (netcat) finns installerade. Vid första st
 
 ```bash
 # Starta alla containers
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml up -d
 
 # Övervaka startloggar (rekommenderas vid första körningen)
-docker compose -f compose.dev.yml logs -f
+podman compose -f compose.dev.yml logs -f
 ```
 
 **Vänta på (vid manuell start):**
+
 - Oracle: "DATABASE IS READY TO USE!" (~2-3 minuter vid första starten)
 - Backend: "✅ Database connected successfully"
 - Frontend: "Local: http://localhost:5173/"
@@ -77,20 +80,20 @@ Klart! 🎉
 ./scripts/dev-up.sh
 
 # Eller starta utan att vänta på status
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml up -d
 
 # Stoppa (containers tas bort, datavolumes behålls – nästa "up" återanvänder samma data)
-docker compose -f compose.dev.yml down
+podman compose -f compose.dev.yml down
 
 # Visa loggar
-docker compose -f compose.dev.yml logs -f
+podman compose -f compose.dev.yml logs -f
 
 # Nystart från scratch (tar bort containers och alla datavolumes – all data försvinner)
-docker compose -f compose.dev.yml down -v
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml down -v
+podman compose -f compose.dev.yml up -d
 ```
 
-**Alternativ:** Vill du bara stoppa utan att ta bort containers? Använd `docker compose -f compose.dev.yml stop`. Starta igen med `start` eller `up -d`.
+**Alternativ:** Vill du bara stoppa utan att ta bort containers? Använd `podman compose -f compose.dev.yml stop`. Starta igen med `start` eller `up -d`.
 
 ## Åtkomstpunkter
 
@@ -102,23 +105,27 @@ docker compose -f compose.dev.yml up -d
 ## Felsökning
 
 ### Oracle startar inte
+
 - Se till att du har 8GB+ RAM tillgängligt
 - Vänta längre (~3-5 minuter vid första starten)
-- Kontrollera loggar: `docker logs tillgang-oracle-dev`
+- Kontrollera loggar: `podman logs tillgang-oracle-dev`
 
 ### Backend kan inte ansluta
+
 - Vänta tills Oracle är helt redo
-- Starta om backend: `docker compose -f compose.dev.yml restart backend-api`
+- Starta om backend: `podman compose -f compose.dev.yml restart backend-api`
 
 ### Frontend visar nätverksfel
+
 - Kontrollera att backend körs: `curl http://localhost:3000/health`
 - Verifiera VITE_API_URL i .env: `http://localhost:3000/api`
 
 ### Starta om från början
+
 ```bash
-docker compose -f compose.dev.yml down -v
-docker system prune -a --volumes
-docker compose -f compose.dev.yml up -d
+podman compose -f compose.dev.yml down -v
+podman system prune -a --volumes
+podman compose -f compose.dev.yml up -d
 ```
 
 ## Mer dokumentation
@@ -131,6 +138,7 @@ docker compose -f compose.dev.yml up -d
 ## Utveckling
 
 Kodändringar laddas om automatiskt:
+
 - **Frontend:** Ändringar i `client/app/` → omedelbar uppdatering i webbläsaren
 - **Backend:** Ändringar i `server/src/` → servern startar om automatiskt
 
@@ -141,16 +149,19 @@ Ingen behov av att bygga om containers för kodändringar!
 Projektet använder tre olika `.env`-filer för olika ändamål:
 
 ### `.env` (root) - Container-orkestrering
-**När:** Alltid vid användning av Docker Compose  
+
+**När:** Alltid vid användning av Podman Compose  
 **Innehåller:** Databaslösenord, portar, grundläggande konfiguration  
 **Krävs:** ✅ Ja, för att starta containers
 
 ### `server/.env` - Backend-utveckling
+
 **När:** Lokal backend-utveckling utan containers  
 **Innehåller:** Databasanslutning, CORS, server-konfiguration  
 **Krävs:** Endast vid lokal backend-utveckling
 
 ### `client/.env.local` - Frontend-konfiguration
+
 **När:** Alltid (även med containers)  
 **Innehåller:** Applikationstitel, logotyper, footer-länkar, förifyllningskonfiguration  
 **Krävs:** ✅ Ja, frontend kräver denna fil
