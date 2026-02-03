@@ -1,4 +1,8 @@
-import { ButtonVariation, LoaderSkeletonVariation } from '@designsystem-se/af';
+import {
+  ButtonVariation,
+  LoaderSkeletonVariation,
+  NotificationAlertVariation,
+} from '@designsystem-se/af';
 import {
   DigiButton,
   DigiFormCheckbox,
@@ -9,6 +13,7 @@ import {
   DigiLayoutBlock,
   DigiLayoutContainer,
   DigiLoaderSkeleton,
+  DigiNotificationAlert,
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -205,7 +210,11 @@ export function ReviewsList() {
                 afCount={4}
               ></DigiLoaderSkeleton>
             )}
-            {reviewsError && <p>{t('ReviewsList.LoadingError')}</p>}
+            {reviewsError && (
+              <DigiNotificationAlert afVariation={NotificationAlertVariation.DANGER}>
+                {t('ReviewsList.LoadingError')}
+              </DigiNotificationAlert>
+            )}
             {fetched && filteredReviews && (
               <DigiLayoutBlock afMarginTop={true} afMarginBottom={false} afVerticalPadding={true}>
                 <CardsOrTable
