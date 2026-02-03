@@ -1,5 +1,5 @@
-import { type LogoConfig, type RequirementWithCheck, Status } from './data/types';
-import i18n from './lang/i18n';
+import { type LogoConfig, type RequirementWithCheck, Status } from '~/data/types';
+import i18n from '~/lang/i18n';
 
 export function numberChecked(requirements: RequirementWithCheck[]) {
   return requirements.filter(
