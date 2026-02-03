@@ -6,6 +6,7 @@ services:
     container_name: tillgang-oracle-dev
     ports:
       - '1521:1521' # Database port
+    shm_size: '2gb'
     environment:
       # gvenzl uses ORACLE_PASSWORD for SYS/SYSTEM; our init script uses ORACLE_PWD
       - ORACLE_PASSWORD=${ORACLE_PWD:-OraclePassword123!}
@@ -71,8 +72,8 @@ services:
     environment:
       - VITE_API_URL=http://localhost:3000/api
     volumes:
-      - ./client/app:/app/app:ro
-      - ./client/public:/app/public:ro
+      - ./client/app:/app/app
+      - ./client/public:/app/public
       - ./client/package.json:/app/package.json:ro
       - ./client/vite.config.ts:/app/vite.config.ts:ro
       - ./client/.env.local:/app/.env.local:ro
