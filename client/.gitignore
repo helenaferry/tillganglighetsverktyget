@@ -1,0 +1,12 @@
+.DS_Store
+/node_modules/
+
+# React Router
+/.react-router/
+/build/
+
+# Test coverage
+/coverage/
+
+.env.local
+/.idea/*
