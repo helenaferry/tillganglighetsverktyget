@@ -5,8 +5,8 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { BrowserRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
-import { type Category, ObjectType, Status } from '~/data/types';
-import svenska from '~/lang/svenska.json';
+import { type Category, ObjectType, Status } from '../../data/types';
+import svenska from '../../lang/svenska.json';
 
 import CategoryNav from '../CategoryNav';
 

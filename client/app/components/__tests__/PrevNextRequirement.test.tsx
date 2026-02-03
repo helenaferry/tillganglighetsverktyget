@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
-import type { Requirement } from '~/data/types';
+import type { Requirement } from '../../data/types';
 
 import PrevNextRequirement from '../PrevNextRequirement';
 

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
-import { type Check, ObjectType, type Requirement, type Review, Status } from '~/data/types';
+import { type Check, ObjectType, type Requirement, type Review, Status } from '../../data/types';
 
 import Export from '../Export';
 
