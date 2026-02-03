@@ -4,21 +4,20 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-text: var(--digi--typography--color--text);
+  --color-text: var(--digi--color--text--primary);
 
-  --color-stratos-500: var(--digi--stratos-500);
+  --color-natthimmel-250: var(--digi--natthimmel--250);
+  --color-natthimmel-800: var(--digi--natthimmel--800);
 
-  --color-leaf-200: var(--digi--leaf-200);
-  --color-leaf-500: var(--digi--leaf-500);
+  --color-granskott-250: var(--digi--granskott--250);
+  --color-granskott-700: var(--digi--granskott--700);
 
-  --color-forest-500: var(--digi--forest-500);
+  --color-grayscale-100: var(--digi--grayscale--100);
+  --color-grayscale-200: var(--digi--grayscale--200);
+  --color-grayscale-400: var(--digi--grayscale--400);
+  --color-grayscale-700: var(--digi--grayscale--700);
 
-  --color-grayscale-100: var(--digi--grayscale-100);
-  --color-grayscale-200: var(--digi--grayscale-200);
-  --color-grayscale-400: var(--digi--grayscale-400);
-  --color-grayscale-700: var(--digi--grayscale-700);
-
-  --color-sapphire-500: var(--digi--sapphire-500);
+  --color-sapphire-500: var(--digi--sapphire--500);
   --color--link-hover: var(--digi--color--text--link-hover);
 
   --spacing-p-medium: var(--digi--paragraph-width--medium);
