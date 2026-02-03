@@ -39,7 +39,6 @@ export default defineConfig({
         'app/components/ReviewForm.tsx',
         'app/components/ReviewRequirement.tsx',
         'app/components/ReviewRequirements.tsx',
-        'app/components/ReviewsList.tsx',
         // Mostly presentational components
         'app/components/Breadcrumbs.tsx',
         'app/components/CategoryOverview.tsx',
