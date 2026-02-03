@@ -216,7 +216,7 @@ describe('CategoryNav', () => {
         />,
       );
       const statusBadge = container.querySelector('span[aria-label*="2 av 2 krav granskade"]');
-      expect(statusBadge).toHaveClass('bg-stratos-500');
+      expect(statusBadge).toHaveClass('bg-natthimmel-800');
     });
   });
 
@@ -293,7 +293,7 @@ describe('CategoryNav', () => {
         />,
       );
       const selectedLink = container.querySelector('a[href="/granskning/1/req1/#krav"]');
-      expect(selectedLink).toHaveClass('bg-stratos-500');
+      expect(selectedLink).toHaveClass('bg-natthimmel-800');
     });
 
     it('applies line-through to irrelevant requirements', () => {

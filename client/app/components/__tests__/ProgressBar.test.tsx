@@ -6,7 +6,7 @@ import ProgressBar from '../ProgressBar';
 describe('ProgressBar', () => {
   it('renders with correct progress width', () => {
     const { container } = render(<ProgressBar progress={50} />);
-    const progressBar = container.querySelector('.bg-stratos-500');
+    const progressBar = container.querySelector('.bg-natthimmel-800');
 
     expect(progressBar).toHaveStyle({ width: '50%' });
   });
@@ -25,14 +25,14 @@ describe('ProgressBar', () => {
 
   it('adds rounded-r class when progress is 100%', () => {
     const { container } = render(<ProgressBar progress={100} />);
-    const progressBar = container.querySelector('.bg-stratos-500');
+    const progressBar = container.querySelector('.bg-natthimmel-800');
 
     expect(progressBar).toHaveClass('rounded-r');
   });
 
   it('does not add rounded-r class when progress is less than 100%', () => {
     const { container } = render(<ProgressBar progress={50} />);
-    const progressBar = container.querySelector('.bg-stratos-500');
+    const progressBar = container.querySelector('.bg-natthimmel-800');
 
     expect(progressBar).not.toHaveClass('rounded-r');
   });
