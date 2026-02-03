@@ -114,13 +114,6 @@ VITE_LOGO='{
 }'
 
 # =================================================
-# LEGACY SUPABASE CONFIG (To be removed)
-# =================================================
-# These are no longer used but kept for reference during migration
-# VITE_DATABASE_URL="DATABASE_URL_HERE"
-# VITE_DATABASE_KEY="DATABASE_KEY_HERE"
-
-# =================================================
 # REQUIREMENTS CONFIGURATION
 # =================================================
 # Regulatory framework to use

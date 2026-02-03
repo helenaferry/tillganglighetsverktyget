@@ -2,9 +2,9 @@
 
 ## Kom igång
 
-### Särr upp env-variabler
+### Sätt upp env-variabler
 
-Följ instruktionerna i .env.local.example filen
+Följ instruktionerna i `.env.local.example` filen.
 
 ### Installation
 
@@ -16,13 +16,13 @@ npm install
 
 ### Development
 
-Starta utvecklare-server med HMR:
+Starta utvecklingsserver med HMR:
 
 ```bash
 npm run dev
 ```
 
-Applikationen blir tillgänglig `http://localhost:5173`.
+Applikationen blir tillgänglig på `http://localhost:5173`.
 
 ## Bygg för produktion
 
@@ -32,33 +32,17 @@ Skapa en produktions-bygge:
 npm run build
 ```
 
+Bygget skapas i `build/client/` (statiska filer) och `build/server/` (SSR server).
+
 ## Deployment
 
-### Docker Deployment
+För deployment-information, se:
+- **[QUICKSTART.md](../../QUICKSTART.md)** - Snabbstartsguide med Podman Compose
+- **[docs/SETUP.md](../../docs/SETUP.md)** - Fullständig installationsguide
+- **[compose.prod.yml](../../compose.prod.yml)** - Produktionskonfiguration
 
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
+Applikationen är designad att köras som en del av en containeriserad stack med backend API och databas. Se huvudprojektets dokumentation för deployment-instruktioner.
 
 ## Styling
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+Detta projekt använder [Tailwind CSS](https://tailwindcss.com/) för styling tillsammans med Arbetsförmedlingens designsystem.
