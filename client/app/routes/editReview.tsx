@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 import { useReviewById } from '~/hooks/useReviewData';
 import i18n from '~/lang/i18n';
 

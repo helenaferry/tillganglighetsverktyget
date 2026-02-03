@@ -20,7 +20,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type Requirement, Status, StatusText } from '~/data/types';
-import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers';
+import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 

@@ -9,7 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { type Category } from '~/data/types';
-import { numberChecked } from '~/helpers';
+import { numberChecked } from '~/helpers/helpers';
 
 import ProgressBar from './ProgressBar';
 

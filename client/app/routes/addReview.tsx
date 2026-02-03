@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import PageTitle from '~/components/PageTitle';
 import { ReviewForm } from '~/components/ReviewForm';
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 import i18n from '~/lang/i18n';
 
 const applicationTitle = envVars().applicationTitle || i18n.t('FallbackApplicationTitle');

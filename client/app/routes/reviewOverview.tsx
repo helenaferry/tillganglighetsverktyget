@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import ReviewRequirements from '~/components/ReviewRequirements';
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 const applicationTitle = envVars().applicationTitle;
 import i18n from '~/lang/i18n';
 

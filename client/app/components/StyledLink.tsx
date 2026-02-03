@@ -21,7 +21,6 @@ type Props = {
     | 'plain';
   hideIcon?: boolean;
   className?: string;
-  onClick?: (event: CustomEvent) => void;
   overrideLink?: boolean;
 };
 
@@ -33,7 +32,6 @@ export function StyledLink({
   styleVariant = 'link',
   hideIcon,
   className,
-  onClick,
   overrideLink = false,
 }: Props) {
   const navigate = useNavigate();
@@ -48,7 +46,8 @@ export function StyledLink({
     if (overrideLink) {
       overrideClick(e);
     } else {
-      if (onClick) onClick(e as CustomEvent);
+      window.scrollTo(0, 0);
+      window.location.href = to; // Non-SPA navigation
     }
   };
 
@@ -60,7 +59,7 @@ export function StyledLink({
       | React.MouseEvent<HTMLAnchorElement>,
   ) => {
     e.preventDefault();
-    onClick?.(e as CustomEvent);
+    window.scrollTo(0, 0);
     navigate(to);
   };
 
@@ -91,7 +90,7 @@ export function StyledLink({
           href={to}
           aria-label={ariaLabel}
           onClick={handleClick}
-          className={`bg-stratos-500 border-2 border-stratos-500 !text-white !no-underline text-center sm:text-left !font-semibold cursor-pointer
+          className={`bg-natthimmel-800 border-2 border-natthimmel-800 !text-white !no-underline text-center sm:text-left !font-semibold cursor-pointer
           font-(family-name:--digi--typography-meta--font-family)
           hover:bg-[var(--digi--color--background--inverted-6)]
           hover:border-[var(--digi--color--background--inverted-6)]
@@ -109,7 +108,7 @@ export function StyledLink({
           href={to}
           aria-label={ariaLabel}
           onClick={handleClick}
-          className={`bg-white border-2 border-stratos-500 !text-stratos-500 !no-underline text-center sm:text-left !font-semibold cursor-pointer
+          className={`bg-white border-2 border-natthimmel-800 !text-natthimmel-800 !no-underline text-center sm:text-left !font-semibold cursor-pointer
           font-(family-name:--digi--typography-meta--font-family)
           hover:bg-[var(--digi--color--background--inverted-5)]
           p-[var(--digi--button--padding--medium)] 

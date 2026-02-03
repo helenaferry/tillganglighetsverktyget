@@ -9,7 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 
 import { StyledLink } from './StyledLink';
 

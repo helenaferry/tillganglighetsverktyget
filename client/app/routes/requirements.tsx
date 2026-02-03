@@ -29,7 +29,7 @@ import RequirementLegal from '~/components/RequirementLegal';
 import ResetButton from '~/components/ResetButton';
 import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement, type RequirementAdditionsSetting } from '~/data/types';
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import i18n from '~/lang/i18n';
 

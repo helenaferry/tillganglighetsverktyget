@@ -29,8 +29,8 @@ import { useLocation } from 'react-router-dom';
 import CategoryNav from '~/components/CategoryNav';
 import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
-import { formatDate, formatPercentage } from '~/formattingHelpers';
-import { numberChecked, numberRemaining, percentageChecked } from '~/helpers';
+import { formatDate, formatPercentage } from '~/helpers/formattingHelpers';
+import { numberChecked, numberRemaining, percentageChecked } from '~/helpers/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import {
   useCheck,
@@ -236,12 +236,22 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   const location = useLocation();
 
   useEffect(() => {
-    if (requirement && location.hash) {
+    if (!location.hash) return;
+    let frame = 0;
+    let attempts = 0;
+    const tryScroll = () => {
       const el = document.querySelector(location.hash);
       if (el) {
         el.scrollIntoView({ behavior: 'auto' });
+        return;
       }
-    }
+      if (attempts < 10) {
+        attempts += 1;
+        frame = requestAnimationFrame(tryScroll);
+      }
+    };
+    tryScroll();
+    return () => cancelAnimationFrame(frame);
   }, [requirement, location.hash]);
 
   const flagRequirement = (flag: boolean) => {
@@ -311,7 +321,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                       requirements.length &&
                       numberChecked(requirementsWithChecks) > 0 && (
                         <div
-                          className="md:absolute md:right-0 h-24 w-24 md:h-32 md:w-32 mt-3 md:mt-0 text-white font-bold bg-forest-500 flex flex-col md:flex-row items-center justify-center rounded-full"
+                          className="md:absolute md:right-0 h-24 w-24 md:h-32 md:w-32 mt-3 md:mt-0 text-white font-bold bg-granskott-700 flex flex-col md:flex-row items-center justify-center rounded-full"
                           aria-label={t('ReviewRequirement.PercentDone', {
                             percent: formatPercentage(
                               numberChecked(requirementsWithChecks) / requirements.length,
@@ -331,7 +341,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                     {numberRemaining(requirementsWithChecks) > 0 &&
                       numberChecked(requirementsWithChecks) > 0 && (
                         <div
-                          className="md:absolute md:right-26 md:top-14 h-20 w-20 md:h-25 md:w-25 text-white font-bold bg-stratos-500 flex items-center justify-center rounded-full"
+                          className="md:absolute md:right-26 md:top-14 h-20 w-20 md:h-25 md:w-25 text-white font-bold bg-natthimmel-800 flex items-center justify-center rounded-full"
                           aria-label={`${t('ReviewRequirement.Only')} ${numberRemaining(requirementsWithChecks)} ${t('ReviewRequirement.Remaining')}`}
                         >
                           <div aria-hidden="true">

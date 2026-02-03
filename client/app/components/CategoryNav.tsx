@@ -26,29 +26,27 @@ type Props = {
 const StatusIndicator = ({
   checked,
   active,
-  checkedLabel,
-  uncheckedLabel,
+  t,
 }: {
   checked: boolean;
   active: boolean;
-  checkedLabel: string;
-  uncheckedLabel: string;
+  t: (key: string) => string;
 }) => {
   return (
     <div
-      aria-label={checked ? checkedLabel : uncheckedLabel}
+      aria-label={checked ? t('CategoryNav.CheckedLabel') : t('CategoryNav.UncheckedLabel')}
       className={`flex items-center justify-center text-center w-[1.5rem] h-[1.5rem] p-[0.2rem] rounded-full border border-2 border-dashed
         ${!active && !checked ? 'border-grayscale-700' : ''}
         ${active && checked ? 'bg-white border-transparent' : ''}
-        ${!active && checked ? 'bg-stratos-500 border-transparent' : ''}
-        ${active && !checked ? 'bg-stratos-500 border-white' : ''}
+        ${!active && checked ? 'bg-natthimmel-800 border-transparent' : ''}
+        ${active && !checked ? 'bg-natthimmel-800 border-white' : ''}
         `}
     >
       {checked ? (
         <DigiIconCheck
           style={
             {
-              '--digi--icon--color': active ? '--digi--stratos-500' : 'white',
+              '--digi--icon--color': active ? '--digi--natthimmel-800' : 'white',
             } as React.CSSProperties
           }
         />
@@ -94,14 +92,14 @@ export default function CategoryNav({
     return (
       <span
         className={`inline-block border border-2 border-dashed
-        ${done ? 'bg-stratos-500 text-white border-transparent' : 'bg-white border-grayscale-700'}
+        ${done ? 'bg-natthimmel-800 text-white border-transparent' : 'bg-white border-grayscale-700'}
         rounded-[var(--digi--border-radius--complementary-2)] 
         py-[0.1875rem] 
         px-[0.6875rem]
         mt-2`}
         aria-label={t('CategoryNav.RequirementsChecked', {
-          checked: String(checked),
-          total: String(requirements.length),
+          checked,
+          total: requirements.length,
         })}
       >{`${checked}/${requirements.length}`}</span>
     );
@@ -156,11 +154,11 @@ export default function CategoryNav({
                     </div>
                     <div>
                       {isExpanded ? (
-                        <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-leaf-200 group-hover:bg-stratos-500 p-[0.2rem] rounded-full">
+                        <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-granskott-250 group-hover:bg-natthimmel-800 p-[0.2rem] rounded-full">
                           <DigiIconMinus />
                         </div>
                       ) : (
-                        <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-grayscale-200 group-hover:bg-stratos-500 p-[0.2rem] rounded-full">
+                        <div className="flex items-center justify-center w-[1.25rem] h-[1.25rem] bg-grayscale-200 group-hover:bg-natthimmel-800 p-[0.2rem] rounded-full">
                           <DigiIconPlus />
                         </div>
                       )}
@@ -196,15 +194,10 @@ export default function CategoryNav({
                               overrideLink={true}
                               styleVariant="plain"
                               className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
-                        bg-${selected ? 'stratos-500' : 'white'}`}
+                        bg-${selected ? 'natthimmel-800' : 'white'}`}
                             >
                               <div className="h-full flex items-center">
-                                <StatusIndicator
-                              checked={done}
-                              active={selected}
-                              checkedLabel={t('CategoryNav.CheckedLabel')}
-                              uncheckedLabel={t('CategoryNav.UncheckedLabel')}
-                            />
+                                <StatusIndicator checked={done} active={selected} t={t} />
                               </div>
                               <div
                                 className={`text-sm text-left no-underline hover:underline text-text ${selected ? 'text-white font-bold' : ''} ${req.check?.status === Status.IRRELEVANT ? 'line-through' : ''}`}

@@ -8,7 +8,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import PageTitle from '~/components/PageTitle';
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 
 const applicationTitle = envVars().applicationTitle;
 

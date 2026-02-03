@@ -1,5 +1,5 @@
 import { ReviewsList } from '~/components/ReviewsList';
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 import i18n from '~/lang/i18n';
 
 export function meta() {

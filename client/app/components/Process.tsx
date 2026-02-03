@@ -1,6 +1,5 @@
 import { DigiIconChevronDown, DigiIconChevronRight } from '@designsystem-se/af-react';
 import type { JSX } from 'react';
-import { Fragment } from 'react/jsx-runtime';
 import { useTranslation } from 'react-i18next';
 
 type Props = {

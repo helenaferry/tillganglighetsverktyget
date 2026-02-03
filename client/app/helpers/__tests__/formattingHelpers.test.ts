@@ -5,7 +5,7 @@ import {
   formatDateAndTime,
   formatDateLong,
   formatPercentage,
-} from '~/formattingHelpers';
+} from '~/helpers/formattingHelpers';
 
 describe('formattingHelpers', () => {
   describe('formatDate', () => {

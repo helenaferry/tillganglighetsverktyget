@@ -8,7 +8,7 @@ import {
 } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
 
-import { envVars } from '~/helpers';
+import { envVars } from '~/helpers/helpers';
 
 import { InfoCard } from './InfoCard';
 import { StyledLink } from './StyledLink';

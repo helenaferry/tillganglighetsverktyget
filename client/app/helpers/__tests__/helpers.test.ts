@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
-import { numberChecked, numberPerStatus, numberRemaining, percentageChecked } from '~/helpers';
+import {
+  numberChecked,
+  numberPerStatus,
+  numberRemaining,
+  percentageChecked,
+} from '~/helpers/helpers';
 
 describe('helpers', () => {
   // Mock data

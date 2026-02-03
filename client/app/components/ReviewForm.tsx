@@ -64,7 +64,7 @@ export function ReviewForm({ review }: Props) {
   const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingRegulatoryFrameworks;
   const allPrefillRequirements = useMemo(
     () =>
-      JSON.parse(import.meta.env.VITE_PREFILL_REQUIREMENTS || '[]') as PrefillRequirementSetting[],
+      JSON.parse(import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}') as PrefillRequirementSetting[],
     [],
   );
 
@@ -348,12 +348,6 @@ export function ReviewForm({ review }: Props) {
               },
             );
           }
-
-          // If no prefills to process at all, navigate immediately
-          if (activePrefillsSuccess && removePrefillsSuccess) {
-            setSaving(false);
-            navigate(`/granskning/${reviewId}`);
-          }
         },
         onError: () => {
           setSaving(false);
@@ -592,7 +586,7 @@ export function ReviewForm({ review }: Props) {
               </DigiFormValidationMessage>
             )}
           </p>
-          <p className="bg-[#DDF1FC] px-8 py-6 !mt-6 mb-4">
+          <p className="bg-natthimmel-250 px-8 py-6 !mt-6 mb-4">
             <span role="status">
               <span className="text-4xl font-semibold">{toBeReviewedRequirements.length}</span>{' '}
               {t('of')} {requirements?.length}{' '}

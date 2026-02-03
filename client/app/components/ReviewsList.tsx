@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 import { ObjectType } from '~/data/types';
-import { formatDate } from '~/formattingHelpers';
+import { formatDate } from '~/helpers/formattingHelpers';
 import { useRequirements } from '~/hooks/useRequirementData';
 import { useReviews } from '~/hooks/useReviewData';
 
