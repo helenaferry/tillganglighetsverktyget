@@ -37,6 +37,7 @@ Bygget skapas i `build/client/` (statiska filer) och `build/server/` (SSR server
 ## Deployment
 
 För deployment-information, se:
+
 - **[QUICKSTART.md](../../QUICKSTART.md)** - Snabbstartsguide med Podman Compose
 - **[docs/SETUP.md](../../docs/SETUP.md)** - Fullständig installationsguide
 - **[compose.prod.yml](../../compose.prod.yml)** - Produktionskonfiguration
