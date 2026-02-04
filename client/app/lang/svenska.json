@@ -119,7 +119,7 @@
     "Title": "Kravöversikt: {{reviewTitle}}",
     "Preamble": "Här får du en översikt över alla krav i granskningen. Du kan söka eller filtrera fram specifika krav, samt se aktuell status för granskningen.",
     "DoneHeading": "Hurra, granskningen är klar!",
-    "CompileFailed": "Sammanställ underkända krav",
+    "GoToFailedSummary": "Sammanställ underkända krav",
     "StatusLabelNotAssessed": "ej granskade",
     "StatusLabelPass": "godkända",
     "StatusLabelFail": "underkända",

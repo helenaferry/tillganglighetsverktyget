@@ -3,6 +3,7 @@ import {
   ErrorPageStatusCodes,
   FormValidationMessageVariation,
   LayoutContainerVariation,
+  LinkButtonVariation,
   LoaderSkeletonVariation,
   NotificationAlertSize,
   NotificationAlertVariation,
@@ -15,6 +16,7 @@ import {
   DigiIconComunicationFlag,
   DigiLayoutBlock,
   DigiLayoutContainer,
+  DigiLinkButton,
   DigiLoaderSkeleton,
   DigiNotificationAlert,
   DigiNotificationErrorPage,
@@ -27,7 +29,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import CategoryNav from '~/components/CategoryNav';
-import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
 import { formatDate, formatPercentage } from '~/helpers/formattingHelpers';
 import { numberChecked, numberRemaining, percentageChecked } from '~/helpers/helpers';
@@ -395,13 +396,13 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                             afHeading={t('ReviewRequirements.DoneHeading')}
                           >
                             <div className="mt-6 mb-4">
-                              <StyledLink
-                                to={`/granskning/${reviewId}/underkanda-krav`}
-                                styleVariant="link-button"
-                                hideIcon
+                              <DigiLinkButton
+                                afHref={`/granskning/${reviewId}/underkanda-krav`}
+                                afHideIcon={true}
+                                afVariation={LinkButtonVariation.PRIMARY}
                               >
-                                {t('ReviewRequirements.CompileFailed')}
-                              </StyledLink>
+                                {t('ReviewRequirements.GoToFailedSummary')}
+                              </DigiLinkButton>
                             </div>
                           </DigiNotificationAlert>
                         </div>

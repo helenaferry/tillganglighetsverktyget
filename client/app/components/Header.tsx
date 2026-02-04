@@ -3,6 +3,7 @@ import {
   DigiHeaderNavigation,
   DigiHeaderNavigationItem,
   DigiLayoutContainer,
+  DigiLink,
   DigiNavigationSidebarButton,
   DigiTypography,
 } from '@designsystem-se/af-react';
@@ -10,8 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import { envVars } from '~/helpers/helpers';
-
-import { StyledLink } from './StyledLink';
 
 export default function Header() {
   const { t } = useTranslation();
@@ -24,15 +23,14 @@ export default function Header() {
         <DigiLayoutContainer>
           <div className="flex justify-between items-center">
             <div className="min-w-0">
-              <StyledLink
-                ariaLabel={t('HomeLink', { appName: applicationTitle })}
-                to="/"
-                styleVariant="plain"
+              <DigiLink
+                afAriaLabel={t('HomeLink', { appName: applicationTitle })}
+                afHref="/"
                 className="flex gap-4 py-5 items-center text-text hover:text-text visited:!text-text !no-underline"
               >
                 <img src={logo.header.mobileUrl} alt="" className="md:hidden" />
                 <img src={logo.header.desktopUrl} alt="" className="hidden md:inline-block" />
-              </StyledLink>
+              </DigiLink>
             </div>
             <div className="md:hidden">
               <DigiNavigationSidebarButton afAriaLabel={t('Header.OpenMenu')} />
@@ -52,19 +50,13 @@ export default function Header() {
                   location.pathname === '/' || location.pathname.includes('granskning')
                 }
               >
-                <StyledLink to="/" styleVariant="plain">
-                  {t('Home.Title')}
-                </StyledLink>
+                <a href="/">{t('Home.Title')}</a>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
-                <StyledLink to="/krav" styleVariant="plain">
-                  {t('requirements.Title')}
-                </StyledLink>
+                <a href="/krav">{t('requirements.Title')}</a>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/tips'}>
-                <StyledLink to="/tips" styleVariant="plain">
-                  {t('tips.Title')}
-                </StyledLink>
+                <a href="/tips">{t('tips.Title')}</a>
               </DigiHeaderNavigationItem>
             </DigiHeaderNavigation>
           </div>

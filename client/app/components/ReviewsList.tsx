@@ -1,5 +1,6 @@
 import {
   ButtonVariation,
+  LinkButtonVariation,
   LoaderSkeletonVariation,
   NotificationAlertVariation,
 } from '@designsystem-se/af';
@@ -12,6 +13,8 @@ import {
   DigiIconHeartSolid,
   DigiLayoutBlock,
   DigiLayoutContainer,
+  DigiLink,
+  DigiLinkButton,
   DigiLoaderSkeleton,
   DigiNotificationAlert,
   DigiTypography,
@@ -30,7 +33,6 @@ import { CardsOrTable } from './CardsOrTable';
 import PageTitle from './PageTitle';
 import Process from './Process';
 import { SortButton } from './SortButton';
-import { StyledLink } from './StyledLink';
 
 export function ReviewsList() {
   const { t } = useTranslation();
@@ -195,9 +197,12 @@ export function ReviewsList() {
             <DigiLayoutBlock afMarginBottom={true} afVerticalPadding={true}>
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                 <div className="basis-1/3 flex-shrink-0">
-                  <StyledLink to="/granskning/skapa" styleVariant="link-button">
+                  <DigiLinkButton
+                    afHref="/granskning/skapa"
+                    afVariation={LinkButtonVariation.PRIMARY}
+                  >
                     {t('Home.CreateReview')}
-                  </StyledLink>
+                  </DigiLinkButton>
                 </div>
                 <div className="basis-1/3 grow">
                   <Process showHeading={true} subHeadingElement="p" showDescription={false} />
@@ -299,12 +304,12 @@ export function ReviewsList() {
                             </span>
                           )}
                         </DigiButton>,
-                        <StyledLink to={`/granskning/${review.id}`} key={`title-${review.id}`}>
+                        <DigiLink afHref={`/granskning/${review.id}`} key={`title-${review.id}`}>
                           <span className="inline lg:hidden">
                             <DigiIconChevronRight />
                           </span>{' '}
                           {review.title || t('ReviewsList.ReviewFallback')}
-                        </StyledLink>,
+                        </DigiLink>,
                         <p className="whitespace-nowrap" key={`created-${review.id}`}>
                           {formatDate(review.created_at)}
                         </p>,

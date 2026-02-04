@@ -9,10 +9,9 @@ import {
 } from '@designsystem-se/af-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 import { type Category, Status } from '~/data/types';
-
-import { StyledLink } from './StyledLink';
 
 type Props = {
   reviewId: string;
@@ -66,6 +65,8 @@ export default function CategoryNav({
   onToggleNav,
 }: Props) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const [expandedCategories, setExpandedCategories] = useState<string[]>([selectedCategory]);
 
   useEffect(() => {
@@ -166,7 +167,7 @@ export default function CategoryNav({
                   </button>
                   <ul
                     id={category.category}
-                    className="pt-2"
+                    className="pt-2 !pl-0"
                     style={{
                       display: isExpanded ? 'block' : 'none',
                     }}
@@ -182,7 +183,7 @@ export default function CategoryNav({
                         const selected = selectedRequirement === req.id;
                         return (
                           <li key={req.id}>
-                            <StyledLink
+                            <a
                               id={
                                 buttonIndex === categories.length - 1 &&
                                 isExpanded &&
@@ -190,9 +191,11 @@ export default function CategoryNav({
                                   ? 'last-focusable'
                                   : undefined
                               }
-                              to={`/granskning/${reviewId}/${req.id}/#krav`}
-                              overrideLink={true}
-                              styleVariant="plain"
+                              href={`/granskning/${reviewId}/${req.id}/#krav`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                navigate(`/granskning/${reviewId}/${req.id}/#krav`);
+                              }}
                               className={`w-full grid grid-cols-[2rem_1fr] gap-2 justify-center p-[0.75rem] group rounded-[0.5rem] !no-underline visited:!text-text
                         bg-${selected ? 'natthimmel-800' : 'white'}`}
                             >
@@ -204,7 +207,7 @@ export default function CategoryNav({
                               >
                                 {req.name}
                               </div>
-                            </StyledLink>
+                            </a>
                           </li>
                         );
                       })

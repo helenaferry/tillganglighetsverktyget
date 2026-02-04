@@ -1,7 +1,8 @@
+import '@testing-library/jest-dom/vitest';
+
 import type { UseQueryResult } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom/vitest';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
@@ -10,15 +11,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Requirement, ReviewSummary } from '../../data/types';
 import { ObjectType } from '../../data/types';
 import i18next from '../../lang/i18n';
-
 import { ReviewsList } from '../ReviewsList';
-
-// Mock StyledLink component
-vi.mock('../StyledLink', () => ({
-  StyledLink: ({ children, to }: { children: React.ReactNode; to: string }) => (
-    <a href={to}>{children}</a>
-  ),
-}));
 
 // Mock react-router
 vi.mock('react-router', () => ({
@@ -692,17 +685,15 @@ describe('ReviewsList', () => {
 
     // Wait for component to process sorting
     await waitFor(() => {
-      // Verify sorting is applied - Gaudeamus should come before Lorem alphabetically
-      const links = screen
-        .getAllByRole('link')
-        .filter(
-          (link) => link.textContent?.includes('Lorem') || link.textContent?.includes('Gaudeamus'),
-        );
-      const titles = links.map((link) => link.textContent?.trim());
+      // Verify sorting is applied by checking table cells contain the titles in correct order
+      const cells = screen.getAllByRole('cell');
+      const titlesInCells = cells
+        .map((cell) => cell.textContent)
+        .filter((text) => text?.includes('Gaudeamus') || text?.includes('Lorem'));
 
-      // Find the indices of our test reviews
-      const gaudeamusIndex = titles.findIndex((t) => t?.includes('Gaudeamus'));
-      const loremIndex = titles.findIndex((t) => t?.includes('Lorem'));
+      // Gaudeamus should appear before Lorem alphabetically
+      const gaudeamusIndex = titlesInCells.findIndex((t) => t?.includes('Gaudeamus'));
+      const loremIndex = titlesInCells.findIndex((t) => t?.includes('Lorem'));
 
       expect(gaudeamusIndex).toBeGreaterThanOrEqual(0);
       expect(loremIndex).toBeGreaterThanOrEqual(0);
@@ -727,13 +718,13 @@ describe('ReviewsList', () => {
     renderReviewsList();
 
     // Verify sorting is applied - Dum spiro (newer) should come before Dolor (older)
-    const links = screen
-      .getAllByRole('link')
-      .filter((link) => link.textContent?.includes('Dum') || link.textContent?.includes('Dolor'));
-    const titles = links.map((link) => link.textContent?.trim());
+    const cells = screen.getAllByRole('cell');
+    const titlesInCells = cells
+      .map((cell) => cell.textContent)
+      .filter((text) => text?.includes('Dum') || text?.includes('Dolor'));
 
-    const dumIndex = titles.findIndex((t) => t?.includes('Dum spiro'));
-    const dolorIndex = titles.findIndex((t) => t?.includes('Dolor'));
+    const dumIndex = titlesInCells.findIndex((t) => t?.includes('Dum spiro'));
+    const dolorIndex = titlesInCells.findIndex((t) => t?.includes('Dolor'));
 
     expect(dumIndex).toBeGreaterThanOrEqual(0);
     expect(dolorIndex).toBeGreaterThanOrEqual(0);
@@ -757,12 +748,13 @@ describe('ReviewsList', () => {
     renderReviewsList();
 
     // Verify sorting is applied - Fortuna (earlier update) should come first
-    const links = screen
-      .getAllByRole('link')
-      .filter((link) => link.textContent?.includes('Fortuna') || link.textContent?.includes('Lux'));
-    const titles = links.map((link) => link.textContent?.trim());
-    const fortunaIndex = titles.findIndex((t) => t?.includes('Fortuna'));
-    const luxIndex = titles.findIndex((t) => t?.includes('Lux'));
+    const cells = screen.getAllByRole('cell');
+    const titlesInCells = cells
+      .map((cell) => cell.textContent)
+      .filter((text) => text?.includes('Fortuna') || text?.includes('Lux'));
+
+    const fortunaIndex = titlesInCells.findIndex((t) => t?.includes('Fortuna'));
+    const luxIndex = titlesInCells.findIndex((t) => t?.includes('Lux'));
 
     expect(fortunaIndex).toBeGreaterThanOrEqual(0);
     expect(luxIndex).toBeGreaterThanOrEqual(0);
@@ -786,13 +778,13 @@ describe('ReviewsList', () => {
     renderReviewsList();
 
     // Verify sorting is applied - Ubi bene (15 reviewed) should come before Tempus (3 reviewed)
-    const links = screen
-      .getAllByRole('link')
-      .filter((link) => link.textContent?.includes('Ubi') || link.textContent?.includes('Tempus'));
-    const titles = links.map((link) => link.textContent?.trim());
+    const cells = screen.getAllByRole('cell');
+    const titlesInCells = cells
+      .map((cell) => cell.textContent)
+      .filter((text) => text?.includes('Ubi') || text?.includes('Tempus'));
 
-    const ubiIndex = titles.findIndex((t) => t?.includes('Ubi'));
-    const tempusIndex = titles.findIndex((t) => t?.includes('Tempus'));
+    const ubiIndex = titlesInCells.findIndex((t) => t?.includes('Ubi'));
+    const tempusIndex = titlesInCells.findIndex((t) => t?.includes('Tempus'));
 
     expect(ubiIndex).toBeGreaterThanOrEqual(0);
     expect(tempusIndex).toBeGreaterThanOrEqual(0);

@@ -1,4 +1,5 @@
 import path from 'node:path';
+
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 
@@ -51,7 +52,6 @@ export default defineConfig({
         'app/components/RequirementDetails.tsx',
         'app/components/RequirementLegal.tsx',
         'app/components/SkipLink.tsx',
-        'app/components/StyledLink.tsx',
         // Env var formatters
         'minifyEnvAdd.cjs',
         'minifyEnvFooterLinks.cjs',

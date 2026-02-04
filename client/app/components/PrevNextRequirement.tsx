@@ -1,9 +1,14 @@
-import { DigiLayoutBlock, DigiLayoutContainer, DigiTypography } from '@designsystem-se/af-react';
+import { LinkButtonVariation } from '@designsystem-se/af';
+import {
+  DigiLayoutBlock,
+  DigiLayoutContainer,
+  DigiLinkButton,
+  DigiTypography,
+} from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 import type { Requirement } from '~/data/types';
-
-import { StyledLink } from './StyledLink';
 
 interface Props {
   reviewId: string;
@@ -13,6 +18,7 @@ interface Props {
 
 export default function PrevNextRequirement({ reviewId, nextUnhandled, previousUnhandled }: Props) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <DigiLayoutContainer afNoGutter={true}>
       <DigiLayoutBlock afVerticalPadding={true}>
@@ -28,35 +34,41 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
           </h4>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             {previousUnhandled && (
-              <StyledLink
-                styleVariant="secondary-button"
-                to={`/granskning/${reviewId}/${previousUnhandled.id}#krav`}
-                ariaLabel={`${t('PrevNextRequirement.PreviousRequirement')}: ${previousUnhandled.name}`}
-                overrideLink={true}
+              <DigiLinkButton
+                afVariation={LinkButtonVariation.SECONDARY}
+                afHref={`/granskning/${reviewId}/${previousUnhandled.id}#krav`}
+                afOverrideLink={true}
+                onAfOnClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/granskning/${reviewId}/${previousUnhandled.id}#krav`);
+                }}
               >
                 {t('PrevNextRequirement.PreviousRequirement')}
-              </StyledLink>
+              </DigiLinkButton>
             )}
 
             {nextUnhandled && (
-              <StyledLink
-                styleVariant="primary-button"
-                to={`/granskning/${reviewId}/${nextUnhandled.id}#krav`}
-                ariaLabel={`${t('PrevNextRequirement.NextRequirement')}: ${nextUnhandled.name}`}
-                overrideLink={true}
+              <DigiLinkButton
+                afVariation={LinkButtonVariation.PRIMARY}
+                afHref={`/granskning/${reviewId}/${nextUnhandled.id}#krav`}
+                afOverrideLink={true}
+                onAfOnClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/granskning/${reviewId}/${nextUnhandled.id}#krav`);
+                }}
               >
                 {t('PrevNextRequirement.NextRequirement')}
-              </StyledLink>
+              </DigiLinkButton>
             )}
 
             {!nextUnhandled && !previousUnhandled && (
-              <StyledLink
-                to={`/granskning/${reviewId}/underkanda-krav`}
-                styleVariant="link-button-secondary"
-                hideIcon
+              <DigiLinkButton
+                afHref={`/granskning/${reviewId}/underkanda-krav`}
+                afVariation={LinkButtonVariation.SECONDARY}
+                afHideIcon={true}
               >
-                {t('ReviewRequirements.CompileFailed')}
-              </StyledLink>
+                {t('ReviewRequirements.GoToFailedSummary')}
+              </DigiLinkButton>
             )}
           </div>
         </DigiTypography>

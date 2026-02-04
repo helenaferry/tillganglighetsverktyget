@@ -300,9 +300,9 @@ describe('RequirementService', () => {
         statusText: 'Internal Server Error',
       });
 
-      await expect(
-        RequirementService.getAllRequirementCategories(ObjectType.WEB),
-      ).rejects.toThrow(/Failed to load requirement categories/);
+      await expect(RequirementService.getAllRequirementCategories(ObjectType.WEB)).rejects.toThrow(
+        /Failed to load requirement categories/,
+      );
     });
 
     it('throws error when response data is not an array', async () => {
@@ -311,9 +311,9 @@ describe('RequirementService', () => {
         json: async () => ({ data: null }),
       });
 
-      await expect(
-        RequirementService.getAllRequirementCategories(ObjectType.WEB),
-      ).rejects.toThrow('Invalid requirement categories data format');
+      await expect(RequirementService.getAllRequirementCategories(ObjectType.WEB)).rejects.toThrow(
+        'Invalid requirement categories data format',
+      );
     });
 
     it('returns empty array when no requirements match object type', async () => {

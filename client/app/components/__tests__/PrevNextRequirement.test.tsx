@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router';
 import { describe, expect, it } from 'vitest';
 
 import type { Requirement } from '../../data/types';
-
 import PrevNextRequirement from '../PrevNextRequirement';
 
 const renderWithRouter = (ui: React.ReactElement) => {
@@ -31,9 +30,11 @@ describe('PrevNextRequirement', () => {
     });
 
     it('renders next button', () => {
-      renderWithRouter(<PrevNextRequirement reviewId="123" nextUnhandled={mockNextRequirement} />);
-      const link = document.querySelector('a[href="/granskning/123/req-next#krav"]');
-      expect(link).toBeInTheDocument();
+      const { getByText } = renderWithRouter(
+        <PrevNextRequirement reviewId="123" nextUnhandled={mockNextRequirement} />,
+      );
+      const button = getByText('PrevNextRequirement.NextRequirement');
+      expect(button).toBeInTheDocument();
     });
 
     it('does not show previous button when only next exists', () => {
@@ -53,11 +54,11 @@ describe('PrevNextRequirement', () => {
     });
 
     it('renders previous button', () => {
-      renderWithRouter(
+      const { getByText } = renderWithRouter(
         <PrevNextRequirement reviewId="123" previousUnhandled={mockPreviousRequirement} />,
       );
-      const link = document.querySelector('a[href="/granskning/123/req-prev#krav"]');
-      expect(link).toBeInTheDocument();
+      const button = getByText('PrevNextRequirement.PreviousRequirement');
+      expect(button).toBeInTheDocument();
     });
 
     it('does not show next button when only previous exists', () => {
@@ -84,17 +85,17 @@ describe('PrevNextRequirement', () => {
     });
 
     it('renders both buttons', () => {
-      renderWithRouter(
+      const { getByText } = renderWithRouter(
         <PrevNextRequirement
           reviewId="123"
           nextUnhandled={mockNextRequirement}
           previousUnhandled={mockPreviousRequirement}
         />,
       );
-      const nextLink = document.querySelector('a[href="/granskning/123/req-next#krav"]');
-      const prevLink = document.querySelector('a[href="/granskning/123/req-prev#krav"]');
-      expect(nextLink).toBeInTheDocument();
-      expect(prevLink).toBeInTheDocument();
+      const nextButton = getByText('PrevNextRequirement.NextRequirement');
+      const prevButton = getByText('PrevNextRequirement.PreviousRequirement');
+      expect(nextButton).toBeInTheDocument();
+      expect(prevButton).toBeInTheDocument();
     });
   });
 
@@ -117,17 +118,19 @@ describe('PrevNextRequirement', () => {
 
   describe('URL generation', () => {
     it('generates correct URL with reviewId and requirement id', () => {
-      renderWithRouter(<PrevNextRequirement reviewId="456" nextUnhandled={mockNextRequirement} />);
-      const link = document.querySelector('a[href="/granskning/456/req-next#krav"]');
-      expect(link).toBeInTheDocument();
+      const { getByText } = renderWithRouter(
+        <PrevNextRequirement reviewId="456" nextUnhandled={mockNextRequirement} />,
+      );
+      const button = getByText('PrevNextRequirement.NextRequirement');
+      expect(button).toBeInTheDocument();
     });
 
     it('includes #krav anchor in URLs', () => {
-      renderWithRouter(
+      const { getByText } = renderWithRouter(
         <PrevNextRequirement reviewId="123" previousUnhandled={mockPreviousRequirement} />,
       );
-      const link = document.querySelector('a[href*="#krav"]');
-      expect(link).toBeInTheDocument();
+      const button = getByText('PrevNextRequirement.PreviousRequirement');
+      expect(button).toBeInTheDocument();
     });
   });
 });

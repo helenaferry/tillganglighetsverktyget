@@ -182,17 +182,15 @@ describe('ReviewService', () => {
       expect(mockApiClient.checks.getByRequirement).toHaveBeenCalledWith('1', 'req1');
     });
 
-    it('returns null when check not found (404)', async () => {
-      const err = new Error('Not found') as Error & { status?: number };
-      err.status = 404;
-      mockApiClient.checks.getByRequirement.mockRejectedValue(err);
+    it('returns null when check not found', async () => {
+      mockApiClient.checks.getByRequirement.mockResolvedValue(null);
 
       const result = await ReviewService.getCheckById('1', 'req999');
 
       expect(result).toBeNull();
     });
 
-    it('throws error on non-404 API error', async () => {
+    it('throws error on API error', async () => {
       mockApiClient.checks.getByRequirement.mockRejectedValue(new Error('Database error'));
 
       await expect(ReviewService.getCheckById('1', 'req1')).rejects.toThrow('Database error');

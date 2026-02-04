@@ -1,6 +1,7 @@
 import {
   ErrorPageStatusCodes,
   LayoutBlockVariation,
+  LinkButtonVariation,
   LoaderSkeletonVariation,
   NotificationAlertSize,
   NotificationAlertVariation,
@@ -9,6 +10,8 @@ import {
   DigiFormCheckbox,
   DigiLayoutBlock,
   DigiLayoutContainer,
+  DigiLink,
+  DigiLinkButton,
   DigiLoaderSkeleton,
   DigiNotificationAlert,
   DigiNotificationErrorPage,
@@ -18,7 +21,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
-import { StyledLink } from '~/components/StyledLink';
 import { ObjectType, type Requirement, Status, StatusText } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
@@ -316,13 +318,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                     afHeading={t('ReviewRequirements.DoneHeading')}
                   >
                     <div className="mt-6 mb-4">
-                      <StyledLink
-                        to={`/granskning/${review.id}/underkanda-krav`}
-                        styleVariant="link-button"
-                        hideIcon
+                      <DigiLinkButton
+                        afHref={`/granskning/${review.id}/underkanda-krav`}
+                        afVariation={LinkButtonVariation.PRIMARY}
+                        afHideIcon={true}
                       >
-                        {t('ReviewRequirements.CompileFailed')}
-                      </StyledLink>
+                        {t('ReviewRequirements.GoToFailedSummary')}
+                      </DigiLinkButton>
                     </div>
                   </DigiNotificationAlert>
                 </div>
@@ -405,21 +407,21 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 />
                 <div className="flex flex-col md:flex-row gap-4 mt-10 mb-4">
                   {firstUncheckedId && (
-                    <StyledLink
-                      to={`/granskning/${review.id}/${firstUncheckedId}`}
-                      styleVariant="link-button"
-                      hideIcon
+                    <DigiLinkButton
+                      afHref={`/granskning/${review.id}/${firstUncheckedId}`}
+                      afVariation={LinkButtonVariation.PRIMARY}
+                      afHideIcon={true}
                     >
                       {t('ReviewRequirements.ReviewAccessibilityButton')}
-                    </StyledLink>
+                    </DigiLinkButton>
                   )}
-                  <StyledLink
-                    to={`/granskning/${review.id}/underkanda-krav`}
-                    styleVariant="link-button-secondary"
-                    hideIcon
+                  <DigiLinkButton
+                    afHref={`/granskning/${review.id}/underkanda-krav`}
+                    afVariation={LinkButtonVariation.SECONDARY}
+                    afHideIcon={true}
                   >
-                    {t('ReviewRequirements.CompileFailed')}
-                  </StyledLink>
+                    {t('ReviewRequirements.GoToFailedSummary')}
+                  </DigiLinkButton>
                 </div>
               </DigiLayoutBlock>
             </DigiLayoutContainer>
@@ -469,15 +471,15 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               id: req.id,
                               posInSet: filteredRequirements.findIndex((r) => r.id === req.id) + 1,
                               content: [
-                                <StyledLink
+                                <DigiLink
                                   key={req.id}
-                                  to={'/granskning/' + review.id + '/' + req.id}
+                                  afHref={'/granskning/' + review.id + '/' + req.id}
                                 >
                                   <span className="inline lg:hidden">
                                     <DigiIconChevronRight />
                                   </span>{' '}
                                   {req.name}
-                                </StyledLink>,
+                                </DigiLink>,
                                 <span key={req.id + '-flag'}>
                                   {req.check?.flag ? (
                                     <span className="flag text-sapphire-500 flex items-center">

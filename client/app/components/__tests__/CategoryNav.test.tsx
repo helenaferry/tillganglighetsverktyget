@@ -7,7 +7,6 @@ import { describe, expect, it } from 'vitest';
 
 import { type Category, ObjectType, Status } from '../../data/types';
 import svenska from '../../lang/svenska.json';
-
 import CategoryNav from '../CategoryNav';
 
 i18next.use(initReactI18next).init({

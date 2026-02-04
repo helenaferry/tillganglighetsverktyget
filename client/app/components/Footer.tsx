@@ -4,6 +4,7 @@ import {
   DigiFooterCard,
   DigiIconAccessibilityUniversal,
   DigiIconEnvelope,
+  DigiLink,
   DigiLinkExternal,
 } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import { envVars } from '~/helpers/helpers';
 
 import { InfoCard } from './InfoCard';
-import { StyledLink } from './StyledLink';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -24,10 +24,10 @@ export default function Footer() {
           <DigiFooterCard afType={FooterCardVariation.ICON}>
             <ul>
               <li>
-                <StyledLink to="/tillganglighetsredogorelse">
+                <DigiLink afHref="/tillganglighetsredogorelse">
                   <DigiIconAccessibilityUniversal></DigiIconAccessibilityUniversal>
                   Tillgänglighetsredogörelse
-                </StyledLink>
+                </DigiLink>
               </li>
               {footerLinks.map(
                 (link: { url: string; external: string; text: string; icon: string }) => {
@@ -38,13 +38,13 @@ export default function Footer() {
                           {link.text}
                         </DigiLinkExternal>
                       ) : (
-                        <StyledLink to={link.url}>
+                        <DigiLink afHref={link.url}>
                           {link.icon === 'a11y' && (
                             <DigiIconAccessibilityUniversal></DigiIconAccessibilityUniversal>
                           )}
                           {link.icon === 'email' && <DigiIconEnvelope></DigiIconEnvelope>}
                           {link.text}
-                        </StyledLink>
+                        </DigiLink>
                       )}
                     </li>
                   );
@@ -57,34 +57,34 @@ export default function Footer() {
 
           <div>
             <DigiFooterCard afType={FooterCardVariation.BORDER}>
-              <StyledLink to="/">{t('Home.FooterTitle')}</StyledLink>
+              <DigiLink afHref="/">{t('Home.FooterTitle')}</DigiLink>
               <p>{t('Home.FooterDescription')}</p>
             </DigiFooterCard>
             <DigiFooterCard afType={FooterCardVariation.BORDER}>
-              <StyledLink to="/granskning/skapa">{t('addReview.FooterTitle')}</StyledLink>
+              <DigiLink afHref="/granskning/skapa">{t('addReview.FooterTitle')}</DigiLink>
               <p>{t('addReview.FooterDescription')}</p>
             </DigiFooterCard>
           </div>
           <div>
             <DigiFooterCard afType={FooterCardVariation.BORDER}>
-              <StyledLink to="/tips">{t('tips.Title')}</StyledLink>
+              <DigiLink afHref="/tips">{t('tips.Title')}</DigiLink>
               <p>{t('tips.FooterDescription')}</p>
             </DigiFooterCard>
             <DigiFooterCard afType={FooterCardVariation.BORDER}>
-              <StyledLink to="/krav">{t('requirements.Title')}</StyledLink>
+              <DigiLink afHref="/krav">{t('requirements.Title')}</DigiLink>
               <p>{t('requirements.FooterDescription')}</p>
             </DigiFooterCard>
           </div>
         </div>
         <div slot="content-bottom-left">
-          <StyledLink
-            ariaLabel={t('HomeLink', { appName: applicationTitle })}
-            to="/"
+          <DigiLink
+            afAriaLabel={t('HomeLink', { appName: applicationTitle })}
+            afHref="/"
             className="flex gap-4 pb-5 items-center text-white hover:text-white visited:!text-white !no-underline"
           >
             <img src={logo.footer.mobileUrl} alt="" className="md:hidden" />
             <img src={logo.footer.desktopUrl} alt="" className="hidden md:inline-block" />
-          </StyledLink>
+          </DigiLink>
         </div>
       </DigiFooter>
     </div>

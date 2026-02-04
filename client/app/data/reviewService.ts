@@ -100,6 +100,7 @@ export const ReviewService = {
     }
   },
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async deleteChecksForReview(reviewId: number): Promise<void> {
     // Checks are deleted automatically via CASCADE constraint in database
     // This method kept for API compatibility
