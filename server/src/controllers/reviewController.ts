@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Review, Check } from '../models';
-import { Op, fn, col, literal } from 'sequelize';
+import { Op, fn, col, literal, UniqueConstraintError } from 'sequelize';
 import { sequelize } from '../database/database';
 
 /** Normalize Express param (string | string[]) to string for parseInt/usage. */
@@ -306,10 +306,7 @@ export const getCheckByRequirement = async (req: Request, res: Response) => {
       },
     });
 
-    if (!check) {
-      return res.status(404).json(null);
-    }
-
+    // Return null instead of 404 - not having a check yet is a normal state
     res.json(check);
   } catch (error) {
     console.error('Error fetching check:', error);
@@ -523,18 +520,39 @@ export const toggleCheckFlag = async (req: Request, res: Response) => {
     const requirementId = paramString(req.params.requirementId);
     const { flag } = req.body;
 
-    const [check, created] = await Check.findOrCreate({
-      where: {
-        review: parseInt(reviewId, 10),
-        requirement: requirementId,
-      },
-      defaults: {
-        review: parseInt(reviewId, 10),
-        requirement: requirementId,
-        status: Status.NOT_ASSESSED,
-        flag: flag ? 1 : 0,
-      },
-    });
+    let check;
+    let created = false;
+
+    try {
+      [check, created] = await Check.findOrCreate({
+        where: {
+          review: parseInt(reviewId, 10),
+          requirement: requirementId,
+        },
+        defaults: {
+          review: parseInt(reviewId, 10),
+          requirement: requirementId,
+          status: Status.NOT_ASSESSED,
+          flag: flag ? 1 : 0,
+        },
+      });
+    } catch (error) {
+      // Hantera Sequelize's findOrCreate race condition
+      if (error instanceof UniqueConstraintError) {
+        check = await Check.findOne({
+          where: {
+            review: parseInt(reviewId, 10),
+            requirement: requirementId,
+          },
+        });
+        if (!check) {
+          throw new Error('Check should exist but was not found');
+        }
+        created = false;
+      } else {
+        throw error;
+      }
+    }
 
     if (!created) {
       // Update flag (updated_at handled by database trigger)
@@ -543,7 +561,7 @@ export const toggleCheckFlag = async (req: Request, res: Response) => {
       });
     }
 
-    res.json(check);
+    res.json(check.toJSON());
   } catch (error) {
     console.error('Error toggling check flag:', error);
     res.status(500).json({ error: 'Failed to toggle check flag' });

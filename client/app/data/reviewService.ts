@@ -9,17 +9,17 @@ import {
 
 export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
-    const reviews = await apiClient.reviews.getAll() as ReviewSummary[];
+    const reviews = (await apiClient.reviews.getAll()) as ReviewSummary[];
     return reviews;
   },
 
   async getReviewById(reviewId: string): Promise<Review> {
-    const review = await apiClient.reviews.getById(reviewId) as Review;
+    const review = (await apiClient.reviews.getById(reviewId)) as Review;
     return review;
   },
 
   async getChecksForReview(reviewId: string): Promise<Check[]> {
-    const checks = await apiClient.checks.getForReview(reviewId) as Check[];
+    const checks = (await apiClient.checks.getForReview(reviewId)) as Check[];
     return checks;
   },
 
@@ -31,25 +31,21 @@ export const ReviewService = {
   }): Promise<Check> {
     const { reviewId, requirement, status, comment } = input;
 
-    const check = await apiClient.checks.upsert(reviewId, {
+    const check = (await apiClient.checks.upsert(reviewId, {
       requirement,
       status,
       comment,
-    }) as Check;
-    
+    })) as Check;
+
     return check;
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
-    try {
-      const check = await apiClient.checks.getByRequirement(reviewId, requirementId) as Check;
-      return check;
-    } catch (error: any) {
-      if (error.status === 404) {
-        return null;
-      }
-      throw error;
-    }
+    const check = (await apiClient.checks.getByRequirement(
+      reviewId,
+      requirementId,
+    )) as Check | null;
+    return check;
   },
 
   async deleteCheck(checkId: string): Promise<boolean> {
@@ -63,7 +59,7 @@ export const ReviewService = {
   },
 
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
-    const checks = await apiClient.checks.bulkDisable(reviewId, requirements) as Check[];
+    const checks = (await apiClient.checks.bulkDisable(reviewId, requirements)) as Check[];
     return checks;
   },
 
@@ -72,7 +68,7 @@ export const ReviewService = {
   },
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
-    const checks = await apiClient.checks.bulkPrefill(reviewId, prefills) as Check[];
+    const checks = (await apiClient.checks.bulkPrefill(reviewId, prefills)) as Check[];
     return checks;
   },
 
@@ -86,7 +82,7 @@ export const ReviewService = {
   }): Promise<Review> {
     const { title, id, excludedContentTypes, selectedPrefillIds, objectType, regulatoryFramework } =
       input;
-    
+
     const reviewData = {
       title,
       excludedContentTypes,
@@ -94,12 +90,12 @@ export const ReviewService = {
       objectType,
       regulatoryFramework,
     };
-    
+
     if (id) {
-      const review = await apiClient.reviews.update(id, reviewData) as Review;
+      const review = (await apiClient.reviews.update(id, reviewData)) as Review;
       return review;
     } else {
-      const review = await apiClient.reviews.create(reviewData) as Review;
+      const review = (await apiClient.reviews.create(reviewData)) as Review;
       return review;
     }
   },
@@ -114,7 +110,7 @@ export const ReviewService = {
   },
 
   async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
-    const check = await apiClient.checks.toggleFlag(reviewId, requirementId, flag) as Check;
+    const check = (await apiClient.checks.toggleFlag(reviewId, requirementId, flag)) as Check;
     return check;
   },
 };
