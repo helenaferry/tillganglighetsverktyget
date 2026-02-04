@@ -348,6 +348,12 @@ export function ReviewForm({ review }: Props) {
               },
             );
           }
+
+          // If no prefills to process at all, navigate immediately
+          if (activePrefillsSuccess && removePrefillsSuccess) {
+            setSaving(false);
+            navigate(`/granskning/${reviewId}`);
+          }
         },
         onError: () => {
           setSaving(false);
