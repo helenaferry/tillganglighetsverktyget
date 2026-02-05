@@ -1,8 +1,47 @@
 # Snabbstartsguide
 
-Få igång applikationen i 3 steg!
+Få igång applikationen på två sätt: **Standalone-läge** (enklast, ingen databas) eller **Fullständigt läge** (med databas och server).
 
-## Förutsättningar
+## Snabbstart: Standalone-läge (rekommenderat för demo)
+
+Det enklaste sättet att komma igång - kräver ingen databas eller server!
+
+### Förutsättningar
+
+- Node.js installerat
+- npm installerat
+
+### Steg
+
+```bash
+# 1. Gå till client-katalogen
+cd client
+
+# 2. Kopiera miljövariabler
+cp .env.example .env.local
+
+# 3. Aktivera standalone-läge
+# Redigera .env.local och sätt:
+# VITE_STANDALONE=true
+
+# 4. Installera beroenden
+npm install
+
+# 5. Starta utvecklingsserver
+npm run dev
+```
+
+Besök **http://localhost:5173** - klart! 🎉
+
+**Obs:** I standalone-läge sparas all data i webbläsarens localStorage. Data är lokal för varje webbläsare/enhet.
+
+---
+
+## Fullständigt läge (med databas och server)
+
+För produktionsliknande miljö med Oracle-databas och backend API.
+
+### Förutsättningar
 
 - Podman installerat
 - 8GB+ RAM tillgängligt
@@ -12,9 +51,9 @@ Få igång applikationen i 3 steg!
 
 **🍎 macOS-användare?** Efter installation av Podman måste du initiera och starta Podman Machine (eller starta Podman Desktop) innan du kör compose-kommandon. Se [docs/SETUP.md](docs/SETUP.md#macos-podman-desktop--podman-machine) för steg-för-steg (initiera, starta, resurser).
 
-## Steg
+### Steg
 
-### 1. Konfigurera miljö
+#### 1. Konfigurera miljö
 
 ```bash
 # Kopiera miljövariabelmall
@@ -39,9 +78,12 @@ DB_PASSWORD=MinSakraApp456!
 cp client/.env.example client/.env.local
 # Redigera client/.env.local för att anpassa logotyper, texter, länkar etc.
 # (Kan användas med standardvärden, men filen måste finnas)
+# 
+# För standalone-läge: Sätt VITE_STANDALONE=true i client/.env.local
+# (Då behöver du inte starta podman-containers)
 ```
 
-### 2. Starta tjänster
+#### 2. Starta tjänster
 
 **Rekommenderat:** Använd dev-up-scriptet – det startar tjänsterna och väntar tills Database, API och Client är redo. Du får tydlig status (spinner medan tjänster startar, grön bock när redo) och slutligen URL:er samt kommandon för att stoppa.
 
@@ -50,6 +92,8 @@ cp client/.env.example client/.env.local
 ```
 
 Scriptet kräver att `curl` och `nc` (netcat) finns installerade. Vid första starten kan Oracle ta 2–3 minuter.
+
+**Standalone-läge:** Om `VITE_STANDALONE=true` är satt i `client/.env.local` kommer scriptet automatiskt att hoppa över podman-setup och bara starta frontend-servern.
 
 **Manuellt:** Om du föredrar att starta utan scriptet:
 
@@ -67,7 +111,7 @@ podman compose -f compose.dev.yml logs -f
 - Backend: "✅ Database connected successfully"
 - Frontend: "Local: http://localhost:5173/"
 
-### 3. Öppna webbläsare
+#### 3. Öppna webbläsare
 
 Besök: **http://localhost:5173**
 
