@@ -1,4 +1,5 @@
 import { apiClient } from './apiClient';
+import { localStorageClient } from './localStorageClient';
 import {
   type Check,
   type PrefillRequirement,
@@ -7,19 +8,23 @@ import {
   Status,
 } from './types';
 
+// Select client based on standalone mode
+const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
+const client = isStandalone ? localStorageClient : apiClient;
+
 export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
-    const reviews = (await apiClient.reviews.getAll()) as ReviewSummary[];
+    const reviews = (await client.reviews.getAll()) as ReviewSummary[];
     return reviews;
   },
 
   async getReviewById(reviewId: string): Promise<Review> {
-    const review = (await apiClient.reviews.getById(reviewId)) as Review;
+    const review = (await client.reviews.getById(reviewId)) as Review;
     return review;
   },
 
   async getChecksForReview(reviewId: string): Promise<Check[]> {
-    const checks = (await apiClient.checks.getForReview(reviewId)) as Check[];
+    const checks = (await client.checks.getForReview(reviewId)) as Check[];
     return checks;
   },
 
@@ -31,7 +36,7 @@ export const ReviewService = {
   }): Promise<Check> {
     const { reviewId, requirement, status, comment } = input;
 
-    const check = (await apiClient.checks.upsert(reviewId, {
+    const check = (await client.checks.upsert(reviewId, {
       requirement,
       status,
       comment,
@@ -41,34 +46,31 @@ export const ReviewService = {
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
-    const check = (await apiClient.checks.getByRequirement(
-      reviewId,
-      requirementId,
-    )) as Check | null;
+    const check = (await client.checks.getByRequirement(reviewId, requirementId)) as Check | null;
     return check;
   },
 
   async deleteCheck(checkId: string): Promise<boolean> {
-    await apiClient.checks.delete(Number(checkId));
+    await client.checks.delete(Number(checkId));
     return true;
   },
 
   async deleteChecks(reviewId: number, requirementIds: string[]): Promise<boolean> {
-    await apiClient.checks.bulkDelete(reviewId, requirementIds);
+    await client.checks.bulkDelete(reviewId, requirementIds);
     return true;
   },
 
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
-    const checks = (await apiClient.checks.bulkDisable(reviewId, requirements)) as Check[];
+    const checks = (await client.checks.bulkDisable(reviewId, requirements)) as Check[];
     return checks;
   },
 
   async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
-    await apiClient.checks.bulkEnable(reviewId, requirements);
+    await client.checks.bulkEnable(reviewId, requirements);
   },
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
-    const checks = (await apiClient.checks.bulkPrefill(reviewId, prefills)) as Check[];
+    const checks = (await client.checks.bulkPrefill(reviewId, prefills)) as Check[];
     return checks;
   },
 
@@ -92,10 +94,10 @@ export const ReviewService = {
     };
 
     if (id) {
-      const review = (await apiClient.reviews.update(id, reviewData)) as Review;
+      const review = (await client.reviews.update(id, reviewData)) as Review;
       return review;
     } else {
-      const review = (await apiClient.reviews.create(reviewData)) as Review;
+      const review = (await client.reviews.create(reviewData)) as Review;
       return review;
     }
   },
@@ -107,11 +109,11 @@ export const ReviewService = {
   },
 
   async deleteReview(reviewId: number): Promise<void> {
-    await apiClient.reviews.delete(reviewId);
+    await client.reviews.delete(reviewId);
   },
 
   async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
-    const check = (await apiClient.checks.toggleFlag(reviewId, requirementId, flag)) as Check;
+    const check = (await client.checks.toggleFlag(reviewId, requirementId, flag)) as Check;
     return check;
   },
 };
