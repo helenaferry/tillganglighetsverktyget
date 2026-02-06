@@ -54,6 +54,7 @@ För att automatiskt importera exempeldata vid första körningen:
 När båda variablerna är `true` och localStorage är tom, kommer applikationen automatiskt att importera två exempelgranskningar med förifyllda kontroller vid första användningen. Detta är användbart för demo och för att visa applikationens funktionalitet direkt.
 
 **Viktigt:**
+
 - Exempeldata importeras endast om localStorage är tom (överskriver inte befintlig data)
 - Fungerar endast när `VITE_STANDALONE=true`
 - Data importeras vid första användning av applikationen (lazy loading)
@@ -180,7 +181,7 @@ VITE_API_URL=http://localhost:3000/api
 
 ### Standalone-läge
 
-När `VITE_STANDALONE=true` används `localStorageClient` istället för `apiClient`. Detta är en drop-in replacement som implementerar samma interface men använder localStorage istället för HTTP-anrop. Se `app/data/localStorageClient.ts` för implementationen.
+När `VITE_STANDALONE=true` används `standaloneClient` istället för `apiClient`. Detta är en drop-in replacement som implementerar samma interface men använder localStorage istället för HTTP-anrop. Se `app/data/standaloneClient.ts` för implementationen.
 
 ## Utveckling i Container
 

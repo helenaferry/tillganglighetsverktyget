@@ -1,5 +1,5 @@
 import { apiClient } from './apiClient';
-import { localStorageClient } from './localStorageClient';
+import { standaloneClient } from './standaloneClient';
 import {
   type Check,
   type PrefillRequirement,
@@ -14,7 +14,7 @@ import {
  */
 function getClient() {
   const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
-  return isStandalone ? localStorageClient : apiClient;
+  return isStandalone ? standaloneClient : apiClient;
 }
 
 export const ReviewService = {
@@ -51,7 +51,10 @@ export const ReviewService = {
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
-    const check = (await getClient().checks.getByRequirement(reviewId, requirementId)) as Check | null;
+    const check = (await getClient().checks.getByRequirement(
+      reviewId,
+      requirementId,
+    )) as Check | null;
     return check;
   },
 
