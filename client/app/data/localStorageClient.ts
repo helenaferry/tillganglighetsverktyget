@@ -35,8 +35,10 @@ function shouldInitializeExampleData(): boolean {
   // Check if localStorage already has data
   try {
     const existingData = localStorage.getItem(STORAGE_KEY_REVIEWS);
-    if (existingData && existingData !== '[]' && existingData !== 'null') {
-      return false; // Data already exists, don't overwrite
+    // If key exists (even if empty array or null string), don't initialize
+    // Only initialize if key doesn't exist at all
+    if (existingData !== null) {
+      return false; // Data key exists, don't overwrite
     }
   } catch (error) {
     // If we can't check, don't initialize
