@@ -753,7 +753,4 @@ describe('CardsOrTable', () => {
       expect(container.textContent).toContain('very-long-item-name');
     });
   });
-
-  // Note: Context menu and pagination web component interactions can't be reliably tested
-  // in unit tests with happy-dom. These should be covered by integration/e2e tests.
 });

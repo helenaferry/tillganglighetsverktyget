@@ -13,6 +13,15 @@ import { ObjectType } from '../../data/types';
 import i18next from '../../lang/i18n';
 import { ReviewsList } from '../ReviewsList';
 
+/* ---------------------------------------------------------------
+ * MOCKS
+ * We need to mock various hooks and components to isolate the ReviewsList
+ * component for testing. Also, components from the design system are
+ * mocked to simple divs or basic elements because shadow DOM encapsulation
+ * hides their internal structure from testing-library queries.
+ *
+ * --------------------------------------------------------------- */
+
 // Mock react-router
 vi.mock('react-router', () => ({
   useNavigate: vi.fn(() => vi.fn()),
@@ -93,6 +102,36 @@ vi.mock('@designsystem-se/af-react', async () => {
     DigiLayoutContainer: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
     DigiLayoutBlock: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
     DigiLoaderSkeleton: () => <div data-testid="loader-skeleton" />,
+    DigiLink: ({ children, afHref }: React.PropsWithChildren<{ afHref?: string }>) => (
+      <a href={afHref}>{children}</a>
+    ),
+    DigiTable: ({ children }: React.PropsWithChildren<{ afSize?: string }>) => (
+      <div data-testid="digi-table">{children}</div>
+    ),
+    DigiLinkButton: ({
+      children,
+      afHref,
+    }: React.PropsWithChildren<{
+      afHref?: string;
+      afVariation?: string;
+    }>) => <a href={afHref}>{children}</a>,
+    DigiContextMenu: ({
+      afTitle,
+    }: {
+      afTitle?: string;
+      afMenuPosition?: string;
+      afMenuItems?: Array<{ id: number; title: string }>;
+      onAfChangeItem?: (e: { detail: { item: { id: number } } }) => void;
+    }) => <div data-testid="context-menu">{afTitle}</div>,
+    DigiNavigationPagination: () => <div data-testid="pagination">Pagination</div>,
+    DigiFormFilter: ({ children }: React.PropsWithChildren) => <div>{children}</div>,
+    DigiNotificationAlert: ({
+      children,
+    }: React.PropsWithChildren<{
+      afType?: string;
+      afVariation?: string;
+      onAfOnClick?: () => void;
+    }>) => <div data-testid="notification-alert">{children}</div>,
     DigiButton: ({
       children,
       onClick,
@@ -103,6 +142,7 @@ vi.mock('@designsystem-se/af-react', async () => {
       onClick?: () => void;
       afAriaLabel?: string;
       afAriaPressed?: boolean;
+      afFullWidth?: boolean;
     }>) => (
       <button onClick={onClick} aria-label={afAriaLabel} aria-pressed={afAriaPressed} {...props}>
         {children}
@@ -466,6 +506,12 @@ const createMockRequirementsQuery = (
     ...overrides,
   }) as UseQueryResult<Requirement[], Error>;
 
+/* ---------------------------------------------------------------
+ * TESTS
+ *
+ *
+ * --------------------------------------------------------------- */
+
 describe('ReviewsList', () => {
   beforeEach(() => {
     // Clear localStorage before each test
@@ -515,7 +561,12 @@ describe('ReviewsList', () => {
     expect(screen.getByText(i18next.t('ReviewsList.LoadingError'))).toBeInTheDocument();
   });
 
-  // Funktionellt krav: Visa en lista med alla granskningar. (1/2)
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Visa en lista med alla granskningar.
+   * - renders empty list when no reviews exist
+   * - renders list with reviews
+   * --------------------------------------------------------------- */
+
   it('renders empty list when no reviews exist', async () => {
     const { useReviews } = await import('../../hooks/useReviewData');
     const { useRequirements } = await import('../../hooks/useRequirementData');
@@ -532,7 +583,6 @@ describe('ReviewsList', () => {
     expect(rows).toHaveLength(1);
   });
 
-  // Funktionellt krav: Visa en lista med alla granskningar. (2/2)
   it('renders list with reviews', async () => {
     const { useReviews } = await import('../../hooks/useReviewData');
     const { useRequirements } = await import('../../hooks/useRequirementData');
@@ -549,131 +599,52 @@ describe('ReviewsList', () => {
     // Component has pagination with 10 items per page, so verify first page (10 rows + 1 header = 11)
     const rows = screen.getAllByRole('row');
     expect(rows).toHaveLength(11); // 10 reviews + 1 header row
-  });
 
-  // Funktionellt krav: Möjliggöra sökning efter granskningar.
-  it('searches/filters reviews by title', async () => {
-    const user = userEvent.setup();
-    const { useReviews } = await import('../../hooks/useReviewData');
-    const { useRequirements } = await import('../../hooks/useRequirementData');
-
-    const mockReviews = [
-      { ...MOCK_REVIEWS[0] }, // Amor vincit omnia
-      { ...MOCK_REVIEWS[1] }, // Carpe diem
-      { ...MOCK_REVIEWS[4] }, // Memento mori
-      { ...MOCK_REVIEWS[8] }, // Gaudeamus igitur
-    ];
-
-    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(mockReviews));
-    vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
-
-    renderReviewsList();
-
-    // All 4 reviews should be visible initially
-    expect(screen.getByText(`4 ${i18next.t('ReviewsList.ItemsName')}`)).toBeInTheDocument();
-
-    // Verify search functionality exists and is accessible
-    const searchInput = screen.getByRole('searchbox', {
-      name: i18next.t('ReviewsList.SearchLabel'),
-    });
-    expect(searchInput).toBeInTheDocument();
-
-    const searchButton = screen.getByRole('button', { name: 'Sök' });
-    expect(searchButton).toBeInTheDocument();
-
-    // Verify user can interact with search
-    await user.type(searchInput, 'amor');
-    expect(searchInput).toHaveValue('amor');
-
-    await user.click(searchButton);
-
-    // Verify search input maintains the value after clicking search
-    expect(searchInput).toHaveValue('amor');
-
-    // TODO testa faktiska sökningen ...
-  });
-
-  it('toggles favorite status when heart button is clicked', async () => {
-    const user = userEvent.setup();
-    const { useReviews } = await import('../../hooks/useReviewData');
-    const { useRequirements } = await import('../../hooks/useRequirementData');
-
-    const mockReviews = [{ ...MOCK_REVIEWS[0], title: 'Testgranskning' }];
-
-    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(mockReviews));
-    vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
-
-    renderReviewsList();
-
-    // Initially should show empty heart
-    expect(screen.getAllByText('♡').length).toBeGreaterThan(0);
-    expect(screen.queryAllByText('♥')).toHaveLength(0);
-
-    // Click favorite button (get first one as it appears in both cards and table views)
-    const favoriteButtons = screen.getAllByLabelText(
-      i18next.t('ReviewsList.FavoriteAdd', { reviewName: 'Testgranskning' }),
+    // Verify that reviews are present (component sorts by created_at descending by default)
+    const sortedReviews = [...MOCK_REVIEWS].sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     );
-    await user.click(favoriteButtons[0]);
-
-    // Should now show filled heart
-    expect(screen.getAllByText('♥').length).toBeGreaterThan(0);
-    expect(screen.queryAllByText('♡').length).toBe(0);
-
-    // Check localStorage
-    const storedFaves = JSON.parse(localStorage.getItem('favoriteReviews') || '[]');
-    expect(storedFaves).toContain(1);
+    sortedReviews.slice(0, 10).forEach((review) => {
+      expect(screen.queryAllByText(review.title).length).toBeGreaterThan(0);
+    });
   });
 
-  it('renders favorites checkbox', () => {
-    renderReviewsList();
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Möjliggöra sökning efter granskningar.
+   * - filters reviews by title
+   *
+   * --------------------------------------------------------------- */
 
-    const checkbox = screen.getByTestId('favorites-checkbox');
-    expect(checkbox).toBeInTheDocument();
-    expect(checkbox).toHaveAttribute('aria-label', i18next.t('ReviewsList.ShowFavorites'));
-  });
-
-  // TODO: This test fails because CardsOrTable might be caching or not updating correctly
-  // when filterFaves changes. Needs further investigation.
-  it.skip('filters reviews by favorite status when checkbox is checked', async () => {
-    const user = userEvent.setup();
+  it('filters reviews by title', async () => {
     const { useReviews } = await import('../../hooks/useReviewData');
     const { useRequirements } = await import('../../hooks/useRequirementData');
 
-    const mockReviews = [
-      { ...MOCK_REVIEWS[4], id: 1 },
-      { ...MOCK_REVIEWS[5], id: 2 },
-    ];
-
-    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(mockReviews));
+    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
     vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
 
-    // Set review 1 as favorite in localStorage
-    localStorage.setItem('favoriteReviews', JSON.stringify([1]));
+    // Set up the component with search params
+    const mockSearchParams = new URLSearchParams('sok=amor');
+    const mockSetSearchParams = vi.fn();
+    vi.mocked(useSearchParams).mockReturnValue([mockSearchParams, mockSetSearchParams]);
 
     renderReviewsList();
 
-    // Both reviews should be visible initially
-    expect(screen.getAllByText('Memento mori')[0]).toBeInTheDocument();
-    expect(screen.getAllByText('Nil desperandum')[0]).toBeInTheDocument();
+    // Verify both reviews including the text "amor" are visible
+    expect(screen.queryAllByText(/Amor vincit omnia/i).length).toBeGreaterThan(0);
+    expect(screen.queryAllByText(/Omnia vincit amor/i).length).toBeGreaterThan(0);
 
-    // Check the favorites filter
-    const checkbox = screen.getByTestId('favorites-checkbox');
-    await user.click(checkbox);
-
-    // Wait for filtering to apply and verify only favorite is visible
-    await waitFor(() => {
-      expect(screen.queryAllByText('Nil desperandum')).toHaveLength(0);
-    });
-    expect(screen.getAllByText('Memento mori')[0]).toBeInTheDocument();
+    // Verify other reviews are NOT visible
+    expect(screen.queryByText(/Carpe diem/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/In vino veritas/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Per aspera/i)).not.toBeInTheDocument();
   });
 
+  // Funktionellt krav: Möjliggöra sortering av granskningar på Granskningsnamn A-Ö
   it('sorts reviews by name ascending', async () => {
     const { useReviews } = await import('../../hooks/useReviewData');
     const { useRequirements } = await import('../../hooks/useRequirementData');
 
-    const mockReviews = [{ ...MOCK_REVIEWS[8] }, { ...MOCK_REVIEWS[9] }];
-
-    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(mockReviews));
+    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
     vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
 
     // Mock useSearchParams to return URL parameters
@@ -685,19 +656,80 @@ describe('ReviewsList', () => {
 
     // Wait for component to process sorting
     await waitFor(() => {
-      // Verify sorting is applied by checking table cells contain the titles in correct order
-      const cells = screen.getAllByRole('cell');
-      const titlesInCells = cells
-        .map((cell) => cell.textContent)
-        .filter((text) => text?.includes('Gaudeamus') || text?.includes('Lorem'));
+      const rows = screen.getAllByRole('row');
+      // Extract titles from rows (skip header row)
+      const displayedTitles = rows
+        .slice(1)
+        .map((row) => {
+          const cells = Array.from(row.querySelectorAll('td'));
+          // Title is in the second cell (index 1)
+          return cells[1]?.textContent?.replace(/^→\s*/, '').trim() || '';
+        })
+        .filter((title) => title.length > 0);
 
-      // Gaudeamus should appear before Lorem alphabetically
-      const gaudeamusIndex = titlesInCells.findIndex((t) => t?.includes('Gaudeamus'));
-      const loremIndex = titlesInCells.findIndex((t) => t?.includes('Lorem'));
+      // Create expected sorted order
+      const expectedTitles = [...MOCK_REVIEWS]
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .slice(0, 10) // First page with 10 items
+        .map((r) => r.title);
 
-      expect(gaudeamusIndex).toBeGreaterThanOrEqual(0);
-      expect(loremIndex).toBeGreaterThanOrEqual(0);
-      expect(gaudeamusIndex).toBeLessThan(loremIndex);
+      // Verify all titles are present and in correct order
+      expect(displayedTitles.length).toBe(10);
+      displayedTitles.forEach((title, index) => {
+        expect(title).toBe(expectedTitles[index]);
+      });
+
+      // Verify alphabetical order
+      for (let i = 0; i < displayedTitles.length - 1; i++) {
+        expect(displayedTitles[i].localeCompare(displayedTitles[i + 1])).toBeLessThanOrEqual(0);
+      }
+    });
+  });
+
+  // Funktionellt krav: Möjliggöra sortering av granskningar på Granskningsnamn Ö-A
+  it('sorts reviews by name descending', async () => {
+    const { useReviews } = await import('../../hooks/useReviewData');
+    const { useRequirements } = await import('../../hooks/useRequirementData');
+
+    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
+    vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+    // Mock useSearchParams to return URL parameters
+    const mockSearchParams = new URLSearchParams('sortering=1&riktning=fallande');
+    const mockSetSearchParams = vi.fn();
+    vi.mocked(useSearchParams).mockReturnValue([mockSearchParams, mockSetSearchParams]);
+
+    renderReviewsList();
+
+    // Wait for component to process sorting
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row');
+      // Extract titles from rows (skip header row)
+      const displayedTitles = rows
+        .slice(1)
+        .map((row) => {
+          const cells = Array.from(row.querySelectorAll('td'));
+          // Title is in the second cell (index 1)
+          return cells[1]?.textContent?.replace(/^→\s*/, '').trim() || '';
+        })
+        .filter((title) => title.length > 0);
+
+      // Create expected sorted order
+      const expectedTitles = [...MOCK_REVIEWS]
+        .sort((a, b) => b.title.localeCompare(a.title))
+        .slice(0, 10) // First page with 10 items
+        .map((r) => r.title);
+
+      // Verify all titles are present and in correct order
+      expect(displayedTitles.length).toBe(10);
+      displayedTitles.forEach((title, index) => {
+        expect(title).toBe(expectedTitles[index]);
+      });
+
+      // Verify alphabetical order
+      for (let i = 0; i < displayedTitles.length - 1; i++) {
+        expect(displayedTitles[i].localeCompare(displayedTitles[i + 1])).toBeGreaterThanOrEqual(0);
+      }
     });
   });
 
@@ -812,6 +844,83 @@ describe('ReviewsList', () => {
       const checkbox = screen.getByTestId('favorites-checkbox');
       expect(checkbox).toBeChecked();
     });
+  });
+
+  it('toggles favorite status when heart button is clicked', async () => {
+    const user = userEvent.setup();
+    const { useReviews } = await import('../../hooks/useReviewData');
+    const { useRequirements } = await import('../../hooks/useRequirementData');
+
+    const mockReviews = [{ ...MOCK_REVIEWS[0], title: 'Testgranskning' }];
+
+    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(mockReviews));
+    vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+    // Reset search params to empty for this test
+    vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), vi.fn()]);
+
+    renderReviewsList();
+
+    // Initially should show empty heart
+    expect(screen.getAllByText('♡').length).toBeGreaterThan(0);
+    expect(screen.queryAllByText('♥')).toHaveLength(0);
+
+    // Click favorite button (get first one as it appears in both cards and table views)
+    const favoriteButtons = screen.getAllByLabelText(
+      i18next.t('ReviewsList.FavoriteAdd', { reviewName: 'Testgranskning' }),
+    );
+    await user.click(favoriteButtons[0]);
+
+    // Should now show filled heart
+    expect(screen.getAllByText('♥').length).toBeGreaterThan(0);
+    expect(screen.queryAllByText('♡').length).toBe(0);
+
+    // Check localStorage
+    const storedFaves = JSON.parse(localStorage.getItem('favoriteReviews') || '[]');
+    expect(storedFaves).toContain(1);
+  });
+
+  it('renders favorites checkbox', () => {
+    renderReviewsList();
+
+    const checkbox = screen.getByTestId('favorites-checkbox');
+    expect(checkbox).toBeInTheDocument();
+    expect(checkbox).toHaveAttribute('aria-label', i18next.t('ReviewsList.ShowFavorites'));
+  });
+
+  // TODO: This test fails because CardsOrTable might be caching or not updating correctly
+  // when filterFaves changes. Needs further investigation.
+  it.skip('filters reviews by favorite status when checkbox is checked', async () => {
+    const user = userEvent.setup();
+    const { useReviews } = await import('../../hooks/useReviewData');
+    const { useRequirements } = await import('../../hooks/useRequirementData');
+
+    const mockReviews = [
+      { ...MOCK_REVIEWS[4], id: 1 },
+      { ...MOCK_REVIEWS[5], id: 2 },
+    ];
+
+    vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(mockReviews));
+    vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+    // Set review 1 as favorite in localStorage
+    localStorage.setItem('favoriteReviews', JSON.stringify([1]));
+
+    renderReviewsList();
+
+    // Both reviews should be visible initially
+    expect(screen.getAllByText('Memento mori')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Nil desperandum')[0]).toBeInTheDocument();
+
+    // Check the favorites filter
+    const checkbox = screen.getByTestId('favorites-checkbox');
+    await user.click(checkbox);
+
+    // Wait for filtering to apply and verify only favorite is visible
+    await waitFor(() => {
+      expect(screen.queryAllByText('Nil desperandum')).toHaveLength(0);
+    });
+    expect(screen.getAllByText('Memento mori')[0]).toBeInTheDocument();
   });
 
   // TODO: This test timing out waiting for aria-label update after click.
