@@ -8,23 +8,28 @@ import {
   Status,
 } from './types';
 
-// Select client based on standalone mode
-const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
-const client = isStandalone ? localStorageClient : apiClient;
+/**
+ * Get the appropriate client based on standalone mode
+ * This is called at runtime, allowing tests to override via environment variables
+ */
+function getClient() {
+  const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
+  return isStandalone ? localStorageClient : apiClient;
+}
 
 export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
-    const reviews = (await client.reviews.getAll()) as ReviewSummary[];
+    const reviews = (await getClient().reviews.getAll()) as ReviewSummary[];
     return reviews;
   },
 
   async getReviewById(reviewId: string): Promise<Review> {
-    const review = (await client.reviews.getById(reviewId)) as Review;
+    const review = (await getClient().reviews.getById(reviewId)) as Review;
     return review;
   },
 
   async getChecksForReview(reviewId: string): Promise<Check[]> {
-    const checks = (await client.checks.getForReview(reviewId)) as Check[];
+    const checks = (await getClient().checks.getForReview(reviewId)) as Check[];
     return checks;
   },
 
@@ -36,7 +41,7 @@ export const ReviewService = {
   }): Promise<Check> {
     const { reviewId, requirement, status, comment } = input;
 
-    const check = (await client.checks.upsert(reviewId, {
+    const check = (await getClient().checks.upsert(reviewId, {
       requirement,
       status,
       comment,
@@ -46,31 +51,31 @@ export const ReviewService = {
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
-    const check = (await client.checks.getByRequirement(reviewId, requirementId)) as Check | null;
+    const check = (await getClient().checks.getByRequirement(reviewId, requirementId)) as Check | null;
     return check;
   },
 
   async deleteCheck(checkId: string): Promise<boolean> {
-    await client.checks.delete(Number(checkId));
+    await getClient().checks.delete(Number(checkId));
     return true;
   },
 
   async deleteChecks(reviewId: number, requirementIds: string[]): Promise<boolean> {
-    await client.checks.bulkDelete(reviewId, requirementIds);
+    await getClient().checks.bulkDelete(reviewId, requirementIds);
     return true;
   },
 
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
-    const checks = (await client.checks.bulkDisable(reviewId, requirements)) as Check[];
+    const checks = (await getClient().checks.bulkDisable(reviewId, requirements)) as Check[];
     return checks;
   },
 
   async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
-    await client.checks.bulkEnable(reviewId, requirements);
+    await getClient().checks.bulkEnable(reviewId, requirements);
   },
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
-    const checks = (await client.checks.bulkPrefill(reviewId, prefills)) as Check[];
+    const checks = (await getClient().checks.bulkPrefill(reviewId, prefills)) as Check[];
     return checks;
   },
 
@@ -94,10 +99,10 @@ export const ReviewService = {
     };
 
     if (id) {
-      const review = (await client.reviews.update(id, reviewData)) as Review;
+      const review = (await getClient().reviews.update(id, reviewData)) as Review;
       return review;
     } else {
-      const review = (await client.reviews.create(reviewData)) as Review;
+      const review = (await getClient().reviews.create(reviewData)) as Review;
       return review;
     }
   },
@@ -109,11 +114,11 @@ export const ReviewService = {
   },
 
   async deleteReview(reviewId: number): Promise<void> {
-    await client.reviews.delete(reviewId);
+    await getClient().reviews.delete(reviewId);
   },
 
   async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
-    const check = (await client.checks.toggleFlag(reviewId, requirementId, flag)) as Check;
+    const check = (await getClient().checks.toggleFlag(reviewId, requirementId, flag)) as Check;
     return check;
   },
 };
