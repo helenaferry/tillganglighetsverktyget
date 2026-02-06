@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { apiClient } from '../apiClient';
+import { localStorageClient } from '../localStorageClient';
 import { ReviewService } from '../reviewService';
 import { ObjectType, Status } from '../types';
 
@@ -27,11 +28,38 @@ vi.mock('../apiClient', () => ({
   },
 }));
 
+vi.mock('../localStorageClient', () => ({
+  localStorageClient: {
+    reviews: {
+      getAll: vi.fn(),
+      getById: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    },
+    checks: {
+      getForReview: vi.fn(),
+      getByRequirement: vi.fn(),
+      upsert: vi.fn(),
+      delete: vi.fn(),
+      bulkDisable: vi.fn(),
+      bulkEnable: vi.fn(),
+      bulkDelete: vi.fn(),
+      bulkPrefill: vi.fn(),
+      toggleFlag: vi.fn(),
+    },
+  },
+}));
+
 const mockApiClient = vi.mocked(apiClient);
+const mockLocalStorageClient = vi.mocked(localStorageClient);
 
 describe('ReviewService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Ensure non-standalone mode for existing tests
+    // Runtime selection means this will be checked on each call
+    vi.stubEnv('VITE_STANDALONE', 'false');
   });
 
   describe('getAllReviewSummaries', () => {
@@ -378,6 +406,81 @@ describe('ReviewService', () => {
 
       expect(result.flag).toBe(true);
       expect(mockApiClient.checks.toggleFlag).toHaveBeenCalledWith(1, 'req1', true);
+    });
+  });
+
+  describe('client selection', () => {
+    it('uses apiClient when VITE_STANDALONE=false', async () => {
+      vi.stubEnv('VITE_STANDALONE', 'false');
+      
+      const mockSummaries = [
+        {
+          id: 1,
+          title: 'Review 1',
+          created_at: '2024-01-01',
+          latestUpdate: '2024-01-02',
+          reviewedCount: 5,
+          passCount: 3,
+          failCount: 1,
+          irrelevantCount: 1,
+        },
+      ];
+      mockApiClient.reviews.getAll.mockResolvedValue(mockSummaries as never);
+
+      const result = await ReviewService.getAllReviewSummaries();
+
+      expect(result).toEqual(mockSummaries);
+      expect(mockApiClient.reviews.getAll).toHaveBeenCalledTimes(1);
+      expect(mockLocalStorageClient.reviews.getAll).not.toHaveBeenCalled();
+    });
+
+    it('uses localStorageClient when VITE_STANDALONE=true', async () => {
+      vi.stubEnv('VITE_STANDALONE', 'true');
+      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false');
+      localStorage.clear(); // Clear localStorage for clean test
+      
+      const mockSummaries = [
+        {
+          id: 1,
+          title: 'Review 1',
+          created_at: '2024-01-01',
+          latestUpdate: '2024-01-02',
+          reviewedCount: 5,
+          passCount: 3,
+          failCount: 1,
+          irrelevantCount: 1,
+        },
+      ];
+      mockLocalStorageClient.reviews.getAll.mockResolvedValue(mockSummaries as never);
+
+      const result = await ReviewService.getAllReviewSummaries();
+
+      expect(result).toEqual(mockSummaries);
+      expect(mockLocalStorageClient.reviews.getAll).toHaveBeenCalledTimes(1);
+      expect(mockApiClient.reviews.getAll).not.toHaveBeenCalled();
+      
+      // Reset for other tests
+      vi.stubEnv('VITE_STANDALONE', 'false');
+    });
+
+    it('runtime selection allows switching clients', async () => {
+      // Test that runtime selection works - can switch between clients
+      vi.stubEnv('VITE_STANDALONE', 'false');
+      mockApiClient.reviews.getAll.mockResolvedValue([] as never);
+      
+      await ReviewService.getAllReviewSummaries();
+      expect(mockApiClient.reviews.getAll).toHaveBeenCalled();
+      
+      vi.clearAllMocks();
+      vi.stubEnv('VITE_STANDALONE', 'true');
+      localStorage.clear();
+      mockLocalStorageClient.reviews.getAll.mockResolvedValue([] as never);
+      
+      await ReviewService.getAllReviewSummaries();
+      expect(mockLocalStorageClient.reviews.getAll).toHaveBeenCalled();
+      
+      // Reset
+      vi.stubEnv('VITE_STANDALONE', 'false');
     });
   });
 });
