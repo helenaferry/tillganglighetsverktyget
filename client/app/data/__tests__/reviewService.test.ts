@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vitest';
 
 import { apiClient } from '../apiClient';
-import { localStorageClient } from '../localStorageClient';
+import { standaloneClient } from '../standaloneClient';
 import { ReviewService } from '../reviewService';
 import { ObjectType, Status } from '../types';
 
@@ -28,8 +28,8 @@ vi.mock('../apiClient', () => ({
   },
 }));
 
-vi.mock('../localStorageClient', () => ({
-  localStorageClient: {
+vi.mock('../standaloneClient', () => ({
+  standaloneClient: {
     reviews: {
       getAll: vi.fn(),
       getById: vi.fn(),
@@ -51,8 +51,9 @@ vi.mock('../localStorageClient', () => ({
   },
 }));
 
-const mockApiClient = vi.mocked(apiClient);
-const mockLocalStorageClient = vi.mocked(localStorageClient);
+// Type-safe mocks - cast to any to access mock methods
+const mockApiClient = apiClient as any;
+const mockStandaloneClient = standaloneClient as any;
 
 describe('ReviewService', () => {
   beforeEach(() => {
@@ -431,10 +432,10 @@ describe('ReviewService', () => {
 
       expect(result).toEqual(mockSummaries);
       expect(mockApiClient.reviews.getAll).toHaveBeenCalledTimes(1);
-      expect(mockLocalStorageClient.reviews.getAll).not.toHaveBeenCalled();
+      expect(mockStandaloneClient.reviews.getAll).not.toHaveBeenCalled();
     });
 
-    it('uses localStorageClient when VITE_STANDALONE=true', async () => {
+    it('uses standaloneClient when VITE_STANDALONE=true', async () => {
       vi.stubEnv('VITE_STANDALONE', 'true');
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false');
       localStorage.clear(); // Clear localStorage for clean test
@@ -451,12 +452,12 @@ describe('ReviewService', () => {
           irrelevantCount: 1,
         },
       ];
-      mockLocalStorageClient.reviews.getAll.mockResolvedValue(mockSummaries as never);
+      mockStandaloneClient.reviews.getAll.mockResolvedValue(mockSummaries as never);
 
       const result = await ReviewService.getAllReviewSummaries();
 
       expect(result).toEqual(mockSummaries);
-      expect(mockLocalStorageClient.reviews.getAll).toHaveBeenCalledTimes(1);
+      expect(mockStandaloneClient.reviews.getAll).toHaveBeenCalledTimes(1);
       expect(mockApiClient.reviews.getAll).not.toHaveBeenCalled();
       
       // Reset for other tests
@@ -474,10 +475,10 @@ describe('ReviewService', () => {
       vi.clearAllMocks();
       vi.stubEnv('VITE_STANDALONE', 'true');
       localStorage.clear();
-      mockLocalStorageClient.reviews.getAll.mockResolvedValue([] as never);
+      mockStandaloneClient.reviews.getAll.mockResolvedValue([] as never);
       
       await ReviewService.getAllReviewSummaries();
-      expect(mockLocalStorageClient.reviews.getAll).toHaveBeenCalled();
+      expect(mockStandaloneClient.reviews.getAll).toHaveBeenCalled();
       
       // Reset
       vi.stubEnv('VITE_STANDALONE', 'false');
