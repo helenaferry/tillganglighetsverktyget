@@ -24,10 +24,14 @@ cp .env.example .env.local
 # Redigera .env.local och sätt:
 # VITE_STANDALONE=true
 
-# 4. Installera beroenden
+# 4. Om du vill förpopulera localStorage med exempelgranskningar
+# Redigera .env.local och sätt:
+# VITE_USE_EXAMPLE_DATA=true
+
+# 5. Installera beroenden
 npm install
 
-# 5. Starta utvecklingsserver
+# 6. Starta utvecklingsserver
 npm run dev
 ```
 
@@ -78,7 +82,7 @@ DB_PASSWORD=MinSakraApp456!
 cp client/.env.example client/.env.local
 # Redigera client/.env.local för att anpassa logotyper, texter, länkar etc.
 # (Kan användas med standardvärden, men filen måste finnas)
-# 
+#
 # För standalone-läge: Sätt VITE_STANDALONE=true i client/.env.local
 # (Då behöver du inte starta podman-containers)
 ```
