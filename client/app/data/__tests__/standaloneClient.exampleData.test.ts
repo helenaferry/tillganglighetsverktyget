@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { localStorageClient } from '../localStorageClient';
+import { standaloneClient } from '../standaloneClient';
 import { standaloneExampleData } from '../standaloneExampleData';
 
-describe('localStorageClient - Example Data Initialization', () => {
+describe('standaloneClient - Example Data Initialization', () => {
   beforeEach(() => {
     localStorage.clear();
     // Reset modules to clear initializationAttempted flag
@@ -18,7 +18,7 @@ describe('localStorageClient - Example Data Initialization', () => {
 
       // Reset module to pick up new env vars
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       // Trigger initialization by calling getAll
       const result = await client.reviews.getAll();
@@ -39,7 +39,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       await client.reviews.getAll();
 
@@ -52,7 +52,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       await client.reviews.getAll();
 
@@ -81,7 +81,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       );
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       const result = await client.reviews.getAll();
 
@@ -100,7 +100,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       localStorage.setItem('tillgang_reviews', '[]');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       const result = await client.reviews.getAll();
 
@@ -118,7 +118,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       // First call - should initialize
       const result1 = await client.reviews.getAll();
@@ -142,7 +142,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       // Before first access, localStorage should be empty
       expect(localStorage.getItem('tillgang_reviews')).toBeNull();
@@ -169,7 +169,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false'); // Disable initialization
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       // App should work normally without example data
       const result = await client.reviews.getAll();
@@ -193,7 +193,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       await client.reviews.getAll();
 
@@ -209,7 +209,7 @@ describe('localStorageClient - Example Data Initialization', () => {
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
 
       vi.resetModules();
-      const { localStorageClient: client } = await import('../localStorageClient');
+      const { standaloneClient: client } = await import('../standaloneClient');
 
       const reviews = await client.reviews.getAll();
       const checks = await client.checks.getForReview(1);

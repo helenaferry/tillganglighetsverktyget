@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ApiError } from '../apiClient';
-import { localStorageClient } from '../localStorageClient';
+import { standaloneClient } from '../standaloneClient';
 import { Status } from '../types';
 import type { Check, Review, ReviewSummary } from '../types';
 
@@ -38,7 +38,7 @@ function createMockCheck(overrides?: Partial<Check>): Check {
   };
 }
 
-describe('localStorageClient', () => {
+describe('standaloneClient', () => {
   beforeEach(() => {
     localStorage.clear();
     // Ensure example data is disabled
@@ -51,7 +51,7 @@ describe('localStorageClient', () => {
   describe('reviews', () => {
     describe('getAll', () => {
       it('returns empty array when no reviews exist', async () => {
-        const result = await localStorageClient.reviews.getAll();
+        const result = await standaloneClient.reviews.getAll();
 
         expect(result).toEqual([]);
       });
@@ -76,7 +76,7 @@ describe('localStorageClient', () => {
         localStorage.setItem('tillgang_reviews', JSON.stringify([review]));
         localStorage.setItem('tillgang_checks', JSON.stringify([check1, check2]));
 
-        const result = await localStorageClient.reviews.getAll();
+        const result = await standaloneClient.reviews.getAll();
 
         expect(result).toHaveLength(1);
         expect(result[0]).toMatchObject({
@@ -99,7 +99,7 @@ describe('localStorageClient', () => {
         localStorage.setItem('tillgang_reviews', JSON.stringify([review1, review2]));
         localStorage.setItem('tillgang_checks', JSON.stringify([check1, check2]));
 
-        const result = await localStorageClient.reviews.getAll();
+        const result = await standaloneClient.reviews.getAll();
 
         expect(result).toHaveLength(2);
         expect(result[0].passCount).toBe(1);
@@ -114,7 +114,7 @@ describe('localStorageClient', () => {
         const review = createMockReview({ id: 1, title: 'Found Review' });
         localStorage.setItem('tillgang_reviews', JSON.stringify([review]));
 
-        const result = await localStorageClient.reviews.getById(1);
+        const result = await standaloneClient.reviews.getById(1);
 
         expect(result.id).toBe(1);
         expect(result.title).toBe('Found Review');
@@ -124,20 +124,22 @@ describe('localStorageClient', () => {
         const review = createMockReview({ id: 1 });
         localStorage.setItem('tillgang_reviews', JSON.stringify([review]));
 
-        const result = await localStorageClient.reviews.getById('1');
+        const result = await standaloneClient.reviews.getById('1');
 
         expect(result.id).toBe(1);
       });
 
       it('throws ApiError(404) when review not found', async () => {
-        await expect(localStorageClient.reviews.getById(999)).rejects.toThrow(ApiError);
-        await expect(localStorageClient.reviews.getById(999)).rejects.toThrow('Review with id 999 not found');
+        await expect(standaloneClient.reviews.getById(999)).rejects.toThrow(ApiError);
+        await expect(standaloneClient.reviews.getById(999)).rejects.toThrow(
+          'Review with id 999 not found',
+        );
       });
     });
 
     describe('create', () => {
       it('creates review with auto-increment ID', async () => {
-        const result = await localStorageClient.reviews.create({
+        const result = await standaloneClient.reviews.create({
           title: 'New Review',
           excludedContentTypes: ['video'],
           selectedPrefillIds: '1,2',
@@ -152,7 +154,7 @@ describe('localStorageClient', () => {
       });
 
       it('increments ID correctly', async () => {
-        await localStorageClient.reviews.create({
+        await standaloneClient.reviews.create({
           title: 'Review 1',
           excludedContentTypes: [],
           selectedPrefillIds: '',
@@ -160,7 +162,7 @@ describe('localStorageClient', () => {
           regulatoryFramework: 'dos',
         });
 
-        const result = await localStorageClient.reviews.create({
+        const result = await standaloneClient.reviews.create({
           title: 'Review 2',
           excludedContentTypes: [],
           selectedPrefillIds: '',
@@ -172,7 +174,7 @@ describe('localStorageClient', () => {
       });
 
       it('joins excludedContentTypes array', async () => {
-        const result = await localStorageClient.reviews.create({
+        const result = await standaloneClient.reviews.create({
           title: 'New Review',
           excludedContentTypes: ['video', 'audio'],
           selectedPrefillIds: '',
@@ -189,7 +191,7 @@ describe('localStorageClient', () => {
         const review = createMockReview({ id: 1, title: 'Old Title' });
         localStorage.setItem('tillgang_reviews', JSON.stringify([review]));
 
-        const result = await localStorageClient.reviews.update(1, {
+        const result = await standaloneClient.reviews.update(1, {
           title: 'New Title',
           excludedContentTypes: ['video'],
           selectedPrefillIds: '1',
@@ -204,7 +206,7 @@ describe('localStorageClient', () => {
 
       it('throws ApiError(404) when review not found', async () => {
         await expect(
-          localStorageClient.reviews.update(999, {
+          standaloneClient.reviews.update(999, {
             title: 'New Title',
             excludedContentTypes: [],
             selectedPrefillIds: '',
@@ -220,7 +222,7 @@ describe('localStorageClient', () => {
         const review = createMockReview({ id: 1 });
         localStorage.setItem('tillgang_reviews', JSON.stringify([review]));
 
-        await localStorageClient.reviews.delete(1);
+        await standaloneClient.reviews.delete(1);
 
         const remaining = JSON.parse(localStorage.getItem('tillgang_reviews') || '[]');
         expect(remaining).toHaveLength(0);
@@ -235,7 +237,7 @@ describe('localStorageClient', () => {
         localStorage.setItem('tillgang_reviews', JSON.stringify([review]));
         localStorage.setItem('tillgang_checks', JSON.stringify([check1, check2, check3]));
 
-        await localStorageClient.reviews.delete(1);
+        await standaloneClient.reviews.delete(1);
 
         const remainingChecks = JSON.parse(localStorage.getItem('tillgang_checks') || '[]');
         expect(remainingChecks).toHaveLength(1);
@@ -243,7 +245,7 @@ describe('localStorageClient', () => {
       });
 
       it('throws ApiError(404) when review not found', async () => {
-        await expect(localStorageClient.reviews.delete(999)).rejects.toThrow(ApiError);
+        await expect(standaloneClient.reviews.delete(999)).rejects.toThrow(ApiError);
       });
     });
   });
@@ -251,7 +253,7 @@ describe('localStorageClient', () => {
   describe('checks', () => {
     describe('getForReview', () => {
       it('returns empty array when no checks exist', async () => {
-        const result = await localStorageClient.checks.getForReview(1);
+        const result = await standaloneClient.checks.getForReview(1);
 
         expect(result).toEqual([]);
       });
@@ -263,7 +265,7 @@ describe('localStorageClient', () => {
 
         localStorage.setItem('tillgang_checks', JSON.stringify([check1, check2, check3]));
 
-        const result = await localStorageClient.checks.getForReview(1);
+        const result = await standaloneClient.checks.getForReview(1);
 
         expect(result).toHaveLength(2);
         expect(result.map((c) => c.id)).toEqual([1, 2]);
@@ -273,7 +275,7 @@ describe('localStorageClient', () => {
         const check = createMockCheck({ id: 1, review: 1 });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        const result = await localStorageClient.checks.getForReview('1');
+        const result = await standaloneClient.checks.getForReview('1');
 
         expect(result).toHaveLength(1);
       });
@@ -289,7 +291,7 @@ describe('localStorageClient', () => {
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        const result = await localStorageClient.checks.getByRequirement(1, 'req1');
+        const result = await standaloneClient.checks.getByRequirement(1, 'req1');
 
         expect(result).not.toBeNull();
         expect(result?.requirement).toBe('req1');
@@ -297,7 +299,7 @@ describe('localStorageClient', () => {
       });
 
       it('returns null when check not found', async () => {
-        const result = await localStorageClient.checks.getByRequirement(1, 'req999');
+        const result = await standaloneClient.checks.getByRequirement(1, 'req999');
 
         expect(result).toBeNull();
       });
@@ -305,7 +307,7 @@ describe('localStorageClient', () => {
 
     describe('upsert', () => {
       it('creates new check when not exists', async () => {
-        const result = await localStorageClient.checks.upsert(1, {
+        const result = await standaloneClient.checks.upsert(1, {
           requirement: 'req1',
           status: Status.PASS,
           comment: 'New check',
@@ -329,7 +331,7 @@ describe('localStorageClient', () => {
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        const result = await localStorageClient.checks.upsert(1, {
+        const result = await standaloneClient.checks.upsert(1, {
           requirement: 'req1',
           status: Status.FAIL,
           comment: 'New comment',
@@ -342,7 +344,7 @@ describe('localStorageClient', () => {
       });
 
       it('handles flag conversion', async () => {
-        const result = await localStorageClient.checks.upsert(1, {
+        const result = await standaloneClient.checks.upsert(1, {
           requirement: 'req1',
           flag: 1, // Number input
         });
@@ -351,8 +353,8 @@ describe('localStorageClient', () => {
       });
 
       it('increments check ID correctly', async () => {
-        await localStorageClient.checks.upsert(1, { requirement: 'req1' });
-        const result = await localStorageClient.checks.upsert(1, { requirement: 'req2' });
+        await standaloneClient.checks.upsert(1, { requirement: 'req1' });
+        const result = await standaloneClient.checks.upsert(1, { requirement: 'req2' });
 
         expect(result.id).toBe(2);
       });
@@ -363,20 +365,20 @@ describe('localStorageClient', () => {
         const check = createMockCheck({ id: 1 });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        await localStorageClient.checks.delete(1);
+        await standaloneClient.checks.delete(1);
 
         const remaining = JSON.parse(localStorage.getItem('tillgang_checks') || '[]');
         expect(remaining).toHaveLength(0);
       });
 
       it('throws ApiError(404) when check not found', async () => {
-        await expect(localStorageClient.checks.delete(999)).rejects.toThrow(ApiError);
+        await expect(standaloneClient.checks.delete(999)).rejects.toThrow(ApiError);
       });
     });
 
     describe('bulkDisable', () => {
       it('creates IRRELEVANT checks for requirements', async () => {
-        const result = await localStorageClient.checks.bulkDisable(1, ['req1', 'req2']);
+        const result = await standaloneClient.checks.bulkDisable(1, ['req1', 'req2']);
 
         expect(result).toHaveLength(2);
         expect(result[0].status).toBe(Status.IRRELEVANT);
@@ -393,7 +395,7 @@ describe('localStorageClient', () => {
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        const result = await localStorageClient.checks.bulkDisable(1, ['req1']);
+        const result = await standaloneClient.checks.bulkDisable(1, ['req1']);
 
         expect(result).toHaveLength(1);
         expect(result[0].status).toBe(Status.IRRELEVANT);
@@ -417,7 +419,7 @@ describe('localStorageClient', () => {
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check1, check2]));
 
-        await localStorageClient.checks.bulkEnable(1, ['req1']);
+        await standaloneClient.checks.bulkEnable(1, ['req1']);
 
         const remaining = JSON.parse(localStorage.getItem('tillgang_checks') || '[]');
         expect(remaining).toHaveLength(1);
@@ -432,7 +434,7 @@ describe('localStorageClient', () => {
         const check3 = createMockCheck({ id: 3, review: 1, requirement: 'req3' });
         localStorage.setItem('tillgang_checks', JSON.stringify([check1, check2, check3]));
 
-        await localStorageClient.checks.bulkDelete(1, ['req1', 'req2']);
+        await standaloneClient.checks.bulkDelete(1, ['req1', 'req2']);
 
         const remaining = JSON.parse(localStorage.getItem('tillgang_checks') || '[]');
         expect(remaining).toHaveLength(1);
@@ -442,7 +444,7 @@ describe('localStorageClient', () => {
 
     describe('bulkPrefill', () => {
       it('creates/updates checks with status mapping', async () => {
-        const result = await localStorageClient.checks.bulkPrefill(1, [
+        const result = await standaloneClient.checks.bulkPrefill(1, [
           {
             status: 'PASS',
             ids: ['req1', 'req2'],
@@ -457,7 +459,7 @@ describe('localStorageClient', () => {
       });
 
       it('maps status strings correctly', async () => {
-        const result = await localStorageClient.checks.bulkPrefill(1, [
+        const result = await standaloneClient.checks.bulkPrefill(1, [
           { status: 'FAIL', ids: ['req1'], comment: '' },
           { status: 'IRRELEVANT', ids: ['req2'], comment: '' },
           { status: 'NOT_ASSESSED', ids: ['req3'], comment: '' },
@@ -478,7 +480,7 @@ describe('localStorageClient', () => {
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        const result = await localStorageClient.checks.bulkPrefill(1, [
+        const result = await standaloneClient.checks.bulkPrefill(1, [
           { status: 'FAIL', ids: ['req1'], comment: 'New' },
         ]);
 
@@ -498,14 +500,14 @@ describe('localStorageClient', () => {
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 
-        const result = await localStorageClient.checks.toggleFlag(1, 'req1', true);
+        const result = await standaloneClient.checks.toggleFlag(1, 'req1', true);
 
         expect(result.flag).toBe(true);
         expect(result.updated_at).not.toBe(check.updated_at);
       });
 
       it('throws ApiError(404) when check not found', async () => {
-        await expect(localStorageClient.checks.toggleFlag(1, 'req999', true)).rejects.toThrow(
+        await expect(standaloneClient.checks.toggleFlag(1, 'req999', true)).rejects.toThrow(
           ApiError,
         );
       });
@@ -516,7 +518,7 @@ describe('localStorageClient', () => {
     it('handles invalid JSON in localStorage gracefully', async () => {
       localStorage.setItem('tillgang_reviews', 'invalid json');
 
-      const result = await localStorageClient.reviews.getAll();
+      const result = await standaloneClient.reviews.getAll();
 
       expect(result).toEqual([]);
     });
@@ -531,7 +533,7 @@ describe('localStorageClient', () => {
 
   describe('ID generation', () => {
     it('increments review IDs correctly', async () => {
-      const review1 = await localStorageClient.reviews.create({
+      const review1 = await standaloneClient.reviews.create({
         title: 'Review 1',
         excludedContentTypes: [],
         selectedPrefillIds: '',
@@ -539,7 +541,7 @@ describe('localStorageClient', () => {
         regulatoryFramework: 'dos',
       });
 
-      const review2 = await localStorageClient.reviews.create({
+      const review2 = await standaloneClient.reviews.create({
         title: 'Review 2',
         excludedContentTypes: [],
         selectedPrefillIds: '',
@@ -552,7 +554,7 @@ describe('localStorageClient', () => {
     });
 
     it('persists ID counters across operations', async () => {
-      await localStorageClient.reviews.create({
+      await standaloneClient.reviews.create({
         title: 'Review 1',
         excludedContentTypes: [],
         selectedPrefillIds: '',
@@ -566,7 +568,7 @@ describe('localStorageClient', () => {
       const counter = localStorage.getItem('tillgang_next_review_id');
       expect(counter).toBe('1'); // Counter stores the last used ID, next will be 2
 
-      const review2 = await localStorageClient.reviews.create({
+      const review2 = await standaloneClient.reviews.create({
         title: 'Review 2',
         excludedContentTypes: [],
         selectedPrefillIds: '',

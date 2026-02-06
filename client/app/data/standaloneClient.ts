@@ -27,11 +27,11 @@ let initializationAttempted = false;
 function shouldInitializeExampleData(): boolean {
   const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
   const useExampleData = import.meta.env.VITE_USE_EXAMPLE_DATA === 'true';
-  
+
   if (!isStandalone || !useExampleData) {
     return false;
   }
-  
+
   // Check if localStorage already has data
   try {
     const existingData = localStorage.getItem(STORAGE_KEY_REVIEWS);
@@ -44,7 +44,7 @@ function shouldInitializeExampleData(): boolean {
     // If we can't check, don't initialize
     return false;
   }
-  
+
   return true;
 }
 
@@ -55,31 +55,25 @@ function initializeExampleData(): void {
   if (initializationAttempted) {
     return; // Already attempted initialization
   }
-  
+
   initializationAttempted = true;
-  
+
   if (!shouldInitializeExampleData()) {
     return;
   }
-  
+
   try {
     // Save reviews
     saveReviews(standaloneExampleData.reviews);
-    
+
     // Save checks (saveChecks handles flag conversion internally)
     // Type assertion needed because example data flags are boolean, matching Check type
     saveChecks(standaloneExampleData.checks as Check[]);
-    
+
     // Set ID counters
-    localStorage.setItem(
-      STORAGE_KEY_NEXT_REVIEW_ID,
-      standaloneExampleData.nextReviewId.toString(),
-    );
-    localStorage.setItem(
-      STORAGE_KEY_NEXT_CHECK_ID,
-      standaloneExampleData.nextCheckId.toString(),
-    );
-    
+    localStorage.setItem(STORAGE_KEY_NEXT_REVIEW_ID, standaloneExampleData.nextReviewId.toString());
+    localStorage.setItem(STORAGE_KEY_NEXT_CHECK_ID, standaloneExampleData.nextCheckId.toString());
+
     console.log('Example data initialized successfully');
   } catch (error) {
     console.warn('Failed to initialize example data:', error);
@@ -93,7 +87,7 @@ function initializeExampleData(): void {
 function getReviews(): Review[] {
   // Initialize example data on first access if needed
   initializeExampleData();
-  
+
   try {
     const data = localStorage.getItem(STORAGE_KEY_REVIEWS);
     if (!data) return [];
@@ -184,7 +178,7 @@ function getNextCheckId(): number {
   }
 }
 
-export const localStorageClient = {
+export const standaloneClient = {
   // Review endpoints
   reviews: {
     getAll: async (): Promise<ReviewSummary[]> => {
@@ -286,9 +280,7 @@ export const localStorageClient = {
     ): Promise<Check | null> => {
       const checks = getChecks();
       const id = typeof reviewId === 'string' ? parseInt(reviewId, 10) : reviewId;
-      const check = checks.find(
-        (c) => c.review === id && c.requirement === requirementId,
-      );
+      const check = checks.find((c) => c.review === id && c.requirement === requirementId);
       return check ? normalizeCheck(check) : null;
     },
 
@@ -394,11 +386,7 @@ export const localStorageClient = {
       // Delete checks with IRRELEVANT status (status 2) for the given requirements
       const filtered = checks.filter(
         (c) =>
-          !(
-            c.review === reviewId &&
-            requirements.includes(c.requirement || '') &&
-            c.status === 2
-          ),
+          !(c.review === reviewId && requirements.includes(c.requirement || '') && c.status === 2),
       );
       saveChecks(filtered);
     },
@@ -467,11 +455,7 @@ export const localStorageClient = {
       return updatedChecks.map(normalizeCheck);
     },
 
-    toggleFlag: async (
-      reviewId: number,
-      requirementId: string,
-      flag: boolean,
-    ): Promise<Check> => {
+    toggleFlag: async (reviewId: number, requirementId: string, flag: boolean): Promise<Check> => {
       const checks = getChecks();
       const now = new Date().toISOString();
       const existingIndex = checks.findIndex(
@@ -479,7 +463,10 @@ export const localStorageClient = {
       );
 
       if (existingIndex === -1) {
-        throw new ApiError(404, `Check not found for review ${reviewId} and requirement ${requirementId}`);
+        throw new ApiError(
+          404,
+          `Check not found for review ${reviewId} and requirement ${requirementId}`,
+        );
       }
 
       checks[existingIndex] = {
