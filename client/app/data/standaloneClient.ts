@@ -463,12 +463,23 @@ export const standaloneClient = {
       );
 
       if (existingIndex === -1) {
-        throw new ApiError(
-          404,
-          `Check not found for review ${reviewId} and requirement ${requirementId}`,
-        );
+        // Create check if it doesn't exist (matches backend findOrCreate behavior)
+        const newCheck: Check = {
+          id: getNextCheckId(),
+          created_at: now,
+          updated_at: now,
+          review: reviewId,
+          requirement: requirementId,
+          status: 3, // Status.NOT_ASSESSED
+          comment: null,
+          flag,
+        };
+        checks.push(newCheck);
+        saveChecks(checks);
+        return normalizeCheck(newCheck);
       }
 
+      // Update existing check
       checks[existingIndex] = {
         ...checks[existingIndex],
         flag,

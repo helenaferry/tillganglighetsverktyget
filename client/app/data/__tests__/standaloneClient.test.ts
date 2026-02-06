@@ -506,10 +506,16 @@ describe('standaloneClient', () => {
         expect(result.updated_at).not.toBe(check.updated_at);
       });
 
-      it('throws ApiError(404) when check not found', async () => {
-        await expect(standaloneClient.checks.toggleFlag(1, 'req999', true)).rejects.toThrow(
-          ApiError,
-        );
+      it('creates check if it does not exist (matches backend findOrCreate behavior)', async () => {
+        const result = await standaloneClient.checks.toggleFlag(1, 'req999', true);
+
+        expect(result.id).toBeDefined();
+        expect(result.review).toBe(1);
+        expect(result.requirement).toBe('req999');
+        expect(result.flag).toBe(true);
+        expect(result.status).toBe(3); // Status.NOT_ASSESSED
+        expect(result.created_at).toBeDefined();
+        expect(result.updated_at).toBeDefined();
       });
     });
   });
