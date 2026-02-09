@@ -48,6 +48,8 @@ services:
       - DB_SERVICE=FREEPDB1
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - OPEN_DATA_PORTAL_API_URL=${OPEN_DATA_PORTAL_API_URL:-https://data.arbetsformedlingen.se/accessibility/accessibility-requirements.json}
     networks:
       - tillgang-network
     depends_on:

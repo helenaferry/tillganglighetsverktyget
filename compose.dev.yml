@@ -49,6 +49,8 @@ services:
       - DB_SERVICE=FREEPDB1
       - DB_USER=${DB_USER:-tillgang_user}
       - DB_PASSWORD=${DB_PASSWORD:-TillgangDev2026!}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
+      - OPEN_DATA_PORTAL_API_URL=${OPEN_DATA_PORTAL_API_URL:-https://data.arbetsformedlingen.se/accessibility/accessibility-requirements.json}
     volumes:
       - ./server/src:/app/src:ro
       - ./server/package.json:/app/package.json:ro
