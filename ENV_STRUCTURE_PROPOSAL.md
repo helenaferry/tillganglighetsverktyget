@@ -4,10 +4,9 @@
 
 ## Nuvarande struktur
 
-Projektet använder tre env-mallar:
+Projektet använder två env-mallar:
 
-- **Root `.env.example`** – container-orkestrering (Podman Compose)
-- **`server/.env.example`** – backend vid lokal utveckling utan containers
+- **Root `.env.example`** – container-orkestrering (Podman Compose), inkluderar alla backend-variabler
 - **`client/.env.example`** – frontend; kopieras till `client/.env.local`
 
 Ingen root-fil `.env.local.example` finns; frontend använder `client/.env.example` → `client/.env.local`.
@@ -51,12 +50,11 @@ VITE_API_URL=http://localhost:3000/api
 # see client/.env.example
 ```
 
-### 2. Server `.env.example` - Backend Development
+### 2. ~~Server `.env.example`~~ - REMOVED
 
-**Purpose:** Backend service configuration  
-**Location:** `/Users/andreas/work/repos/tillganglighetsverktyget/server/.env.example`  
-**When to use:** When developing backend locally (without containers)  
-**Current content:** ✅ Already good, keep as-is
+**Status:** ❌ This file has been removed  
+**Reason:** Backend configuration is now centralized in root `.env.example` and passed via Podman Compose  
+**Alternative:** For local backend development without containers, use environment variables from root `.env` or set them directly
 
 ```bash
 # Database Configuration
@@ -234,8 +232,7 @@ npm run dev
 
 | File                  | Purpose                                     | Scope         | Required Variables           |
 | --------------------- | ------------------------------------------- | ------------- | ---------------------------- |
-| `.env.example`        | Container orchestration                     | All services  | DB passwords, ports          |
-| `server/.env.example` | Backend development                         | Backend only  | DB config, CORS              |
+| `.env.example`        | Container orchestration                     | All services  | DB passwords, ports, backend config |
 | `client/.env.example` | Frontend development (copy to `.env.local`) | Frontend only | API URL, branding, UI config |
 
 ## Benefits of This Structure
@@ -290,16 +287,7 @@ cp .env.example .env
 ```
 ````
 
-### 2. Server `.env` (from `server/.env.example`)
-
-**For:** Local backend development (without containers)  
-**Contains:** Database connection, CORS config
-
-```bash
-cd server && cp .env.example .env
-```
-
-### 3. Client `.env.local` (from `client/.env.example`)
+### 2. Client `.env.local` (from `client/.env.example`)
 
 **For:** Frontend customization (branding, logos, UI)  
 **Contains:** Application title, logos, footer links, prefill config

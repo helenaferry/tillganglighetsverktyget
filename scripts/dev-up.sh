@@ -19,6 +19,47 @@ if [[ ! -f "$COMPOSE_FILE" ]]; then
   exit 1
 fi
 
+# Check for standalone mode
+CLIENT_ENV_FILE="$REPO_ROOT/client/.env.local"
+STANDALONE=false
+
+if [[ -f "$CLIENT_ENV_FILE" ]]; then
+  # Extract VITE_STANDALONE value (handle comments and whitespace)
+  STANDALONE_VALUE=$(grep -E '^VITE_STANDALONE=' "$CLIENT_ENV_FILE" | cut -d'=' -f2 | tr -d '"' | tr -d "'" | tr -d ' ')
+  if [[ "$STANDALONE_VALUE" == "true" ]]; then
+    STANDALONE=true
+  fi
+fi
+
+# If standalone mode, skip podman setup and just start frontend
+if [[ "$STANDALONE" == "true" ]]; then
+  echo "Standalone mode detected (VITE_STANDALONE=true)"
+  echo "Starting frontend only (no database/server required)..."
+  echo ""
+  
+  cd "$REPO_ROOT/client"
+  
+  if [[ ! -f "package.json" ]]; then
+    echo "Error: client/package.json not found" >&2
+    exit 1
+  fi
+  
+  # Check if node_modules exists, if not suggest npm install
+  if [[ ! -d "node_modules" ]]; then
+    echo "Warning: node_modules not found. Run 'npm install' first." >&2
+    echo ""
+  fi
+  
+  echo "Starting Vite dev server..."
+  echo "  Client: http://localhost:5173"
+  echo ""
+  echo "  Stop server: Press Ctrl+C"
+  echo ""
+  
+  npm run dev
+  exit 0
+fi
+
 check_dependencies() {
   local missing=()
   for cmd in curl nc; do

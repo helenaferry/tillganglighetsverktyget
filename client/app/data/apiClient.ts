@@ -1,6 +1,8 @@
 // API Client for backend REST API
 // Replaces Supabase client
 
+import type { Requirement } from './types';
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 class ApiError extends Error {
@@ -13,8 +15,12 @@ class ApiError extends Error {
   }
 }
 
-async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+async function fetchApi<T>(
+  baseUrl: string = API_BASE_URL,
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const url = `${baseUrl}${endpoint}`;
 
   const response = await fetch(url, {
     ...options,
@@ -38,11 +44,28 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
 }
 
 export const apiClient = {
+  // Requirements endpoints (proxied through server to avoid CORS)
+  requirements: {
+    getAllRequirements: async (): Promise<Requirement[]> => {
+      const response = await fetchApi<{ data: Requirement[] }>(
+        API_BASE_URL,
+        `/requirements`,
+      );
+
+      // Validate response structure
+      if (!response || !response.data || !Array.isArray(response.data)) {
+        throw new ApiError(500, 'Invalid response format: expected { data: Requirement[] }');
+      }
+
+      return response.data;
+    },
+  },
+
   // Review endpoints
   reviews: {
-    getAll: () => fetchApi('/reviews'),
+    getAll: () => fetchApi(API_BASE_URL, '/reviews'),
 
-    getById: (id: string | number) => fetchApi(`/reviews/${id}`),
+    getById: (id: string | number) => fetchApi(API_BASE_URL, `/reviews/${id}`),
 
     create: (data: {
       title: string;
@@ -51,7 +74,7 @@ export const apiClient = {
       objectType: string;
       regulatoryFramework: string;
     }) =>
-      fetchApi('/reviews', {
+      fetchApi(API_BASE_URL, '/reviews', {
         method: 'POST',
         body: JSON.stringify(data),
       }),
@@ -66,23 +89,24 @@ export const apiClient = {
         regulatoryFramework: string;
       },
     ) =>
-      fetchApi(`/reviews/${id}`, {
+      fetchApi(API_BASE_URL, `/reviews/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       }),
 
     delete: (id: number) =>
-      fetchApi(`/reviews/${id}`, {
+      fetchApi(API_BASE_URL, `/reviews/${id}`, {
         method: 'DELETE',
       }),
   },
 
   // Check endpoints
   checks: {
-    getForReview: (reviewId: string | number) => fetchApi(`/reviews/${reviewId}/checks`),
+    getForReview: (reviewId: string | number) =>
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks`),
 
     getByRequirement: (reviewId: string | number, requirementId: string) =>
-      fetchApi(`/reviews/${reviewId}/checks/${requirementId}`),
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks/${requirementId}`),
 
     upsert: (
       reviewId: string | number,
@@ -93,30 +117,30 @@ export const apiClient = {
         flag?: number;
       },
     ) =>
-      fetchApi(`/reviews/${reviewId}/checks`, {
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks`, {
         method: 'POST',
         body: JSON.stringify(data),
       }),
 
     delete: (checkId: number) =>
-      fetchApi(`/reviews/checks/${checkId}`, {
+      fetchApi(API_BASE_URL, `/reviews/checks/${checkId}`, {
         method: 'DELETE',
       }),
 
     bulkDisable: (reviewId: number, requirements: string[]) =>
-      fetchApi(`/reviews/${reviewId}/checks/bulk-disable`, {
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks/bulk-disable`, {
         method: 'POST',
         body: JSON.stringify({ requirements }),
       }),
 
     bulkEnable: (reviewId: number, requirements: string[]) =>
-      fetchApi(`/reviews/${reviewId}/checks/bulk-enable`, {
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks/bulk-enable`, {
         method: 'POST',
         body: JSON.stringify({ requirements }),
       }),
 
     bulkDelete: (reviewId: number, requirements: string[]) =>
-      fetchApi(`/reviews/${reviewId}/checks/bulk-delete`, {
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks/bulk-delete`, {
         method: 'POST',
         body: JSON.stringify({ requirements }),
       }),
@@ -129,13 +153,13 @@ export const apiClient = {
         comment: string;
       }>,
     ) =>
-      fetchApi(`/reviews/${reviewId}/checks/bulk-prefill`, {
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks/bulk-prefill`, {
         method: 'POST',
         body: JSON.stringify({ prefills }),
       }),
 
     toggleFlag: (reviewId: number, requirementId: string, flag: boolean) =>
-      fetchApi(`/reviews/${reviewId}/checks/${requirementId}/toggle-flag`, {
+      fetchApi(API_BASE_URL, `/reviews/${reviewId}/checks/${requirementId}/toggle-flag`, {
         method: 'POST',
         body: JSON.stringify({ flag }),
       }),

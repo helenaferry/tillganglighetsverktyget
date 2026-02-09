@@ -1,4 +1,5 @@
 import { apiClient } from './apiClient';
+import { standaloneClient } from './standaloneClient';
 import {
   type Check,
   type PrefillRequirement,
@@ -7,19 +8,28 @@ import {
   Status,
 } from './types';
 
+/**
+ * Get the appropriate client based on standalone mode
+ * This is called at runtime, allowing tests to override via environment variables
+ */
+function getClient() {
+  const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
+  return isStandalone ? standaloneClient : apiClient;
+}
+
 export const ReviewService = {
   async getAllReviewSummaries(): Promise<ReviewSummary[]> {
-    const reviews = (await apiClient.reviews.getAll()) as ReviewSummary[];
+    const reviews = (await getClient().reviews.getAll()) as ReviewSummary[];
     return reviews;
   },
 
   async getReviewById(reviewId: string): Promise<Review> {
-    const review = (await apiClient.reviews.getById(reviewId)) as Review;
+    const review = (await getClient().reviews.getById(reviewId)) as Review;
     return review;
   },
 
   async getChecksForReview(reviewId: string): Promise<Check[]> {
-    const checks = (await apiClient.checks.getForReview(reviewId)) as Check[];
+    const checks = (await getClient().checks.getForReview(reviewId)) as Check[];
     return checks;
   },
 
@@ -31,7 +41,7 @@ export const ReviewService = {
   }): Promise<Check> {
     const { reviewId, requirement, status, comment } = input;
 
-    const check = (await apiClient.checks.upsert(reviewId, {
+    const check = (await getClient().checks.upsert(reviewId, {
       requirement,
       status,
       comment,
@@ -41,7 +51,7 @@ export const ReviewService = {
   },
 
   async getCheckById(reviewId: string, requirementId: string): Promise<Check | null> {
-    const check = (await apiClient.checks.getByRequirement(
+    const check = (await getClient().checks.getByRequirement(
       reviewId,
       requirementId,
     )) as Check | null;
@@ -49,26 +59,26 @@ export const ReviewService = {
   },
 
   async deleteCheck(checkId: string): Promise<boolean> {
-    await apiClient.checks.delete(Number(checkId));
+    await getClient().checks.delete(Number(checkId));
     return true;
   },
 
   async deleteChecks(reviewId: number, requirementIds: string[]): Promise<boolean> {
-    await apiClient.checks.bulkDelete(reviewId, requirementIds);
+    await getClient().checks.bulkDelete(reviewId, requirementIds);
     return true;
   },
 
   async disableChecks(reviewId: number, requirements: string[]): Promise<Check[]> {
-    const checks = (await apiClient.checks.bulkDisable(reviewId, requirements)) as Check[];
+    const checks = (await getClient().checks.bulkDisable(reviewId, requirements)) as Check[];
     return checks;
   },
 
   async enableChecks(reviewId: number, requirements: string[]): Promise<void> {
-    await apiClient.checks.bulkEnable(reviewId, requirements);
+    await getClient().checks.bulkEnable(reviewId, requirements);
   },
 
   async prefillChecks(reviewId: number, prefills: PrefillRequirement[]): Promise<Check[]> {
-    const checks = (await apiClient.checks.bulkPrefill(reviewId, prefills)) as Check[];
+    const checks = (await getClient().checks.bulkPrefill(reviewId, prefills)) as Check[];
     return checks;
   },
 
@@ -92,10 +102,10 @@ export const ReviewService = {
     };
 
     if (id) {
-      const review = (await apiClient.reviews.update(id, reviewData)) as Review;
+      const review = (await getClient().reviews.update(id, reviewData)) as Review;
       return review;
     } else {
-      const review = (await apiClient.reviews.create(reviewData)) as Review;
+      const review = (await getClient().reviews.create(reviewData)) as Review;
       return review;
     }
   },
@@ -107,11 +117,11 @@ export const ReviewService = {
   },
 
   async deleteReview(reviewId: number): Promise<void> {
-    await apiClient.reviews.delete(reviewId);
+    await getClient().reviews.delete(reviewId);
   },
 
   async toggleCheckFlag(reviewId: number, requirementId: string, flag: boolean): Promise<Check> {
-    const check = (await apiClient.checks.toggleFlag(reviewId, requirementId, flag)) as Check;
+    const check = (await getClient().checks.toggleFlag(reviewId, requirementId, flag)) as Check;
     return check;
   },
 };

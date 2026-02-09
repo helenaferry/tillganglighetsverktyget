@@ -68,6 +68,10 @@ open http://localhost:5173
 
 📖 **Fullständig guide:** [QUICKSTART.md](QUICKSTART.md)
 
+### Standalone-läge
+
+Det absolut enklaste sättet att komma igång och testa Tillgänglighetsverktyget lokalt, utan databas eller API. Se [QUICKSTART.md](QUICKSTART.md).
+
 ## Teknisk stack
 
 - **React Router** – Routing och navigering

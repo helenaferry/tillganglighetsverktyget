@@ -202,7 +202,6 @@ Projektet använder tre separata `.env`-filer för att hålla konfiguration orga
 | Fil                 | Syfte                  | När behövs                      | Känslig data  |
 | ------------------- | ---------------------- | ------------------------------- | ------------- |
 | `.env` (root)       | Container-orkestrering | ✅ Alltid med Podman Compose    | Ja (lösenord) |
-| `server/.env`       | Backend-utveckling     | Endast lokal backend-utveckling | Ja (lösenord) |
 | `client/.env.local` | Frontend-konfiguration | ✅ Alltid (krävs av frontend)   | Nej           |
 
 ### 1. Root `.env` - Container-orkestrering
@@ -221,18 +220,7 @@ cp .env.example .env
 - `ALLOWED_ORIGINS` - CORS tillåtna domäner
 - `VITE_API_URL` - API URL för frontend
 
-### 2. Server `.env` - Backend-utveckling
-
-**Kopieras från:** `server/.env.example`  
-**Används av:** Node.js backend direkt
-
-```bash
-cd server && cp .env.example .env
-```
-
-**När:** Endast vid lokal backend-utveckling utan containers
-
-### 3. Client `.env.local` - Frontend-konfiguration
+### 2. Client `.env.local` - Frontend-konfiguration
 
 **Kopieras från:** `client/.env.example`  
 **Används av:** React + Vite  
@@ -256,13 +244,16 @@ cp client/.env.example client/.env.local    # Frontend
 podman compose -f compose.dev.yml up
 ```
 
-**Scenario 2: Lokal backend**
+**Scenario 2: Lokal backend (ovanligt)**
 
 ```bash
 podman compose -f compose.dev.yml up oracle-db  # Endast databas
-cd server && cp .env.example .env  # Konfigurera backend
-npm run dev
+# Sätt miljövariabler från root .env eller exportera direkt:
+# export DB_HOST=oracle-db DB_PORT=1521 DB_SERVICE=FREEPDB1 DB_USER=tillgang_user DB_PASSWORD=...
+cd server && npm run dev
 ```
+
+**OBS:** Standardvägen är att köra backend i container. Lokal backend-utveckling kräver manuell konfiguration av miljövariabler.
 
 **Scenario 3: Anpassad frontend**
 
