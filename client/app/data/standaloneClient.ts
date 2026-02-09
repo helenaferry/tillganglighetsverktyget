@@ -10,7 +10,9 @@ import {
   normalizeReview,
 } from './localStorageTransformers';
 import { standaloneExampleData } from './standaloneExampleData';
-import type { Check, Review, ReviewSummary } from './types';
+import type { Check, Requirement, Review, ReviewSummary } from './types';
+
+const requirementsPath = import.meta.env.VITE_REQUIREMENTS_URL;
 
 // localStorage keys
 const STORAGE_KEY_REVIEWS = 'tillgang_reviews';
@@ -179,6 +181,24 @@ function getNextCheckId(): number {
 }
 
 export const standaloneClient = {
+  // Requirements endpoints
+  requirements: {
+    getAllRequirements: async (): Promise<Requirement[]> => {
+      const res = await fetch(requirementsPath);
+      if (!res.ok) {
+        throw new Error(
+          `Failed to load requirements from ${requirementsPath}: ${res.status} ${res.statusText}`,
+        );
+      }
+      const json: { data: Requirement[] } = await res.json();
+      if (!json || !json.data || !Array.isArray(json.data)) {
+        throw new Error('Invalid requirements data format: expected { data: Requirement[] }');
+      }
+
+      return json.data;
+    },
+  },
+
   // Review endpoints
   reviews: {
     getAll: async (): Promise<ReviewSummary[]> => {
