@@ -22,12 +22,12 @@ async function fetchApi<T>(
 ): Promise<T> {
   const url = `${baseUrl}${endpoint}`;
 
+  const headers = new Headers(options.headers);
+  headers.set('Content-Type', 'application/json');
+
   const response = await fetch(url, {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
+    headers,
   });
 
   if (!response.ok) {

@@ -46,6 +46,8 @@ Om du använder Podman från terminalen (t.ex. `brew install podman`) behöver d
    ```bash
    podman machine init --cpus 4 --memory 8192 --disk-size 50
    ```
+   **Felsökning Windows**
+Om detta inte fungerar så kan det bero på att du laddat ner Podman på din användare och inte globalt på datorn. Det kan också bero på att du kan behöva använda PowerShell.
 
    Om du redan har en maskin men med för lite minne kan du ta bort och skapa om (data i containrar på maskinen går förlorad):
 
@@ -85,13 +87,13 @@ Applikationen består av tre huvudtjänster:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Din dator                           │
+│                    Din dator                            │
 │                                                         │
-│  ┌─────────────┐      ┌──────────────┐     ┌────────┐ │
-│  │  Frontend   │─────▶│  Backend API │────▶│ Oracle │ │
-│  │  (React)    │      │  (Express)   │     │   XE   │ │
-│  │  Port 5173  │      │  Port 3000   │     │  1521  │ │
-│  └─────────────┘      └──────────────┘     └────────┘ │
+│  ┌─────────────┐      ┌──────────────┐     ┌────────┐   │
+│  │  Frontend   │─────▶│  Backend API │────▶│ Oracle │   │
+│  │  (React)    │      │  (Express)   │     │   XE   │   │
+│  │  Port 5173  │      │  Port 3000   │     │  1521  │   │
+│  └─────────────┘      └──────────────┘     └────────┘   │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
