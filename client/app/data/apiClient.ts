@@ -4,8 +4,6 @@
 import type { Requirement } from './types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-const OPEN_DATA_PORTAL_API_BASE_URL =
-  import.meta.env.VITE_OPEN_DATA_PORTAL_API_URL || 'https://data.arbetsformedlingen.se';
 
 class ApiError extends Error {
   constructor(
@@ -46,12 +44,12 @@ async function fetchApi<T>(
 }
 
 export const apiClient = {
-  // Open Data Portal endpoints
+  // Requirements endpoints (proxied through server to avoid CORS)
   requirements: {
     getAllRequirements: async (): Promise<Requirement[]> => {
       const response = await fetchApi<{ data: Requirement[] }>(
-        OPEN_DATA_PORTAL_API_BASE_URL,
-        `/tillganglighetskrav`,
+        API_BASE_URL,
+        `/requirements`,
       );
 
       // Validate response structure
