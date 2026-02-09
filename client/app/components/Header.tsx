@@ -8,7 +8,7 @@ import {
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { envVars } from '~/helpers/helpers';
 
@@ -50,13 +50,13 @@ export default function Header() {
                   location.pathname === '/' || location.pathname.includes('granskning')
                 }
               >
-                <a href="/">{t('Home.Title')}</a>
+                <Link to="/">{t('Home.Title')}</Link>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
-                <a href="/krav">{t('requirements.Title')}</a>
+                <Link to="/krav">{t('requirements.Title')}</Link>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/tips'}>
-                <a href="/tips">{t('tips.Title')}</a>
+                <Link to="/tips">{t('tips.Title')}</Link>
               </DigiHeaderNavigationItem>
             </DigiHeaderNavigation>
           </div>
