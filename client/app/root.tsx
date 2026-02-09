@@ -7,7 +7,7 @@ import './app.css';
 
 import { ErrorPageStatusCodes } from '@designsystem-se/af';
 import { DigiNotificationErrorPage, DigiTypography } from '@designsystem-se/af-react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import {
   isRouteErrorResponse,
@@ -25,8 +25,10 @@ import Header from './components/Header';
 import SkipLink from './components/SkipLink';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import i18n from './lang/i18n';
+import { getQueryClient } from './queryClient';
 
-const queryClient = new QueryClient();
+// Get singleton QueryClient instance
+const queryClient = getQueryClient();
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
