@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 
-const EXTERNAL_API_URL = process.env.OPEN_DATA_PORTAL_API_URL || 
+const EXTERNAL_REQUIREMENTS_URL = process.env.EXTERNAL_REQUIREMENTS_URL || 
   'https://data.arbetsformedlingen.se/accessibility/accessibility-requirements.json';
 
 /**
  * GET /api/requirements
- * Proxy endpoint to fetch requirements from external API
+ * Proxy endpoint to fetch requirements from external data source
  * This avoids CORS issues by fetching on the server side
  */
 export const getAllRequirements = async (req: Request, res: Response) => {
   try {
-    const response = await fetch(EXTERNAL_API_URL, {
+    const response = await fetch(EXTERNAL_REQUIREMENTS_URL, {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'Tillganglighetsverktyget/1.0',
@@ -18,9 +18,9 @@ export const getAllRequirements = async (req: Request, res: Response) => {
     });
 
     if (!response.ok) {
-      console.error(`External API returned ${response.status}: ${response.statusText}`);
+      console.error(`External requirements URL returned ${response.status}: ${response.statusText}`);
       return res.status(response.status).json({
-        error: `Failed to fetch requirements from external API`,
+        error: `Failed to fetch requirements from external source`,
         status: response.status,
         statusText: response.statusText,
       });
@@ -30,16 +30,16 @@ export const getAllRequirements = async (req: Request, res: Response) => {
     
     // Validate response structure
     if (!data || !data.data || !Array.isArray(data.data)) {
-      console.error('Invalid response format from external API');
+      console.error('Invalid response format from external requirements source');
       return res.status(500).json({
-        error: 'Invalid response format from external API',
+        error: 'Invalid response format from external requirements source',
       });
     }
 
     // Return the data as-is (maintaining the { data: Requirement[] } structure)
     res.json(data);
   } catch (error: any) {
-    console.error('Error fetching requirements from external API:', error);
+    console.error('Error fetching requirements from external source:', error);
     res.status(500).json({
       error: 'Failed to fetch requirements',
       message: process.env.NODE_ENV === 'development' ? error.message : undefined,
