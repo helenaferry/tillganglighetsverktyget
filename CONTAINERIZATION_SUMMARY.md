@@ -105,9 +105,8 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 
 ✅ **Miljö:**
 
-- `.env.example` - Komplett miljömall
-- `server/.env.example` - Backend-specifika env-variabler
-- `client/.env.example` - Frontend-specifika env-variabler
+- `.env.example` - Komplett miljömall (används av Podman Compose)
+- `client/.env.example` - Frontend-specifika env-variabler (kopieras till client/.env.local)
 
 ### 5. Dokumentation
 
