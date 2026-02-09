@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import reviewRoutes from './routes/reviewRoutes';
+import requirementRoutes from './routes/requirementRoutes';
 import { sequelize } from './database/database';
 
 const app = express();
@@ -57,6 +58,7 @@ app.get('/health', async (req, res) => {
 
 // API routes
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/requirements', requirementRoutes);
 
 // 404 handler
 app.use((req, res) => {
