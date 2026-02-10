@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 const EXTERNAL_REQUIREMENTS_URL = process.env.EXTERNAL_REQUIREMENTS_URL || 
-  'https://data.arbetsformedlingen.se/accessibility/accessibility-requirements.json';
+  'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
 
 /**
  * GET /api/requirements
