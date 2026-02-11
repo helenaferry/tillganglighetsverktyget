@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import logger from '../logger';
 
 const EXTERNAL_REQUIREMENTS_URL = process.env.EXTERNAL_REQUIREMENTS_URL || 
   'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
@@ -18,7 +19,10 @@ export const getAllRequirements = async (req: Request, res: Response) => {
     });
 
     if (!response.ok) {
-      console.error(`External requirements URL returned ${response.status}: ${response.statusText}`);
+      logger.error('External requirements URL returned error', {
+        status: response.status,
+        statusText: response.statusText,
+      });
       return res.status(response.status).json({
         error: `Failed to fetch requirements from external source`,
         status: response.status,
@@ -30,7 +34,7 @@ export const getAllRequirements = async (req: Request, res: Response) => {
     
     // Validate response structure
     if (!data || !data.data || !Array.isArray(data.data)) {
-      console.error('Invalid response format from external requirements source');
+      logger.error('Invalid response format from external requirements source');
       return res.status(500).json({
         error: 'Invalid response format from external requirements source',
       });
@@ -39,10 +43,10 @@ export const getAllRequirements = async (req: Request, res: Response) => {
     // Return the data as-is (maintaining the { data: Requirement[] } structure)
     res.json(data);
   } catch (error: any) {
-    console.error('Error fetching requirements from external source:', error);
+    logger.error('Error fetching requirements from external source', { error });
     res.status(500).json({
       error: 'Failed to fetch requirements',
-      message: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      detail: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 };

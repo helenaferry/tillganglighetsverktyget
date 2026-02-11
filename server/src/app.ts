@@ -80,7 +80,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
   res.status(500).json({ 
     error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    detail: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 
