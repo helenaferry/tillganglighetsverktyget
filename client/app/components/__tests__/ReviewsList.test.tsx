@@ -581,6 +581,50 @@ describe('ReviewsList', () => {
 
       expect(screen.getByText(i18next.t('ReviewsList.LoadingError'))).toBeInTheDocument();
     });
+
+    it('applies all filters and sorting from URL parameters on mount', async () => {
+      const { useReviews } = await import('../../hooks/useReviewData');
+      const { useRequirements } = await import('../../hooks/useRequirementData');
+
+      vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
+      vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+      // Set one review as favorite
+      localStorage.setItem('favoriteReviews', JSON.stringify([1]));
+
+      // Mock useSearchParams with all parameters: search, sort, direction, favorites
+      const mockSearchParams = new URLSearchParams(
+        'sok=amor&sortering=1&riktning=stigande&favoriter=true',
+      );
+      const mockSetSearchParams = vi.fn();
+      vi.mocked(useSearchParams).mockReturnValue([mockSearchParams, mockSetSearchParams]);
+
+      renderReviewsList();
+
+      // Wait for component to apply all URL params
+      await waitFor(() => {
+        // Verify favorites checkbox is checked
+        const checkbox = screen.getByTestId('favorites-checkbox');
+        expect(checkbox).toBeChecked();
+
+        // Verify free text filter applied (only 1 favorite review with "amor" in title)
+        const rows = screen.getAllByRole('row');
+        expect(rows).toHaveLength(2); // 1 matching favorite review + header
+
+        // Verify sort button is active (desktop button)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingReviewName')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify sort direction on column header
+        const headers = screen.getAllByRole('columnheader');
+        const nameHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewName')),
+        );
+        expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
+      });
+    });
   });
 
   /* ---------------------------------------------------------------
@@ -611,6 +655,9 @@ describe('ReviewsList', () => {
 
       vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
       vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+      // Reset search params to empty
+      vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), vi.fn()]);
 
       renderReviewsList();
 
