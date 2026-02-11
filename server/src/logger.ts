@@ -2,9 +2,9 @@ import winston from 'winston';
 import { ecsFormat } from '@elastic/ecs-winston-format';
 import { RequestContext } from './middleware/requestContext';
 import { ReviewAttributes } from './models/Review';
+import { Status, StatusText } from './types/status';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const packageJson = require('../package.json');
+import packageJson from '../package.json';
 
 // Configure logger with environment-based log level
 const logLevel = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
@@ -155,20 +155,57 @@ export const logDeletedReview = (review: ReviewAttributes) => {
   });
 };
 
-export const logCheckUpserted = (logAttributes: {
-  reviewId: number;
-  requirement: string | null;
-  status: number | null;
-  comment: string | null;
-  flag: number | null;
-}) => {
-  // Keep this for check operations (not part of audit requirements)
-  logger.debug('Check upserted', {
-    reviewId: logAttributes.reviewId,
-    requirement: logAttributes.requirement,
-    status: logAttributes.status,
-    comment: logAttributes.comment,
-    flag: logAttributes.flag,
+/**
+ * Logs check update audit event
+ */
+export const logCheckUpdated = (
+  check: {
+    review: number;
+    requirement: string | null;
+    status: number | null;
+    comment: string | null;
+    flag: number | null;
+  },
+  isNew: boolean,
+  context: RequestContext,
+) => {
+  const userName = context.userId || 'okänd användare';
+  
+  // Get Swedish status text from StatusText enum
+  let statusText: string;
+  if (check.status === null) {
+    statusText = StatusText.NOT_ASSESSED;
+  } else {
+    switch (check.status) {
+      case Status.FAIL:
+        statusText = StatusText.FAIL;
+        break;
+      case Status.PASS:
+        statusText = StatusText.PASS;
+        break;
+      case Status.IRRELEVANT:
+        statusText = StatusText.IRRELEVANT;
+        break;
+      case Status.NOT_ASSESSED:
+        statusText = StatusText.NOT_ASSESSED;
+        break;
+      default:
+        statusText = 'Okänd';
+    }
+  }
+  
+  const action = isNew ? 'skapad' : 'uppdaterad';
+  const message = `Kontroll för krav ${check.requirement || 'okänt'} ${action} i granskning ${check.review} av användare ${userName}. Status: ${statusText}`;
+
+  logger.info(message, {
+    ...buildAuditMetadata(context),
+    'event.action': isNew ? 'create' : 'update',
+    'object.type': 'check',
+    'object.id': `${check.review}-${check.requirement}`,
+    'object.review_id': check.review,
+    'object.requirement': check.requirement,
+    'object.status': check.status,
+    'object.flag': check.flag,
   });
 };
 
