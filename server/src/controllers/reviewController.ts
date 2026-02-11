@@ -6,21 +6,14 @@ import logger, {
   logReviewCreated,
   logReviewDeleted,
   logReviewUpdated,
-  logCheckUpserted,
+  logCheckUpdated,
 } from '../logger';
 import { RequestContext } from '../middleware/requestContext';
+import { Status } from '../types/status';
 
 /** Normalize Express param (string | string[]) to string for parseInt/usage. */
 function paramString(value: string | string[] | undefined): string {
   return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
-}
-
-// Status enum matching frontend
-enum Status {
-  FAIL = 0,
-  PASS = 1,
-  IRRELEVANT = 2,
-  NOT_ASSESSED = 3,
 }
 
 // GET /api/reviews - Get all reviews with summaries
@@ -200,7 +193,7 @@ export const createReview = async (req: Request, res: Response) => {
         throw new Error('Failed to fetch created review after insert');
       }
 
-      const context = (req as Request & { context?: RequestContext }).context || {
+      const context = req.context || {
         clientIp: req.ip || 'unknown',
         requestId: 'unknown',
       };
@@ -210,7 +203,7 @@ export const createReview = async (req: Request, res: Response) => {
       return res.status(201).json(createdReview);
     }
 
-    const context = (req as Request & { context?: RequestContext }).context || {
+    const context = req.context || {
       clientIp: req.ip || 'unknown',
       requestId: 'unknown',
     };
@@ -294,7 +287,7 @@ export const updateReview = async (req: Request, res: Response) => {
       };
     }
 
-    const context = (req as Request & { context?: RequestContext }).context || {
+    const context = req.context || {
       clientIp: req.ip || 'unknown',
       requestId: 'unknown',
     };
@@ -323,7 +316,7 @@ export const deleteReview = async (req: Request, res: Response) => {
 
     await review.destroy();
 
-    const context = (req as Request & { context?: RequestContext }).context || {
+    const context = req.context || {
       clientIp: req.ip || 'unknown',
       requestId: 'unknown',
     };
@@ -352,6 +345,8 @@ export const upsertCheck = async (req: Request, res: Response) => {
     });
 
     let check;
+    const isNew = !existingCheck;
+    
     if (existingCheck) {
       // Update existing check (updated_at handled by database trigger)
       await existingCheck.update({
@@ -371,13 +366,22 @@ export const upsertCheck = async (req: Request, res: Response) => {
       });
     }
 
-    logCheckUpserted({
-      reviewId: check.review,
-      requirement: check.requirement,
-      status: check.status,
-      comment: check.comment || '',
-      flag: check.flag || 0,
-    });
+    const context = req.context || {
+      clientIp: req.ip || 'unknown',
+      requestId: 'unknown',
+    };
+
+    logCheckUpdated(
+      {
+        review: check.review,
+        requirement: check.requirement,
+        status: check.status,
+        comment: check.comment || '',
+        flag: check.flag || 0,
+      },
+      isNew,
+      context,
+    );
 
     res.json(check.toJSON());
   } catch (error) {
@@ -653,13 +657,24 @@ export const toggleCheckFlag = async (req: Request, res: Response) => {
         flag: flag ? 1 : 0,
       });
     }
-    logCheckUpserted({
-      reviewId: check.review,
-      requirement: check.requirement,
-      status: check.status,
-      comment: check.comment || '',
-      flag: check.flag || 0,
-    });
+
+    const context = req.context || {
+      clientIp: req.ip || 'unknown',
+      requestId: 'unknown',
+    };
+
+    logCheckUpdated(
+      {
+        review: check.review,
+        requirement: check.requirement,
+        status: check.status,
+        comment: check.comment || '',
+        flag: check.flag || 0,
+      },
+      created,
+      context,
+    );
+
     res.json(check.toJSON());
   } catch (error) {
     logger.error('Error toggling check flag', { error });
