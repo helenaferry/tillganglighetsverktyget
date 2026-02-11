@@ -72,6 +72,20 @@ open http://localhost:5173
 
 Det absolut enklaste sättet att komma igång och testa Tillgänglighetsverktyget lokalt, utan databas eller API. Se [QUICKSTART.md](QUICKSTART.md).
 
+## Tester
+
+Projektet inkluderar tester för både frontend och backend. Se [docs/TESTING.md](docs/TESTING.md) för fullständig dokumentation om hur du kör tester.
+
+**Snabbstart för tester:**
+
+```bash
+# Frontend-tester
+cd client && npm test
+
+# Backend-tester
+cd server && npm test
+```
+
 ## Teknisk stack
 
 - **React Router** – Routing och navigering
