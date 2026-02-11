@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
-import { Review, Check } from '../models';
+import { Review, Check, CheckAttributes } from '../models';
 import { Op, fn, col, literal, UniqueConstraintError } from 'sequelize';
 import { sequelize } from '../database/database';
-import logger from '../logger';
+import logger, {
+  logCreatedReview,
+  logDeletedReview,
+  logUpdatedReview,
+  logCheckUpserted,
+} from '../logger';
 
 /** Normalize Express param (string | string[]) to string for parseInt/usage. */
 function paramString(value: string | string[] | undefined): string {
@@ -133,8 +138,6 @@ export const getReviewById = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Review not found' });
     }
 
-    logger.info(`Accessed review with id ${id}`);
-
     res.json(review);
   } catch (error) {
     console.error('Error fetching review:', error);
@@ -193,6 +196,11 @@ export const createReview = async (req: Request, res: Response) => {
         throw new Error('Failed to fetch created review after insert');
       }
 
+      logCreatedReview({
+        id: createdReview.id,
+        title: createdReview.title ?? null,
+      });
+
       return res.status(201).json(createdReview);
     }
 
@@ -230,6 +238,11 @@ export const updateReview = async (req: Request, res: Response) => {
       regulatoryFramework,
     });
 
+    logUpdatedReview({
+      id: review.id,
+      title: review.title ?? null,
+    });
+
     res.json(review);
   } catch (error) {
     console.error('Error updating review:', error);
@@ -248,6 +261,10 @@ export const deleteReview = async (req: Request, res: Response) => {
     }
 
     await review.destroy();
+    logDeletedReview({
+      id: review.id,
+      title: review.title ?? null,
+    });
     res.status(204).send();
   } catch (error) {
     console.error('Error deleting review:', error);
@@ -289,7 +306,15 @@ export const upsertCheck = async (req: Request, res: Response) => {
       });
     }
 
-    res.json(check);
+    logCheckUpserted({
+      reviewId: check.review,
+      requirement: check.requirement,
+      status: check.status,
+      comment: check.comment || '',
+      flag: check.flag || 0,
+    });
+
+    res.json(check.toJSON());
   } catch (error) {
     console.error('Error upserting check:', error);
     res.status(500).json({ error: 'Failed to upsert check' });
@@ -563,7 +588,13 @@ export const toggleCheckFlag = async (req: Request, res: Response) => {
         flag: flag ? 1 : 0,
       });
     }
-
+    logCheckUpserted({
+      reviewId: check.review,
+      requirement: check.requirement,
+      status: check.status,
+      comment: check.comment || '',
+      flag: check.flag || 0,
+    });
     res.json(check.toJSON());
   } catch (error) {
     console.error('Error toggling check flag:', error);
