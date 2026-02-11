@@ -15,7 +15,7 @@ export interface RequestContext {
  * - Generates requestId for correlation
  */
 export const requestContextMiddleware = (
-  req: Request & { context?: RequestContext },
+  req: Request,
   res: Response,
   next: NextFunction,
 ) => {
