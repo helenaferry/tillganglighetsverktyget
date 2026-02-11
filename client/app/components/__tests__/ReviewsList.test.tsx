@@ -157,15 +157,26 @@ vi.mock('@designsystem-se/af-react', async () => {
       afLabel?: string;
       afChecked?: boolean;
       onAfOnChange?: (e: { detail: { target: { checked: boolean } } }) => void;
-    }) => (
-      <input
-        type="checkbox"
-        data-testid="favorites-checkbox"
-        aria-label={afLabel}
-        checked={afChecked}
-        onChange={(e) => onAfOnChange?.({ detail: { target: { checked: e.target.checked } } })}
-      />
-    ),
+    }) => {
+      const [checked, setChecked] = React.useState(afChecked || false);
+
+      React.useEffect(() => {
+        setChecked(afChecked || false);
+      }, [afChecked]);
+
+      return (
+        <input
+          type="checkbox"
+          data-testid="favorites-checkbox"
+          aria-label={afLabel}
+          checked={checked}
+          onChange={(e) => {
+            setChecked(e.target.checked);
+            onAfOnChange?.({ detail: { target: { checked: e.target.checked } } });
+          }}
+        />
+      );
+    },
     DigiFormInputSearch: ({
       afLabel,
       afValue,
@@ -515,8 +526,6 @@ const createMockRequirementsQuery = (
 
 /* ---------------------------------------------------------------
  * TESTS
- *
- *
  * --------------------------------------------------------------- */
 
 describe('ReviewsList', () => {
@@ -529,10 +538,6 @@ describe('ReviewsList', () => {
 
   /* ---------------------------------------------------------------
    * Rendering and basic interactions
-   * - renders the component with title and preamble
-   * - renders create review button
-   * - shows loading state when data is loading
-   * - shows error message when there is an error
    * --------------------------------------------------------------- */
   describe('Rendering and basic interactions', () => {
     it('renders the component with title and preamble', () => {
@@ -629,9 +634,6 @@ describe('ReviewsList', () => {
 
   /* ---------------------------------------------------------------
    * Funktionellt krav: Möjliggöra sökning efter granskningar.
-   * - sets url params when filters change
-   * - filters reviews by title from url params
-   * see also CardsOrTable.test.tsx
    * --------------------------------------------------------------- */
 
   describe('Möjliggöra sökning efter granskningar', () => {
@@ -701,11 +703,6 @@ describe('ReviewsList', () => {
 
   /* ---------------------------------------------------------------
    * Funktionellt krav: Möjliggöra sortering av granskningar
-   * - sorts reviews by name ascending
-   * - sorts reviews by name descending
-   * - sorts reviews by created date ascending
-   * - sorts reviews by created date descending
-   *
    * --------------------------------------------------------------- */
   describe('Möjliggöra sortering av granskningar', () => {
     it('sorts reviews by name ascending', async () => {
@@ -751,6 +748,19 @@ describe('ReviewsList', () => {
         for (let i = 0; i < displayedTitles.length - 1; i++) {
           expect(displayedTitles[i].localeCompare(displayedTitles[i + 1])).toBeLessThanOrEqual(0);
         }
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingReviewName')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="ascending"
+        const headers = screen.getAllByRole('columnheader');
+        const nameHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewName')),
+        );
+        expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
       });
     });
 
@@ -799,6 +809,19 @@ describe('ReviewsList', () => {
             0,
           );
         }
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingReviewName')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="descending"
+        const headers = screen.getAllByRole('columnheader');
+        const nameHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewName')),
+        );
+        expect(nameHeader).toHaveAttribute('aria-sort', 'descending');
       });
     });
 
@@ -837,6 +860,19 @@ describe('ReviewsList', () => {
         for (let i = 0; i < displayedDates.length - 1; i++) {
           expect(displayedDates[i]).toBeLessThanOrEqual(displayedDates[i + 1]);
         }
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingCreated')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="ascending"
+        const headers = screen.getAllByRole('columnheader');
+        const createdHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingCreated')),
+        );
+        expect(createdHeader).toHaveAttribute('aria-sort', 'ascending');
       });
     });
 
@@ -875,6 +911,19 @@ describe('ReviewsList', () => {
         for (let i = 0; i < displayedDates.length - 1; i++) {
           expect(displayedDates[i]).toBeGreaterThanOrEqual(displayedDates[i + 1]);
         }
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingCreated')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="descending"
+        const headers = screen.getAllByRole('columnheader');
+        const createdHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingCreated')),
+        );
+        expect(createdHeader).toHaveAttribute('aria-sort', 'descending');
       });
     });
 
@@ -913,6 +962,19 @@ describe('ReviewsList', () => {
         for (let i = 0; i < displayedDates.length - 1; i++) {
           expect(displayedDates[i]).toBeLessThanOrEqual(displayedDates[i + 1]);
         }
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingUpdated')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="ascending"
+        const headers = screen.getAllByRole('columnheader');
+        const updatedHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingUpdated')),
+        );
+        expect(updatedHeader).toHaveAttribute('aria-sort', 'ascending');
       });
     });
 
@@ -951,6 +1013,19 @@ describe('ReviewsList', () => {
         for (let i = 0; i < displayedDates.length - 1; i++) {
           expect(displayedDates[i]).toBeGreaterThanOrEqual(displayedDates[i + 1]);
         }
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingUpdated')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="descending"
+        const headers = screen.getAllByRole('columnheader');
+        const updatedHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingUpdated')),
+        );
+        expect(updatedHeader).toHaveAttribute('aria-sort', 'descending');
       });
     });
 
@@ -996,6 +1071,19 @@ describe('ReviewsList', () => {
 
         // Verify the correct items are displayed (top 10 by count)
         expect(displayedCounts).toEqual(expectedTop10Counts);
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingReviewed')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="ascending"
+        const headers = screen.getAllByRole('columnheader');
+        const reviewedHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewed')),
+        );
+        expect(reviewedHeader).toHaveAttribute('aria-sort', 'ascending');
       });
     });
 
@@ -1041,10 +1129,26 @@ describe('ReviewsList', () => {
 
         // Verify the correct items are displayed (top 10 by count)
         expect(displayedCounts).toEqual(expectedTop10Counts);
+
+        // Verify sort button has aria-pressed="true" (use getAllByRole since there are mobile + desktop buttons)
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingReviewed')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+        // Verify th has aria-sort="descending"
+        const headers = screen.getAllByRole('columnheader');
+        const reviewedHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewed')),
+        );
+        expect(reviewedHeader).toHaveAttribute('aria-sort', 'descending');
       });
     });
   });
 
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Möjliggöra favoritmarkering av granskningar
+   * --------------------------------------------------------------- */
   describe('Möjliggöra favoritmarkering av granskningar', () => {
     it('renders favorites checkbox', () => {
       renderReviewsList();
@@ -1083,6 +1187,9 @@ describe('ReviewsList', () => {
 
       vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
       vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+      // Reset search params to empty
+      vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), vi.fn()]);
 
       // Start with one review as favorite
       localStorage.setItem('favoriteReviews', JSON.stringify([1]));
