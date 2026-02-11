@@ -41,20 +41,105 @@ vi.mock('@designsystem-se/af-react', async () => {
         {...props}
       />
     ),
-    DigiFormInputSearch: ({ afLabel, ...props }: { afLabel?: string }) => (
-      <input data-testid="digi-form-input-search" data-label={afLabel} {...props} />
+    DigiFormInputSearch: ({
+      afLabel,
+      afValue,
+      onAfOnSubmitSearch,
+      ...props
+    }: {
+      afLabel?: string;
+      afValue?: string;
+      onAfOnSubmitSearch?: (e: CustomEvent) => void;
+    }) => (
+      <input
+        data-testid="digi-form-input-search"
+        data-label={afLabel}
+        defaultValue={afValue}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && onAfOnSubmitSearch) {
+            onAfOnSubmitSearch(
+              new CustomEvent('submit', { detail: (e.target as HTMLInputElement).value }) as any,
+            );
+          }
+        }}
+        {...props}
+      />
     ),
   };
 });
 
-describe('CardsOrTable', () => {
-  const mockRows = [
-    { id: 1, posInSet: 1, content: ['Row 1 Col 1', 'Row 1 Col 2'] },
-    { id: 2, posInSet: 2, content: ['Row 2 Col 1', 'Row 2 Col 2'] },
-    { id: 3, posInSet: 3, content: ['Row 3 Col 1', 'Row 3 Col 2'] },
-  ];
+const mockRows = [
+  { id: 1, posInSet: 1, content: ['Row 1 Col 1', 'Row 1 Col 2'] },
+  { id: 2, posInSet: 2, content: ['Row 2 Col 1', 'Row 2 Col 2'] },
+  { id: 3, posInSet: 3, content: ['Row 3 Col 1', 'Row 3 Col 2'] },
+];
 
-  const mockHeadings = ['Heading 1', 'Heading 2'];
+const mockHeadings = ['Heading 1', 'Heading 2'];
+
+// Helper to render with default props
+const renderCardsOrTable = (props: Partial<React.ComponentProps<typeof CardsOrTable>> = {}) => {
+  const rows = props.rows ?? mockRows;
+  const totalItems = props.totalItems ?? rows.length;
+
+  return render(
+    <CardsOrTable
+      headings={mockHeadings}
+      rows={rows}
+      itemsName="objekt"
+      totalItems={totalItems}
+      {...props}
+    />,
+  );
+};
+
+describe('CardsOrTable', () => {
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Möjliggöra sökning efter granskningar.
+   * - renders freeText filter
+   * - calls onChange with search param when submitting search
+   * see also ReviewsList.test.tsx
+   * --------------------------------------------------------------- */
+
+  describe('Möjliggöra sökning efter granskning', () => {
+    it('renders freeText filter', () => {
+      const mockOnChange = vi.fn();
+      renderCardsOrTable({
+        filters: [
+          {
+            type: 'freeText',
+            label: 'Sök',
+            values: [],
+            onChange: mockOnChange,
+          },
+        ],
+      });
+
+      const searchInput = screen.getByTestId('digi-form-input-search');
+      expect(searchInput).toBeInTheDocument();
+    });
+
+    it('calls onChange with search param when submitting search', async () => {
+      const user = userEvent.setup();
+      const mockOnChange = vi.fn();
+      renderCardsOrTable({
+        filters: [
+          {
+            type: 'freeText',
+            label: 'Sök',
+            values: [],
+            onChange: mockOnChange,
+          },
+        ],
+      });
+
+      const searchInput = screen.getByTestId('digi-form-input-search');
+      await user.type(searchInput, 'test{enter}');
+
+      // Verify onChange was called with the search term
+      expect(mockOnChange).toHaveBeenCalled();
+      expect(mockOnChange.mock.calls[mockOnChange.mock.calls.length - 1][0].detail).toBe('test');
+    });
+  });
 
   describe('hitsText rendering', () => {
     it('shows singular text when only one row', () => {
@@ -83,7 +168,7 @@ describe('CardsOrTable', () => {
       expect(container.textContent).toContain('3 granskningar');
     });
 
-    it('shows "hittades" when filtered results are less than total', () => {
+    it('shows found text when filtered results are less than total', () => {
       const { container } = render(
         <CardsOrTable
           headings={mockHeadings}
@@ -93,21 +178,16 @@ describe('CardsOrTable', () => {
           totalItems={10}
         />,
       );
-      expect(container.textContent).toContain('hittades');
+      expect(container.textContent).toContain(i18n.t('CardsOrTable.Found'));
     });
   });
 
   describe('pagination', () => {
     it('renders all rows when pageSize is -1 (no pagination)', () => {
-      const { container } = render(
-        <CardsOrTable
-          headings={mockHeadings}
-          rows={mockRows}
-          itemsName="granskningar"
-          totalItems={3}
-          defaultItemsPerPage={-1}
-        />,
-      );
+      const { container } = renderCardsOrTable({
+        itemsName: 'granskningar',
+        defaultItemsPerPage: -1,
+      });
       // All rows should be present
       expect(container.textContent).toContain('Row 1 Col 1');
       expect(container.textContent).toContain('Row 2 Col 1');
@@ -115,15 +195,7 @@ describe('CardsOrTable', () => {
     });
 
     it('renders only first page when pageSize is set', () => {
-      const { container } = render(
-        <CardsOrTable
-          headings={mockHeadings}
-          rows={mockRows}
-          itemsName="objekt"
-          totalItems={3}
-          defaultItemsPerPage={2}
-        />,
-      );
+      const { container } = renderCardsOrTable({ defaultItemsPerPage: 2 });
       // Should show pagination component when rows exceed page size
       const pagination = document.querySelector('digi-navigation-pagination');
       expect(pagination).toBeInTheDocument();
@@ -144,18 +216,53 @@ describe('CardsOrTable', () => {
       );
       expect(container.textContent).toContain('0 granskningar');
     });
+
+    it('resets to page 1 when filtering reduces rows below current page', () => {
+      const manyRows = Array.from({ length: 25 }, (_, i) => ({
+        id: i + 1,
+        posInSet: i + 1,
+        content: [`Row ${i + 1} Col 1`, `Row ${i + 1} Col 2`],
+      }));
+
+      const { rerender, container } = render(
+        <CardsOrTable
+          headings={mockHeadings}
+          rows={manyRows}
+          itemsName="objekt"
+          totalItems={25}
+          defaultItemsPerPage={10}
+        />,
+      );
+
+      // Verify pagination exists
+      const pagination = container.querySelector('digi-navigation-pagination');
+      expect(pagination).toBeInTheDocument();
+
+      // Now filter to just 2 rows (simulating what happens after filtering)
+      const filteredRows = manyRows.slice(0, 2);
+      rerender(
+        <CardsOrTable
+          headings={mockHeadings}
+          rows={filteredRows}
+          itemsName="objekt"
+          totalItems={25}
+          defaultItemsPerPage={10}
+        />,
+      );
+
+      // Should show both filtered rows (pagination reset works)
+      expect(container.textContent).toContain('Row 1 Col 1');
+      expect(container.textContent).toContain('Row 2 Col 1');
+
+      // Verify pagination NOT exists
+      const paginationAfter = container.querySelector('digi-navigation-pagination');
+      expect(paginationAfter).not.toBeInTheDocument();
+    });
   });
 
   describe('table structure', () => {
     it('renders table with correct headings', () => {
-      const { container } = render(
-        <CardsOrTable
-          headings={mockHeadings}
-          rows={mockRows}
-          itemsName="granskningar"
-          totalItems={3}
-        />,
-      );
+      const { container } = renderCardsOrTable({ itemsName: 'granskningar' });
       const table = container.querySelector('table');
       expect(table).toBeInTheDocument();
 
@@ -355,74 +462,7 @@ describe('CardsOrTable', () => {
     });
   });
 
-  describe('pagination reset bug fix', () => {
-    it('resets to page 1 when filtering reduces rows below current page', () => {
-      const manyRows = Array.from({ length: 25 }, (_, i) => ({
-        id: i + 1,
-        posInSet: i + 1,
-        content: [`Row ${i + 1} Col 1`, `Row ${i + 1} Col 2`],
-      }));
-
-      const { rerender, container } = render(
-        <CardsOrTable
-          headings={mockHeadings}
-          rows={manyRows}
-          itemsName="objekt"
-          totalItems={25}
-          defaultItemsPerPage={10}
-        />,
-      );
-
-      // Verify pagination exists
-      const pagination = container.querySelector('digi-navigation-pagination');
-      expect(pagination).toBeInTheDocument();
-
-      // Now filter to just 2 rows (simulating what happens after filtering)
-      const filteredRows = manyRows.slice(0, 2);
-      rerender(
-        <CardsOrTable
-          headings={mockHeadings}
-          rows={filteredRows}
-          itemsName="objekt"
-          totalItems={25}
-          defaultItemsPerPage={10}
-        />,
-      );
-
-      // Should show both filtered rows (pagination reset works)
-      expect(container.textContent).toContain('Row 1 Col 1');
-      expect(container.textContent).toContain('Row 2 Col 1');
-
-      // Verify pagination NOT exists
-      const paginationAfter = container.querySelector('digi-navigation-pagination');
-      expect(paginationAfter).not.toBeInTheDocument();
-    });
-  });
-
   describe('filters', () => {
-    it('renders freeText filter', () => {
-      const mockOnChange = vi.fn();
-      render(
-        <CardsOrTable
-          headings={mockHeadings}
-          rows={mockRows}
-          itemsName="objekt"
-          totalItems={3}
-          filters={[
-            {
-              type: 'freeText',
-              label: 'Sök',
-              values: [],
-              onChange: mockOnChange,
-            },
-          ]}
-        />,
-      );
-
-      const searchInput = screen.getByTestId('digi-form-input-search');
-      expect(searchInput).toBeInTheDocument();
-    });
-
     it('renders select filter with options', () => {
       const mockOnChange = vi.fn();
       const mockOptions = [

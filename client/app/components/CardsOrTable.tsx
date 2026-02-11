@@ -107,9 +107,9 @@ export function CardsOrTable({
 
   const hitsText = useMemo(() => {
     if (rows.length === 1) {
-      return `1 ${itemsNameSingular} ${totalItems > 1 ? 'hittades' : ''}`;
+      return `1 ${itemsNameSingular} ${totalItems > 1 ? t('CardsOrTable.Found') : ''}`;
     } else {
-      return `${rows.length} ${itemsName} ${totalItems > rows.length ? 'hittades' : ''}`;
+      return `${rows.length} ${itemsName} ${totalItems > rows.length ? t('CardsOrTable.Found') : ''}`;
     }
   }, [rows]);
 
@@ -133,7 +133,7 @@ export function CardsOrTable({
                         afVariation={FormInputSearchVariation.MEDIUM}
                         afType={FormInputType.SEARCH}
                         afValue={searchTerm}
-                        afButtonText="Sök"
+                        afButtonText={t('CardsOrTable.Search')}
                         onAfOnSubmitSearch={(e) => {
                           setSearchTerm(e.detail);
                           filter.onChange(e);
@@ -145,7 +145,7 @@ export function CardsOrTable({
                       <div key={filter.label + filterKey} className="mb-[0.4rem]">
                         <DigiFormFilter
                           afFilterButtonText={filter.label}
-                          afSubmitButtonText="Filtrera"
+                          afSubmitButtonText={t('CardsOrTable.Filter')}
                           afListItems={filter.options}
                           onAfSubmitFilter={(e) => {
                             filter.onChange(e);
@@ -183,7 +183,7 @@ export function CardsOrTable({
           {pageSize > -1 && (
             <div>
               <DigiContextMenu
-                afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
+                afTitle={`${t('CardsOrTable.ItemsPerPage')} (${pageSize === 0 ? t('CardsOrTable.All') : pageSize})`}
                 afMenuPosition="left-bottom"
                 afMenuItems={[
                   { id: 5, title: '5' },
@@ -193,7 +193,7 @@ export function CardsOrTable({
                   { id: 100, title: '100' },
                   { id: 150, title: '150' },
                   { id: 200, title: '200' },
-                  { id: 0, title: 'Alla' },
+                  { id: 0, title: t('CardsOrTable.All') },
                 ].filter((item) => item.id === 0 || (rows.length > 0 && item.id <= rows.length))}
                 onAfChangeItem={(e) => {
                   if (e.detail.item.id === 0) {
@@ -217,9 +217,13 @@ export function CardsOrTable({
 
         <div className="hidden lg:block">
           <DigiTable afSize={TableSize.MEDIUM}>
-            <h2 className="sr-only">Tabell med {itemsName}</h2>
+            <h2 className="sr-only">
+              {t('CardsOrTable.TableWith')} {itemsName}
+            </h2>
             <table aria-rowcount={rows.length} className="mt-2">
-              <caption className="sr-only">Tabell med {itemsName}</caption>
+              <caption className="sr-only">
+                {t('CardsOrTable.TableWith')} {itemsName}
+              </caption>
               <thead>
                 <tr>
                   {headings.map((heading, index) => (
@@ -275,7 +279,7 @@ export function CardsOrTable({
         {/* Cards view */}
         <div className="lg:hidden space-y-4">
           <fieldset>
-            <legend className="font-bold py-5">Sortera på:</legend>
+            <legend className="font-bold py-5">{t('CardsOrTable.SortBy')}:</legend>
             {displayHeadingsAboveCards && (
               <div>
                 {headings.map(
@@ -301,7 +305,10 @@ export function CardsOrTable({
             className="!list-none border-t-1 mt-6 !p-0"
             aria-label={
               pageSize > 0 && rows.length > pageSize
-                ? `Sida ${currentPage} av ${Math.ceil(rows.length / pageSize)}`
+                ? t('CardsOrTable.PageXOfY', {
+                    currentPage,
+                    totalPages: Math.ceil(rows.length / pageSize),
+                  })
                 : undefined
             }
             aria-describedby="list-description"
