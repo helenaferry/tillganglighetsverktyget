@@ -183,6 +183,7 @@ export function CardsOrTable({
           {pageSize > -1 && (
             <div>
               <DigiContextMenu
+                afId="items-per-page-menu"
                 afTitle={`${t('CardsOrTable.ItemsPerPage')} (${pageSize === 0 ? t('CardsOrTable.All') : pageSize})`}
                 afMenuPosition="left-bottom"
                 afMenuItems={[

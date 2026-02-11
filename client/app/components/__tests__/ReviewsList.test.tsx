@@ -629,8 +629,6 @@ describe('ReviewsList', () => {
 
   /* ---------------------------------------------------------------
    * Funktionellt krav: Visa en lista med alla granskningar.
-   * - renders empty list when no reviews exist
-   * - renders list with reviews
    * --------------------------------------------------------------- */
   describe('Visa en lista med alla granskningar', () => {
     it('renders empty list when no reviews exist', async () => {
@@ -681,6 +679,7 @@ describe('ReviewsList', () => {
 
   /* ---------------------------------------------------------------
    * Funktionellt krav: Möjliggöra sökning efter granskningar.
+   * se även CardsOrTable.test.tsx
    * --------------------------------------------------------------- */
 
   describe('Möjliggöra sökning efter granskningar', () => {
@@ -750,6 +749,7 @@ describe('ReviewsList', () => {
 
   /* ---------------------------------------------------------------
    * Funktionellt krav: Möjliggöra sortering av granskningar
+   * se även CardsOrTable.test.tsx
    * --------------------------------------------------------------- */
   describe('Möjliggöra sortering av granskningar', () => {
     it('sorts reviews by name ascending', async () => {
@@ -1332,6 +1332,81 @@ describe('ReviewsList', () => {
       const storedFaves = JSON.parse(localStorage.getItem('favoriteReviews') || '[]');
       expect(storedFaves).not.toContain(testReview.id);
       expect(storedFaves.length).toBe(0);
+    });
+  });
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Rensa valda filter och sorteringar
+   * se även CardsOrTable.test.tsx
+   * --------------------------------------------------------------- */
+  describe('Rensa valda filter och sorteringar', () => {
+    it('resets all filters and sorting when reset button is clicked', async () => {
+      const user = userEvent.setup();
+      const { useReviews } = await import('../../hooks/useReviewData');
+      const { useRequirements } = await import('../../hooks/useRequirementData');
+
+      vi.mocked(useReviews).mockReturnValue(createMockReviewsQuery(MOCK_REVIEWS));
+      vi.mocked(useRequirements).mockReturnValue(createMockRequirementsQuery([]));
+
+      localStorage.setItem('favoriteReviews', JSON.stringify([1]));
+
+      // Spy on window.history.replaceState to verify URL reset (must be before render)
+      const replaceStateSpy = vi.spyOn(window.history, 'replaceState');
+
+      // Start with all filters active
+      const mockSearchParams = new URLSearchParams(
+        'sok=amor&sortering=1&riktning=stigande&favoriter=true',
+      );
+      const mockSetSearchParams = vi.fn();
+      vi.mocked(useSearchParams).mockReturnValue([mockSearchParams, mockSetSearchParams]);
+
+      const { rerender } = renderReviewsList();
+
+      // Verify filters are active initially
+      await waitFor(() => {
+        const checkbox = screen.getByTestId('favorites-checkbox');
+        expect(checkbox).toBeChecked();
+
+        const rows = screen.getAllByRole('row');
+        expect(rows).toHaveLength(2); // 1 matching favorite + header
+      });
+
+      // Find and click the reset button
+      const resetButton = screen.getByText(i18next.t('ResetButtonDefaultText'));
+      await user.click(resetButton);
+
+      // Simulate the component responding to cleared URL params
+      vi.mocked(useSearchParams).mockReturnValue([new URLSearchParams(), mockSetSearchParams]);
+      rerender(
+        <BrowserRouter>
+          <ReviewsList />
+        </BrowserRouter>,
+      );
+
+      // Verify resetChoices effects: all filters and sorting are cleared
+      await waitFor(() => {
+        // Verify favorites checkbox is unchecked
+        const checkbox = screen.getByTestId('favorites-checkbox');
+        expect(checkbox).not.toBeChecked();
+
+        // Verify sort button is no longer active
+        const sortButtons = screen.getAllByRole('button', {
+          name: new RegExp(i18next.t('ReviewsList.HeadingReviewName')),
+        });
+        expect(sortButtons[0]).toHaveAttribute('aria-pressed', 'false');
+
+        // Verify column header no longer has aria-sort
+        const headers = screen.getAllByRole('columnheader');
+        const nameHeader = headers.find((header) =>
+          header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewName')),
+        );
+        expect(nameHeader).not.toHaveAttribute('aria-sort');
+
+        // Verify all reviews are shown (10 + header = 11)
+        const rows = screen.getAllByRole('row');
+        expect(rows).toHaveLength(11);
+      });
+
+      replaceStateSpy.mockRestore();
     });
   });
 });
