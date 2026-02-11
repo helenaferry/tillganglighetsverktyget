@@ -3,11 +3,12 @@ import { Review, Check, CheckAttributes } from '../models';
 import { Op, fn, col, literal, UniqueConstraintError } from 'sequelize';
 import { sequelize } from '../database/database';
 import logger, {
-  logCreatedReview,
-  logDeletedReview,
-  logUpdatedReview,
+  logReviewCreated,
+  logReviewDeleted,
+  logReviewUpdated,
   logCheckUpserted,
 } from '../logger';
+import { RequestContext } from '../middleware/requestContext';
 
 /** Normalize Express param (string | string[]) to string for parseInt/usage. */
 function paramString(value: string | string[] | undefined): string {
@@ -119,7 +120,10 @@ export const getAllReviews = async (req: Request, res: Response) => {
     res.json(reviews);
   } catch (error) {
     const err = error instanceof Error ? error : new Error(String(error));
-    console.error('Error fetching reviews:', err.message, err.stack);
+    logger.error('Error fetching reviews', {
+      error: err.message,
+      stack: err.stack,
+    });
     const isDev = process.env.NODE_ENV === 'development';
     res.status(500).json({
       error: 'Failed to fetch reviews',
@@ -140,7 +144,7 @@ export const getReviewById = async (req: Request, res: Response) => {
 
     res.json(review);
   } catch (error) {
-    console.error('Error fetching review:', error);
+    logger.error('Error fetching review', { error });
     res.status(500).json({ error: 'Failed to fetch review' });
   }
 };
@@ -156,7 +160,7 @@ export const getChecksForReview = async (req: Request, res: Response) => {
 
     res.json(checks);
   } catch (error) {
-    console.error('Error fetching checks:', error);
+    logger.error('Error fetching checks', { error });
     res.status(500).json({ error: 'Failed to fetch checks' });
   }
 };
@@ -196,17 +200,26 @@ export const createReview = async (req: Request, res: Response) => {
         throw new Error('Failed to fetch created review after insert');
       }
 
-      logCreatedReview({
-        id: createdReview.id,
-        title: createdReview.title ?? null,
-      });
+      const context = (req as Request & { context?: RequestContext }).context || {
+        clientIp: req.ip || 'unknown',
+        requestId: 'unknown',
+      };
+
+      logReviewCreated(createdReview, context);
 
       return res.status(201).json(createdReview);
     }
 
+    const context = (req as Request & { context?: RequestContext }).context || {
+      clientIp: req.ip || 'unknown',
+      requestId: 'unknown',
+    };
+
+    logReviewCreated(review, context);
+
     res.status(201).json(review);
   } catch (error) {
-    console.error('Error creating review:', error);
+    logger.error('Error creating review', { error });
     res.status(500).json({ error: 'Failed to create review' });
   }
 };
@@ -228,24 +241,72 @@ export const updateReview = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Review not found' });
     }
 
+    // Store old values to detect changes
+    const oldTitle = review.title;
+    const oldExcludedContentTypes = review.excludedContentTypes;
+    const oldSelectedPrefillIds = review.selectedPrefillIds;
+    const oldObjectType = review.objectType;
+    const oldRegulatoryFramework = review.regulatoryFramework;
+
+    const newExcludedContentTypes = Array.isArray(excludedContentTypes)
+      ? excludedContentTypes.join(';')
+      : excludedContentTypes;
+
     await review.update({
       title,
-      excludedContentTypes: Array.isArray(excludedContentTypes)
-        ? excludedContentTypes.join(';')
-        : excludedContentTypes,
+      excludedContentTypes: newExcludedContentTypes,
       selectedPrefillIds,
       objectType,
       regulatoryFramework,
     });
 
-    logUpdatedReview({
-      id: review.id,
-      title: review.title ?? null,
-    });
+    // Detect changes
+    const changes: {
+      title?: { old: string | null; new: string | null };
+      excludedContentTypes?: { old: string | null; new: string | null };
+      selectedPrefillIds?: { old: string | null; new: string | null };
+      objectType?: { old: string | null; new: string | null };
+      regulatoryFramework?: { old: string | null; new: string | null };
+    } = {};
+
+    if (oldTitle !== title) {
+      changes.title = { old: oldTitle, new: title };
+    }
+    if (oldExcludedContentTypes !== newExcludedContentTypes) {
+      changes.excludedContentTypes = {
+        old: oldExcludedContentTypes,
+        new: newExcludedContentTypes,
+      };
+    }
+    if (oldSelectedPrefillIds !== selectedPrefillIds) {
+      changes.selectedPrefillIds = {
+        old: oldSelectedPrefillIds,
+        new: selectedPrefillIds,
+      };
+    }
+    if (oldObjectType !== objectType) {
+      changes.objectType = { old: oldObjectType, new: objectType };
+    }
+    if (oldRegulatoryFramework !== regulatoryFramework) {
+      changes.regulatoryFramework = {
+        old: oldRegulatoryFramework,
+        new: regulatoryFramework,
+      };
+    }
+
+    const context = (req as Request & { context?: RequestContext }).context || {
+      clientIp: req.ip || 'unknown',
+      requestId: 'unknown',
+    };
+
+    // Reload review to get updated values
+    await review.reload();
+
+    logReviewUpdated(review, changes, context);
 
     res.json(review);
   } catch (error) {
-    console.error('Error updating review:', error);
+    logger.error('Error updating review', { error });
     res.status(500).json({ error: 'Failed to update review' });
   }
 };
@@ -261,13 +322,17 @@ export const deleteReview = async (req: Request, res: Response) => {
     }
 
     await review.destroy();
-    logDeletedReview({
-      id: review.id,
-      title: review.title ?? null,
-    });
+
+    const context = (req as Request & { context?: RequestContext }).context || {
+      clientIp: req.ip || 'unknown',
+      requestId: 'unknown',
+    };
+
+    logReviewDeleted(review, context);
+
     res.status(204).send();
   } catch (error) {
-    console.error('Error deleting review:', error);
+    logger.error('Error deleting review', { error });
     res.status(500).json({ error: 'Failed to delete review' });
   }
 };
@@ -316,7 +381,7 @@ export const upsertCheck = async (req: Request, res: Response) => {
 
     res.json(check.toJSON());
   } catch (error) {
-    console.error('Error upserting check:', error);
+    logger.error('Error upserting check', { error });
     res.status(500).json({ error: 'Failed to upsert check' });
   }
 };
@@ -337,7 +402,7 @@ export const getCheckByRequirement = async (req: Request, res: Response) => {
     // Return null instead of 404 - not having a check yet is a normal state
     res.json(check);
   } catch (error) {
-    console.error('Error fetching check:', error);
+    logger.error('Error fetching check', { error });
     res.status(500).json({ error: 'Failed to fetch check' });
   }
 };
@@ -355,7 +420,7 @@ export const deleteCheck = async (req: Request, res: Response) => {
     await check.destroy();
     res.status(204).send();
   } catch (error) {
-    console.error('Error deleting check:', error);
+    logger.error('Error deleting check', { error });
     res.status(500).json({ error: 'Failed to delete check' });
   }
 };
@@ -402,7 +467,7 @@ export const disableChecks = async (req: Request, res: Response) => {
     res.json(checks);
   } catch (error) {
     await t.rollback();
-    console.error('Error disabling checks:', error);
+    logger.error('Error disabling checks', { error });
     res.status(500).json({ error: 'Failed to disable checks' });
   }
 };
@@ -433,7 +498,7 @@ export const enableChecks = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     await t.rollback();
-    console.error('Error enabling checks:', error);
+    logger.error('Error enabling checks', { error });
     res.status(500).json({ error: 'Failed to enable checks' });
   }
 };
@@ -463,7 +528,7 @@ export const deleteChecks = async (req: Request, res: Response) => {
     res.status(204).send();
   } catch (error) {
     await t.rollback();
-    console.error('Error deleting checks:', error);
+    logger.error('Error deleting checks', { error });
     res.status(500).json({ error: 'Failed to delete checks' });
   }
 };
@@ -536,7 +601,7 @@ export const prefillChecks = async (req: Request, res: Response) => {
     res.json(checks);
   } catch (error) {
     await t.rollback();
-    console.error('Error prefilling checks:', error);
+    logger.error('Error prefilling checks', { error });
     res.status(500).json({ error: 'Failed to prefill checks' });
   }
 };
@@ -597,7 +662,7 @@ export const toggleCheckFlag = async (req: Request, res: Response) => {
     });
     res.json(check.toJSON());
   } catch (error) {
-    console.error('Error toggling check flag:', error);
+    logger.error('Error toggling check flag', { error });
     res.status(500).json({ error: 'Failed to toggle check flag' });
   }
 };
