@@ -41,7 +41,15 @@
     "ProgressText": "{{category}}: {{checked}} av {{total}} krav granskade"
   },
   "CardsOrTable": {
-    "SearchAndFilterLabel": "Sök och filtrera"
+    "SearchAndFilterLabel": "Sök och filtrera",
+    "Found": "hittades",
+    "SortBy": "Sortera på",
+    "ItemsPerPage": "Antal per sida",
+    "All": "Alla",
+    "TableWith": "Tabell med",
+    "PageXOfY": "Sida {{currentPage}} av {{totalPages}}",
+    "Search": "Sök",
+    "Filter": "Filtrera"
   },
   "ReviewsList": {
     "LoadingError": "Fel vid hämtning av granskningar",
