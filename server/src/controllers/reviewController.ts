@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Review, Check } from '../models';
 import { Op, fn, col, literal, UniqueConstraintError } from 'sequelize';
 import { sequelize } from '../database/database';
+import logger from '../logger';
 
 /** Normalize Express param (string | string[]) to string for parseInt/usage. */
 function paramString(value: string | string[] | undefined): string {
@@ -131,6 +132,8 @@ export const getReviewById = async (req: Request, res: Response) => {
     if (!review) {
       return res.status(404).json({ error: 'Review not found' });
     }
+
+    logger.info(`Accessed review with id ${id}`);
 
     res.json(review);
   } catch (error) {
