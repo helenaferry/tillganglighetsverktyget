@@ -109,7 +109,7 @@ export const RequirementService = {
       new Set(
         requirements.filter((req) => req.objectType === objectType).map((req) => req.contentType),
       ),
-    );
+    ).filter((type) => type && type.trim().length > 0);
     return contentTypes;
   },
 };

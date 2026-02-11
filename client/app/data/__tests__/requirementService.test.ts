@@ -1,7 +1,11 @@
+/// <reference types="vite/client" />
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { RequirementService } from '../requirementService';
 import { ObjectType, type Requirement } from '../types';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const REQUIREMENTS_URL = `${API_BASE_URL}/requirements`;
 
 describe('RequirementService', () => {
   beforeEach(() => {
@@ -47,7 +51,12 @@ describe('RequirementService', () => {
       const result = await RequirementService.getAllRequirements('');
 
       expect(result).toEqual(mockRequirements);
-      expect(global.fetch).toHaveBeenCalledWith(import.meta.env.VITE_REQUIREMENTS_URL);
+      expect(global.fetch).toHaveBeenCalledWith(
+        REQUIREMENTS_URL,
+        expect.objectContaining({
+          headers: expect.any(Headers),
+        }),
+      );
     });
 
     it('filters requirements by regulatory framework', async () => {
@@ -312,7 +321,7 @@ describe('RequirementService', () => {
       });
 
       await expect(RequirementService.getAllRequirementCategories(ObjectType.WEB)).rejects.toThrow(
-        'Invalid requirement categories data format',
+        'Invalid requirements data format',
       );
     });
 
@@ -474,7 +483,7 @@ describe('RequirementService', () => {
 
       await expect(
         RequirementService.getAllRequirementContentTypes(ObjectType.WEB),
-      ).rejects.toThrow('Invalid requirement content types data format');
+      ).rejects.toThrow('Invalid requirements data format');
     });
 
     it('returns empty array when no requirements match object type', async () => {

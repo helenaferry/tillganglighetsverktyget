@@ -13,13 +13,14 @@ import { ObjectType } from '../../data/types';
 import i18next from '../../lang/i18n';
 import { ReviewsList } from '../ReviewsList';
 
+// #region MOCKS
 /* ---------------------------------------------------------------
  * MOCKS
  * We need to mock various hooks and components to isolate the ReviewsList
  * component for testing. Also, components from the design system are
  * mocked to simple divs or basic elements because shadow DOM encapsulation
  * hides their internal structure from testing-library queries.
- *
+ * There is also mocked data and helper functions to create consistent query results for testing.
  * --------------------------------------------------------------- */
 
 // Mock react-router
@@ -91,7 +92,7 @@ vi.mock('../../hooks/useRequirementData', () => ({
   })),
 }));
 
-// Mock web components
+// Mock Digi components
 vi.mock('@designsystem-se/af-react', async () => {
   const actual = await vi.importActual('@designsystem-se/af-react');
   return {
@@ -505,6 +506,7 @@ const createMockRequirementsQuery = (
     promise: Promise.resolve(data),
     ...overrides,
   }) as UseQueryResult<Requirement[], Error>;
+// #endregion MOCKS
 
 /* ---------------------------------------------------------------
  * TESTS
@@ -513,12 +515,20 @@ const createMockRequirementsQuery = (
  * --------------------------------------------------------------- */
 
 describe('ReviewsList', () => {
+  // Setup
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear();
     vi.clearAllMocks();
   });
 
+  /* ---------------------------------------------------------------
+   * Rendering and basic interactions
+   * - renders the component with title and preamble
+   * - renders create review button
+   * - shows loading state when data is loading
+   * - shows error message when there is an error
+   * --------------------------------------------------------------- */
   it('renders the component with title and preamble', () => {
     renderReviewsList();
 
