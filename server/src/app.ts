@@ -4,6 +4,8 @@ import helmet from 'helmet';
 import reviewRoutes from './routes/reviewRoutes';
 import requirementRoutes from './routes/requirementRoutes';
 import { sequelize } from './database/database';
+import { requestContextMiddleware } from './middleware/requestContext';
+import logger from './logger';
 
 const app = express();
 
@@ -32,6 +34,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Request context middleware (extracts user, IP, generates request ID)
+app.use(requestContextMiddleware);
+
 // Health check endpoint with database connectivity check
 app.get('/health', async (req, res) => {
   try {
@@ -45,7 +50,7 @@ app.get('/health', async (req, res) => {
       database: 'connected'
     });
   } catch (error) {
-    console.error('Health check failed - database unreachable:', error);
+    logger.error('Health check failed - database unreachable', { error });
     res.status(503).json({ 
       status: 'error',
       timestamp: new Date().toISOString(),
@@ -67,7 +72,12 @@ app.use((req, res) => {
 
 // Error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error:', err);
+  logger.error('Unhandled error', {
+    error: err.message,
+    stack: err.stack,
+    path: req.path,
+    method: req.method,
+  });
   res.status(500).json({ 
     error: 'Internal server error',
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
