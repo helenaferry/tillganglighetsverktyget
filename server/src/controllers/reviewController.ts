@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Review, Check, CheckAttributes } from '../models';
+import { Review, Check } from '../models';
 import { Op, fn, col, literal, UniqueConstraintError } from 'sequelize';
 import { sequelize } from '../database/database';
 import logger, {
@@ -8,7 +8,6 @@ import logger, {
   logReviewUpdated,
   logCheckUpdated,
 } from '../logger';
-import { RequestContext } from '../middleware/requestContext';
 import { Status } from '../types/status';
 
 /** Normalize Express param (string | string[]) to string for parseInt/usage. */
