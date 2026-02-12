@@ -45,6 +45,7 @@ pages:
     - printenv | grep VITE_
     - npm run build
     - cd ../
+    - mkdir public
     - cp -r ./client/build/client/* public/
   artifacts:
     paths:
