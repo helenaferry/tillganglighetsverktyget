@@ -1,0 +1,50 @@
+# Development Dockerfile for Backend API
+# This image includes hot-reload and development tools
+
+FROM node:20-slim
+
+# Install Oracle Instant Client dependencies
+RUN apt-get update && apt-get install -y \
+    libaio1 \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and install Oracle Instant Client
+# Using version 21.13 which is compatible with Oracle Database Free
+WORKDIR /opt/oracle
+RUN wget https://download.oracle.com/otn_software/linux/instantclient/2113000/instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
+    unzip instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
+    rm instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
+    cd instantclient_21_13 && \
+    echo /opt/oracle/instantclient_21_13 > /etc/ld.so.conf.d/oracle-instantclient.conf && \
+    ldconfig
+
+# Set environment variables for Oracle Instant Client
+ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_21_13:$LD_LIBRARY_PATH
+ENV PATH=/opt/oracle/instantclient_21_13:$PATH
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package.json ./
+
+# Install dependencies
+# Note: Using npm install instead of npm ci because this is part of a monorepo workspace
+# and doesn't have its own package-lock.json
+RUN npm install
+
+# Copy TypeScript configuration (standalone version for container)
+# Note: Container uses a standalone tsconfig without monorepo extends
+COPY tsconfig.container.json ./tsconfig.json
+COPY src ./src
+
+# Note: In development, src and tsconfig.json will be volume-mounted
+# from compose.dev.yml, allowing hot-reload on file changes
+
+# Expose port
+EXPOSE 3000
+
+# Start development server with hot reload
+CMD ["npm", "run", "dev"]

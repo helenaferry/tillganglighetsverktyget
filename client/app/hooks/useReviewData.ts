@@ -1,0 +1,241 @@
+import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
+
+import { ReviewService } from '~/data/reviewService';
+import type {
+  Check,
+  PrefillRequirement,
+  Review,
+  ReviewSummary,
+  UpsertCheckInput,
+} from '~/data/types';
+
+// All reviews with summary data
+export function useReviews(): UseQueryResult<ReviewSummary[], Error> {
+  return useQuery<ReviewSummary[], Error>({
+    queryKey: ['reviews'],
+    queryFn: () => ReviewService.getAllReviewSummaries(),
+  });
+}
+
+// Get a single review by ID
+export function useReviewById(reviewId: string): {
+  review?: Review;
+  isLoading: boolean;
+  isFetched: boolean;
+} {
+  const {
+    data: reviewData,
+    isLoading,
+    isFetched,
+  } = useQuery<Review, Error>({
+    queryKey: ['review', reviewId],
+    queryFn: () => ReviewService.getReviewById(reviewId),
+    enabled: !!reviewId && reviewId !== 'undefined',
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  });
+  return { review: reviewData, isLoading, isFetched };
+}
+
+// Get checks for a review
+export function useChecksForReview(reviewId: string): {
+  checks?: Check[];
+  isLoading: boolean;
+  isFetched: boolean;
+} {
+  const {
+    data: checksData,
+    isLoading,
+    isFetched,
+  } = useQuery<Check[], Error>({
+    queryKey: ['checks', String(reviewId)],
+    queryFn: () => {
+      return ReviewService.getChecksForReview(String(reviewId));
+    },
+    enabled: !!reviewId,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+  });
+  return { checks: checksData, isLoading, isFetched };
+}
+
+// Get a check by reviewId and requirementId
+// Normalize to string so query key is stable (avoids duplicate requests when id is sometimes number/string)
+export function useCheck(
+  reviewId: string | number,
+  requirementId: string,
+): { check?: Check | null; isLoading: boolean; isFetched: boolean } {
+  const keyReviewId = String(reviewId);
+  const keyRequirementId = String(requirementId);
+  const {
+    data: checkData,
+    isLoading,
+    isFetched,
+  } = useQuery<Check | null, Error>({
+    queryKey: ['check', keyReviewId, keyRequirementId],
+    queryFn: () => ReviewService.getCheckById(keyReviewId, keyRequirementId),
+    enabled: !!keyReviewId && !!keyRequirementId,
+    staleTime: 60 * 1000, // 1 min – avoid refetch on every mount when two components use this
+    refetchOnMount: false, // avoid duplicate request when RequirementForm mounts after ReviewRequirement
+    refetchOnWindowFocus: false,
+    retry: false, // 404 means "no check yet" – don't retry
+  });
+  return { check: checkData, isLoading, isFetched };
+}
+
+// Update or add check
+export function useUpsertCheck() {
+  const queryClient = useQueryClient();
+
+  return useMutation<Check, Error, UpsertCheckInput>({
+    mutationFn: (input) =>
+      ReviewService.upsertCheck({
+        ...input,
+        reviewId: String(input.reviewId),
+      }),
+    onSuccess: (_newCheck, input) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', String(input.reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['review', String(input.reviewId)] });
+    },
+  });
+}
+
+// Delete check
+export function useDeleteCheck() {
+  const queryClient = useQueryClient();
+
+  return useMutation<boolean, Error, string>({
+    mutationFn: (checkId) => ReviewService.deleteCheck(checkId),
+    onSuccess: (_, checkId) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', checkId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+// Delete multiple checks for a review
+export function useDeleteChecksForReview() {
+  const queryClient = useQueryClient();
+
+  return useMutation<boolean, Error, { reviewId: number; requirementIds: string[] }>({
+    mutationFn: ({ reviewId, requirementIds }) =>
+      ReviewService.deleteChecks(reviewId, requirementIds),
+    onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['review', String(reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+// Disable multiple checks
+export function useDisableChecks() {
+  const queryClient = useQueryClient();
+
+  return useMutation<Check[], Error, { reviewId: number; requirements: string[] }>({
+    mutationFn: ({ reviewId, requirements }) => ReviewService.disableChecks(reviewId, requirements),
+    onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+// Enable multiple checks
+export function useEnableChecks() {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, { reviewId: number; requirements: string[] }>({
+    mutationFn: ({ reviewId, requirements }) => ReviewService.enableChecks(reviewId, requirements),
+    onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+// Prefill requirements
+export function usePrefillRequirements() {
+  const queryClient = useQueryClient();
+  return useMutation<void, Error, { reviewId: number; prefills: PrefillRequirement[] }>({
+    mutationFn: async ({ reviewId, prefills }) => {
+      await ReviewService.prefillChecks(reviewId, prefills);
+    },
+    onSuccess: (_, { reviewId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['checks', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['review', reviewId] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}
+
+// Update or add review
+export function useUpsertReview() {
+  const queryClient = useQueryClient();
+  return useMutation<
+    Review,
+    Error,
+    {
+      title: string;
+      id?: string;
+      excludedContentTypes: string[];
+      selectedPrefillIds: string;
+      objectType: string;
+      regulatoryFramework: string;
+    }
+  >({
+    mutationFn: (input) => ReviewService.upsertReview(input),
+    onSuccess: (_newReview, input) => {
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      if (input.id) {
+        queryClient.invalidateQueries({ queryKey: ['review', String(input.id)] });
+        queryClient.invalidateQueries({ queryKey: ['checks', input.id] });
+      }
+    },
+  });
+}
+
+// Delete review and all associated checks
+export function useDeleteReview() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (reviewId: number) => {
+      // Delete all checks for this review
+      await ReviewService.deleteChecksForReview(reviewId);
+      // Delete the review itself
+      await ReviewService.deleteReview(reviewId);
+    },
+    onSuccess: (_, reviewId) => {
+      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['review', String(reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });
+    },
+  });
+}
+
+// Toggle check flag
+export function useToggleCheckFlag() {
+  const queryClient = useQueryClient();
+  return useMutation<Check, Error, { reviewId: number; requirementId: string; flag: boolean }>({
+    mutationFn: ({ reviewId, requirementId, flag }) =>
+      ReviewService.toggleCheckFlag(reviewId, requirementId, flag),
+    onSuccess: (_, { reviewId, requirementId }) => {
+      queryClient.invalidateQueries({ queryKey: ['check', String(reviewId), requirementId] });
+      queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    },
+  });
+}

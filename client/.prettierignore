@@ -1,0 +1,6 @@
+node_modules/
+build/
+dist/
+public/
+.react-router/types/
+app/data/supabase-types.ts

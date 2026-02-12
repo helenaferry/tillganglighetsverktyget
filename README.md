@@ -1,4 +1,4 @@
-![Granska tillgänglighet](./public/logoHeader.svg)
+![Granska tillgänglighet](./client/public/logoHeader.svg)
 
 Granska tillgänglighet är ett verktyg från Arbetsförmedlingen för att underlätta granskning av webbtjänsters tillgänglighet och skapa tillgänglighetsredogörelser.
 
@@ -29,12 +29,12 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 </tr>
 <tr>
 <td valign="top" width="25%">
-<img src="./public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
+<img src="./client/public/screenshots/granska-tillganglighet-startsida.png" alt="Granska tillgänglighet - startsida">
 
 </td>
-<td valign="top" width="25%"><img src="./public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning"></td>
-<td valign="top" width="25%"><img src="./public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt"></td>
-<td valign="top" width="25%"><img src="./public/screenshots/granska-tillganglighet-granskningsvy.png" alt="Granska tillgänglighet - översikt"></td>
+<td valign="top" width="25%"><img src="./client/public/screenshots/granska-tillganglighet-skapa.png" alt="Granska tillgänglighet - skapa granskning"></td>
+<td valign="top" width="25%"><img src="./client/public/screenshots/granska-tillganglighet-kravoversikt.png" alt="Granska tillgänglighet - översikt"></td>
+<td valign="top" width="25%"><img src="./client/public/screenshots/granska-tillganglighet-granskningsvy.png" alt="Granska tillgänglighet - översikt"></td>
 </tr>
 </tbody>
 </table>
@@ -49,7 +49,28 @@ Arbetsförmedlingen tillhandahåller kravdata baserat på tillgänglighetslagarn
 
 ## Kom igång
 
-Mer om detta när vi har en färdig lösning.
+### Snabbstart
+
+```bash
+# Kopiera och konfigurera miljövariabler
+cp .env.example .env
+cp client/.env.example client/.env.local
+# Redigera .env och sätt ORACLE_PWD och DB_PASSWORD
+
+# Starta alla tjänster (rekommenderat: väntar tills Database, API och Client är redo)
+./scripts/dev-up.sh
+
+# Öppna i webbläsaren
+open http://localhost:5173
+```
+
+**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) först.
+
+📖 **Fullständig guide:** [QUICKSTART.md](QUICKSTART.md)
+
+### Standalone-läge
+
+Det absolut enklaste sättet att komma igång och testa Tillgänglighetsverktyget lokalt, utan databas eller API. Se [QUICKSTART.md](QUICKSTART.md).
 
 ## Teknisk stack
 
@@ -59,7 +80,9 @@ Mer om detta när vi har en färdig lösning.
 - **Arbetsförmedlingens designsystem** - Design och komponenter
 - **Tailwind CSS** – Styling
 - **i18next** – Internationalisering
-- **Supabase** – Databas och backend KOMMER ATT BYTAS UT
+- **Oracle Database** – Databas
+- **Express.js** – REST API backend
+- **Podman** – Containerisering
 
 ## Licens
 

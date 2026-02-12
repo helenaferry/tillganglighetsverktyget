@@ -1,9 +1,27 @@
 .DS_Store
 /node_modules/
+**/node_modules/**
 
 # React Router
-/.react-router/
-/build/
+./client/.react-router/
+./client/build/
 
+# Test coverage
+./client/coverage/
+
+**/build/**
+**/dist/**
+**/coverage/**
+
+# Environment files
+.env
 .env.local
+.env.development
+.env.production
+.env.*.local
+
+# IDE
 /.idea/*
+
+# Docker
+.dockerignore

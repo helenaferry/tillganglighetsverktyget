@@ -1,0 +1,51 @@
+include:
+  # https://gitlab.com/gitlab-org/gitlab/-/tree/master/lib/gitlab/ci/templates/Security
+  # https://docs.gitlab.com/ee/ci/testing/code_quality.html
+  - template: Code-Quality.gitlab-ci.yml
+    # https://docs.gitlab.com/ee/user/application_security/sast/
+  - template: Security/SAST.gitlab-ci.yml
+    # https://docs.gitlab.com/ee/user/application_security/secret_detection/
+  - template: Security/Secret-Detection.gitlab-ci.yml
+    # https://docs.gitlab.com/ee/user/application_security/iac_scanning/
+  - template: Security/SAST-IaC.gitlab-ci.yml
+variables:
+  DS_MAX_DEPTH: 10
+  CODE_QUALITY_DISABLED: false
+  GIT_DEPTH: 10
+  SECURE_LOG_LEVEL: debug
+
+secret_evaluation:
+  needs: [secret_detection]
+  artifacts:
+    paths:
+      - gl-secret-detection-report.json
+  stage: test
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache jq
+  script:
+    - |
+      if [ -f "gl-secret-detection-report.json" ]; then
+        if [ "$(jq '.vulnerabilities | length' gl-secret-detection-report.json)" -gt 0 ]; then
+          echo "🚨 Secrets detected! Failing the job."
+          exit 1
+        else
+          echo "✅ No secrets found."
+        fi
+      else
+        echo "⚠️ Report file missing. Evaluation skipped."
+      fi
+
+pages:
+  image: node:22
+  stage: deploy
+  script:
+    - npm ci
+    - printenv | grep VITE_
+    - npm run build
+    - cp -r build/client/* public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - main

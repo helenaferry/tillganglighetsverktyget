@@ -40,6 +40,7 @@ pages:
   image: node:22
   stage: deploy
   script:
+    - cd ./client
     - npm ci
     - printenv | grep VITE_
     - npm run build
