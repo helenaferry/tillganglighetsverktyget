@@ -273,39 +273,6 @@ Coverage-inställningar finns i respektive `vitest.config.ts`:
 - Verifiera att `vitest.config.ts` refererar till korrekt TypeScript-konfiguration
 - Kör `npm run typecheck` för att verifiera typer
 
-## Best Practices
-
-### Skrivning av tester
-
-1. **Organisera tester nära koden**: Placera tester i `__tests__`-kataloger nära den kod de testar
-2. **Använd beskrivande namn**: Testnamn ska beskriva vad som testas
-3. **Testa en sak i taget**: Varje test ska fokusera på en specifik funktionalitet
-4. **Använd mocks för externa beroenden**: Mocka API-anrop, databasanrop, etc.
-5. **Rensa upp efter tester**: Använd `beforeEach` och `afterEach` för att säkerställa isolering
-
-### Exempel: Ett välskrivet test
-
-```typescript
-import { describe, it, expect, beforeEach } from 'vitest';
-import { myFunction } from '../myModule';
-
-describe('myFunction', () => {
-  beforeEach(() => {
-    // Setup för varje test
-  });
-
-  it('should return expected value when given valid input', () => {
-    const result = myFunction('valid input');
-    expect(result).toBe('expected output');
-  });
-
-  it('should handle null input gracefully', () => {
-    const result = myFunction(null);
-    expect(result).toBeNull();
-  });
-});
-```
-
 ## Ytterligare resurser
 
 - **Vitest-dokumentation**: https://vitest.dev/
