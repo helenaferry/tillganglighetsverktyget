@@ -105,6 +105,17 @@ npm run format       # Formatera kod med Prettier
 npm run typecheck    # TypeScript type-checking
 ```
 
+### Tester
+
+```bash
+npm test             # Kör tester i watch-läge
+npm run test:run     # Kör alla tester en gång
+npm run test:coverage # Kör tester med coverage-rapport
+npm run test:ui      # Öppna interaktiv test-UI
+```
+
+Se [../docs/TESTING.md](../docs/TESTING.md) för fullständig testdokumentation.
+
 ### Minify-verktyg
 
 Dessa verktyg extraherar och minifierar JSON-konfiguration från `.env.local`:
