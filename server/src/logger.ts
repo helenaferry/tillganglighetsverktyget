@@ -133,28 +133,6 @@ export const logReviewDeleted = (
   });
 };
 
-// Legacy functions for backward compatibility (will be removed after migration)
-export const logCreatedReview = (review: ReviewAttributes) => {
-  logger.warn('logCreatedReview is deprecated, use logReviewCreated with context', {
-    reviewId: review.id,
-    reviewTitle: review.title,
-  });
-};
-
-export const logUpdatedReview = (review: ReviewAttributes) => {
-  logger.warn('logUpdatedReview is deprecated, use logReviewUpdated with context', {
-    reviewId: review.id,
-    reviewTitle: review.title,
-  });
-};
-
-export const logDeletedReview = (review: ReviewAttributes) => {
-  logger.warn('logDeletedReview is deprecated, use logReviewDeleted with context', {
-    reviewId: review.id,
-    reviewTitle: review.title,
-  });
-};
-
 /**
  * Logs check update audit event
  */
