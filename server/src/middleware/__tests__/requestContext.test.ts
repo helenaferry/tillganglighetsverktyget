@@ -83,48 +83,6 @@ describe('requestContextMiddleware', () => {
     });
   });
 
-  describe('clientIp extraction', () => {
-    it('should extract IP from X-Forwarded-For header', () => {
-      mockReq.headers = { 'x-forwarded-for': '192.168.1.1, 10.0.0.1' };
-      requestContextMiddleware(mockReq as Request, mockRes as Response, mockNext);
-
-      expect(mockReq.context?.clientIp).toBe('192.168.1.1');
-    });
-
-    it('should use first IP from X-Forwarded-For chain', () => {
-      mockReq.headers = { 'x-forwarded-for': '1.2.3.4, 5.6.7.8, 9.10.11.12' };
-      requestContextMiddleware(mockReq as Request, mockRes as Response, mockNext);
-
-      expect(mockReq.context?.clientIp).toBe('1.2.3.4');
-    });
-
-    it('should fallback to req.ip when X-Forwarded-For missing', () => {
-      mockReq.headers = {};
-      mockReq.ip = '192.168.1.100';
-      requestContextMiddleware(mockReq as Request, mockRes as Response, mockNext);
-
-      expect(mockReq.context?.clientIp).toBe('192.168.1.100');
-    });
-
-    it('should fallback to req.socket.remoteAddress when req.ip missing', () => {
-      mockReq.headers = {};
-      mockReq.ip = undefined;
-      mockReq.socket = { remoteAddress: '10.0.0.50' } as any;
-      requestContextMiddleware(mockReq as Request, mockRes as Response, mockNext);
-
-      expect(mockReq.context?.clientIp).toBe('10.0.0.50');
-    });
-
-    it('should use "unknown" when no IP source available', () => {
-      mockReq.headers = {};
-      mockReq.ip = undefined;
-      mockReq.socket = { remoteAddress: undefined } as any;
-      requestContextMiddleware(mockReq as Request, mockRes as Response, mockNext);
-
-      expect(mockReq.context?.clientIp).toBe('unknown');
-    });
-  });
-
   describe('requestId generation', () => {
     it('should generate unique request ID', () => {
       requestContextMiddleware(mockReq as Request, mockRes as Response, mockNext);
@@ -154,7 +112,6 @@ describe('requestContextMiddleware', () => {
 
       expect(mockReq.context).toBeDefined();
       expect(mockReq.context?.userId).toBe('testuser');
-      expect(mockReq.context?.clientIp).toBe('1.2.3.4');
       expect(mockReq.context?.requestId).toBeDefined();
     });
 

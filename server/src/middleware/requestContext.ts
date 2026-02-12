@@ -4,14 +4,12 @@ import logger from '../logger';
 
 export interface RequestContext {
   userId?: string;
-  clientIp: string;
   requestId: string;
 }
 
 /**
  * Extracts request context from headers and attaches to req object
  * - CIAM_Sub header → userId
- * - X-Forwarded-For or req.ip → clientIp
  * - Generates requestId for correlation
  */
 export const requestContextMiddleware = (
@@ -41,19 +39,12 @@ export const requestContextMiddleware = (
     userId = process.env.DEV_CIAM_SUB;
   }
 
-  // Extract client IP from X-Forwarded-For header (first IP in chain) or fallback to req.ip
-  const forwardedFor = req.headers['x-forwarded-for'] as string | undefined;
-  const clientIp = forwardedFor
-    ? forwardedFor.split(',')[0].trim()
-    : req.ip || req.socket.remoteAddress || 'unknown';
-
   // Generate request ID for correlation
   const requestId = randomUUID();
 
   // Attach context to request object
   req.context = {
     userId,
-    clientIp,
     requestId,
   };
 

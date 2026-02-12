@@ -36,7 +36,6 @@ interface ReviewUpdateChanges {
 const buildAuditMetadata = (context: RequestContext) => {
   return {
     'user.name': context.userId || null,
-    'source.ip': context.clientIp,
     'audit.log': 'true',
     'audit.spu': 'false',
   };

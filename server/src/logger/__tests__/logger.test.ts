@@ -62,7 +62,6 @@ describe('Logger audit functions', () => {
     vi.clearAllMocks();
     context = {
       userId: 'testuser123',
-      clientIp: '192.168.1.1',
       requestId: 'test-request-id',
     };
   });
