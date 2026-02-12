@@ -107,9 +107,9 @@ export function CardsOrTable({
 
   const hitsText = useMemo(() => {
     if (rows.length === 1) {
-      return `1 ${itemsNameSingular} ${totalItems > 1 ? t('CardsOrTable.Found') : ''}`;
+      return `1 ${itemsNameSingular} ${totalItems > 1 ? 'hittades' : ''}`;
     } else {
-      return `${rows.length} ${itemsName} ${totalItems > rows.length ? t('CardsOrTable.Found') : ''}`;
+      return `${rows.length} ${itemsName} ${totalItems > rows.length ? 'hittades' : ''}`;
     }
   }, [rows]);
 
@@ -133,7 +133,7 @@ export function CardsOrTable({
                         afVariation={FormInputSearchVariation.MEDIUM}
                         afType={FormInputType.SEARCH}
                         afValue={searchTerm}
-                        afButtonText={t('CardsOrTable.Search')}
+                        afButtonText="Sök"
                         onAfOnSubmitSearch={(e) => {
                           setSearchTerm(e.detail);
                           filter.onChange(e);
@@ -145,7 +145,7 @@ export function CardsOrTable({
                       <div key={filter.label + filterKey} className="mb-[0.4rem]">
                         <DigiFormFilter
                           afFilterButtonText={filter.label}
-                          afSubmitButtonText={t('CardsOrTable.Filter')}
+                          afSubmitButtonText="Filtrera"
                           afListItems={filter.options}
                           onAfSubmitFilter={(e) => {
                             filter.onChange(e);
@@ -183,8 +183,7 @@ export function CardsOrTable({
           {pageSize > -1 && (
             <div>
               <DigiContextMenu
-                afId="items-per-page-menu"
-                afTitle={`${t('CardsOrTable.ItemsPerPage')} (${pageSize === 0 ? t('CardsOrTable.All') : pageSize})`}
+                afTitle={`Antal per sida (${pageSize === 0 ? 'Alla' : pageSize})`}
                 afMenuPosition="left-bottom"
                 afMenuItems={[
                   { id: 5, title: '5' },
@@ -194,7 +193,7 @@ export function CardsOrTable({
                   { id: 100, title: '100' },
                   { id: 150, title: '150' },
                   { id: 200, title: '200' },
-                  { id: 0, title: t('CardsOrTable.All') },
+                  { id: 0, title: 'Alla' },
                 ].filter((item) => item.id === 0 || (rows.length > 0 && item.id <= rows.length))}
                 onAfChangeItem={(e) => {
                   if (e.detail.item.id === 0) {
@@ -218,13 +217,9 @@ export function CardsOrTable({
 
         <div className="hidden lg:block">
           <DigiTable afSize={TableSize.MEDIUM}>
-            <h2 className="sr-only">
-              {t('CardsOrTable.TableWith')} {itemsName}
-            </h2>
+            <h2 className="sr-only">Tabell med {itemsName}</h2>
             <table aria-rowcount={rows.length} className="mt-2">
-              <caption className="sr-only">
-                {t('CardsOrTable.TableWith')} {itemsName}
-              </caption>
+              <caption className="sr-only">Tabell med {itemsName}</caption>
               <thead>
                 <tr>
                   {headings.map((heading, index) => (
@@ -280,7 +275,7 @@ export function CardsOrTable({
         {/* Cards view */}
         <div className="lg:hidden space-y-4">
           <fieldset>
-            <legend className="font-bold py-5">{t('CardsOrTable.SortBy')}:</legend>
+            <legend className="font-bold py-5">Sortera på:</legend>
             {displayHeadingsAboveCards && (
               <div>
                 {headings.map(
@@ -306,10 +301,7 @@ export function CardsOrTable({
             className="!list-none border-t-1 mt-6 !p-0"
             aria-label={
               pageSize > 0 && rows.length > pageSize
-                ? t('CardsOrTable.PageXOfY', {
-                    currentPage,
-                    totalPages: Math.ceil(rows.length / pageSize),
-                  })
+                ? `Sida ${currentPage} av ${Math.ceil(rows.length / pageSize)}`
                 : undefined
             }
             aria-describedby="list-description"

@@ -213,7 +213,7 @@
     "Step1Title": "Skapa granskning",
     "Step1Description": "Tryck på skapa granskning, namnge granskningen och svara på några frågor om din tjänst.",
     "Step2Title": "Se kravöversikt",
-    "Step2Description": "Se granskningens status. Sök eller filtrera fram specifika krav eller tryck på granska tillgänglighet.",
+    "Step2Description": "Se granskningens status. Sök eller filtrera fram specifika krav.",
     "Step3Title": "Börja granska",
     "Step3Description": "Gör en självskattning av din tjänst och bedöm den efter varje krav med en motivering.",
     "Step4Title": "Sammanställ brister",

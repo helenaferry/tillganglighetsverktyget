@@ -81,6 +81,8 @@ export function ReviewsList() {
       if (sortByParam) {
         setSortBy(parseInt(sortByParam));
       }
+    } else {
+      setSortBy(undefined);
     }
     if (directionParam === 'stigande' || directionParam === 'fallande') {
       setSortDirection(directionParam);
@@ -123,6 +125,13 @@ export function ReviewsList() {
       sortDirection === 'stigande' ? 'fallande' : 'stigande',
       filterFaves,
     );
+  };
+
+  const resetChoices = () => {
+    setFilterFreeText('');
+    setSortBy(undefined);
+    window.history.replaceState({}, '', window.location.pathname);
+    setFilterFaves(false);
   };
 
   const reviews = useMemo(() => {
@@ -366,12 +375,7 @@ export function ReviewsList() {
                   sortedByThIndex={sortBy}
                   sortDirection={sortDirection}
                   displayHeadingsAboveCards={true}
-                  resetChoices={() => {
-                    setFilterFreeText('');
-                    setSort(undefined);
-                    window.history.replaceState({}, '', window.location.pathname);
-                    setFilterFaves(false);
-                  }}
+                  resetChoices={resetChoices}
                   choicesMade={filterFreeText.length > 0 || sortBy !== undefined || filterFaves}
                   slotBelow={
                     <DigiFormCheckbox
