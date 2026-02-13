@@ -1,5 +1,5 @@
 import { DigiNavigationBreadcrumbs } from '@designsystem-se/af-react';
-import { useNavigate } from 'react-router';
+// simport { useNavigate } from 'react-router';
 
 type Props = {
   currentPage?: string;
@@ -7,11 +7,11 @@ type Props = {
 };
 
 export default function Breadcrumbs({ currentPage, pages }: Props) {
-  const navigate = useNavigate();
-  const handleClick = (e: React.MouseEvent, href: string) => {
+  //const navigate = useNavigate();
+  /* const handleClick = (e: React.MouseEvent, href: string) => {
     e.preventDefault();
     navigate(href);
-  };
+  };*/
   return (
     <div className="mb-6">
       <DigiNavigationBreadcrumbs afCurrentPage={currentPage} afAriaLabel="Brödsmulor">
@@ -19,7 +19,7 @@ export default function Breadcrumbs({ currentPage, pages }: Props) {
           <a
             key={`${page.href}-${index}`}
             href={page.href}
-            onClick={(e) => handleClick(e, page.href)}
+            // onClick={(e) => handleClick(e, page.href)}
           >
             {page.title}
           </a>
