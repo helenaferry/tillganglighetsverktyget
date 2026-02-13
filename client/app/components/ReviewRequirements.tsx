@@ -209,7 +209,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
   const filteredRequirements = useMemo(() => {
     let result = requirementsWithChecks || [];
     if (filterFlagged) {
-      result = result.filter((req) => req.check?.flag === true);
+      result = result.filter((req) => req.check?.flag === 1);
     }
     if (filterCategories.length > 0) {
       result = result.filter((req) => filterCategories.includes(req.category));
