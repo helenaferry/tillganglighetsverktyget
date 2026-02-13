@@ -37,7 +37,6 @@ export default defineConfig({
         'app/data/supabase-types.ts', // Legacy/generated types (no logic to cover)
         // Large route-like/complex components (integration test candidates)
         'app/components/RequirementForm.tsx',
-        'app/components/ReviewForm.tsx',
         'app/components/ReviewRequirement.tsx',
         'app/components/ReviewRequirements.tsx',
         // Mostly presentational components

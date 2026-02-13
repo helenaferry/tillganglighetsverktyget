@@ -317,10 +317,10 @@ export function ReviewsList() {
                           afHref={`/granskning/${review.id}`}
                           key={`title-${review.id}`}
                           // Override to work with ScrollRestoration
-                          onAfOnClick={(e: Event) => {
+                          /* onAfOnClick={(e: Event) => {
                             e.preventDefault();
                             navigate(`/granskning/${review.id}`);
-                          }}
+                          }}*/
                         >
                           <span className="inline lg:hidden">
                             <DigiIconChevronRight />
