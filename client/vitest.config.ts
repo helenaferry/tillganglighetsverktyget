@@ -34,7 +34,6 @@ export default defineConfig({
         'app/clientOnly.tsx', // Simple utility wrapper
         'app/favicon-link.ts', // Simple utility wrapper
         'app/data/apiClient.ts', // REST API client (backend integration)
-        'app/data/supabase-types.ts', // Legacy/generated types (no logic to cover)
         // Large route-like/complex components (integration test candidates)
         'app/components/RequirementForm.tsx',
         'app/components/ReviewForm.tsx',
