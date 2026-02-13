@@ -157,14 +157,3 @@ podman exec tillgang-oracle-dev impdp tillgang_user/TillgangDev2026!@FREEPDB1 \
   dumpfile=tillgang_backup.dmp \
   logfile=tillgang_import.log
 ```
-
-## Migrering från Supabase
-
-Om du har befintlig data i Supabase (PostgreSQL):
-
-1. Exportera data från Supabase
-2. Transformera dataformatet (tidsstämplar, booleska värden, etc.)
-3. Använd SQL\*Loader eller bulk INSERT-satser
-4. Verifiera dataintegritet
-
-Kontakta utvecklingsteamet för migreringsskript om det behövs.

@@ -494,26 +494,6 @@ podman volume create tillgang-oracle-data-dev-new
 podman run --rm -v tillgang-oracle-data-dev-new:/data -v "$(pwd)":/backup ubuntu tar -xzf /backup/oracle-data-backup.tar.gz -C /data
 ```
 
-## Migrering från Supabase
-
-### Viktiga skillnader
-
-| Aspekt    | Supabase       | Oracle Database Free |
-| --------- | -------------- | -------------------- |
-| Database  | PostgreSQL     | Oracle               |
-| Auth      | Inbyggd        | Anpassad             |
-| Real-time | Inbyggd        | Anpassad             |
-| Storage   | Inbyggd        | Anpassad             |
-| API       | Auto-genererad | Manuell (Express)    |
-
-### Migreringssteg
-
-1. Exportera data från Supabase (PostgreSQL)
-2. Transformera data (boolean → number, tidsstämplar, etc.)
-3. Importera till Oracle med SQL\*Loader eller INSERT-satser
-4. Uppdatera frontend för att använda nytt API
-5. Testa grundligt
-
 ## Teknologibeslut
 
 ### Varför Oracle Database Free?
