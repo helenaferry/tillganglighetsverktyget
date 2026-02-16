@@ -1,5 +1,4 @@
 // API Client for backend REST API
-// Replaces Supabase client
 
 import type { Requirement } from './types';
 

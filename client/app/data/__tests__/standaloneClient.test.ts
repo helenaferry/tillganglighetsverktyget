@@ -349,7 +349,7 @@ describe('standaloneClient', () => {
           flag: 1, // Number input
         });
 
-        expect(result.flag).toBe(true); // Converted to boolean
+        expect(result.flag).toBe(1); // Stored as number (Oracle format)
       });
 
       it('increments check ID correctly', async () => {
@@ -502,7 +502,7 @@ describe('standaloneClient', () => {
 
         const result = await standaloneClient.checks.toggleFlag(1, 'req1', true);
 
-        expect(result.flag).toBe(true);
+        expect(result.flag).toBe(1); // Stored as number (Oracle format)
         expect(result.updated_at).not.toBe(check.updated_at);
       });
 
@@ -512,7 +512,7 @@ describe('standaloneClient', () => {
         expect(result.id).toBeDefined();
         expect(result.review).toBe(1);
         expect(result.requirement).toBe('req999');
-        expect(result.flag).toBe(true);
+        expect(result.flag).toBe(1); // Stored as number (Oracle format)
         expect(result.status).toBe(3); // Status.NOT_ASSESSED
         expect(result.created_at).toBeDefined();
         expect(result.updated_at).toBeDefined();

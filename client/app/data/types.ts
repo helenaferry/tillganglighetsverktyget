@@ -27,10 +27,26 @@ export enum Status {
 }
 
 // Database types
-import type { Database } from '~/data/supabase-types';
+export type Review = {
+  id: number;
+  created_at: string;
+  title: string | null;
+  excludedContentTypes: string | null;
+  objectType: string | null;
+  regulatoryFramework: string | null;
+  selectedPrefillIds: string | null;
+};
 
-export type Review = Database['public']['Tables']['reviews']['Row'];
-export type Check = Database['public']['Tables']['checks']['Row'];
+export type Check = {
+  id: number;
+  created_at: string;
+  updated_at: string | null;
+  review: number;
+  requirement: string | null;
+  status: number | null;
+  comment: string | null;
+  flag: number | null; // 0 or 1 (Oracle boolean representation)
+};
 
 export type ReviewSummary = Review & {
   latestUpdate: string;

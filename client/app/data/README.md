@@ -8,7 +8,6 @@ Denna mapp innehåller all datahantering för klienten. Applikationen använder 
 - **requirementService.ts** - Hämtar krav från extern källa (JSON)
 - **reviewService.ts** - Hanterar granskningar och kontroller via REST API
 - **types.ts** - Delade TypeScript-typer för data
-- **supabase-types.ts** - (Legacy) Behålls för bakåtkompatibilitet, används inte längre
 
 ## API-konfiguration
 

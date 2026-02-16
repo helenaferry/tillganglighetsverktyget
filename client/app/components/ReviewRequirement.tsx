@@ -470,7 +470,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                     <DigiButton
                                       afVariation={ButtonVariation.FUNCTION}
                                       onAfOnClick={() => flagRequirement(!check?.flag)}
-                                      afAriaPressed={check?.flag || false}
+                                      afAriaPressed={check?.flag ? true : false}
                                     >
                                       <span
                                         slot="icon"
@@ -494,7 +494,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
                                     <DigiButton
                                       afVariation={ButtonVariation.SECONDARY}
                                       onAfOnClick={() => flagRequirement(!check?.flag)}
-                                      afAriaPressed={check?.flag || false}
+                                      afAriaPressed={check?.flag ? true : false}
                                     >
                                       <span
                                         slot="icon"

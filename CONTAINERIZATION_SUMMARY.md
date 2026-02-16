@@ -68,7 +68,7 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 
 ✅ **API-klient:**
 
-- `client/app/data/apiClient.ts` - REST API-klient som ersätter Supabase
+- `client/app/data/apiClient.ts` - REST API-klient för backend-kommunikation
 - Uppdaterad `client/app/data/reviewService.ts` - Alla metoder använder nu REST API
 - Behållit samma gränssnitt för minimala frontend-ändringar
 
@@ -80,7 +80,6 @@ Detta dokument sammanfattar den kompletta containeriseringsinstallationen för T
 
 ✅ **Beroenden:**
 
-- Borttaget: `@supabase/supabase-js`, `supabase`
 - Uppdaterad `client/package.json`
 
 ### 4. Containerorkestrering
@@ -264,15 +263,6 @@ Alla endpoints dokumenterade i `docs/API.md`:
 - `POST /api/reviews/:reviewId/checks` - Upsert kontroll
 - `POST /api/reviews/:reviewId/checks/bulk-*` - Bulk-operationer
 - Plus mer...
-
-## Migrering från Supabase
-
-Framgångsrikt migrerat från:
-
-- PostgreSQL → Oracle Database Free
-- Supabase-klient → Anpassad REST API
-- Auto-genererat API → Express-controllers
-- Inbyggd auth → Anpassad (framtid)
 
 ## Testa installationen
 

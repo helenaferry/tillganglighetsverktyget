@@ -4,7 +4,6 @@
 import { ApiError } from './apiClient';
 import {
   computeReviewSummary,
-  flagToBoolean,
   flagToNumber,
   normalizeCheck,
   normalizeReview,
@@ -122,10 +121,10 @@ function getChecks(): Check[] {
     const data = localStorage.getItem(STORAGE_KEY_CHECKS);
     if (!data) return [];
     const checks = JSON.parse(data) as Check[];
-    // Convert flag from number to boolean for type compatibility
+    // Ensure flag is number | null (Oracle format)
     return checks.map((check) => ({
       ...check,
-      flag: typeof check.flag === 'number' ? flagToBoolean(check.flag) : check.flag,
+      flag: typeof check.flag === 'boolean' ? flagToNumber(check.flag) : check.flag,
     }));
   } catch (error) {
     console.error('Error reading checks from localStorage:', error);
@@ -329,7 +328,7 @@ export const standaloneClient = {
           ...existing,
           status: data.status !== undefined ? data.status : existing.status,
           comment: data.comment !== undefined ? data.comment : existing.comment,
-          flag: data.flag !== undefined ? flagToBoolean(data.flag) : existing.flag,
+          flag: data.flag !== undefined ? (typeof data.flag === 'boolean' ? flagToNumber(data.flag) : data.flag) : existing.flag,
           updated_at: now,
         };
         saveChecks(checks);
@@ -344,7 +343,7 @@ export const standaloneClient = {
           requirement: data.requirement,
           status: data.status ?? null,
           comment: data.comment ?? null,
-          flag: data.flag !== undefined ? flagToBoolean(data.flag) : null,
+          flag: data.flag !== undefined ? (typeof data.flag === 'boolean' ? flagToNumber(data.flag) : data.flag) : null,
         };
         checks.push(newCheck);
         saveChecks(checks);
@@ -390,7 +389,7 @@ export const standaloneClient = {
             requirement,
             status: 2, // IRRELEVANT
             comment: '',
-            flag: false,
+            flag: 0,
           };
           checks.push(newCheck);
           updatedChecks.push(newCheck);
@@ -463,7 +462,7 @@ export const standaloneClient = {
               requirement: requirementId,
               status: statusNum,
               comment: prefill.comment,
-              flag: false,
+              flag: 0,
             };
             checks.push(newCheck);
             updatedChecks.push(newCheck);
@@ -481,6 +480,9 @@ export const standaloneClient = {
       const existingIndex = checks.findIndex(
         (c) => c.review === reviewId && c.requirement === requirementId,
       );
+      
+      // Convert boolean to number for storage (Oracle format)
+      const flagNumber = flag ? 1 : 0;
 
       if (existingIndex === -1) {
         // Create check if it doesn't exist (matches backend findOrCreate behavior)
@@ -492,7 +494,7 @@ export const standaloneClient = {
           requirement: requirementId,
           status: 3, // Status.NOT_ASSESSED
           comment: null,
-          flag,
+          flag: flagNumber,
         };
         checks.push(newCheck);
         saveChecks(checks);
@@ -502,7 +504,7 @@ export const standaloneClient = {
       // Update existing check
       checks[existingIndex] = {
         ...checks[existingIndex],
-        flag,
+        flag: flagNumber,
         updated_at: now,
       };
       saveChecks(checks);
