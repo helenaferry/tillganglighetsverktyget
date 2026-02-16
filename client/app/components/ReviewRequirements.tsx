@@ -20,8 +20,9 @@ import { DigiIconChevronRight } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
-import { ObjectType, type Requirement, Status, StatusText } from '~/data/types';
+import { ObjectType, type Requirement, Status } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
@@ -40,6 +41,7 @@ interface Props {
 export default function ReviewRequirements({ reviewId }: Props) {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const {
     review: review,
     isLoading: reviewLoading,
@@ -341,13 +343,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                 afVerticalPadding={true}
               >
                 <div className="flex flex-col sm:flex-row mb-6">
-                  <div className="basis-1/4">
+                  <div id="not-assessed-section" className="basis-1/4">
                     <div className="flex flex-col items-center">
                       <span className="sr-only">
                         {numberPerStatus(requirementsWithChecks).notAssessedCount}{' '}
                         {t('ReviewRequirements.StatusLabelNotAssessed')}
                       </span>
-                      <p className="!text-2xl !mb-2" aria-hidden="true">
+                      <p id="not-assessed-count" className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).notAssessedCount}
                       </p>
                       <div aria-hidden="true">
@@ -355,13 +357,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       </div>
                     </div>
                   </div>
-                  <div className="basis-1/4">
+                  <div id="pass-section" className="basis-1/4">
                     <div className="flex flex-col items-center">
                       <span className="sr-only">
                         {numberPerStatus(requirementsWithChecks).passCount}{' '}
                         {t('ReviewRequirements.StatusLabelPass')}
                       </span>
-                      <p className="!text-2xl !mb-2" aria-hidden="true">
+                      <p id="pass-count" className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).passCount}
                       </p>
                       <div aria-hidden="true">
@@ -369,13 +371,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       </div>
                     </div>
                   </div>
-                  <div className="basis-1/4">
+                  <div id="fail-section" className="basis-1/4">
                     <div className="flex flex-col items-center">
                       <span className="sr-only">
                         {numberPerStatus(requirementsWithChecks).failCount}{' '}
                         {t('ReviewRequirements.StatusLabelFail')}
                       </span>
-                      <p className="!text-2xl !mb-2" aria-hidden="true">
+                      <p id="fail-count" className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).failCount}
                       </p>
                       <div aria-hidden="true">
@@ -383,13 +385,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
                       </div>
                     </div>
                   </div>
-                  <div className="basis-1/4">
+                  <div id="irrelevant-section" className="basis-1/4">
                     <div className="flex flex-col items-center">
                       <span className="sr-only">
                         {numberPerStatus(requirementsWithChecks).irrelevantCount}{' '}
                         {t('ReviewRequirements.StatusLabelIrrelevant')}
                       </span>
-                      <p className="!text-2xl !mb-2" aria-hidden="true">
+                      <p id="irrelevant-count" className="!text-2xl !mb-2" aria-hidden="true">
                         {numberPerStatus(requirementsWithChecks).irrelevantCount}
                       </p>
                       <div aria-hidden="true">
@@ -474,6 +476,12 @@ export default function ReviewRequirements({ reviewId }: Props) {
                                 <DigiLink
                                   key={req.id}
                                   afHref={'/granskning/' + review.id + '/' + req.id}
+                                  afOverrideLink={true}
+                                  onAfOnClick={(e) => {
+                                    e.preventDefault();
+                                    navigate(`/granskning/${review.id}/${req.id}#krav`);
+                                  }}
+                                  className="font-medium text-sapphire-500 flex items-center gap-1"
                                 >
                                   <span className="inline lg:hidden">
                                     <DigiIconChevronRight />
@@ -548,19 +556,19 @@ export default function ReviewRequirements({ reviewId }: Props) {
                               label: t('ReviewRequirements.FilterStatus'),
                               options: [
                                 {
-                                  label: StatusText.PASS,
+                                  label: t('Status.pass'),
                                   id: Status.PASS.toString(),
                                 },
                                 {
-                                  label: StatusText.FAIL,
+                                  label: t('Status.fail'),
                                   id: Status.FAIL.toString(),
                                 },
                                 {
-                                  label: StatusText.NOT_ASSESSED,
+                                  label: t('Status.notAssessed'),
                                   id: Status.NOT_ASSESSED.toString(),
                                 },
                                 {
-                                  label: StatusText.IRRELEVANT,
+                                  label: t('Status.irrelevant'),
                                   id: Status.IRRELEVANT.toString(),
                                 },
                               ],

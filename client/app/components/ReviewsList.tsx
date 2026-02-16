@@ -21,7 +21,7 @@ import {
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 import { ObjectType } from '~/data/types';
@@ -316,11 +316,12 @@ export function ReviewsList() {
                         <DigiLink
                           afHref={`/granskning/${review.id}`}
                           key={`title-${review.id}`}
-                          // Override to work with ScrollRestoration
-                          /* onAfOnClick={(e: Event) => {
+                          className="sc-digi-link"
+                          afOverrideLink={true}
+                          onAfOnClick={(e) => {
                             e.preventDefault();
                             navigate(`/granskning/${review.id}`);
-                          }}*/
+                          }}
                         >
                           <span className="inline lg:hidden">
                             <DigiIconChevronRight />

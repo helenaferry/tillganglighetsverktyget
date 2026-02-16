@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import '@testing-library/jest-dom/vitest';
 
 import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
@@ -417,9 +419,6 @@ function createMutationResult(overrides = {}): UseMutationResult<any, Error, any
  * --------------------------------------------------------------- */
 
 async function renderReviewForm(review?: Review) {
-  // Reset modules to clear cache and force re-import with current env values
-  vi.resetModules();
-
   const { ReviewForm } = await import('../ReviewForm');
   return render(
     <BrowserRouter>
@@ -731,10 +730,10 @@ describe('ReviewForm', () => {
 
     it('shows loading indicator while saving', async () => {
       const user = userEvent.setup();
-      let resolveOnSuccess: any;
+      const deferred = { resolveOnSuccess: null as ((value: any) => void) | null };
       const mutateMock = vi.fn((_data, options) => {
         // Simulate async operation - don't call onSuccess immediately
-        resolveOnSuccess = () => options.onSuccess({ id: 1 });
+        deferred.resolveOnSuccess = () => options.onSuccess({ id: 1 });
       });
       mockUpsertReview.mockReturnValue(createMutationResult({ mutate: mutateMock }));
 
@@ -753,8 +752,14 @@ describe('ReviewForm', () => {
         expect(screen.getByText(i18n.t('ReviewForm.Saving'))).toBeInTheDocument();
       });
 
-      // Clean up
-      if (resolveOnSuccess) resolveOnSuccess();
+      // Resolve the async operation
+      if (deferred.resolveOnSuccess) {
+        deferred.resolveOnSuccess(undefined);
+        // Wait for the loading indicator to disappear
+        await waitFor(() => {
+          expect(screen.queryByTestId('loader-spinner')).not.toBeInTheDocument();
+        });
+      }
     });
 
     it('shows error message and stays on page when submission fails', async () => {
@@ -881,6 +886,7 @@ describe('ReviewForm', () => {
         );
       });
 
+      expect(imagesNoButton).toBeDefined();
       if (imagesNoButton) {
         await user.click(imagesNoButton);
 
@@ -906,6 +912,7 @@ describe('ReviewForm', () => {
         );
       });
 
+      expect(videoYesButton).toBeDefined();
       if (videoYesButton) {
         await user.click(videoYesButton);
 

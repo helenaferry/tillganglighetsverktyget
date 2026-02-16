@@ -3,12 +3,11 @@ import {
   DigiHeaderNavigation,
   DigiHeaderNavigationItem,
   DigiLayoutContainer,
-  DigiLink,
   DigiNavigationSidebarButton,
   DigiTypography,
 } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { envVars } from '~/helpers/helpers';
 
@@ -23,14 +22,14 @@ export default function Header() {
         <DigiLayoutContainer>
           <div className="flex justify-between items-center">
             <div className="min-w-0">
-              <DigiLink
-                afAriaLabel={t('HomeLink', { appName: applicationTitle })}
-                afHref="/"
+              <a
+                aria-label={t('HomeLink', { appName: applicationTitle })}
+                href="/"
                 className="flex gap-4 py-5 items-center text-text hover:text-text visited:!text-text !no-underline"
               >
                 <img src={logo.header.mobileUrl} alt="" className="md:hidden" />
                 <img src={logo.header.desktopUrl} alt="" className="hidden md:inline-block" />
-              </DigiLink>
+              </a>
             </div>
             <div className="md:hidden">
               <DigiNavigationSidebarButton afAriaLabel={t('Header.OpenMenu')} />
@@ -50,13 +49,13 @@ export default function Header() {
                   location.pathname === '/' || location.pathname.includes('granskning')
                 }
               >
-                <Link to="/">{t('Home.Title')}</Link>
+                <a href="/">{t('Home.Title')}</a>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/krav'}>
-                <Link to="/krav">{t('requirements.Title')}</Link>
+                <a href="/krav">{t('requirements.Title')}</a>
               </DigiHeaderNavigationItem>
               <DigiHeaderNavigationItem afCurrentPage={location.pathname === '/tips'}>
-                <Link to="/tips">{t('tips.Title')}</Link>
+                <a href="/tips">{t('tips.Title')}</a>
               </DigiHeaderNavigationItem>
             </DigiHeaderNavigation>
           </div>

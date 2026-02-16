@@ -38,7 +38,6 @@ export default defineConfig({
         // Large route-like/complex components (integration test candidates)
         'app/components/RequirementForm.tsx',
         'app/components/ReviewRequirement.tsx',
-        'app/components/ReviewRequirements.tsx',
         // Mostly presentational components
         'app/components/Breadcrumbs.tsx',
         'app/components/CategoryOverview.tsx',

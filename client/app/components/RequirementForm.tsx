@@ -18,7 +18,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Status, StatusText, type UpsertCheckInput } from '~/data/types';
+import { Status, type UpsertCheckInput } from '~/data/types';
 import { useCheck, useDeleteCheck, useUpsertCheck } from '~/hooks/useReviewData';
 
 type Props = {
@@ -94,22 +94,22 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
               >
                 <DigiFormRadiobutton
                   value={Status.NOT_ASSESSED.toString()}
-                  afLabel={StatusText.NOT_ASSESSED}
+                  afLabel={t('Status.notAssessed')}
                   afChecked={!check || check.status === Status.NOT_ASSESSED}
                 />
                 <DigiFormRadiobutton
                   value={Status.PASS.toString()}
-                  afLabel={StatusText.PASS}
+                  afLabel={t('Status.pass')}
                   afChecked={check?.status === Status.PASS}
                 />
                 <DigiFormRadiobutton
                   value={Status.FAIL.toString()}
-                  afLabel={StatusText.FAIL}
+                  afLabel={t('Status.fail')}
                   afChecked={check?.status === Status.FAIL}
                 />
                 <DigiFormRadiobutton
                   value={Status.IRRELEVANT.toString()}
-                  afLabel={StatusText.IRRELEVANT}
+                  afLabel={t('Status.irrelevant')}
                   afChecked={check?.status === Status.IRRELEVANT}
                 />
               </DigiFormRadiogroup>

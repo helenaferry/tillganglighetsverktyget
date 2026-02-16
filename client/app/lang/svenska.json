@@ -8,6 +8,16 @@
   "No": "Nej",
   "of": "av",
   "HomeLink": "Startsida för {{appName}}",
+  "Status": {
+    "fail": "Underkänt",
+    "failPlural": "Underkända",
+    "pass": "Godkänt",
+    "passPlural": "Godkända",
+    "irrelevant": "Irrelevant",
+    "irrelevantPlural": "Irrelevanta",
+    "notAssessed": "Ej granskat",
+    "notAssessedPlural": "Ej granskade"
+  },
   "ResetButtonDefaultText": "Rensa dina val",
   "ErrorHeading": "Hoppsan",
   "UnexpectedError": "Ett oväntat fel inträffade. Försök igen senare.",

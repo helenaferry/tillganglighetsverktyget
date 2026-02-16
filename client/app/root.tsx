@@ -9,14 +9,8 @@ import { ErrorPageStatusCodes } from '@designsystem-se/af';
 import { DigiNotificationErrorPage, DigiTypography } from '@designsystem-se/af-react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import {
-  isRouteErrorResponse,
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from 'react-router';
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, useLocation } from 'react-router';
+import { useEffect } from 'react';
 
 import type { Route } from './+types/root';
 import { ClientOnly } from './clientOnly';
@@ -41,18 +35,37 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="min-h-screen flex flex-col gap-0">
         <ClientOnly>
+          <ScrollToTopOnNavigation />
           <SkipLink />
           <Header />
           <QueryClientProvider client={queryClient}>
             <div className="bg-grayscale-100 grow">{children}</div>
           </QueryClientProvider>
           <Footer />
-          <ScrollRestoration />
         </ClientOnly>
         <Scripts />
       </body>
     </html>
   );
+}
+
+function ScrollToTopOnNavigation() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView();
+        return;
+      }
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname, location.search, location.hash]);
+
+  return null;
 }
 
 export default function App() {
