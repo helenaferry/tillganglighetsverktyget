@@ -133,6 +133,9 @@ describe('RequirementForm', () => {
     });
   });
 
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Möjliggöra bedömning av krav
+   * --------------------------------------------------------------- */
   describe('Möjliggöra bedömning av krav', () => {
     it('renders all assessment status radio buttons', async () => {
       renderRequirementForm();

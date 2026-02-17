@@ -319,8 +319,7 @@ const mockReview: Review = {
   selectedPrefillIds: '1',
   objectType: ObjectType.WEB,
   regulatoryFramework: 'dos',
-  createdAt: '2024-01-01',
-  updatedAt: '2024-01-01',
+  created_at: '2024-01-01',
 };
 
 const mockPrefillSettings: PrefillRequirementSetting[] = [

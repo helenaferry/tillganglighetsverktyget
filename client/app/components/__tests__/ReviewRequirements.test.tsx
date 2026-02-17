@@ -285,8 +285,7 @@ const mockReview: Review = {
   selectedPrefillIds: '',
   objectType: ObjectType.WEB,
   regulatoryFramework: 'dos',
-  createdAt: '2024-01-01',
-  updatedAt: '2024-01-01',
+  created_at: '2024-01-01',
 };
 
 const mockChecks: Check[] = [
@@ -296,9 +295,9 @@ const mockChecks: Check[] = [
     requirement: '1.1.1',
     status: Status.PASS,
     comment: '',
-    flag: true,
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
+    flag: 1,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
   },
   {
     id: 2,
@@ -306,9 +305,9 @@ const mockChecks: Check[] = [
     requirement: '1.2.1',
     status: Status.NOT_ASSESSED,
     comment: '',
-    flag: true,
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
+    flag: 1,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
   },
   {
     id: 3,
@@ -316,9 +315,9 @@ const mockChecks: Check[] = [
     requirement: '2.1.1',
     status: Status.FAIL,
     comment: 'Lorem ipsum dolor sit amet',
-    flag: true,
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
+    flag: 1,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
   },
   {
     id: 4,
@@ -326,9 +325,9 @@ const mockChecks: Check[] = [
     requirement: '2.4.4',
     status: Status.PASS,
     comment: '',
-    flag: false,
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
+    flag: 0,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
   },
   {
     id: 5,
@@ -336,9 +335,9 @@ const mockChecks: Check[] = [
     requirement: '3.3.2',
     status: Status.NOT_ASSESSED,
     comment: '',
-    flag: true,
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
+    flag: 1,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
   },
   {
     id: 6,
@@ -346,9 +345,9 @@ const mockChecks: Check[] = [
     requirement: '4.1.2',
     status: Status.FAIL,
     comment: 'Consectetur adipiscing elit',
-    flag: false,
-    createdAt: '2024-01-01',
-    updatedAt: '2024-01-01',
+    flag: 0,
+    created_at: '2024-01-01',
+    updated_at: '2024-01-01',
   },
 ];
 
@@ -466,7 +465,7 @@ describe('ReviewRequirements', () => {
           if (requirement?.name) {
             expect(screen.queryAllByText(requirement.name).length).toBeGreaterThan(0);
           }
-          const statusText = getStatusText(check.status);
+          const statusText = getStatusText(check.status as Status);
           expect(screen.queryAllByText(statusText).length).toBeGreaterThan(0);
         });
       });

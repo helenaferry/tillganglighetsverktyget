@@ -132,7 +132,7 @@ export default function ReviewRequirements({ reviewId }: Props) {
   const [filterCategories, setFilterCategories] = useState<string[]>([]);
   const [filterStatus, setFilterStatus] = useState<Status[]>([]);
   const [filterFreeText, setFilterFreeText] = useState<string>('');
-  const [filterFlagged, setFilterFlagged] = useState<boolean>(true);
+  const [filterFlagged, setFilterFlagged] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<SortBy | undefined>(undefined);
   const [sortDirection, setSortDirection] = useState<'stigande' | 'fallande'>('fallande');
 

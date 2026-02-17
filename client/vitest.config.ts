@@ -34,9 +34,6 @@ export default defineConfig({
         'app/clientOnly.tsx', // Simple utility wrapper
         'app/favicon-link.ts', // Simple utility wrapper
         'app/data/apiClient.ts', // REST API client (backend integration)
-        // Large route-like/complex components (integration test candidates)
-        'app/components/RequirementForm.tsx',
-        'app/components/ReviewRequirement.tsx',
         // Mostly presentational components
         'app/components/Breadcrumbs.tsx',
         'app/components/CategoryOverview.tsx',
