@@ -78,9 +78,6 @@ vi.mock('@designsystem-se/af-react', async () => {
     }: React.PropsWithChildren<{
       onAfOnClick?: () => void;
       afType?: string;
-      afVariation?: string;
-      afSize?: string;
-      afFullWidth?: boolean;
     }>) => (
       <button
         onClick={onAfOnClick}
@@ -198,6 +195,7 @@ vi.mock('@designsystem-se/af-react', async () => {
           checked={afChecked}
           onChange={onAfOnChange}
           aria-describedby={afAriaDescribedby}
+          readOnly
         />
         {afLabel}
       </label>
