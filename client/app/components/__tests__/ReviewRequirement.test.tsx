@@ -242,51 +242,6 @@ describe('ReviewRequirement', () => {
    * Funktionellt krav: Möjliggöra flaggning av krav
    * --------------------------------------------------------------- */
   describe('Möjliggöra flaggning av krav', () => {
-    it('renders flag button when requirement is loaded', async () => {
-      await renderReviewRequirement();
-
-      await waitFor(() => {
-        const flagButtons = screen.getAllByRole('button', { name: new RegExp(flagText, 'i') });
-        expect(flagButtons.length).toBeGreaterThan(0);
-      });
-    });
-
-    it('shows flag button when requirement is not flagged', async () => {
-      mockUseCheck.mockReturnValue({
-        check: { ...mockCheck, flag: false },
-        isLoading: false,
-        isFetched: true,
-      });
-
-      await renderReviewRequirement();
-
-      await waitFor(() => {
-        const flagButtons = screen.getAllByRole('button', { name: new RegExp(flagText, 'i') });
-        expect(flagButtons.length).toBeGreaterThan(0);
-        expect(flagButtons[0].textContent).toContain(flagText);
-        expect(flagButtons[0]).toHaveAttribute('aria-pressed', 'false');
-      });
-    });
-
-    it('shows unflag button when requirement is flagged', async () => {
-      mockUseCheck.mockReturnValue({
-        check: { ...mockCheck, flag: true },
-        isLoading: false,
-        isFetched: true,
-      });
-
-      await renderReviewRequirement();
-
-      await waitFor(() => {
-        const flaggedButtons = screen.getAllByRole('button', {
-          name: new RegExp(flaggedText, 'i'),
-        });
-        expect(flaggedButtons.length).toBeGreaterThan(0);
-        expect(flaggedButtons[0].textContent).toContain(flaggedText);
-        expect(flaggedButtons[0]).toHaveAttribute('aria-pressed', 'true');
-      });
-    });
-
     it('toggles flag state when user clicks flag button', async () => {
       const user = userEvent.setup();
       mockUseCheck.mockReturnValue({
@@ -300,18 +255,25 @@ describe('ReviewRequirement', () => {
 
       await renderReviewRequirement();
 
-      // Before click: should show unflagged state
-      const flagButtons = screen.getAllByRole('button', { name: new RegExp(flagText, 'i') });
-      expect(flagButtons[0]).toHaveAttribute('aria-pressed', 'false');
+      // Before click: verify button is in unflagged state
+      const flagButtonsBefore = screen.getAllByRole('button', { name: new RegExp(flagText, 'i') });
+      expect(flagButtonsBefore[0]).toHaveAttribute('aria-pressed', 'false');
 
       // Click to flag
-      await user.click(flagButtons[0]);
+      await user.click(flagButtonsBefore[0]);
 
       // Verify the mutation was called with correct flag value
       expect(mockToggleCheckFlagMutate).toHaveBeenCalledWith(
         expect.objectContaining({ flag: true }),
         expect.any(Object),
       );
+
+      // Verify success message appears
+      const successMessage = i18n.t('ReviewRequirement.FlagSet');
+      await waitFor(() => {
+        const alert = screen.queryByText(successMessage);
+        expect(alert).toBeTruthy();
+      });
     });
 
     it('toggles from flagged to unflagged when user clicks unflag button', async () => {
@@ -327,18 +289,27 @@ describe('ReviewRequirement', () => {
 
       await renderReviewRequirement();
 
-      // Before click: should show flagged state
-      const flaggedButtons = screen.getAllByRole('button', { name: new RegExp(flaggedText, 'i') });
-      expect(flaggedButtons[0]).toHaveAttribute('aria-pressed', 'true');
+      // Before click: verify button is in flagged state
+      const flaggedButtonsBefore = screen.getAllByRole('button', {
+        name: new RegExp(flaggedText, 'i'),
+      });
+      expect(flaggedButtonsBefore[0]).toHaveAttribute('aria-pressed', 'true');
 
       // Click to unflag
-      await user.click(flaggedButtons[0]);
+      await user.click(flaggedButtonsBefore[0]);
 
       // Verify the mutation was called with correct flag value
       expect(mockToggleCheckFlagMutate).toHaveBeenCalledWith(
         expect.objectContaining({ flag: false }),
         expect.any(Object),
       );
+
+      // Verify success message appears
+      const successMessage = i18n.t('ReviewRequirement.FlagRemoved');
+      await waitFor(() => {
+        const alert = screen.queryByText(successMessage);
+        expect(alert).toBeTruthy();
+      });
     });
 
     it('displays error message when flag toggle fails', async () => {
