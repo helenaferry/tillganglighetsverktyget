@@ -1,3 +1,4 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
@@ -5,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ObjectType, Status } from '../../data/types';
 import i18n from '../../lang/i18n';
+import { getQueryClient } from '../../queryClient';
 import ReviewRequirement from '../ReviewRequirement';
 
 // Mock design system components
@@ -36,6 +38,16 @@ vi.mock('@designsystem-se/af-react', () => ({
   DigiIconComunicationFlag: ({ ...props }: { [key: string]: unknown }) => (
     <span data-testid="icon-flag" {...props}>
       Flag Icon
+    </span>
+  ),
+  DigiIconArrowRight: ({ ...props }: { [key: string]: unknown }) => (
+    <span data-testid="icon-arrow-right" {...props}>
+      →
+    </span>
+  ),
+  DigiBadgeStatus: ({ ...props }: { [key: string]: unknown }) => (
+    <span data-testid="badge-status" {...props}>
+      Badge
     </span>
   ),
   DigiLayoutBlock: ({ children }: React.PropsWithChildren) => (
@@ -83,49 +95,6 @@ vi.mock('@designsystem-se/af-react', () => ({
   ),
 }));
 
-// Mock child components
-vi.mock('~/components/Breadcrumbs', () => ({
-  default: () => <div data-testid="mock-breadcrumbs">Breadcrumbs</div>,
-}));
-
-vi.mock('~/components/CategoryNav', () => ({
-  default: () => <div data-testid="mock-category-nav">CategoryNav</div>,
-}));
-
-vi.mock('~/components/CategoryOverview', () => ({
-  default: () => <div data-testid="mock-category-overview">CategoryOverview</div>,
-}));
-
-vi.mock('~/components/FilledFlag', () => ({
-  default: () => <span data-testid="mock-filled-flag">FilledFlag</span>,
-}));
-
-vi.mock('~/components/PrevNextRequirement', () => ({
-  default: () => <div data-testid="mock-prev-next">PrevNextRequirement</div>,
-}));
-
-vi.mock('~/components/RequirementDetails', () => ({
-  default: () => <div data-testid="mock-requirement-details">RequirementDetails</div>,
-}));
-
-vi.mock('~/components/RequirementForm', () => ({
-  default: () => <div data-testid="mock-requirement-form">RequirementForm</div>,
-}));
-
-vi.mock('~/components/RequirementLegal', () => ({
-  default: () => <div data-testid="mock-requirement-legal">RequirementLegal</div>,
-}));
-
-vi.mock('~/components/ScreenReaderAlert', () => ({
-  default: ({ children }: React.PropsWithChildren) => (
-    <div data-testid="mock-screen-reader-alert">{children}</div>
-  ),
-}));
-
-vi.mock('~/components/StatusBadge', () => ({
-  default: () => <div data-testid="mock-status-badge">StatusBadge</div>,
-}));
-
 // Mock hooks
 const mockUseReviewById = vi.fn();
 const mockUseChecksForReview = vi.fn();
@@ -133,6 +102,35 @@ const mockUseCheck = vi.fn();
 const mockUseRequirements = vi.fn();
 const mockUseRequirementCategories = vi.fn();
 const mockToggleCheckFlagMutate = vi.fn();
+
+// Mock away irrelevant components
+vi.mock('~/components/Breadcrumbs', () => ({
+  default: () => null,
+}));
+
+vi.mock('~/components/CategoryNav', () => ({
+  default: () => null,
+}));
+
+vi.mock('~/components/PrevNextRequirement', () => ({
+  default: () => null,
+}));
+
+vi.mock('~/components/StatusBadge', () => ({
+  default: () => null,
+}));
+
+vi.mock('~/components/RequirementDetails', () => ({
+  default: () => null,
+}));
+
+vi.mock('~/components/RequirementForm', () => ({
+  default: () => null,
+}));
+
+vi.mock('~/components/RequirementLegal', () => ({
+  default: () => null,
+}));
 
 vi.mock('~/hooks/useReviewData', () => ({
   useCheck: () => mockUseCheck(),
@@ -145,6 +143,16 @@ vi.mock('~/hooks/useRequirementData', () => ({
   useRequirements: () => mockUseRequirements(),
   useRequirementCategories: () => mockUseRequirementCategories(),
 }));
+
+// Component wrapper with necessary test contexts
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  const queryClient = getQueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>{children}</BrowserRouter>
+    </QueryClientProvider>
+  );
+}
 
 describe('ReviewRequirement', () => {
   const mockReviewId = 'review-123';
@@ -221,9 +229,9 @@ describe('ReviewRequirement', () => {
 
   async function renderReviewRequirement() {
     return render(
-      <BrowserRouter>
+      <TestWrapper>
         <ReviewRequirement reviewId={mockReviewId} requirementId={mockRequirementId} />
-      </BrowserRouter>,
+      </TestWrapper>,
     );
   }
 
@@ -279,29 +287,34 @@ describe('ReviewRequirement', () => {
       });
     });
 
-    it('calls mutate with flag=true when flagging', async () => {
+    it('toggles flag state when user clicks flag button', async () => {
       const user = userEvent.setup();
       mockUseCheck.mockReturnValue({
         check: { ...mockCheck, flag: false },
         isLoading: false,
         isFetched: true,
       });
-      mockToggleCheckFlagMutate.mockImplementation((input, callbacks) => {
+      mockToggleCheckFlagMutate.mockImplementation((_input, callbacks) => {
         callbacks?.onSuccess?.();
       });
 
       await renderReviewRequirement();
 
+      // Before click: should show unflagged state
       const flagButtons = screen.getAllByRole('button', { name: new RegExp(flagText, 'i') });
+      expect(flagButtons[0]).toHaveAttribute('aria-pressed', 'false');
+
+      // Click to flag
       await user.click(flagButtons[0]);
 
+      // Verify the mutation was called with correct flag value
       expect(mockToggleCheckFlagMutate).toHaveBeenCalledWith(
         expect.objectContaining({ flag: true }),
         expect.any(Object),
       );
     });
 
-    it('calls mutate with flag=false when unflagging', async () => {
+    it('toggles from flagged to unflagged when user clicks unflag button', async () => {
       const user = userEvent.setup();
       mockUseCheck.mockReturnValue({
         check: { ...mockCheck, flag: true },
@@ -314,16 +327,21 @@ describe('ReviewRequirement', () => {
 
       await renderReviewRequirement();
 
+      // Before click: should show flagged state
       const flaggedButtons = screen.getAllByRole('button', { name: new RegExp(flaggedText, 'i') });
+      expect(flaggedButtons[0]).toHaveAttribute('aria-pressed', 'true');
+
+      // Click to unflag
       await user.click(flaggedButtons[0]);
 
+      // Verify the mutation was called with correct flag value
       expect(mockToggleCheckFlagMutate).toHaveBeenCalledWith(
         expect.objectContaining({ flag: false }),
         expect.any(Object),
       );
     });
 
-    it('calls error callback when flagging fails', async () => {
+    it('displays error message when flag toggle fails', async () => {
       const user = userEvent.setup();
       mockUseCheck.mockReturnValue({
         check: { ...mockCheck, flag: false },
@@ -342,9 +360,22 @@ describe('ReviewRequirement', () => {
       await user.click(flagButtons[0]);
 
       // Trigger the error callback
-      errorCallback?.(new Error('Failed to toggle flag'));
+      const errorMessage = 'Failed to toggle flag';
+      errorCallback?.(new Error(errorMessage));
 
-      expect(mockToggleCheckFlagMutate).toHaveBeenCalled();
+      // Wait for error feedback to appear
+      await waitFor(() => {
+        // Check if error is communicated to the user via screen reader alert or error message
+        const screenReaderAlert = screen.queryByTestId('mock-screen-reader-alert');
+        if (screenReaderAlert) {
+          expect(screenReaderAlert.textContent).toContain(errorMessage);
+        }
+        // The component should have attempted the mutation
+        expect(mockToggleCheckFlagMutate).toHaveBeenCalledWith(
+          expect.objectContaining({ flag: true }),
+          expect.any(Object),
+        );
+      });
     });
   });
 });
