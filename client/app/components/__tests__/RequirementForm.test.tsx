@@ -1,9 +1,12 @@
+import '@testing-library/jest-dom/vitest';
+
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Status } from '../../data/types';
+import i18n from '../../lang/i18n';
 import RequirementForm from '../RequirementForm';
 
 // Mock data hooks - will be configured per test
@@ -26,16 +29,19 @@ vi.mock('@designsystem-se/af-react', () => ({
     children,
     onAfOnClick,
     afType,
+    afAriaLabel,
     ...props
   }: {
     children?: React.ReactNode;
     onAfOnClick?: () => void;
     afType?: string;
+    afAriaLabel?: string;
     [key: string]: unknown;
   }) => (
     <button
       onClick={onAfOnClick}
       type={afType === 'submit' ? 'submit' : 'button'}
+      aria-label={afAriaLabel}
       data-testid="digi-button"
       {...props}
     >
@@ -106,13 +112,29 @@ vi.mock('@designsystem-se/af-react', () => ({
   ),
   DigiFormTextarea: ({
     afValue,
-    onAfOnChange,
+    onAfOnInput,
+    onBlur,
     ...props
   }: {
     afValue?: string;
-    onAfOnChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onAfOnInput?: (e: CustomEvent<{ target: { value: string } }>) => void;
+    onBlur?: () => void;
     [key: string]: unknown;
-  }) => <textarea value={afValue} onChange={onAfOnChange} {...props} />,
+  }) => (
+    <textarea
+      value={afValue}
+      onChange={(e) => {
+        if (onAfOnInput) {
+          const customEvent = new CustomEvent('input', {
+            detail: { target: { value: e.target.value } },
+          }) as CustomEvent<{ target: { value: string } }>;
+          onAfOnInput(customEvent);
+        }
+      }}
+      onBlur={onBlur}
+      {...props}
+    />
+  ),
   DigiIconCopy: () => <span data-testid="copy-icon">Copy</span>,
   DigiInfoCard: ({ children, afHeading }: { children?: React.ReactNode; afHeading?: string }) => (
     <div data-testid="info-card">
@@ -128,13 +150,13 @@ describe('RequirementForm', () => {
   const mockReviewId = 'review-1';
   const mockTextSuggestions: string[] = [];
 
-  const renderRequirementForm = () =>
+  const renderRequirementForm = (textSuggestions: string[] = mockTextSuggestions) =>
     render(
       <BrowserRouter>
         <RequirementForm
           requirementId={mockRequirementId}
           reviewId={mockReviewId}
-          textSuggestions={mockTextSuggestions}
+          textSuggestions={textSuggestions}
         />
       </BrowserRouter>,
     );
@@ -292,6 +314,73 @@ describe('RequirementForm', () => {
         (btn) => btn.getAttribute('value') === String(Status.PASS),
       );
       expect(passButton).toBeChecked();
+    });
+  });
+
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Möjliggöra motivering text av bedömning
+   * i ett textfält
+   * --------------------------------------------------------------- */
+  describe('Möjliggöra motivering text av bedömning i ett textfält', () => {
+    it('saves textarea comment on blur', async () => {
+      const user = userEvent.setup();
+      renderRequirementForm();
+
+      const textarea = await screen.findByRole('textbox');
+      await user.type(textarea, 'This is a comment');
+      await textarea.blur();
+
+      await waitFor(() => {
+        expect(mockUpsert).toHaveBeenCalledWith(
+          expect.objectContaining({
+            comment: 'This is a comment',
+          }),
+          expect.any(Object),
+        );
+      });
+    });
+  });
+
+  /* ---------------------------------------------------------------
+   * Funktionellt krav: Visa förslag till texter som stöd vid
+   * formulering av tillgänglighetsredogörelser
+   * --------------------------------------------------------------- */
+  describe('Visa förslag till texter som stöd vid formulering av tillgänglighetsredogörelser', () => {
+    it('copies text suggestion to comment when copy button is clicked', async () => {
+      const user = userEvent.setup();
+      const suggestion = 'Suggested comment';
+      renderRequirementForm([suggestion]);
+
+      // Find the copy button by its aria-label which contains the suggestion text
+      const expectedAriaLabel = i18n.t('RequirementForm.CopyTextAriaDescription', {
+        text: suggestion,
+      });
+      const buttons = await screen.findAllByRole('button');
+      const copyButton = buttons.find(
+        (btn) => btn.getAttribute('aria-label') === expectedAriaLabel,
+      );
+
+      if (!copyButton) {
+        throw new Error(`Copy button with aria-label "${expectedAriaLabel}" not found`);
+      }
+
+      await user.click(copyButton);
+
+      // Verify textarea now contains the suggestion
+      const textarea = await screen.findByRole('textbox');
+      expect(textarea).toHaveValue(suggestion);
+
+      // Blur saves it
+      await textarea.blur();
+
+      await waitFor(() => {
+        expect(mockUpsert).toHaveBeenCalledWith(
+          expect.objectContaining({
+            comment: suggestion,
+          }),
+          expect.any(Object),
+        );
+      });
     });
   });
 });
