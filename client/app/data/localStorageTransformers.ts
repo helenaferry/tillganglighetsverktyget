@@ -62,9 +62,7 @@ export function computeReviewSummary(review: Review, checks: Check[]): ReviewSum
   // Calculate latestUpdate: max(updated_at) from checks, or created_at from review
   let latestUpdate = review.created_at;
   if (reviewChecks.length > 0) {
-    const updates = reviewChecks
-      .map((c) => c.updated_at)
-      .filter((u): u is string => u !== null);
+    const updates = reviewChecks.map((c) => c.updated_at).filter((u): u is string => u !== null);
     if (updates.length > 0) {
       const sorted = updates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
       latestUpdate = sorted[0];
@@ -72,9 +70,7 @@ export function computeReviewSummary(review: Review, checks: Check[]): ReviewSum
   }
 
   // Calculate reviewedCount: checks with status != null and status != 3 (NOT_ASSESSED)
-  const reviewedCount = reviewChecks.filter(
-    (c) => c.status !== null && c.status !== 3,
-  ).length;
+  const reviewedCount = reviewChecks.filter((c) => c.status !== null && c.status !== 3).length;
 
   // Calculate passCount: checks with status == 1 (PASS)
   const passCount = reviewChecks.filter((c) => c.status === 1).length;

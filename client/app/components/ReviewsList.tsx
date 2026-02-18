@@ -21,7 +21,7 @@ import {
 } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 import { ObjectType } from '~/data/types';

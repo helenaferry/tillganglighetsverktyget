@@ -1,9 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
-import i18n from '../../lang/i18n';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { ObjectType, Status } from '../../data/types';
+import i18n from '../../lang/i18n';
 import ReviewRequirement from '../ReviewRequirement';
 
 // Mock design system components
@@ -14,7 +15,12 @@ vi.mock('@designsystem-se/af-react', () => ({
     afAriaPressed,
     'aria-pressed': ariaPressed,
     ...props
-  }: any) => (
+  }: React.PropsWithChildren<{
+    onAfOnClick?: () => void;
+    afAriaPressed?: boolean;
+    'aria-pressed'?: boolean;
+    [key: string]: unknown;
+  }>) => (
     <button
       onClick={onAfOnClick}
       aria-pressed={afAriaPressed !== undefined ? afAriaPressed : ariaPressed}
@@ -24,39 +30,53 @@ vi.mock('@designsystem-se/af-react', () => ({
       {children}
     </button>
   ),
-  DigiFormValidationMessage: ({ children }: any) => (
+  DigiFormValidationMessage: ({ children }: React.PropsWithChildren) => (
     <div data-testid="validation-message">{children}</div>
   ),
-  DigiIconComunicationFlag: ({ ...props }: any) => (
+  DigiIconComunicationFlag: ({ ...props }: { [key: string]: unknown }) => (
     <span data-testid="icon-flag" {...props}>
       Flag Icon
     </span>
   ),
-  DigiLayoutBlock: ({ children }: any) => <div data-testid="layout-block">{children}</div>,
-  DigiLayoutContainer: ({ children }: any) => <div data-testid="layout-container">{children}</div>,
-  DigiLinkButton: ({ children, ...props }: any) => (
+  DigiLayoutBlock: ({ children }: React.PropsWithChildren) => (
+    <div data-testid="layout-block">{children}</div>
+  ),
+  DigiLayoutContainer: ({ children }: React.PropsWithChildren) => (
+    <div data-testid="layout-container">{children}</div>
+  ),
+  DigiLinkButton: ({ children, ...props }: React.PropsWithChildren<{ [key: string]: unknown }>) => (
     <a data-testid="link-button" {...props}>
       {children}
     </a>
   ),
-  DigiLoaderSkeleton: ({ ...props }: any) => (
+  DigiLoaderSkeleton: ({ ...props }: { [key: string]: unknown }) => (
     <div data-testid="loader-skeleton" {...props}>
       Loading...
     </div>
   ),
-  DigiNotificationAlert: ({ children, afType }: any) => (
+  DigiNotificationAlert: ({ children, afType }: React.PropsWithChildren<{ afType?: string }>) => (
     <div data-testid="notification-alert" data-type={afType}>
       {children}
     </div>
   ),
-  DigiNotificationErrorPage: ({ children }: any) => <div data-testid="error-page">{children}</div>,
-  DigiTypography: ({ children }: any) => <div data-testid="typography">{children}</div>,
-  DigiTypographyHeadingJumbo: ({ children, ...props }: any) => (
+  DigiNotificationErrorPage: ({ children }: React.PropsWithChildren) => (
+    <div data-testid="error-page">{children}</div>
+  ),
+  DigiTypography: ({ children }: React.PropsWithChildren) => (
+    <div data-testid="typography">{children}</div>
+  ),
+  DigiTypographyHeadingJumbo: ({
+    children,
+    ...props
+  }: React.PropsWithChildren<{ [key: string]: unknown }>) => (
     <h1 data-testid="typography-heading-jumbo" {...props}>
       {children}
     </h1>
   ),
-  DigiTypographyPreamble: ({ children, ...props }: any) => (
+  DigiTypographyPreamble: ({
+    children,
+    ...props
+  }: React.PropsWithChildren<{ [key: string]: unknown }>) => (
     <p data-testid="typography-preamble" {...props}>
       {children}
     </p>
@@ -97,7 +117,9 @@ vi.mock('~/components/RequirementLegal', () => ({
 }));
 
 vi.mock('~/components/ScreenReaderAlert', () => ({
-  default: ({ children }: any) => <div data-testid="mock-screen-reader-alert">{children}</div>,
+  default: ({ children }: React.PropsWithChildren) => (
+    <div data-testid="mock-screen-reader-alert">{children}</div>
+  ),
 }));
 
 vi.mock('~/components/StatusBadge', () => ({
@@ -207,9 +229,6 @@ describe('ReviewRequirement', () => {
 
   const flagText = i18n.t('ReviewRequirement.Flag');
   const flaggedText = i18n.t('ReviewRequirement.Flagged');
-  const flagSetText = i18n.t('ReviewRequirement.FlagSet');
-  const flagRemovedText = i18n.t('ReviewRequirement.FlagRemoved');
-  const flagErrorText = i18n.t('ReviewRequirement.FlagError');
 
   /* ---------------------------------------------------------------
    * Funktionellt krav: Möjliggöra flaggning av krav
@@ -312,7 +331,7 @@ describe('ReviewRequirement', () => {
         isFetched: true,
       });
 
-      let errorCallback: any;
+      let errorCallback: ((error: Error) => void) | undefined;
       mockToggleCheckFlagMutate.mockImplementation((input, callbacks) => {
         errorCallback = callbacks?.onError;
       });

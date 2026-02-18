@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { BrowserRouter } from 'react-router';
-import i18n from '../../lang/i18n';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { Status } from '../../data/types';
 import RequirementForm from '../RequirementForm';
 
@@ -18,11 +18,21 @@ vi.mock('~/hooks/useReviewData', () => ({
 }));
 
 // Store current radiogroup handler for connecting buttons to groups in tests
-let currentOnGroupChange: any = null;
+let currentOnGroupChange: ((e: CustomEvent<{ target: { value: string } }>) => void) | null = null;
 
 // Mock design system components
 vi.mock('@designsystem-se/af-react', () => ({
-  DigiButton: ({ children, onAfOnClick, afType, ...props }: any) => (
+  DigiButton: ({
+    children,
+    onAfOnClick,
+    afType,
+    ...props
+  }: {
+    children?: React.ReactNode;
+    onAfOnClick?: () => void;
+    afType?: string;
+    [key: string]: unknown;
+  }) => (
     <button
       onClick={onAfOnClick}
       type={afType === 'submit' ? 'submit' : 'button'}
@@ -32,7 +42,19 @@ vi.mock('@designsystem-se/af-react', () => ({
       {children}
     </button>
   ),
-  DigiFormRadiobutton: ({ afLabel, afValue, afChecked, afAriaDescribedby, value }: any) => {
+  DigiFormRadiobutton: ({
+    afLabel,
+    afValue,
+    afChecked,
+    afAriaDescribedby,
+    value,
+  }: {
+    afLabel?: string;
+    afValue?: string | number;
+    afChecked?: boolean;
+    afAriaDescribedby?: string;
+    value?: string | number;
+  }) => {
     const radioValue = value !== undefined ? value : afValue;
     return (
       <label>
@@ -44,10 +66,10 @@ vi.mock('@designsystem-se/af-react', () => ({
           aria-describedby={afAriaDescribedby}
           onClick={() => {
             if (currentOnGroupChange) {
-              const target = { value: String(radioValue) } as any;
+              const target = { value: String(radioValue) };
               const customEvent = new CustomEvent('change', {
                 detail: { target },
-              }) as any;
+              }) as CustomEvent<{ target: { value: string } }>;
               currentOnGroupChange(customEvent);
             }
           }}
@@ -57,7 +79,15 @@ vi.mock('@designsystem-se/af-react', () => ({
       </label>
     );
   },
-  DigiFormRadiogroup: ({ children, onAfOnGroupChange, afName }: any) => {
+  DigiFormRadiogroup: ({
+    children,
+    onAfOnGroupChange,
+    afName,
+  }: {
+    children?: React.ReactNode;
+    onAfOnGroupChange?: (e: CustomEvent<{ target: { value: string } }>) => void;
+    afName?: string;
+  }) => {
     currentOnGroupChange = onAfOnGroupChange;
     return (
       <div role="radiogroup" data-name={afName}>
@@ -65,20 +95,26 @@ vi.mock('@designsystem-se/af-react', () => ({
       </div>
     );
   },
-  DigiExpandableAccordion: ({ children }: any) => (
+  DigiExpandableAccordion: ({ children }: { children?: React.ReactNode }) => (
     <div data-testid="expandable-accordion">{children}</div>
   ),
-  DigiFormFieldset: ({ children, afLegend }: any) => (
+  DigiFormFieldset: ({ children, afLegend }: { children?: React.ReactNode; afLegend?: string }) => (
     <fieldset>
       {afLegend && <legend>{afLegend}</legend>}
       {children}
     </fieldset>
   ),
-  DigiFormTextarea: ({ afValue, onAfOnChange, ...props }: any) => (
-    <textarea value={afValue} onChange={onAfOnChange} {...props} />
-  ),
+  DigiFormTextarea: ({
+    afValue,
+    onAfOnChange,
+    ...props
+  }: {
+    afValue?: string;
+    onAfOnChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    [key: string]: unknown;
+  }) => <textarea value={afValue} onChange={onAfOnChange} {...props} />,
   DigiIconCopy: () => <span data-testid="copy-icon">Copy</span>,
-  DigiInfoCard: ({ children, afHeading }: any) => (
+  DigiInfoCard: ({ children, afHeading }: { children?: React.ReactNode; afHeading?: string }) => (
     <div data-testid="info-card">
       {afHeading && <h3>{afHeading}</h3>}
       {children}

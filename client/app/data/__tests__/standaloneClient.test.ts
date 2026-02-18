@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ApiError } from '../apiClient';
 import { standaloneClient } from '../standaloneClient';
+import type { Check, Review } from '../types';
 import { Status } from '../types';
-import type { Check, Review, ReviewSummary } from '../types';
 
 // Mock environment variables to disable example data initialization
 // Must be set before any imports
@@ -33,7 +33,7 @@ function createMockCheck(overrides?: Partial<Check>): Check {
     requirement: 'req1',
     status: Status.PASS,
     comment: 'Test comment',
-    flag: false,
+    flag: 0,
     ...overrides,
   };
 }
@@ -496,7 +496,7 @@ describe('standaloneClient', () => {
           id: 1,
           review: 1,
           requirement: 'req1',
-          flag: false,
+          flag: 0,
         });
         localStorage.setItem('tillgang_checks', JSON.stringify([check]));
 

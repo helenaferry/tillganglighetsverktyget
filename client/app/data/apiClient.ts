@@ -46,10 +46,7 @@ export const apiClient = {
   // Requirements endpoints (proxied through server to avoid CORS)
   requirements: {
     getAllRequirements: async (): Promise<Requirement[]> => {
-      const response = await fetchApi<{ data: Requirement[] }>(
-        API_BASE_URL,
-        `/requirements`,
-      );
+      const response = await fetchApi<{ data: Requirement[] }>(API_BASE_URL, `/requirements`);
 
       // Validate response structure
       if (!response || !response.data || !Array.isArray(response.data)) {

@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, it, type MockedFunction, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { apiClient } from '../apiClient';
-import { standaloneClient } from '../standaloneClient';
 import { ReviewService } from '../reviewService';
+import { standaloneClient } from '../standaloneClient';
 import { ObjectType, Status } from '../types';
 
 vi.mock('../apiClient', () => ({
@@ -51,9 +51,31 @@ vi.mock('../standaloneClient', () => ({
   },
 }));
 
-// Type-safe mocks - cast to any to access mock methods
-const mockApiClient = apiClient as any;
-const mockStandaloneClient = standaloneClient as any;
+// Type definitions for mocked clients
+type MockClient = {
+  reviews: {
+    getAll: ReturnType<typeof vi.fn>;
+    getById: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+  };
+  checks: {
+    getForReview: ReturnType<typeof vi.fn>;
+    getByRequirement: ReturnType<typeof vi.fn>;
+    upsert: ReturnType<typeof vi.fn>;
+    delete: ReturnType<typeof vi.fn>;
+    bulkDisable: ReturnType<typeof vi.fn>;
+    bulkEnable: ReturnType<typeof vi.fn>;
+    bulkDelete: ReturnType<typeof vi.fn>;
+    bulkPrefill: ReturnType<typeof vi.fn>;
+    toggleFlag: ReturnType<typeof vi.fn>;
+  };
+};
+
+// Type-safe mocks
+const mockApiClient = apiClient as unknown as MockClient;
+const mockStandaloneClient = standaloneClient as unknown as MockClient;
 
 describe('ReviewService', () => {
   beforeEach(() => {
@@ -413,7 +435,7 @@ describe('ReviewService', () => {
   describe('client selection', () => {
     it('uses apiClient when VITE_STANDALONE=false', async () => {
       vi.stubEnv('VITE_STANDALONE', 'false');
-      
+
       const mockSummaries = [
         {
           id: 1,
@@ -439,7 +461,7 @@ describe('ReviewService', () => {
       vi.stubEnv('VITE_STANDALONE', 'true');
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false');
       localStorage.clear(); // Clear localStorage for clean test
-      
+
       const mockSummaries = [
         {
           id: 1,
@@ -459,7 +481,7 @@ describe('ReviewService', () => {
       expect(result).toEqual(mockSummaries);
       expect(mockStandaloneClient.reviews.getAll).toHaveBeenCalledTimes(1);
       expect(mockApiClient.reviews.getAll).not.toHaveBeenCalled();
-      
+
       // Reset for other tests
       vi.stubEnv('VITE_STANDALONE', 'false');
     });
@@ -468,18 +490,18 @@ describe('ReviewService', () => {
       // Test that runtime selection works - can switch between clients
       vi.stubEnv('VITE_STANDALONE', 'false');
       mockApiClient.reviews.getAll.mockResolvedValue([] as never);
-      
+
       await ReviewService.getAllReviewSummaries();
       expect(mockApiClient.reviews.getAll).toHaveBeenCalled();
-      
+
       vi.clearAllMocks();
       vi.stubEnv('VITE_STANDALONE', 'true');
       localStorage.clear();
       mockStandaloneClient.reviews.getAll.mockResolvedValue([] as never);
-      
+
       await ReviewService.getAllReviewSummaries();
       expect(mockStandaloneClient.reviews.getAll).toHaveBeenCalled();
-      
+
       // Reset
       vi.stubEnv('VITE_STANDALONE', 'false');
     });

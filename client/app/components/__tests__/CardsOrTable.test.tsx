@@ -37,7 +37,7 @@ vi.mock('@designsystem-se/af-react', async () => {
       afTitle?: string;
       afMenuPosition?: string;
       afMenuItems?: Array<{ id: number; title: string }>;
-      onAfChangeItem?: (e: CustomEvent) => void;
+      onAfChangeItem?: (e: CustomEvent<{ item: { id: number; title: string } }>) => void;
     }) => {
       return (
         <div id={afId} data-title={afTitle} {...props}>
@@ -49,7 +49,7 @@ vi.mock('@designsystem-se/af-react', async () => {
                 if (onAfChangeItem) {
                   // Track the callback invocation
                   contextMenuCallbacks.push({ item });
-                  onAfChangeItem(new CustomEvent('changeItem', { detail: { item } }) as any);
+                  onAfChangeItem(new CustomEvent('changeItem', { detail: { item } }));
                 }
               }}
             >
@@ -85,7 +85,7 @@ vi.mock('@designsystem-se/af-react', async () => {
     }: {
       afLabel?: string;
       afValue?: string;
-      onAfOnSubmitSearch?: (e: CustomEvent) => void;
+      onAfOnSubmitSearch?: (e: CustomEvent<string>) => void;
     }) => (
       <input
         data-testid="digi-form-input-search"
@@ -94,7 +94,7 @@ vi.mock('@designsystem-se/af-react', async () => {
         onKeyDown={(e) => {
           if (e.key === 'Enter' && onAfOnSubmitSearch) {
             onAfOnSubmitSearch(
-              new CustomEvent('submit', { detail: (e.target as HTMLInputElement).value }) as any,
+              new CustomEvent('submit', { detail: (e.target as HTMLInputElement).value }),
             );
           }
         }}
@@ -115,7 +115,7 @@ vi.mock('@designsystem-se/af-react', async () => {
       afCurrentResultStart?: number;
       afCurrentResultEnd?: number;
       afTotalResults?: number;
-      onAfOnPageChange?: (e: CustomEvent) => void;
+      onAfOnPageChange?: (e: CustomEvent<number>) => void;
     }) => (
       <div
         data-testid="digi-navigation-pagination"
@@ -134,9 +134,7 @@ vi.mock('@designsystem-se/af-react', async () => {
           disabled={afInitActivePage === 1}
           onClick={() => {
             if (onAfOnPageChange && afInitActivePage && afInitActivePage > 1) {
-              onAfOnPageChange(
-                new CustomEvent('pageChange', { detail: afInitActivePage - 1 }) as any,
-              );
+              onAfOnPageChange(new CustomEvent('pageChange', { detail: afInitActivePage - 1 }));
             }
           }}
         >
@@ -149,7 +147,7 @@ vi.mock('@designsystem-se/af-react', async () => {
             aria-current={page === afInitActivePage ? 'page' : undefined}
             onClick={() => {
               if (onAfOnPageChange) {
-                onAfOnPageChange(new CustomEvent('pageChange', { detail: page }) as any);
+                onAfOnPageChange(new CustomEvent('pageChange', { detail: page }));
               }
             }}
           >
@@ -166,9 +164,7 @@ vi.mock('@designsystem-se/af-react', async () => {
               afTotalPages &&
               afInitActivePage < afTotalPages
             ) {
-              onAfOnPageChange(
-                new CustomEvent('pageChange', { detail: afInitActivePage + 1 }) as any,
-              );
+              onAfOnPageChange(new CustomEvent('pageChange', { detail: afInitActivePage + 1 }));
             }
           }}
         >

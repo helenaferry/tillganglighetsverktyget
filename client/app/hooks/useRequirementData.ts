@@ -19,10 +19,9 @@ export function useRequirements(
   regulatoryFramework?: string,
 ): UseQueryResult<Requirement[], Error> {
   // Normalize undefined to empty string for consistent cache keys
-  const normalizedFramework = regulatoryFramework && regulatoryFramework !== 'none' 
-    ? regulatoryFramework 
-    : '';
-  
+  const normalizedFramework =
+    regulatoryFramework && regulatoryFramework !== 'none' ? regulatoryFramework : '';
+
   return useQuery<Requirement[], Error>({
     queryKey: ['requirements', normalizedFramework],
     queryFn: () => RequirementService.getAllRequirements(normalizedFramework),

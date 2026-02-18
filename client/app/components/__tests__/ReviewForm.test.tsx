@@ -9,10 +9,9 @@ import React from 'react';
 import { BrowserRouter } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { PrefillRequirementSetting, Requirement, Review } from '../../data/types';
+import type { Requirement, Review } from '../../data/types';
 import { ObjectType } from '../../data/types';
 import i18n from '../../lang/i18n';
-import type { ReviewForm as ReviewFormType } from '../ReviewForm';
 
 // #region MOCKS
 /* ---------------------------------------------------------------
@@ -57,8 +56,6 @@ vi.mock('../../hooks/useReviewData', () => ({
   useDeleteReview: () => mockDeleteReview(),
 }));
 
-// Mock import.meta.env
-const originalEnv = import.meta.env;
 vi.stubGlobal('import', {
   meta: {
     env: {
@@ -151,7 +148,7 @@ vi.mock('@designsystem-se/af-react', async () => {
       afLabel?: string;
       afLabelDescription?: string;
       afValue?: string;
-      onAfOnInput?: (e: CustomEvent) => void;
+      onAfOnInput?: (e: CustomEvent<{ target: HTMLInputElement }>) => void;
       afRequired?: boolean;
       afValidationText?: string;
       afValidation?: string;
@@ -170,8 +167,8 @@ vi.mock('@designsystem-se/af-react', async () => {
             if (onAfOnInput) {
               onAfOnInput(
                 new CustomEvent('input', {
-                  detail: { target: e.target },
-                }) as any,
+                  detail: { target: e.target as HTMLInputElement },
+                }) as CustomEvent<{ target: HTMLInputElement }>,
               );
             }
           }}
@@ -218,7 +215,7 @@ vi.mock('@designsystem-se/af-react', async () => {
         data-name={afName}
         onChange={(e) => {
           if (onAfOnGroupChange) {
-            onAfOnGroupChange(e as any);
+            onAfOnGroupChange(e.nativeEvent);
           }
         }}
       >
@@ -322,37 +319,6 @@ const mockReview: Review = {
   created_at: '2024-01-01',
 };
 
-const mockPrefillSettings: PrefillRequirementSetting[] = [
-  {
-    id: '1',
-    automatic: 'false',
-    heading: 'Test Prefill',
-    description: 'This is a test prefill setting',
-    activateText: 'Activate this prefill?',
-    prefillRequirements: [
-      {
-        status: 'IRRELEVANT',
-        ids: ['1.1.1'],
-        comment: 'Test comment',
-      },
-    ],
-  },
-  {
-    id: '2',
-    automatic: 'true',
-    heading: 'Automatic Prefill',
-    description: 'This prefill is automatic',
-    activateText: '',
-    prefillRequirements: [
-      {
-        status: 'PASS',
-        ids: ['1.2.1'],
-        comment: 'Automatic pass',
-      },
-    ],
-  },
-];
-
 // Helper to create query result
 function createQueryResult<T>(data: T, overrides = {}): UseQueryResult<T, Error> {
   return {
@@ -387,7 +353,7 @@ function createQueryResult<T>(data: T, overrides = {}): UseQueryResult<T, Error>
 }
 
 // Helper to create mutation result
-function createMutationResult(overrides = {}): UseMutationResult<any, Error, any, unknown> {
+function createMutationResult(overrides = {}): UseMutationResult<unknown, Error, unknown, unknown> {
   return {
     mutate: vi.fn(),
     mutateAsync: vi.fn(),
@@ -406,7 +372,7 @@ function createMutationResult(overrides = {}): UseMutationResult<any, Error, any
     submittedAt: 0,
     context: undefined,
     ...overrides,
-  } as UseMutationResult<any, Error, any, unknown>;
+  } as UseMutationResult<unknown, Error, unknown, unknown>;
 }
 
 // #endregion MOCK DATA
@@ -729,7 +695,7 @@ describe('ReviewForm', () => {
 
     it('shows loading indicator while saving', async () => {
       const user = userEvent.setup();
-      const deferred = { resolveOnSuccess: null as ((value: any) => void) | null };
+      const deferred = { resolveOnSuccess: null as ((value: unknown) => void) | null };
       const mutateMock = vi.fn((_data, options) => {
         // Simulate async operation - don't call onSuccess immediately
         deferred.resolveOnSuccess = () => options.onSuccess({ id: 1 });

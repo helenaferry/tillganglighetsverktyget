@@ -7,8 +7,8 @@ import {
   normalizeCheck,
   normalizeReview,
 } from '../localStorageTransformers';
-import { Status } from '../types';
 import type { Check, Review } from '../types';
+import { Status } from '../types';
 
 describe('localStorageTransformers', () => {
   describe('flagToNumber', () => {

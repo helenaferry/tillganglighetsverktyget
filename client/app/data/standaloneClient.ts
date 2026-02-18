@@ -41,7 +41,7 @@ function shouldInitializeExampleData(): boolean {
     if (existingData !== null) {
       return false; // Data key exists, don't overwrite
     }
-  } catch (error) {
+  } catch {
     // If we can't check, don't initialize
     return false;
   }
@@ -160,7 +160,7 @@ function getNextReviewId(): number {
     const nextId = current ? parseInt(current, 10) + 1 : 1;
     localStorage.setItem(STORAGE_KEY_NEXT_REVIEW_ID, nextId.toString());
     return nextId;
-  } catch (error) {
+  } catch {
     throw new ApiError(500, 'Failed to generate review ID');
   }
 }
@@ -174,7 +174,7 @@ function getNextCheckId(): number {
     const nextId = current ? parseInt(current, 10) + 1 : 1;
     localStorage.setItem(STORAGE_KEY_NEXT_CHECK_ID, nextId.toString());
     return nextId;
-  } catch (error) {
+  } catch {
     throw new ApiError(500, 'Failed to generate check ID');
   }
 }
@@ -328,7 +328,12 @@ export const standaloneClient = {
           ...existing,
           status: data.status !== undefined ? data.status : existing.status,
           comment: data.comment !== undefined ? data.comment : existing.comment,
-          flag: data.flag !== undefined ? (typeof data.flag === 'boolean' ? flagToNumber(data.flag) : data.flag) : existing.flag,
+          flag:
+            data.flag !== undefined
+              ? typeof data.flag === 'boolean'
+                ? flagToNumber(data.flag)
+                : data.flag
+              : existing.flag,
           updated_at: now,
         };
         saveChecks(checks);
@@ -343,7 +348,12 @@ export const standaloneClient = {
           requirement: data.requirement,
           status: data.status ?? null,
           comment: data.comment ?? null,
-          flag: data.flag !== undefined ? (typeof data.flag === 'boolean' ? flagToNumber(data.flag) : data.flag) : null,
+          flag:
+            data.flag !== undefined
+              ? typeof data.flag === 'boolean'
+                ? flagToNumber(data.flag)
+                : data.flag
+              : null,
         };
         checks.push(newCheck);
         saveChecks(checks);
@@ -480,7 +490,7 @@ export const standaloneClient = {
       const existingIndex = checks.findIndex(
         (c) => c.review === reviewId && c.requirement === requirementId,
       );
-      
+
       // Convert boolean to number for storage (Oracle format)
       const flagNumber = flag ? 1 : 0;
 

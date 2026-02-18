@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { standaloneClient } from '../standaloneClient';
 import { standaloneExampleData } from '../standaloneExampleData';
 
 describe('standaloneClient - Example Data Initialization', () => {

@@ -19,8 +19,8 @@ import {
 import { DigiIconChevronRight } from '@designsystem-se/af-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 import { ObjectType, type Requirement, Status } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers/helpers';

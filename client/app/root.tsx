@@ -8,9 +8,9 @@ import './app.css';
 import { ErrorPageStatusCodes } from '@designsystem-se/af';
 import { DigiNotificationErrorPage, DigiTypography } from '@designsystem-se/af-react';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, useLocation } from 'react-router';
-import { useEffect } from 'react';
 
 import type { Route } from './+types/root';
 import { ClientOnly } from './clientOnly';
