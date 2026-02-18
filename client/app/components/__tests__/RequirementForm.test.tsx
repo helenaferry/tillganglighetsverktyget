@@ -88,7 +88,7 @@ vi.mock('@designsystem-se/af-react', () => ({
     onAfOnGroupChange?: (e: CustomEvent<{ target: { value: string } }>) => void;
     afName?: string;
   }) => {
-    currentOnGroupChange = onAfOnGroupChange;
+    currentOnGroupChange = onAfOnGroupChange ?? null;
     return (
       <div role="radiogroup" data-name={afName}>
         {children}
