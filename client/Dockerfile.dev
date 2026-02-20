@@ -1,7 +1,7 @@
 # Development Dockerfile for Frontend
 # This image runs Vite dev server with Hot Module Replacement (HMR)
 
-FROM node:20-slim
+FROM registry.access.redhat.com/ubi8/nodejs-22@sha256:6e340dc525ab46e195fc01369ce44bdb36a3a04412bb96e05d463bcd451fccd8
 
 # Set working directory
 WORKDIR /app

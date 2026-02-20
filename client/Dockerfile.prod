@@ -2,7 +2,7 @@
 # Multi-stage build: Build React app and serve with Nginx
 
 # Stage 1: Build
-FROM node:20-slim AS builder
+FROM registry.access.redhat.com/ubi8/nodejs-22@sha256:6e340dc525ab46e195fc01369ce44bdb36a3a04412bb96e05d463bcd451fccd8 AS builder
 
 # Set working directory
 WORKDIR /app

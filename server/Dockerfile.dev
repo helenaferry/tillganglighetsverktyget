@@ -1,7 +1,7 @@
 # Development Dockerfile for Backend API
 # This image includes hot-reload and development tools
 
-FROM node:20-slim
+FROM registry.access.redhat.com/ubi8/nodejs-22@sha256:6e340dc525ab46e195fc01369ce44bdb36a3a04412bb96e05d463bcd451fccd8
 
 # Install Oracle Instant Client dependencies
 RUN apt-get update && apt-get install -y \
