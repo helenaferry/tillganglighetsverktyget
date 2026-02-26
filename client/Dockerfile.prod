@@ -19,6 +19,7 @@ COPY ./client .
 # and doesn't have its own package-lock.json
 
 ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
+
 RUN npm install --verbose
 
 # Build production bundle
