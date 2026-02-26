@@ -18,7 +18,7 @@ COPY ./client .
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
 # and doesn't have its own package-lock.json
 RUN ls -a
-RUN npm install -v
+RUN npm install --verbose
 
 # Build production bundle
 RUN npm run build
