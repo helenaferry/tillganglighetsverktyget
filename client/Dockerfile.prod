@@ -22,7 +22,7 @@ RUN npm install -v
 
 # Copy source code (use standalone tsconfig for container)
 
-COPY tsconfig.container.json ./tsconfig.json
+COPY ./tsconfig.container.json ./tsconfig.json
 
 # Build production bundle
 RUN npm run build
