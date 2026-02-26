@@ -8,16 +8,16 @@ USER root
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY ./client/package.json ./
-
 # Använd .npmrc
-COPY ./.npmrc ./
-COPY ./client ./
+COPY ./.npmrc .
+
+# Kopiera allt i client-katalogen
+COPY ./client .
 
 # Install dependencies
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
 # and doesn't have its own package-lock.json
+RUN ls -a
 RUN npm install -v
 
 # Build production bundle
