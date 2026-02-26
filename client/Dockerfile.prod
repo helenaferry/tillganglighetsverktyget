@@ -14,11 +14,14 @@ COPY ./.npmrc .
 # Kopiera allt i client-katalogen
 COPY ./client .
 
+# Kopiera in cert
+COPY ./ca-bundle.crt ./ca-bundle.crt
+
 # Install dependencies
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
 # and doesn't have its own package-lock.json
 
-ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
+ENV NODE_EXTRA_CA_CERTS=/app/ca-bundle.crt
 
 RUN npm install --verbose
 

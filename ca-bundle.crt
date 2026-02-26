@@ -1,429 +1,226 @@
-    
-
-<!DOCTYPE html>
-<html lang="en-GB"   data-theme="dark:dark light:light" data-color-mode-auto  >
-<head>
-            
-        
-
-                            <title>Page Not Found - Confluence</title>
-    
-        
-
-                        
-    
-                        
-    
-
-    
-    <meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=IE7">
-<meta charset="UTF-8">
-<meta id="confluence-context-path" name="confluence-context-path" content="">
-<meta id="confluence-base-url" name="confluence-base-url" content="https://confluence.arbetsformedlingen.se">
-
-
-<meta id="confluence-cluster-node-id" name="confluence-cluster-node-id" value="45c468d6">
-<meta id="confluence-cluster-node-name" name="confluence-cluster-node-name" value="node2">
-
-<script type="text/javascript">
-        var contextPath = '';
-</script>
-
-    
-
-    <meta name="robots" content="noindex,nofollow">
-    <meta name="robots" content="noarchive">
-    <meta name="confluence-request-time" content="1772101655909">
-        
-    
-        
-            <script type="text/javascript">(function () {
-    window.RLABS_IFC_CONFIG = {
-        BASE_URL: 'https://confluence.arbetsformedlingen.se',
-        USER_DATE_FORMAT: 'MMM dd, yyyy',
-        USER_DATE_TIME_FORMAT: 'MMM dd, yyyy HH:mm'
-    }
-})()</script>
-
-            <meta name="ajs-use-keyboard-shortcuts" content="true">
-            <meta name="ajs-discovered-plugin-features" content="$discoveredList">
-            <meta name="ajs-keyboardshortcut-hash" content="a0679633170ebc5f6eb8030d19d06a3d0703311e1ea6e1c9ccb82a84201926c4">
-            <meta id="team-calendars-has-jira-link" content="true">
-            <meta name="ajs-team-calendars-display-time-format" content="displayTimeFormat24">
-            <meta id="team-calendars-display-week-number" content="true">
-            <meta id="team-calendars-user-timezone" content="Europe/Stockholm">
-            <script type="text/x-template" id="team-calendars-messages" title="team-calendars-messages"><fieldset class="i18n hidden"><input type="hidden" name="calendar3.month.long.july" value="July"><input type="hidden" name="calendar3.day.short.wednesday" value="Wed"><input type="hidden" name="calendar3.day.short.thursday" value="Thu"><input type="hidden" name="calendar3.month.short.march" value="Mar"><input type="hidden" name="calendar3.month.long.april" value="April"><input type="hidden" name="calendar3.month.long.october" value="October"><input type="hidden" name="calendar3.month.long.august" value="August"><input type="hidden" name="calendar3.month.short.july" value="Jul"><input type="hidden" name="calendar3.month.short.may" value="May"><input type="hidden" name="calendar3.month.short.november" value="Nov"><input type="hidden" name="calendar3.day.long.friday" value="Friday"><input type="hidden" name="calendar3.day.long.sunday" value="Sunday"><input type="hidden" name="calendar3.day.long.saturday" value="Saturday"><input type="hidden" name="calendar3.month.short.april" value="Apr"><input type="hidden" name="calendar3.day.long.wednesday" value="Wednesday"><input type="hidden" name="calendar3.month.long.december" value="December"><input type="hidden" name="calendar3.month.short.october" value="Oct"><input type="hidden" name="calendar3.day.long.monday" value="Monday"><input type="hidden" name="calendar3.month.short.june" value="Jun"><input type="hidden" name="calendar3.day.short.monday" value="Mon"><input type="hidden" name="calendar3.day.short.tuesday" value="Tue"><input type="hidden" name="calendar3.day.short.saturday" value="Sat"><input type="hidden" name="calendar3.month.long.march" value="March"><input type="hidden" name="calendar3.month.long.june" value="June"><input type="hidden" name="calendar3.month.short.february" value="Feb"><input type="hidden" name="calendar3.month.short.august" value="Aug"><input type="hidden" name="calendar3.month.short.december" value="Dec"><input type="hidden" name="calendar3.day.short.sunday" value="Sun"><input type="hidden" name="calendar3.month.long.february" value="February"><input type="hidden" name="calendar3.day.long.tuesday" value="Tuesday"><input type="hidden" name="calendar3.month.long.may" value="May"><input type="hidden" name="calendar3.month.long.september" value="September"><input type="hidden" name="calendar3.month.long.november" value="November"><input type="hidden" name="calendar3.month.short.january" value="Jan"><input type="hidden" name="calendar3.month.short.september" value="Sept"><input type="hidden" name="calendar3.day.long.thursday" value="Thursday"><input type="hidden" name="calendar3.month.long.january" value="January"><input type="hidden" name="calendar3.day.short.friday" value="Fri"></fieldset></script>
-            <meta name="ajs-emojis-allow-current-user-upload-emojis" content="false">
-<meta name="ajs-emojis-max-upload-file-size" content="1">
-
-            <meta name="ajs-is-confluence-admin" content="false">
-            <meta name="ajs-connection-timeout" content="10000">
-            <script type="text/x-template" title="gliffy-webpanel-footer">
-        <div class="gliffy-webpanel-footer"><span></span></div>
-</script>
-
-
-            
-    
-    
-            <meta name="ajs-context-path" content="">
-            <meta name="ajs-base-url" content="https://confluence.arbetsformedlingen.se">
-            <meta name="ajs-version-number" content="9.2.9">
-            <meta name="ajs-build-number" content="9111">
-            <meta name="ajs-remote-user" content="">
-            <meta name="ajs-remote-user-key" content="">
-            <meta name="ajs-remote-user-has-licensed-access" content="false">
-            <meta name="ajs-remote-user-has-browse-users-permission" content="false">
-            <meta name="ajs-current-user-fullname" content="">
-            <meta name="ajs-current-user-avatar-uri-reference" content="/images/icons/profilepics/anonymous.svg">
-            <meta name="ajs-static-resource-url-prefix" content="">
-            <meta name="ajs-global-settings-attachment-max-size" content="52428800">
-            <meta name="ajs-global-settings-quick-search-enabled" content="true">
-            <meta name="ajs-user-locale" content="en_GB">
-            <meta name="ajs-user-timezone-offset" content="3600000">
-            <meta name="ajs-enabled-dark-features" content="site-wide.shared-drafts,site-wide.synchrony,confluence.view.edit.transition,confluence.attachments.bulk.delete,confluence-inline-comments-resolved,http.session.registrar,theme.switcher,scope.manage.subscriptions,atlassian.cdn.static.assets,confluence.efi.onboarding.rich.space.content,file-annotations,crowd.sync.nested.groups.group.membership.changes.batching.enabled,atlassian.webresource.performance.tracking.disable,confluence.page.readtime,atlassian.authentication.sso.fallback.to.cached.user.when.operation.failed,lucene.caching.filter,confluence.table.resizable,notification.batch,confluence-inline-comments-rich-editor,confluence.copy-heading-link,site-wide.synchrony.opt-in,atlassian.webresource.twophase.js.i18n.disabled,confluence.edit.wordcount,gatekeeper-ui-v2,confluence.search.improvements.ranking,crowd.event.transformer.directory.manager.cache,mobile.supported.version,crowd.sync.delete.user.memberships.batching.enabled,confluence.dark.theme.text.colors,quick-reload-inline-comments-flags,cql.search.screen,clc.quick.create,nps.survey.inline.dialog,confluence.efi.onboarding.new.templates,pdf-preview,com.atlassian.analytics.essential.supported,confluence.retention.rules.trash.fast.removal,previews.sharing,previews.versions,collaborative-audit-log,confluence.reindex.improvements,previews.conversion-service,atlassian.servlet.filter.default.to.licensed.access.enabled,read.only.mode,graphql,benefits.modal,previews.trigger-all-file-types,AsyncReplicationCache,attachment.extracted.text.extractor,confluence.readable.url,previews.sharing.pushstate,tc.tacca.dacca,confluence.reindex.audit,atlassian.rest.default.to.licensed.access.enabled,confluence.retention.rules.version.fast.removal,confluence.denormalisedpermissions,file-annotations.likes,v2.content.name.searcher,confluence.reindex.spaces,confluence.fast-xml-backup-restore,embedded.crowd.directory.azuread.enabled,pulp,confluence-inline-comments,confluence-inline-comments-dangling-comment,confluence.retention.rules">
-            <meta name="ajs-user-date-pattern" content="dd MMM yyyy">
-            <meta name="ajs-access-mode" content="READ_WRITE">
-            <meta name="ajs-render-mode" content="READ_WRITE">
-            <meta name="ajs-same-site-cookie-default-policy" content="Lax">
-            <meta name="ajs-date.format" content="MMM dd, yyyy">
-    
-    <link rel="shortcut icon" href="/s/-cd0g1i/9111/1237c1a/50/_/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="/s/-cd0g1i/9111/1237c1a/50/_/favicon.ico">
-
-<link rel="search" type="application/opensearchdescription+xml" href="/opensearch/osd.action" title="Confluence"/>
-
-    <script>
-window.WRM=window.WRM||{};window.WRM._unparsedData=window.WRM._unparsedData||{};window.WRM._unparsedErrors=window.WRM._unparsedErrors||{};
-WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.entity-types"]="{\u0022singular\u0022:{\u0022refapp.charlie\u0022:\u0022Charlie\u0022,\u0022fecru.project\u0022:\u0022Crucible Project\u0022,\u0022fecru.repository\u0022:\u0022FishEye Repository\u0022,\u0022stash.project\u0022:\u0022Stash Project\u0022,\u0022generic.entity\u0022:\u0022Generic Project\u0022,\u0022confluence.space\u0022:\u0022Confluence Space\u0022,\u0022bamboo.project\u0022:\u0022Bamboo Project\u0022,\u0022jira.project\u0022:\u0022Jira Project\u0022},\u0022plural\u0022:{\u0022refapp.charlie\u0022:\u0022Charlies\u0022,\u0022fecru.project\u0022:\u0022Crucible Projects\u0022,\u0022fecru.repository\u0022:\u0022FishEye Repositories\u0022,\u0022stash.project\u0022:\u0022Stash Projects\u0022,\u0022generic.entity\u0022:\u0022Generic Projects\u0022,\u0022confluence.space\u0022:\u0022Confluence Spaces\u0022,\u0022bamboo.project\u0022:\u0022Bamboo Projects\u0022,\u0022jira.project\u0022:\u0022Jira Projects\u0022}}";
-WRM._unparsedData["de.scandio.confluence.plugins.hideelements-macro:hideelements-resources-main.hideelements-resources-main-data"]="{\u0022globalSettings\u0022:{\u0022elements\u0022:{\u0022header\u0022:{},\u0022sidebar\u0022:{},\u0022comments\u0022:{},\u0022breadcrumb\u0022:{},\u0022title\u0022:{},\u0022metas\u0022:{},\u0022likes\u0022:{},\u0022labels\u0022:{},\u0022confluencelogo\u0022:{},\u0022spaces\u0022:{},\u0022people\u0022:{},\u0022create\u0022:{},\u0022search\u0022:{},\u0022help\u0022:{},\u0022admin\u0022:{},\u0022notifications\u0022:{},\u0022profile\u0022:{},\u0022edit\u0022:{},\u0022viewinlinecomments\u0022:{},\u0022favorite\u0022:{},\u0022watch\u0022:{},\u0022share\u0022:{},\u0022tools\u0022:{},\u0022attachments\u0022:{},\u0022pagehistory\u0022:{},\u0022inlinecomment\u0022:{},\u0022jiraissue\u0022:{}}},\u0022spaceSettings\u0022:{\u0022ITSMCSM\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022ADT\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022ITP\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022labels\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022inlinecomment\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022jiraissue\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022VER\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022VHT\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022hidden\u0022:false,\u0022locked\u0022:true},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022DMG\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022RAT\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022HUV\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022title\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022metas\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022hidden\u0022:false,\u0022locked\u0022:true},\u0022viewinlinecomments\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022favorite\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022watch\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022share\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022VA\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022hidden\u0022:false,\u0022locked\u0022:true},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022ICC\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022hidden\u0022:false,\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022IPI\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022labels\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022inlinecomment\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022jiraissue\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022UTP\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022~likrr\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022TEM\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022DFG\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022DDA\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022hidden\u0022:false,\u0022locked\u0022:true},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022TENA\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022hidden\u0022:true,\u0022locked\u0022:true},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false},\u0022DAT\u0022:{\u0022elements\u0022:{\u0022header\u0022:{\u0022locked\u0022:false},\u0022sidebar\u0022:{\u0022locked\u0022:false},\u0022comments\u0022:{\u0022locked\u0022:false},\u0022breadcrumb\u0022:{\u0022locked\u0022:false},\u0022title\u0022:{\u0022locked\u0022:false},\u0022metas\u0022:{\u0022locked\u0022:false},\u0022likes\u0022:{\u0022locked\u0022:false},\u0022labels\u0022:{\u0022locked\u0022:false},\u0022confluencelogo\u0022:{\u0022locked\u0022:false},\u0022spaces\u0022:{\u0022locked\u0022:false},\u0022people\u0022:{\u0022locked\u0022:false},\u0022create\u0022:{\u0022locked\u0022:false},\u0022search\u0022:{\u0022locked\u0022:false},\u0022help\u0022:{\u0022locked\u0022:false},\u0022admin\u0022:{\u0022locked\u0022:false},\u0022notifications\u0022:{\u0022locked\u0022:false},\u0022profile\u0022:{\u0022locked\u0022:false},\u0022edit\u0022:{\u0022locked\u0022:false},\u0022viewinlinecomments\u0022:{\u0022locked\u0022:false},\u0022favorite\u0022:{\u0022locked\u0022:false},\u0022watch\u0022:{\u0022locked\u0022:false},\u0022share\u0022:{\u0022locked\u0022:false},\u0022tools\u0022:{\u0022locked\u0022:false},\u0022attachments\u0022:{\u0022locked\u0022:false},\u0022pagehistory\u0022:{\u0022locked\u0022:false},\u0022inlinecomment\u0022:{\u0022locked\u0022:false},\u0022jiraissue\u0022:{\u0022locked\u0022:false}},\u0022cssSelector\u0022:\u0022\u0022,\u0022cssSelectorLocked\u0022:false}},\u0022allElementKeys\u0022:[\u0022header\u0022,\u0022sidebar\u0022,\u0022comments\u0022,\u0022breadcrumb\u0022,\u0022title\u0022,\u0022metas\u0022,\u0022likes\u0022,\u0022labels\u0022,\u0022confluencelogo\u0022,\u0022spaces\u0022,\u0022people\u0022,\u0022create\u0022,\u0022search\u0022,\u0022help\u0022,\u0022admin\u0022,\u0022notifications\u0022,\u0022profile\u0022,\u0022edit\u0022,\u0022viewinlinecomments\u0022,\u0022favorite\u0022,\u0022watch\u0022,\u0022share\u0022,\u0022tools\u0022,\u0022attachments\u0022,\u0022pagehistory\u0022,\u0022inlinecomment\u0022,\u0022jiraissue\u0022],\u0022warnings\u0022:[],\u0022globalConfig\u0022:{\u0022spaceToolsItemEnabled\u0022:false,\u0022allowUrlOverrides\u0022:false}}";
-WRM._unparsedData["com.atlassian.confluence.plugins.confluence-license-banner:confluence-license-banner-resources.license-details"]="{\u0022daysBeforeLicenseExpiry\u0022:0,\u0022daysBeforeMaintenanceExpiry\u0022:0,\u0022showLicenseExpiryBanner\u0022:false,\u0022showMaintenanceExpiryBanner\u0022:false,\u0022renewUrl\u0022:null,\u0022salesUrl\u0022:null}";
-WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"]="\u0022\u0022";
-WRM._unparsedData["com.atlassian.analytics.analytics-client:policy-update-init.policy-update-data-provider"]="false";
-WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.authentication-types"]="{\u0022com.atlassian.applinks.api.auth.types.BasicAuthenticationProvider\u0022:\u0022Basic Access\u0022,\u0022com.atlassian.applinks.api.auth.types.TrustedAppsAuthenticationProvider\u0022:\u0022Trusted Applications\u0022,\u0022com.atlassian.applinks.api.auth.types.CorsAuthenticationProvider\u0022:\u0022CORS\u0022,\u0022com.atlassian.applinks.api.auth.types.OAuthAuthenticationProvider\u0022:\u0022OAuth\u0022,\u0022com.atlassian.applinks.api.auth.types.TwoLeggedOAuthAuthenticationProvider\u0022:\u0022OAuth\u0022,\u0022com.atlassian.applinks.api.auth.types.TwoLeggedOAuthWithImpersonationAuthenticationProvider\u0022:\u0022OAuth\u0022,\u0022com.atlassian.applinks.api.auth.types.ThreeLeggedOAuth2AuthenticationProvider\u0022:\u0022OAuth 2.0\u0022}";
-WRM._unparsedData["com.atlassian.confluence.plugins.confluence-search-ui-plugin:confluence-search-ui-plugin-resources.i18n-data"]="{\u0022search.ui.recent.link.text\u0022:\u0022View more recently visited\u0022,\u0022search.ui.search.results.empty\u0022:\u0022We couldn\u0027\u0027t find anything matching \u005C\u0022{0}\u005C\u0022.\u0022,\u0022search.ui.filter.clear.selected\u0022:\u0022Clear selected items\u0022,\u0022search.ui.content.name.search.items.panel.load.all.top.items.button.text\u0022:\u0022Show more app results...\u0022,\u0022search.ui.filter.contributor.button.text\u0022:\u0022Contributor\u0022,\u0022search.ui.filter.space.current.label\u0022:\u0022CURRENT\u0022,\u0022search.ui.clear.input.button.text\u0022:\u0022Clear text\u0022,\u0022search.ui.search.results.clear.button\u0022:\u0022clear your filters.\u0022,\u0022help.search.ui.link.title\u0022:\u0022Search tips\u0022,\u0022search.ui.container.close.text\u0022:\u0022Close\u0022,\u0022search.ui.filter.date.month.text\u0022:\u0022The past month\u0022,\u0022search.ui.infinite.scroll.button.text\u0022:\u0022More results\u0022,\u0022search.ui.filter.date.button.text\u0022:\u0022Date\u0022,\u0022search.ui.filter.date.week.text\u0022:\u0022The past week\u0022,\u0022search.ui.result.subtitle.calendar\u0022:\u0022Team calendar\u0022,\u0022search.ui.filter.date.heading\u0022:\u0022Last modified within\u0022,\u0022search.ui.filter.space.input.label\u0022:\u0022Find spaces...\u0022,\u0022search.ui.generic.error\u0022:\u0022Something went wrong. Refresh the page, or contact your admin if this keeps happening.\u0022,\u0022search.ui.recent.spaces\u0022:\u0022Recent Spaces\u0022,\u0022search.ui.result.subtitle.space\u0022:\u0022Space\u0022,\u0022search.ui.filter.space.category.input.label\u0022:\u0022Find space categories...\u0022,\u0022search.ui.filter.space.archive.label\u0022:\u0022Search archived spaces\u0022,\u0022search.ui.filter.label\u0022:\u0022filter\u0022,\u0022search.ui.filter.date.all.text\u0022:\u0022Any time\u0022,\u0022search.ui.filter.date.hour.text\u0022:\u0022The past day\u0022,\u0022search.ui.filters.heading\u0022:\u0022Filter by\u0022,\u0022search.ui.filter.label.input.label\u0022:\u0022Find labels...\u0022,\u0022search.ui.recent.items.anonymous\u0022:\u0022Start exploring. Your search results will appear here.\u0022,\u0022search.ui.input.label\u0022:\u0022Search\u0022,\u0022search.ui.input.aria.label\u0022:\u0022Search query\u0022,\u0022search.ui.search.result\u0022:\u0022{0,choice,1#{0} search result|1\u003c{0} search results}\u0022,\u0022search.ui.filter.label.button.text\u0022:\u0022Label\u0022,\u0022search.ui.container.clear.ariaLabel\u0022:\u0022Clear\u0022,\u0022search.ui.input.alert\u0022:\u0022Hit enter to search\u0022,\u0022search.ui.filter.no.result.text\u0022:\u0022We can\u0027\u0027t find anything matching your search\u0022,\u0022search.ui.result.subtitle.user\u0022:\u0022User profile\u0022,\u0022search.ui.filter.contributor.input.label\u0022:\u0022Find people...\u0022,\u0022search.ui.filter.content.type.button.text\u0022:\u0022Type\u0022,\u0022search.ui.filter.date.year.text\u0022:\u0022The past year\u0022,\u0022search.ui.advanced.search.link.text\u0022:\u0022Advanced search\u0022,\u0022search.ui.filter.space.button.text\u0022:\u0022Space\u0022,\u0022search.ui.search.results.clear.line2\u0022:\u0022Try a different search term or\u0022,\u0022search.ui.filter.space.category.button.text\u0022:\u0022Space category\u0022,\u0022search.ui.search.results.clear.line1\u0022:\u0022We couldn\u0027\u0027t find anything matching your search.\u0022,\u0022search.ui.content.name.search.items.panel.load.all.top.items.admin.button.text\u0022:\u0022Show more settings and app results...\u0022,\u0022search.ui.recent.pages\u0022:\u0022Recently visited\u0022,\u0022search.ui.search.result.anonymous\u0022:\u0022{0,choice,1#{0} search result|1\u003c{0} search results}. Have an account? {1}Log in{2} to expand your search.\u0022,\u0022search.ui.recent.items.empty\u0022:\u0022Start exploring. Pages and spaces you\u0027\u0027ve visited recently will appear here.\u0022,\u0022search.ui.filter.space.init.heading\u0022:\u0022recent spaces\u0022}";
-WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.applinks-types"]="{\u0022crowd\u0022:\u0022Crowd\u0022,\u0022confluence\u0022:\u0022Confluence\u0022,\u0022fecru\u0022:\u0022FishEye / Crucible\u0022,\u0022stash\u0022:\u0022Stash\u0022,\u0022jiraMobile\u0022:\u0022Jira DC Mobile Application\u0022,\u0022jira\u0022:\u0022Jira\u0022,\u0022refapp\u0022:\u0022Reference Application\u0022,\u0022bamboo\u0022:\u0022Bamboo\u0022,\u0022confluenceMobile\u0022:\u0022Confluence DC Mobile Application\u0022,\u0022generic\u0022:\u0022Generic Application\u0022}";
-WRM._unparsedData["com.atlassian.confluence.plugins.synchrony-interop:synchrony-status-banner-loader.synchrony-status"]="false";
-WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.applinks-help-paths"]="{\u0022entries\u0022:{\u0022applinks.docs.root\u0022:\u0022https://confluence.atlassian.com/display/APPLINKS-101/\u0022,\u0022applinks.docs.diagnostics.troubleshoot.sslunmatched\u0022:\u0022SSL+and+application+link+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.oauthsignatureinvalid\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.oauthtimestamprefused\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.delete.entity.link\u0022:\u0022Create+links+between+projects\u0022,\u0022applinks.docs.adding.application.link\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.administration.guide\u0022:\u0022Application+Links+Documentation\u0022,\u0022applinks.docs.oauth.security\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.troubleshoot.application.links\u0022:\u0022Troubleshoot+application+links\u0022,\u0022applinks.docs.diagnostics.troubleshoot.unknownerror\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.configuring.auth.trusted.apps\u0022:\u0022Configuring+Trusted+Applications+authentication+for+an+application+link\u0022,\u0022applinks.docs.diagnostics.troubleshoot.authlevelunsupported\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.ssluntrusted\u0022:\u0022SSL+and+application+link+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.unknownhost\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.delete.application.link\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.adding.project.link\u0022:\u0022Configuring+Project+links+across+Applications\u0022,\u0022applinks.docs.link.applications\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.diagnostics.troubleshoot.oauthproblem\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.migration\u0022:\u0022Update+application+links+to+use+OAuth\u0022,\u0022applinks.docs.relocate.application.link\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.administering.entity.links\u0022:\u0022Create+links+between+projects\u0022,\u0022applinks.docs.upgrade.application.link\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.diagnostics.troubleshoot.connectionrefused\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.configuring.auth.oauth\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.insufficient.remote.permission\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.configuring.application.link.auth\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.diagnostics\u0022:\u0022Application+links+diagnostics\u0022,\u0022applinks.docs.configured.authentication.types\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.adding.entity.link\u0022:\u0022Create+links+between+projects\u0022,\u0022applinks.docs.diagnostics.troubleshoot.unexpectedresponse\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.configuring.auth.basic\u0022:\u0022Configuring+Basic+HTTP+Authentication+for+an+Application+Link\u0022,\u0022applinks.docs.diagnostics.troubleshoot.authlevelmismatch\u0022:\u0022OAuth+troubleshooting+guide\u0022}}";
-WRM._unparsedData["com.atlassian.confluence.plugins.confluence-feature-discovery-plugin:confluence-feature-discovery-plugin-resources.test-mode"]="false";
-if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
-<link rel="stylesheet" href="/s/22573b2e10ada754bcbfd910d1b529d0-CDN/-cd0g1i/9111/1237c1a/0a93865df3c12056a706891efd18f63a/_/download/contextbatch/css/_super/batch.css" data-wrm-key="_super" data-wrm-batch-type="context" media="all">
-<link rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/-cd0g1i/9111/1237c1a/dc3108abd2f1d6d822746366316d4c38/_/download/contextbatch/css/main,atl.general,-_super/batch.css?analytics-enabled=false&amp;hostenabled=true&amp;theme.switcher=true" data-wrm-key="main,atl.general,-_super" data-wrm-batch-type="context" media="all">
-<link rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.page.design-tokens-compatibility-themes/com.atlassian.auiplugin:split_aui.page.design-tokens-compatibility-themes.css" data-wrm-key="com.atlassian.auiplugin:split_aui.page.design-tokens-compatibility-themes" data-wrm-batch-type="resource" media="all">
-<link rel="stylesheet" href="/s/-cd0g1i/9111/1237c1a/50/_/styles/colors.css" media="all">
-<link rel="stylesheet" href="/s/-cd0g1i/9111/1237c1a/50/_/styles/custom.css" media="all">
-<script src="/s/a65fcb87ae268dd8ed1170f55c6cc885-CDN/-cd0g1i/9111/1237c1a/0a93865df3c12056a706891efd18f63a/_/download/contextbatch/js/_super/batch.js?locale=en-GB" data-wrm-key="_super" data-wrm-batch-type="context" data-initially-rendered></script>
-<script src="/s/fd310b6582492cd48c054525f68a20b6-CDN/-cd0g1i/9111/1237c1a/dc3108abd2f1d6d822746366316d4c38/_/download/contextbatch/js/main,atl.general,-_super/batch.js?analytics-enabled=false&amp;hostenabled=true&amp;locale=en-GB&amp;theme.switcher=true" data-wrm-key="main,atl.general,-_super" data-wrm-batch-type="context" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.splitchunk.532dee4ffd/com.atlassian.auiplugin:split_aui.splitchunk.532dee4ffd.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.splitchunk.532dee4ffd" data-wrm-batch-type="resource" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.splitchunk.0e8e0008dd/com.atlassian.auiplugin:split_aui.splitchunk.0e8e0008dd.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.splitchunk.0e8e0008dd" data-wrm-batch-type="resource" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.page.design-tokens-base-themes/com.atlassian.auiplugin:split_aui.page.design-tokens-base-themes.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.page.design-tokens-base-themes" data-wrm-batch-type="resource" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.page.design-tokens-compatibility-themes/com.atlassian.auiplugin:split_aui.page.design-tokens-compatibility-themes.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.page.design-tokens-compatibility-themes" data-wrm-batch-type="resource" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.splitchunk.vendors--1d1867466a/com.atlassian.auiplugin:split_aui.splitchunk.vendors--1d1867466a.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.splitchunk.vendors--1d1867466a" data-wrm-batch-type="resource" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.splitchunk.1d1867466a/com.atlassian.auiplugin:split_aui.splitchunk.1d1867466a.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.splitchunk.1d1867466a" data-wrm-batch-type="resource" data-initially-rendered></script>
-<script src="/s/671e09383e43beb318bf70f9399e922c-CDN/-cd0g1i/9111/1237c1a/9.12.11/_/download/batch/com.atlassian.auiplugin:split_aui.page.design-tokens-api/com.atlassian.auiplugin:split_aui.page.design-tokens-api.js?locale=en-GB" data-wrm-key="com.atlassian.auiplugin:split_aui.page.design-tokens-api" data-wrm-batch-type="resource" data-initially-rendered></script>
-
-    
-
-        
-    
-<meta name="decorator" content="atl.general">
-    <script>
-AJS.toInit(function(){
-    AJS.$('.aui-header-primary .aui-nav').append('<li><a href="https://jira.arbetsformedlingen.se/servicedesk/customer/portal/41/group/343" class=" aui-nav-imagelink">Hjälp med Confluence</a></li>');
-});
-AJS.toInit(function(){
-    AJS.$('.aui-header-primary .aui-nav').append('<li><a href="/display/HUV/Organisation" class=" aui-nav-imagelink">Organisation</a></li>');
-});
-AJS.toInit(function(){
-    AJS.$('.aui-header-primary .aui-nav').append('<li><a href="/display/HUV/Produkter" class=" aui-nav-imagelink">Produkter</a></li>');
-});
-AJS.toInit(function(){
-    AJS.$('.aui-header-primary .aui-nav').append('<li><a href="/display/HUV/Team" class=" aui-nav-imagelink">Team</a></li>');
-});
-AJS.toInit(function(){
-    AJS.$('.aui-header-primary .aui-nav').append('<li><a href="/pages/viewpage.action?pageId=158213061" class=" aui-nav-imagelink">Test och kvalitetssäkring</a></li>');
-});
-AJS.toInit(function(){
-    AJS.$('.aui-header-primary .aui-nav').append('<li><a href="/display/PLAT/Plattformar" class=" aui-nav-imagelink">Plattformar</a></li>');
-});
-</script>
-<style type="text/css"> 
-#action-export-word-link{ display: none} 
-</style>
-
-    
-</head>
-
-    
-<body      id="com-atlassian-confluence" class="theme-default error-page aui-layout aui-theme-default">
-
-        
-            <div id='stp-licenseStatus-banner'></div>
-    <div id="page">
-<div id="full-height-container">
-    <div id="header-precursor">
-        <div class="cell">
-            <!-- This place is a good place to start your banner info in Confluence -->
-
-
-<!-- Piwik script start -->
-<script type="text/javascript">
-(function(window, document, dataLayerName, id) {
-window[dataLayerName]=window[dataLayerName]||[],window[dataLayerName].push({start:(new Date).getTime(),event:"stg.start"});var scripts=document.getElementsByTagName('script')[0],tags=document.createElement('script');
-var qP=[];dataLayerName!=="dataLayer"&&qP.push("data_layer_name="+dataLayerName);var qPString=qP.length>0?("?"+qP.join("&")):"";
-tags.async=!0,tags.src="https://af.containers.piwik.pro/"+id+".js"+qPString,scripts.parentNode.insertBefore(tags,scripts);
-!function(a,n,i){a[n]=a[n]||{};for(var c=0;c<i.length;c++)!function(i){a[n][i]=a[n][i]||{},a[n][i].api=a[n][i].api||function(){var a=[].slice.call(arguments,0);"string"==typeof a[0]&&window[dataLayerName].push({event:n+"."+i+":"+a[0],parameters:[].slice.call(arguments,1)})}}(i[c])}(window,"ppms",["tm","cm"]);
-})(window, document, 'dataLayer', '90376f59-3a21-48d1-b040-e6d46930c766');
-</script>
-<!-- Piwik script end -->
-
-<!-- <div class="aui-message warning" style="text-align:center">
-<h3>
-<p>
-Måndagen 2025-11-24 16:30-17:30 kommer vi att utföra säkerhetspatchning av Bitbucket på grund av en kritisk sårbarhet. Bitbucket kommer att vara delvis otillgängligt under denna tid. Se CHG0184657
-<br />
-</p>
-</h3> 
-</div>-->
-
-<!-- https://jira.arbetsformedlingen.se -->
-<!-- And you need to stop here, do not change the code after --><script>
-console.log("Info on user...");
-console.log(window.location);
-console.log(window.history);
-
-console.log(window.location.origin.indexOf("https://confluence.ams.se"));
-if (window.location.origin.indexOf("https://confluence.ams.se") === 0) 
-{ console.log("Rewrite...");
-
-myTimeOut = setTimeout(function(){window.location.replace('https://confluence.arbetsformedlingen.se' + window.location.pathname);
- }, 100);
-};
-</script>
-
-                            </div>
-    </div>
-    
-    
-
-
-
-
-
-<style>
-    html[data-color-mode="light"][data-theme~="light:light"],
-    html[data-color-mode="dark"][data-theme~="dark:light"] {
-        --confluence-custom-logo-content: url('/download/attachments/65571/atl.site.logo?version=1&amp;modificationDate=1700244866000&amp;api=v2');
-    }
-</style>
-
-<header id="header" role="banner">
-            <a class="aui-skip-link" href="https://confluence.arbetsformedlingen.se/login.action?os_destination=%2Ffourohfour.action" tabindex="1">Log in</a>
-        <nav class="aui-header aui-dropdown2-trigger-group" aria-label="Site"><div class="aui-header-inner"><div class="aui-header-before"><button class=" aui-dropdown2-trigger app-switcher-trigger aui-dropdown2-trigger-arrowless" aria-controls="app-switcher" aria-haspopup="true" role="button" data-aui-trigger href="#app-switcher"><span class="aui-icon aui-icon-small aui-iconfont-appswitcher">Linked Applications</span></button><div id="app-switcher" class="aui-dropdown2 aui-style-default" role="menu" hidden data-is-user-admin="false" data-is-switcher="true"><div class="app-switcher-loading">Loading&hellip;</div></div></div><div class="aui-header-primary"><span id="logo" class="aui-header-logo aui-header-logo-custom"><a href="/" aria-label="Go to home page"><img src="/download/attachments/65571/atl.site.logo?version=1&amp;modificationDate=1700244866000&amp;api=v2" alt="Confluence" /><span class="aui-header-logo-text">Confluence</span></a></span><ul class="aui-nav">
-                            <li>
-            
-    
-        
-<a  id="space-directory-link" href="/spacedirectory/view.action"  class=" aui-nav-imagelink"   title="Spaces">
-            <span>Spaces</span>
-    </a>
-        </li>
-                                <li class="aui-buttons">
-                                    
-                                        <a href="/plugins/createcontent/createpage-defaultspace.action?atl_token=d1f6b28e2a2f8921fa9c6310b93dc6a03e09bde7&amp;src=quick-create" id="quick-create-page-button" class="aui-button aui-button-primary" title = 'Create blank page'>Create</a>
-                                <a href="#" id="create-page-button" class="aui-button aui-button-primary clc-create-dialog-btn" title = 'Create from template' aria-label="Create"><span class="aui-icon aui-icon-small aui-iconfont-more" aria-hidden="true" ></span></a>
-            </li>
-</ul>
-</div><div class="aui-header-secondary"><ul class="aui-nav">
-                        <li>
-        <div id="search-ui" class="aui-quicksearch dont-default-focus header-quicksearch"><button id="quick-search-query-button" aria-label="Search" aria-haspopup= "dialog" ></button><input id="quick-search-query" title="Search query" aria-label="Search query" placeholder="Search" type="text" aria-haspopup= "dialog" /><div id="quick-search-alert" role="alert">Hit enter to search</div><aui-spinner size="small"></aui-spinner></div>
-    </li>
-        <li>
-            
-        <a id="help-menu-link" role="button" class="aui-nav-link aui-dropdown2-trigger aui-dropdown2-trigger-arrowless" href="#" aria-haspopup="true" aria-owns="help-menu-link-content" title="Help">
-        <span class="aui-icon aui-icon-small aui-iconfont-question-filled">Help</span>
-    </a>
-    <nav id="help-menu-link-content" class="aui-dropdown2 aui-style-default" >
-                    <div class="aui-dropdown2-section">
-                                    <strong role="heading" aria-level="2"></strong>
-                                <ul role="menu"
-                     role="menu"                    aria-label="Help"                    id="help-menu-link-pages"                    class="aui-list-truncate section-pages first">
-                                            <li role="presentation">
-        
-            
-<a role="menuitem"  id="confluence-help-link" href="https://docs.atlassian.com/confluence/docs-92/" class="    "      title="Visit the Confluence documentation home"  target="_blank"
->
-        Online Help
-</a>
-</li>
-                                            <li role="presentation">
-    
-                
-<a role="menuitem"  id="keyboard-shortcuts-link" href="#" class="    "      title="View available keyboard shortcuts" >
-        Keyboard Shortcuts
-</a>
-</li>
-                                            <li role="presentation">
-    
-            
-<a role="menuitem"  id="feed-builder-link" href="/configurerssfeed.action" class="    "      title="Create your custom RSS feed." >
-        Feed Builder
-</a>
-</li>
-                                            <li role="presentation">
-    
-            
-<a role="menuitem"  id="whats-new-menu-link" href="https://confluence.atlassian.com/display/DOC/Confluence+9.2+Release+Notes" class="    "   >
-        What’s new
-</a>
-</li>
-                                            <li role="presentation">
-    
-            
-<a role="menuitem"  id="confluence-about-link" href="/aboutconfluencepage.action" class="    "      title="Get more information about Confluence" >
-        About Confluence
-</a>
-</li>
-                                    </ul>
-            </div>
-            </nav>
-    
-    </li>
-        <li>
-                
-    
-    </li>
-        <li>
-            
-    </li>
-        <li>
-                                            <li>
-        
-            
-<a role="menuitem"  id="login-link" href="/login.action?os_destination=%2Ffourohfour.action" class="   user-item login-link "   >
-        Log in
-</a>
-</li>
-                        
-    </li>
-    </ul>
-</div></div><!-- .aui-header-inner--><aui-header-end></aui-header-end></nav><!-- .aui-header -->
-    <br class="clear">
-</header>
-    
-
-        <!-- \#header -->
-
-            
-    
-        <main role="main" id="main" class=" aui-page-panel clearfix">
-                        <div id="main-header">
-                        
-            
-            <div id="title-heading" class="pagetitle with-breadcrumbs">
-                
-                                    <div id="breadcrumb-section">
-                        <nav aria-label="Breadcrumbs"><ol id="breadcrumbs"></ol></nav>
-                    </div>
-                
-                
-
-                                    <div id="title-text" class="with-breadcrumbs">
-                                    Page Not Found
-                        </div>
-                            </div>
-        </div><!-- \#main-header -->
-        
-        
-
-        <meta name='confluence-request-uri' content='/fourohfour.action'><p>We can&#39;t find that page. This could be because:</p><ul><li>The page doesn&#39;t exist.</li><li>The page exists, but you don&#39;t have view permission for that space.</li></ul><div id="action-messages"></div><h3 id="searchheading">Site Search</h3><form method="GET" action="/dosearchsite.action" name="searchForm" class="aui"><input type="text" accessKey="s" id="searchfield" name="queryString" size="40" class="text"/>
-<input type="submit" value="Search" class="aui-button"/></form><h3>Go to</h3><ul><li><a href="">Site Homepage</a></li><li><a href="/dashboard.action">Your Dashboard</a></li></ul>
-
-        <div id="sidebar-container">
-                                                                </div><!-- \#sidebar-container -->
-
-            </main><!-- \#main -->
-            
-    
-    
-        
-            
-            
-
-<div id="footer" role="contentinfo">
-    <section class="footer-body">
-
-                                                    
-        
-
-        <ul id="poweredby">
-            <li class="noprint">Powered by <a href="https://www.atlassian.com/software/confluence" class="hover-footer-link" rel="nofollow">Atlassian Confluence</a> <span id='footer-build-information'>9.2.9</span> <span id='footer-cluster-node'>(node2: 45c468d6)</span></li>
-            <li class="print-only">Printed by Atlassian Confluence 9.2.9</li>
-            <li class="noprint"><a href="https://support.atlassian.com/confluence-server/" class="hover-footer-link" rel="nofollow">Report a bug</a></li>
-            <li class="noprint"><a href="https://www.atlassian.com/company" class="hover-footer-link" rel="nofollow">Atlassian News</a></li>
-        </ul>
-
-        
-
-        <div id="footer-logo"><a href="https://www.atlassian.com/" rel="nofollow">Atlassian</a></div>
-
-                    <!--<script>
-var myFound = false;
-console.log("Kollar gamla länkar på denna sida - Start");
-$('a').each(function() {
-if (this.href.indexOf("confluence.ams.se") !== -1 ) 
-{ console.log("Hittat en länk som går emot 'confluence.ams.se'!");
-  console.log(this.title);
-  console.log(this);
-  this.prepend(" 🔗 ");
-  this.append(" 🔨 ");
-  myFound = true;
-}
-if (this.href.indexOf("bitbucket.ams.se") !== -1 ) 
-{ console.log("Hittat en länk som går emot 'bitbucket.ams.se'!");
-  console.log(this.title);
-  console.log(this);
-  this.prepend(" 🔗 ");
-  this.append(" 🪓 ");
-  myFound = true;
-}
-if (this.href.indexOf("afjira.ams.se") !== -1 ) 
-{ console.log("Hittat en länk som går emot 'afjira.ams.se'!");
-  console.log(this.title);
-  console.log(this);
-  this.prepend(" 🔗 ");
-  this.append(" 🔧 ");
-  myFound = true;
-}
-});
-if (myFound) 
-{
-myFlag = AJS.flag({
-    type: 'warning',
-    body: "<p>På denna sida fins det länkar som går emot gamla miljön! Dessa länkar är märkta med: 🪓🔨🔧 och skall göras om för att fungera framöver. För mer hjälp, se: utveckligsverktyget i denna webläsare! I dess konsoll, se efter informationen: 'Kollar gamla länkar på denna sida - Start'</p><p><i>/Verktygstöd</i></p>" ,
-   title: 'Hittar äldre länk på denna sida!'
-});
-}
-console.log("Kollar gamla länkar på denna sida - Klar");
-</script> -->
-<script>
-AJS.whenIType('ht').execute(function () {
-myTimeOut = setTimeout(function(){window.location.replace('https://confluence.arbetsformedlingen.se/pages/viewpage.action?pageId=204092596');
-}, 50);
-});
-
-
-</script>
-        
-    </section>
-</div>
-
-    
-
-</div><!-- \#full-height-container -->
-</div><!-- \#page -->
-
-    <span style="display:none;" id="confluence-server-performance">{"serverDuration": 30, "requestCorrelationId": "3852858e0a9ecb45"}</span>
-</body>
-</html>
-    
+-----BEGIN CERTIFICATE-----
+MIIGLTCCBBWgAwIBAgIQYNOM8ZGYYK5KuOSPR6XQATANBgkqhkiG9w0BAQsFADAo
+MSYwJAYDVQQDEx1BcmJldHNmb3JtZWRsaW5nZW4gUm9vdCBDQSBWMjAeFw0xODAz
+MTkxMzExMjdaFw0zNDAzMTkxMzExMjdaMCgxJjAkBgNVBAMTHUFyYmV0c2Zvcm1l
+ZGxpbmdlbiBSb290IENBIFYyMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKC
+AgEAy3YIEgehvSW48uFQSvGVoBI5jgPXVDQahFQXQvCzfv3wcSlrl+y73dYlk+uZ
+hxZIRYn+jG6/JSXY6VBcDzZPMo5MymM7/nTk1MmiH17gjai+tzAaJUsCC5TXEo8D
+SV9Aee8RNI7O7USIvYc5/05Yb1Fo0fXC40pu5uf9OinjWOIJyg7Rxlmu9l+dHTif
+HCdvESZ8p30iHyHo8lBKLJlAwFSSKo8cCjpjb/n/XFVTb19GfY0tKWHy2pUUVJDU
+0p93dIKGu4bOKcwMW0wjftaNGmDH0XThKhHwFEG7Nz31orWhXHVGXSE8TCDJhruV
+nN8NYpWpueYe8R3LddhfzVUM5fwmyuj/w8ZJadazsN5Npoew2Ehs5oB6kVzyquxq
+w5V0rHW2LvD5xWhj6ZDB8DbIwW0nzcGKztO24nDPAYManYC7W7dnr7Dnl85Sqe6D
+MinUUdwsRSdfJHJAcZv8H13byhQFJv9jadQ0P++jWDkihCSUmCP368EE3TvFNwGh
+Sat2NQ2KzD+TUtJKscLq8H7KNS/8+LUa3hXUrVOu6Bm221bW67t/Ntz1lXePk0d4
+tsuK8S1nKqRCe7toYKADHzq0JUQ6c8A/5l7N534yFoQuADUy8PUKotagoSPaSeSy
+HMltbZnY6pG4Jkxy3e7NiJa3TlWGC5MO8xPyz5AWOqba/okCAwEAAaOCAVEwggFN
+MAsGA1UdDwQEAwIBhjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBR6vwOKX39n
+VCEIgwHR29vor17agjAQBgkrBgEEAYI3FQEEAwIBADCB+wYDVR0gBIHzMIHwME4G
+BiqFcGIBBjBEMEIGCCsGAQUFBwIBFjZodHRwOi8vY3BzLmNlcnQuYXJiZXRzZm9y
+bWVkbGluZ2VuLnNlL0NlcnREYXRhL2Nwcy5hc3AwTgYGKoVwYgEHMEQwQgYIKwYB
+BQUHAgEWNmh0dHA6Ly9jcHMuY2VydC5hcmJldHNmb3JtZWRsaW5nZW4uc2UvQ2Vy
+dERhdGEvY3BzLmFzcDBOBgYqhXBiAQgwRDBCBggrBgEFBQcCARY2aHR0cDovL2Nw
+cy5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0RGF0YS9jcHMuYXNwMA0G
+CSqGSIb3DQEBCwUAA4ICAQBBUmFIiiE1yi8YNF11fRPE3sQ+CHwrDxjY+bLZuJ8R
+k3SKnFfArKBVBdiBbQfCKMn8IxjCEJbmZP6BSX7R4+4i97P51t9pXRI+z87JlKSn
+fQ3NZ+6MZBGdF7IZHqlw+sJZYm2qKFt7fk+UYxKMNOqWA1xFidF0X8umVJ7YvSLT
+NcbpYqNdeNynduOX2W2rJN3xCu6hspocOzaaJvpN9K+VAABSLqT09MbiwKRVNz50
+6V+LGcyJ8a1z47Py03EKBdZXeqIptEWFewKM8KwM5qzHe++I4u9/iOTiIxqiE4CA
+Qwm7GrwCLuKS0ZDiq60Pxi2CCTdRMOOFNcAs7iuDj35tfyeNncGRYriRrm4k6TL6
+PJ8WuzckrXgoDwAPsl8nseDYKhsiaY+kqSyQG+YvX/eOlUopAPP37/OlaOUhwUFU
+ZMnSza4ilG1fxDgIQDhSiG+sCDqUXHd9VT8TlCT4mQE2IqT4x4J/W+6Bn0R2SaVW
+Em8m/QloZwxt2+L+b6ovsFJ9ysIAYj2Sx4MHEayITYKOTaIwU86KpjTRuSaxLPZ2
+wC42UFm8R+ERmH9xeRymL8n3uMIsqmqsK+Tb3xnjI/Hvprj9XkcdlQ78s4hcAtAR
+uDa804boPmJ7MkRWhCES9rZzankm22iIyk2HBr+q0DoclBhdPgxEOcse9nLthCLE
+gg==
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIIYTCCBkmgAwIBAgITNAAAAAXUP/qTr5f0twAAAAAABTANBgkqhkiG9w0BAQsF
+ADAoMSYwJAYDVQQDEx1BcmJldHNmb3JtZWRsaW5nZW4gUm9vdCBDQSBWMjAeFw0x
+ODA0MDMxMjMzMDJaFw0yNjA0MDMxMjQzMDJaMHAxEjAQBgoJkiaJk/IsZAEZFgJz
+ZTETMBEGCgmSJomT8ixkARkWA2FtczESMBAGCgmSJomT8ixkARkWAndwMTEwLwYD
+VQQDEyhBcmJldHNmb3JtZWRsaW5nZW4gUHJvZCBJc3N1aW5nIENBIDAxIFYyMIIC
+IjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEApK2jO//+SpPPcZIOeRm1k4KR
+tMc16okMyPcVhq8bttcOTosUkL9kETj9Cb6QrVTnoS8LoJX6A1RRltOwrqpnUUvV
+DKkzMrT+gBtMQX58bwWYvsTjJrTPVMyseeAmSVcerL6KVjlnzd+atwO3ZAMYWEhi
+qj1YrB7amRV+BD4rAq+//bDtH9BjkuRj9DW/H4NttSccBadHpb+nVNUqB1zGMDOP
+jg3pyDfWjcf89OOVjQcsQS+0Luqou2JiHtIdY5kzUimNb8t6r2jA1pxm7ngeYNew
+4hM/hbdRD4vOIetD1Fnra1r3XR2S+87ECt0G9pyeaoN/DKZH5wK5HLJ7V5eCV838
+oX695VDsi3SXvQ9UkjlBt/WTnnfRBXWLN3I8KumFuAdmRBYxltf3tVT7vHOP0jfv
+7O58zpy11cCDkDN+i6XtLf7JAu7mmVbn9uGQ6ks5IgEMpP16KTeWtVg/MTSUil85
+6sgYaRIcldeACr2GTS81lVeXWugcs9UhL+H2i22RhRxqMwy9KxhhbcMRFq6U8n3R
+07Y0YkJqP2w4qwUH+pBoZat9oL/Iq8Prn3fNsyKxaLT4OKed4ROoVsGPhwTyhImz
+kLVT3+dTOlsg0SqmmunHZtxDhbDpacTe7pdVJ4aQEljnLV0LEn717HZxJYcIo/Gj
+GdZsLvq5KMIOqngtjsUCAwEAAaOCAzowggM2MBAGCSsGAQQBgjcVAQQDAgEAMB0G
+A1UdDgQWBBRq9gtmVbJ1CSo7g5pj6RNxScBpljBZBgNVHSAEUjBQME4GBiqFcGIB
+BjBEMEIGCCsGAQUFBwIBFjZodHRwOi8vY3BzLmNlcnQuYXJiZXRzZm9ybWVkbGlu
+Z2VuLnNlL0NlcnREYXRhL2Nwcy5hc3AwGQYJKwYBBAGCNxQCBAweCgBTAHUAYgBD
+AEEwCwYDVR0PBAQDAgGGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHwYDVR0jBBgwFoAU
+er8Dil9/Z1QhCIMB0dvb6K9e2oIwggHVBgNVHR8EggHMMIIByDCCAcSgggHAoIIB
+vIZWaHR0cDovL2NybC5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0RGF0
+YS9BcmJldHNmb3JtZWRsaW5nZW4lMjBSb290JTIwQ0ElMjBWMi5jcmyGV2h0dHA6
+Ly9jcmwxLmNlcnQuYXJiZXRzZm9ybWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0
+c2Zvcm1lZGxpbmdlbiUyMFJvb3QlMjBDQSUyMFYyLmNybIZXaHR0cDovL2NybDIu
+Y2VydC5hcmJldHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEvQXJiZXRzZm9ybWVk
+bGluZ2VuJTIwUm9vdCUyMENBJTIwVjIuY3JshldodHRwOi8vY3JsMy5jZXJ0LmFy
+YmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0RGF0YS9BcmJldHNmb3JtZWRsaW5nZW4l
+MjBSb290JTIwQ0ElMjBWMi5jcmyGV2h0dHA6Ly9jcmw0LmNlcnQuYXJiZXRzZm9y
+bWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0c2Zvcm1lZGxpbmdlbiUyMFJvb3Ql
+MjBDQSUyMFYyLmNybDByBggrBgEFBQcBAQRmMGQwYgYIKwYBBQUHMAKGVmh0dHA6
+Ly9haWEuY2VydC5hcmJldHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEvQXJiZXRz
+Zm9ybWVkbGluZ2VuJTIwUm9vdCUyMENBJTIwVjIuY3J0MA0GCSqGSIb3DQEBCwUA
+A4ICAQBw9ILfoWh74uL47bZZu+39YjWayhvQX1LJmybAk4p2PqkIjv7Nj6l1oBMD
+w2OJG5XkVQx2aD3Je7fpnFBFrarXbQtVqht4fWnt/1OwYjMERFcg18liKHB807GT
+3sZuOS1xWFlUuxLtWdesglxTinnTNrtjkbEhgbqC2dWAtLIIDbjL8nhUUyCr34s2
+nl8UsWa+NHwFsKSTb2D8NngtiK8pdBmv9l77Z0YyERyS18v8bxP2mYZGii7Llvep
+5MFyEcSFQP2uyO0bUlVCDOLD3luoxb9Fj+4ZWeim/loNtxzyc60lDobWk/6nzTMA
+Rg9xmgnbD49nMC/Wp34gn9rRD4KeHXsnw9+d3t8rkAZNSJ8W+I3id4HhkbzmKjwX
+Jaeg0V6nK0Oo14RdC1tu5OMbjKOyzLmmtgt1Ter0JGizyR5VBiyolctsuhjXehf9
+uh7WbFptZ5wXZ5mbAyMK4pHIYLOeaCBV9rl4igFkJRdgWqoxAUgRKxpVfZEAyfy6
+zTdkEp++nA76oYNiqdPxKpy4dT9svCVQ62RzSoMJJAcGjOSyv2i9sm22alxlwoK4
+eLveZ+CtvNH0XYugTgTTO7XlY1XC5MT3lFe1dTA2V5u8YYYmMtWe5zySMWlbsQ1D
+tCBKqApZVgadw3+HgHUS5amSvPiV55l5BcrLPewoUe+ViMwAiw==
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIIiDCCBnCgAwIBAgITNAAAAAwq0oRUHNigswAAAAAADDANBgkqhkiG9w0BAQsF
+ADAoMSYwJAYDVQQDEx1BcmJldHNmb3JtZWRsaW5nZW4gUm9vdCBDQSBWMjAeFw0y
+NDA0MTcwODE4NDVaFw0zMjA0MTcwODI4NDVaMHAxEjAQBgoJkiaJk/IsZAEZFgJz
+ZTETMBEGCgmSJomT8ixkARkWA2FtczESMBAGCgmSJomT8ixkARkWAndwMTEwLwYD
+VQQDEyhBcmJldHNmb3JtZWRsaW5nZW4gUHJvZCBJc3N1aW5nIENBIDAxIFYyMIIC
+IjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAuTO4giqX603oMKsHWyJc5MRG
+cvPbL7LtdxE0NnkcXxoGrwKGNyTjsjZOPHR0Csd2NEp322tljCWr7I81/iPYiuxa
+2PqP10mMvqTZRHXr3pPMJ2yqlQGocTV180/Jb4plW0gW+M3JtrIWXECDFGTdV5Lw
+voKOARW84CPhjBsUwvnU5rUYpMa2775k+X1+ho9bfrE8XzNWAQIx9TfvZMues8/r
+L1hVPzA4qo5yyIP7NYh61lhui/VCDqOioGf2/3L37a9O2UKCBSSKoJFYN7ozpx3E
+LCqzE8iXdAe7dYZte0YW3GG6c9O2i6h5JxuMXy+oR9hwYgXfJ1uQLMX0X6PpbL1u
+coZ9DPApx5q4D9RwKqhGMADWe37Jtp3tcli3XjfIcA6x5yOOsD+vJStWrisRFeye
+6j5LQY/96NOAMebWPATE6Dv/ZPmCe5ogjoULvKj121YnIoRDa/Nd9Q8Rz/ZAggBQ
+KUU85fcb7R3o2H3uJ7cdIPepm8rKMsAFWl4+b5g0/fmOqLtRrh/Pc9y5WA0r0Qp/
+Fu4Y5Yos+IwWO2b5iLMAkBLzKMkfSMNB9QFM9iwNxSc1/bDAs6mk3SnHixAZW5cr
+s0eZtTTqWISu2X33i6vn5MLY9h+Bcf9HySItGiOrjZoIZH4tVZnW0BmDVP1oDxic
+a6aymhfLV29G+wEAte0CAwEAAaOCA2EwggNdMBIGCSsGAQQBgjcVAQQFAgMBAAEw
+IwYJKwYBBAGCNxUCBBYEFPRLaGzDWSb6tfby7qlWqgujXdUzMB0GA1UdDgQWBBSS
+OsS6irgvaOgR6LcUzyyIjuOFuzBZBgNVHSAEUjBQME4GBiqFcGIBBjBEMEIGCCsG
+AQUFBwIBFjZodHRwOi8vY3BzLmNlcnQuYXJiZXRzZm9ybWVkbGluZ2VuLnNlL0Nl
+cnREYXRhL2Nwcy5hc3AwGQYJKwYBBAGCNxQCBAweCgBTAHUAYgBDAEEwCwYDVR0P
+BAQDAgGGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHwYDVR0jBBgwFoAUer8Dil9/Z1Qh
+CIMB0dvb6K9e2oIwggHVBgNVHR8EggHMMIIByDCCAcSgggHAoIIBvIZWaHR0cDov
+L2NybC5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0RGF0YS9BcmJldHNm
+b3JtZWRsaW5nZW4lMjBSb290JTIwQ0ElMjBWMi5jcmyGV2h0dHA6Ly9jcmwxLmNl
+cnQuYXJiZXRzZm9ybWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0c2Zvcm1lZGxp
+bmdlbiUyMFJvb3QlMjBDQSUyMFYyLmNybIZXaHR0cDovL2NybDIuY2VydC5hcmJl
+dHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEvQXJiZXRzZm9ybWVkbGluZ2VuJTIw
+Um9vdCUyMENBJTIwVjIuY3JshldodHRwOi8vY3JsMy5jZXJ0LmFyYmV0c2Zvcm1l
+ZGxpbmdlbi5zZS9DZXJ0RGF0YS9BcmJldHNmb3JtZWRsaW5nZW4lMjBSb290JTIw
+Q0ElMjBWMi5jcmyGV2h0dHA6Ly9jcmw0LmNlcnQuYXJiZXRzZm9ybWVkbGluZ2Vu
+LnNlL0NlcnREYXRhL0FyYmV0c2Zvcm1lZGxpbmdlbiUyMFJvb3QlMjBDQSUyMFYy
+LmNybDByBggrBgEFBQcBAQRmMGQwYgYIKwYBBQUHMAKGVmh0dHA6Ly9haWEuY2Vy
+dC5hcmJldHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEvQXJiZXRzZm9ybWVkbGlu
+Z2VuJTIwUm9vdCUyMENBJTIwVjIuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQAB720r
+jMtZSBfOlZpf0CrbVzp1SJPrMhfdiA6v1AyPpAxmiw9IMg1Kw3JmCwWRBTKhL2hr
+AxQfMyFXt0K8B90UXrgA3KQzy0zwYMobxrfh5Apv406xKM3HOy//m0LHeV9C9d3z
+LRLTYVuANOp4rpPsNmHhX0dC0OcD9nliJ7m3tN5q5PufrBy5TVW5P1BOveVr5yMp
+FyMc8GVk9pDXNoIckpCyE2DahJtdTwEbby+FsY0JEFRBDXTWwTtzvLTjnng7zQNl
+7G3XakDRtYwJrmmrONFZ1Ies+Ny5RL7WNjWeYOhGF2rS+DinTixF7BT92Cpvksv1
+BI+u0N/I5SBN3akjbtxMegQmXJTHLFtJVDiSbrBGtkOlcZi8eyMpubfHB8UNbHdN
+bewOIij9hQXDUBepO2ufgJ8dC2/lOu8BY2rdpu0T4D5s6G5wfRX9+OLUCf2BuIlx
+3YRowaIKMJtdjzg79ya76fYDcIFch9dJSuVhzRpYAU2akk850TfFyvbQV2l2RlC0
+ZpR2joPfa95nERgENGd/Gm1AdCqIjeI5F/jAGi8XF3+jC949Rdd+DGycHCtQG5Sv
+A4+677OXmAveTlk0rGagVzOugDPGyq7TYv/4qZMx2fQXPjXZMWztyAHo0qHOQK9r
+FZwPZQu/39LtCKPbA78p/slt3dwb2KTnx/eufw==
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIIXzCCBkegAwIBAgITNAAAAAnQdF1XBFWgvgAAAAAACTANBgkqhkiG9w0BAQsF
+ADAoMSYwJAYDVQQDEx1BcmJldHNmb3JtZWRsaW5nZW4gUm9vdCBDQSBWMjAeFw0y
+MDA0MjIwOTE0MTRaFw0yODA0MjIwOTI0MTRaMG4xEjAQBgoJkiaJk/IsZAEZFgJz
+ZTETMBEGCgmSJomT8ixkARkWA2FtczESMBAGCgmSJomT8ixkARkWAnd0MS8wLQYD
+VQQDEyZBcmJldHNmb3JtZWRsaW5nZW4gVDIgSXNzdWluZyBDQSAwMiBWMjCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALP9MtokN9tEBfEvCYZxtouZN2nh
+j8eeKBhH35K2Ur40bRR6fs1JgvvNlbYMfr0FFhe4S3LBny4qMMf8JlGPc1bT0ieA
+x8vOXIhpQPedLRU9xuTgheFnFMMg5A4jt/61IJpeCJlvieYKIdc2PccH7pqc0d2I
+tmZfnbB/TDep4LSoKdlGC8xAkHfu8jyM87kRT7jfxQWJn4Q7bciZ0/EiPwxnOikp
+q2t+afkrVwM4n347vl4/h6NJTywWXH4T0yOBxbwDcaI6KNboJ8LlT7Pg17ju0maZ
+mlIGYmv1HieQfYNJaARIEk0J5XH4WVTGaYZwoQImS8785QNHmRAJj4I9CKTNhBuZ
+cUCTZF9hHGImd4wEQ6yemg1xtvUAJc6hRPYD0FO/2h4TRSZKRd0gFdlinFQgoJNj
+a/ErFmZCfx4CfmHjCmYA3xgfxUWk++Bzc2v7yZahxgFF6YIOe24XIjPXgL3bwKBO
+C/jyDWt1wlThp9xpRkDayA+eq8egufMDvmMfhWshShTqo4foWK6YH+20gLWiZcer
+clXQu+nuhUw86snWx8XH+VfPPfRKsoNCReWNPgUpbTmWI6I+zn5g/c9d6b8AWtc1
+Mb6aRUR2yF4da0HcIdVg0vlc/IJqPfPe+W2EEh2Lj2sfFMlcBllnV8aPiz96rhHt
+rLKAGgxzY3fCSTWDAgMBAAGjggM6MIIDNjAQBgkrBgEEAYI3FQEEAwIBADAdBgNV
+HQ4EFgQU3PghpYLwJOEeeIsQrDBSyWuK2aswWQYDVR0gBFIwUDBOBgYqhXBiAQYw
+RDBCBggrBgEFBQcCARY2aHR0cDovL2Nwcy5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdl
+bi5zZS9DZXJ0RGF0YS9jcHMuYXNwMBkGCSsGAQQBgjcUAgQMHgoAUwB1AGIAQwBB
+MAsGA1UdDwQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEBMB8GA1UdIwQYMBaAFHq/
+A4pff2dUIQiDAdHb2+ivXtqCMIIB1QYDVR0fBIIBzDCCAcgwggHEoIIBwKCCAbyG
+Vmh0dHA6Ly9jcmwuY2VydC5hcmJldHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEv
+QXJiZXRzZm9ybWVkbGluZ2VuJTIwUm9vdCUyMENBJTIwVjIuY3JshldodHRwOi8v
+Y3JsMS5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0RGF0YS9BcmJldHNm
+b3JtZWRsaW5nZW4lMjBSb290JTIwQ0ElMjBWMi5jcmyGV2h0dHA6Ly9jcmwyLmNl
+cnQuYXJiZXRzZm9ybWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0c2Zvcm1lZGxp
+bmdlbiUyMFJvb3QlMjBDQSUyMFYyLmNybIZXaHR0cDovL2NybDMuY2VydC5hcmJl
+dHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEvQXJiZXRzZm9ybWVkbGluZ2VuJTIw
+Um9vdCUyMENBJTIwVjIuY3JshldodHRwOi8vY3JsNC5jZXJ0LmFyYmV0c2Zvcm1l
+ZGxpbmdlbi5zZS9DZXJ0RGF0YS9BcmJldHNmb3JtZWRsaW5nZW4lMjBSb290JTIw
+Q0ElMjBWMi5jcmwwcgYIKwYBBQUHAQEEZjBkMGIGCCsGAQUFBzAChlZodHRwOi8v
+YWlhLmNlcnQuYXJiZXRzZm9ybWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0c2Zv
+cm1lZGxpbmdlbiUyMFJvb3QlMjBDQSUyMFYyLmNydDANBgkqhkiG9w0BAQsFAAOC
+AgEAfVUZUpZjkhKHgY7LLmp+crjxo8BsZVYZgvjtdiGk8XA9Ex0mZUHhqcln59e5
+0iry/CB3sxW9WkfdqogCc9e1VSfaquJRXUNkKNTv8YzcXhAmdNn7+7nSLTyj1PMZ
+kog949+T6vv1UvWgZ/1l2dz5tGdz3j798QhuUJNORWUjO3eTo4/xQCZOOf1psytV
+N5S6izyDNO7adEztQhagKgI3Wa+xFFqxyV+3HnYGTTpR/oOimE9yxGMBARs8LQfs
+fRDxMmF6j7NYSYjTQ8bULa1ETxjsBeaqw83vSc/8lKdZbc4uXPqrZI7ElcetYQ4v
+HTlBFCpy31V2m/56vi8ZQLsZSPPSWb6g2Z8bsAxUveO3rrENsaz/jSlp+tt6l65I
+sj0DHwwPBO89YaJqrpUUNcisWUn6RmZ361SXE1BQd5puXXksd8f0ewu6/xtRs7WF
+sbTtgCDKT1Y8AN7wp+ginTVP4uiyH8ZMGLnoZGtclhd5labDyJ20ZIqaTUqWoHc5
+bGEFHuWRVYu9Qp+H9BxmIyL/RofNIjnkX/Sq21vgLI4HWci4mCDwFYRfv+Xm0UxJ
+zn8y5FXpCNPE9NFqIhAhuK1gBhux1gvU69ZRs7IPat7JtuY/fl1TXp8wUqixiTm1
+/LVpIsKZnk+vjAgEAb0/uEVvBU+EAOcQs1oLjBj7dWylmxU=
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIIhjCCBm6gAwIBAgITNAAAAAvk6ilVa6DsUwAAAAAACzANBgkqhkiG9w0BAQsF
+ADAoMSYwJAYDVQQDEx1BcmJldHNmb3JtZWRsaW5nZW4gUm9vdCBDQSBWMjAeFw0y
+NDAzMjUxMjUzMzRaFw0zMjAzMjUxMzAzMzRaMG4xEjAQBgoJkiaJk/IsZAEZFgJz
+ZTETMBEGCgmSJomT8ixkARkWA2FtczESMBAGCgmSJomT8ixkARkWAnd0MS8wLQYD
+VQQDEyZBcmJldHNmb3JtZWRsaW5nZW4gVDIgSXNzdWluZyBDQSAwMiBWMjCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAL9OwHc5fSIFG1tGXu1Fe7qmU0e/
+4Qc0xdbDxszR8q6YrvahNdOWIJO7XDJGeZywlYxU62u90iQn35My1WTvg47xYSR1
+krueUIASC26kRaJbjcx+cGk/RGItCZ1Sf8e61fTmPh8bUV54WewcdFwAHkPUJZGy
+Q2tZgXuryyBIjvsnaO64pJblDpg4MdnLv0vSbEfPGt/6obf2kO5hHOV6+X6s9KpR
+17WPEZDfIozcLQcmdzoPHJwj6zQxEYIVA4l3Y3excrdcrHOGluWRZSDpp1dYolM+
+NlV3iC3P14hJNBjQlhS61OJEExgipOUwCotASktnomKYgKRSX+bzBb7bH7at04P3
+2MBLrJ8DilQwt2h/nMc5pGsuBsNRVju4sv9yAgPKdJ3pb5Sx8BzdNg8ksefHy770
+wJxJkjHPyPaLzN4/rojog7DNb/fPVxhWbBHSj1108WyT0kBeSQjl90og9X3H9qvT
+3Dge09sZb3x8Junl8T0vYAg41IPi1zNICpElfy4TwUT2ijFX5kBTbJmZHlKsHfdC
+1H2rdIvg1GcNtMivDSwypSXC4cYPdV6tF1ReRkR9Q7qTWfn/19CHK4f9hBEiLVEv
+co2VucMkB+kQLa0jlpI2Z0vCJX5BMXbMXkOhUSixO4Czf7tKbMZhGz/txGO8OpB9
+irj5jb4L7Kos+DNZAgMBAAGjggNhMIIDXTASBgkrBgEEAYI3FQEEBQIDAQABMCMG
+CSsGAQQBgjcVAgQWBBRXRjwxc3NCDm0s0VxVskbbDbzvzTAdBgNVHQ4EFgQUndp9
+6BUir3jTyBXZO8JhC39ll3owWQYDVR0gBFIwUDBOBgYqhXBiAQYwRDBCBggrBgEF
+BQcCARY2aHR0cDovL2Nwcy5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0
+RGF0YS9jcHMuYXNwMBkGCSsGAQQBgjcUAgQMHgoAUwB1AGIAQwBBMAsGA1UdDwQE
+AwIBhjASBgNVHRMBAf8ECDAGAQH/AgEBMB8GA1UdIwQYMBaAFHq/A4pff2dUIQiD
+AdHb2+ivXtqCMIIB1QYDVR0fBIIBzDCCAcgwggHEoIIBwKCCAbyGVmh0dHA6Ly9j
+cmwuY2VydC5hcmJldHNmb3JtZWRsaW5nZW4uc2UvQ2VydERhdGEvQXJiZXRzZm9y
+bWVkbGluZ2VuJTIwUm9vdCUyMENBJTIwVjIuY3JshldodHRwOi8vY3JsMS5jZXJ0
+LmFyYmV0c2Zvcm1lZGxpbmdlbi5zZS9DZXJ0RGF0YS9BcmJldHNmb3JtZWRsaW5n
+ZW4lMjBSb290JTIwQ0ElMjBWMi5jcmyGV2h0dHA6Ly9jcmwyLmNlcnQuYXJiZXRz
+Zm9ybWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0c2Zvcm1lZGxpbmdlbiUyMFJv
+b3QlMjBDQSUyMFYyLmNybIZXaHR0cDovL2NybDMuY2VydC5hcmJldHNmb3JtZWRs
+aW5nZW4uc2UvQ2VydERhdGEvQXJiZXRzZm9ybWVkbGluZ2VuJTIwUm9vdCUyMENB
+JTIwVjIuY3JshldodHRwOi8vY3JsNC5jZXJ0LmFyYmV0c2Zvcm1lZGxpbmdlbi5z
+ZS9DZXJ0RGF0YS9BcmJldHNmb3JtZWRsaW5nZW4lMjBSb290JTIwQ0ElMjBWMi5j
+cmwwcgYIKwYBBQUHAQEEZjBkMGIGCCsGAQUFBzAChlZodHRwOi8vYWlhLmNlcnQu
+YXJiZXRzZm9ybWVkbGluZ2VuLnNlL0NlcnREYXRhL0FyYmV0c2Zvcm1lZGxpbmdl
+biUyMFJvb3QlMjBDQSUyMFYyLmNydDANBgkqhkiG9w0BAQsFAAOCAgEAah1YvZ6J
+ik4doilAOLCXbLX7piY0lnCkgif+3AgiNTNywdnvW51qqXoy461d1FMLZcAy3Lqp
++y3C5mdKOCGvhnswwyjJ4e6lwUIEJ8FrtuomSVrZLlvgOQMdA9LDTuxNSyB18Vew
+CU7N/+5E7pluwCHLxzPoGEKIXgUI1orHdHxAFN5aJdlqEQM4cEqBJDiKnmmNob8H
+BH6Xtz/c8bfBz5JALxKVQzqTGTrYc16jeSQJsJvOC2p6acFtYyl0P85YIwztsnvN
+wBW+8AWsr7z7T8FZn7qwNP1CkqOJKHK1znZ8/3H9PU3XM+iapPUh4m+WNqrOe6vc
+qhNbHoGVWUNo/PQyUUq5zOobcoy0oz08dUfxY59UElnSGK/DSoipJrfPeiK+xKTM
+JLJr0RhqXNLazvP9v5esC3Gs1Oj3E1Jd9b+eUudwyHX9OJ/wZEuQzCNlgelhpqOO
+5lPmColFE4cPK7jg49gHM5qCYr1LZCdedlKWywLprXoUCCL5U1CIphQXmFiPUE0e
+bjh+uTo/u0r0loPq75XCMIi1714EL2xpV4iSTePjJI7Hkrex83o8MXJV8ASFmPmF
+aGDtFyqwym/Xiv87972eYUavKhlKfphUl7c4fXcNsvLZB3W6UE/l3zfyk0PM2Xvh
+Km5H+AhusgJDKVnzUIzTV9XTv4OUxvTbmAU=
+-----END CERTIFICATE-----
