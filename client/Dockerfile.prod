@@ -21,6 +21,7 @@ RUN ls -a
 RUN npm install --verbose
 
 # Build production bundle
+ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
 RUN npm run build
 
 # Stage 2: Serve with Nginx
