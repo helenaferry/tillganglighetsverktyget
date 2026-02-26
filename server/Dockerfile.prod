@@ -32,6 +32,10 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json ./
+COPY ../.npmrc ./
+
+# Ett måste för vissa paket som cypress
+ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
 
 # Install dependencies (including dev dependencies for build)
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
