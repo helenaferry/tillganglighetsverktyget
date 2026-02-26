@@ -17,11 +17,12 @@ COPY ./client .
 # Install dependencies
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
 # and doesn't have its own package-lock.json
-RUN ls -a
+
+ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
 RUN npm install --verbose
 
 # Build production bundle
-ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
+
 RUN npm run build
 
 # Stage 2: Serve with Nginx
