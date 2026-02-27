@@ -14,7 +14,7 @@ describe('helpers', () => {
     {
       id: '1',
       name: 'Krav 1',
-      regulatoryFramework: 'WCAG',
+      regulatoryFramework: 'dos',
       wcag: '1.1.1',
       en301549: '',
       contentType: 'Bilder',
@@ -37,7 +37,7 @@ describe('helpers', () => {
     {
       id: '2',
       name: 'Krav 2',
-      regulatoryFramework: 'WCAG',
+      regulatoryFramework: 'dos',
       wcag: '1.1.2',
       en301549: '',
       contentType: 'Formulär',
@@ -60,7 +60,7 @@ describe('helpers', () => {
     {
       id: '3',
       name: 'Krav 3',
-      regulatoryFramework: 'WCAG',
+      regulatoryFramework: 'dos',
       wcag: '1.1.3',
       en301549: '',
       contentType: 'Video',
@@ -83,7 +83,7 @@ describe('helpers', () => {
     {
       id: '4',
       name: 'Krav 4',
-      regulatoryFramework: 'WCAG',
+      regulatoryFramework: 'dos',
       wcag: '1.1.4',
       en301549: '',
       contentType: 'Bilder',
@@ -97,7 +97,7 @@ describe('helpers', () => {
     {
       id: '5',
       name: 'Krav 5',
-      regulatoryFramework: 'WCAG',
+      regulatoryFramework: 'dos',
       wcag: '1.1.5',
       en301549: '',
       contentType: 'Formulär',

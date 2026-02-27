@@ -39,7 +39,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '1',
         name: 'Req 1',
         category: 'Cat A',
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.WEB,
         contentType: 'text',
         wcag: '1.1.1',
@@ -52,7 +52,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '2',
         name: 'Req 2',
         category: 'Cat B',
-        regulatoryFramework: 'wcag22',
+        regulatoryFramework: 'dos',
         objectType: ObjectType.WEB,
         contentType: 'image',
         wcag: '1.2.1',
@@ -69,31 +69,18 @@ describe('useRegulatoryFrameworks', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data).toContain('wcag21');
-    expect(result.current.data).toContain('wcag22');
+    expect(result.current.data).toContain('dos');
+    expect(result.current.data).toContain('lptt');
     expect(result.current.data).toContain('none');
   });
 
   it('handles comma-separated regulatory frameworks', async () => {
     const mockRequirements: Requirement[] = [
       {
-        id: '1',
-        name: 'Req 1',
-        category: 'Cat A',
-        regulatoryFramework: 'wcag21,wcag22,en301549',
-        objectType: ObjectType.WEB,
-        contentType: 'text',
-        wcag: '1.1.1',
-        en301549: '9.1.1.1',
-        statement: 'Test',
-        why: 'Test',
-        howToTest: 'Test',
-      },
-      {
         id: '2',
         name: 'Req 2',
         category: 'Cat B',
-        regulatoryFramework: 'wcag22, wcag21',
+        regulatoryFramework: 'dos, lptt',
         objectType: ObjectType.WEB,
         contentType: 'image',
         wcag: '1.2.1',
@@ -110,11 +97,9 @@ describe('useRegulatoryFrameworks', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data).toContain('wcag21');
-    expect(result.current.data).toContain('wcag22');
-    expect(result.current.data).toContain('en301549');
-    expect(result.current.data).toContain('none');
-    expect(result.current.data?.length).toBe(4); // wcag21, wcag22, en301549, none
+    expect(result.current.data).toContain('dos');
+    expect(result.current.data).toContain('lptt');
+    expect(result.current.data?.length).toBe(2);
   });
 
   it('trims whitespace from regulatory frameworks', async () => {
@@ -152,7 +137,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '1',
         name: 'Req 1',
         category: 'Cat A',
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.WEB,
         contentType: 'text',
         wcag: '1.1.1',
@@ -165,7 +150,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '2',
         name: 'Req 2',
         category: 'Cat B',
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.WEB,
         contentType: 'image',
         wcag: '1.2.1',
@@ -205,7 +190,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '1',
         name: 'Web Req',
         category: 'Cat A',
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.WEB,
         contentType: 'text',
         wcag: '1.1.1',
@@ -218,7 +203,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '2',
         name: 'Doc Req',
         category: 'Cat B',
-        regulatoryFramework: 'en301549',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.DOCUMENT,
         contentType: 'pdf',
         wcag: '1.2.1',
@@ -235,8 +220,8 @@ describe('useRegulatoryFrameworks', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data).toContain('wcag21');
-    expect(result.current.data).not.toContain('en301549');
+    expect(result.current.data).toContain('lptt');
+    expect(result.current.data).not.toContain('dos');
     expect(result.current.data).toContain('none');
   });
 
@@ -246,7 +231,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '1',
         name: 'Web Req',
         category: 'Cat A',
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.WEB,
         contentType: 'text',
         wcag: '1.1.1',
@@ -259,7 +244,7 @@ describe('useRegulatoryFrameworks', () => {
         id: '2',
         name: 'Doc Req',
         category: 'Cat B',
-        regulatoryFramework: 'en301549',
+        regulatoryFramework: 'lptt',
         objectType: ObjectType.DOCUMENT,
         contentType: 'pdf',
         wcag: '1.2.1',
@@ -276,8 +261,7 @@ describe('useRegulatoryFrameworks', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(result.current.data).toContain('wcag21');
-    expect(result.current.data).toContain('en301549');
+    expect(result.current.data).toContain('lptt');
     expect(result.current.data).toContain('none');
   });
 

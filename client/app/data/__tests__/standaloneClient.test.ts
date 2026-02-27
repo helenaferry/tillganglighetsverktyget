@@ -196,12 +196,12 @@ describe('standaloneClient', () => {
           excludedContentTypes: ['video'],
           selectedPrefillIds: '1',
           objectType: 'doc',
-          regulatoryFramework: 'wcag',
+          regulatoryFramework: 'dos',
         });
 
         expect(result.title).toBe('New Title');
         expect(result.objectType).toBe('doc');
-        expect(result.regulatoryFramework).toBe('wcag');
+        expect(result.regulatoryFramework).toBe('dos');
       });
 
       it('throws ApiError(404) when review not found', async () => {

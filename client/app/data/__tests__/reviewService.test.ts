@@ -114,7 +114,7 @@ describe('ReviewService', () => {
         id: 1,
         title: 'Test Review',
         objectType: ObjectType.WEB,
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'dos',
         created_at: '2024-01-01T00:00:00Z',
         excludedContentTypes: '',
         selectedPrefillIds: '',
@@ -336,7 +336,7 @@ describe('ReviewService', () => {
         id: 1,
         title: 'New Review',
         objectType: ObjectType.WEB,
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'dos',
         excludedContentTypes: 'video;audio',
         selectedPrefillIds: '1,2,3',
         created_at: '2024-01-01T00:00:00Z',
@@ -348,7 +348,7 @@ describe('ReviewService', () => {
         excludedContentTypes: ['video', 'audio'],
         selectedPrefillIds: '1,2,3',
         objectType: ObjectType.WEB,
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'dos',
       });
 
       expect(result).toEqual(mockReview);
@@ -357,7 +357,7 @@ describe('ReviewService', () => {
         excludedContentTypes: ['video', 'audio'],
         selectedPrefillIds: '1,2,3',
         objectType: ObjectType.WEB,
-        regulatoryFramework: 'wcag21',
+        regulatoryFramework: 'dos',
       });
     });
 
@@ -366,7 +366,7 @@ describe('ReviewService', () => {
         id: 1,
         title: 'Updated Review',
         objectType: ObjectType.DOCUMENT,
-        regulatoryFramework: 'wcag22',
+        regulatoryFramework: 'lptt',
         excludedContentTypes: 'image',
         selectedPrefillIds: '4,5',
         created_at: '2024-01-01T00:00:00Z',
@@ -379,7 +379,7 @@ describe('ReviewService', () => {
         excludedContentTypes: ['image'],
         selectedPrefillIds: '4,5',
         objectType: ObjectType.DOCUMENT,
-        regulatoryFramework: 'wcag22',
+        regulatoryFramework: 'lptt',
       });
 
       expect(result).toEqual(mockReview);
@@ -388,7 +388,7 @@ describe('ReviewService', () => {
         excludedContentTypes: ['image'],
         selectedPrefillIds: '4,5',
         objectType: ObjectType.DOCUMENT,
-        regulatoryFramework: 'wcag22',
+        regulatoryFramework: 'lptt',
       });
     });
   });

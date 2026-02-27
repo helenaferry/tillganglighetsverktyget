@@ -177,7 +177,7 @@ describe('ReviewRequirement', () => {
     title: 'Test Review',
     created_at: '2026-02-17',
     objectType: ObjectType.WEB,
-    regulatoryFramework: 'wcag2a',
+    regulatoryFramework: 'dos',
   };
 
   const mockRequirement = {
