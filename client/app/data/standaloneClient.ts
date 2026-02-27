@@ -11,7 +11,7 @@ import {
 import { standaloneExampleData } from './standaloneExampleData';
 import type { Check, Requirement, Review, ReviewSummary } from './types';
 
-const requirementsPath = import.meta.env.VITE_REQUIREMENTS_URL;
+const requirementsPath =  import.meta.env.VITE_REQUIREMENTS_URL;
 
 // localStorage keys
 const STORAGE_KEY_REVIEWS = 'tillgang_reviews';
@@ -26,8 +26,8 @@ let initializationAttempted = false;
  * Check if example data should be initialized
  */
 function shouldInitializeExampleData(): boolean {
-  const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
-  const useExampleData = import.meta.env.VITE_USE_EXAMPLE_DATA === 'true';
+  const isStandalone = import.meta.env.VITE_STANDALONE == 'true';
+  const useExampleData = import.meta.env.VITE_USE_EXAMPLE_DATA == 'true';
 
   if (!isStandalone || !useExampleData) {
     return false;
@@ -183,7 +183,8 @@ export const standaloneClient = {
   // Requirements endpoints
   requirements: {
     getAllRequirements: async (): Promise<Requirement[]> => {
-      const res = await fetch(requirementsPath);
+      const standAloneRequirementsPath = '/krav.json';
+      const res = await fetch(standAloneRequirementsPath);
       if (!res.ok) {
         throw new Error(
           `Failed to load requirements from ${requirementsPath}: ${res.status} ${res.statusText}`,

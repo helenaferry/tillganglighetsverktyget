@@ -1,0 +1,143 @@
+export const organizationConfiguration = {
+  "applicationTitle": "Granska tillgänglighet",
+  "logo": {
+    "header": {
+      "mobileUrl": "/logoHeaderMobile.svg",
+      "desktopUrl": "/logoHeader.svg"
+    },
+    "footer": {
+      "mobileUrl": "/logoFooterMobile.svg",
+      "desktopUrl": "/logoFooter.svg"
+    }
+  },
+  "regulatoryFramework": "dos",
+  "requirementAdditions": {
+    "heading": "Arbetsförmedlingens tillägg",
+    "items": [
+      {
+        "id": "jtin",
+        "text": "Kravet är uppfyllt om tjänsten använder myndighetens teknik för enkel inloggning och användarautentisering, så kallad single sign-on."
+      },
+      {
+        "id": "sidt",
+        "text": "På Arbetsförmedlingen skriver vi sidans namn följt av avsändarens namn. Exempel: \"Platsbanken - Sök lediga jobb - Arbetsförmedlingen\"."
+      },
+      {
+        "id": "blin",
+        "text": "Följer din tjänst designsystemets riktlinjer har du uppfyllt det här kravet.\nEnligt riktlinjen i designsystemet om Animationer ska animationer användas måttfullt och med tydligt syfte, så att de blir både användbara och tillgängliga. Rörelser bör efterlikna fysiken i den verkliga världen för att upplevas som naturliga och behagliga. Animationer får inte distrahera eller hindra användaren, utan ska istället tillföra värde och stödja interaktionen. Läs mer i designsystemet."
+      },
+      {
+        "id": "bite",
+        "text": "Följer din tjänst designsystemets riktlinjer har du uppfyllt det här kravet.\nEnligt riktlinjer om bilder i designsystemet får text inte integreras i bild."
+      },
+      {
+        "id": "lofo",
+        "text": "Använder din tjänst designsystemets komponenter har du uppfyllt det här kravet.\nKomponenterna kan implementeras med tydligt fokus."
+      },
+      {
+        "id": "kork",
+        "text": "Använder din tjänst designsystemets komponenter har du uppfyllt det här kravet, då designsystemet inte innehåller kortkommandon."
+      },
+      {
+        "id": "ihof",
+        "text": "Använder din tjänst designsystemets komponenter har du uppfyllt det här kravet, då hover och fokus är inbyggda i komponenterna."
+      },
+      {
+        "id": "infg",
+        "text": "Använder din tjänst designsystemets komponenter har du uppfyllt det här kravet, då färger är systematiska och det finns möjlighet att använda andra visuella markeringar vid behov."
+      },
+      {
+        "id": "txst",
+        "text": "Använder din tjänst designsystemets komponenter och designmönster för grid och brytpunkter har du uppfyllt det här kravet, då responsivitet är inbyggt."
+      },
+      {
+        "id": "txml",
+        "text": "Använder din tjänst designsystemets komponenter har du uppfyllt det här kravet."
+      },
+      {
+        "id": "kote",
+        "text": "Använder din tjänst designsystemets komponenter och grafiska riktlinjer har du uppfyllt det här kravet."
+      },
+      {
+        "id": "koti",
+        "text": "Använder din tjänst designsystemets komponenter och grafiska riktlinjer har du uppfyllt det här kravet."
+      },
+      {
+        "id": "sela",
+        "text": "Använder din tjänst designsystemets komponent för länkar uppfylls detta krav."
+      },
+      {
+        "id": "sekn",
+        "text": "Använder din tjänst designsystemets komponent för knappar uppfylls detta krav."
+      },
+      {
+        "id": "seli",
+        "text": "Använder din tjänst designsystemets komponent för listor uppfylls detta krav."
+      },
+      {
+        "id": "seta",
+        "text": "Använder din tjänst Designsystemets komponent för tabeller och tabellen används för tabelldata uppfylls detta krav."
+      },
+      {
+        "id": "roko",
+        "text": "Om din tjänst använder Designsystemets komponenter och följer instruktionerna för ändring av tillstånd uppfylls detta krav."
+      },
+      {
+        "id": "plet",
+        "text": "Använder din tjänst Designsystemets komponenter för formulär och om det finns text i komponenternas `<label>` uppfylls detta krav."
+      },
+      {
+        "id": "suin",
+        "text": "Arbetsförmedlingen har en gemensam support för hela webbplatsen. Eftersom det inte finns support i varje enskild tjänst markeras kraven för supporttjänster som irrelevanta."
+      },
+      {
+        "id": "suko",
+        "text": "Arbetsförmedlingen har en gemensam support för hela webbplatsen. Eftersom det inte finns support i varje enskild tjänst markeras kraven för supporttjänster som irrelevanta."
+      },
+      {
+        "id": "sudo",
+        "text": "Arbetsförmedlingen har en gemensam support för hela webbplatsen. Eftersom det inte finns support i varje enskild tjänst markeras kraven för supporttjänster som irrelevanta."
+      }
+    ]
+  },
+  "footerLinks": [
+    {
+      "icon": "email",
+      "text": "Mejla vår funktionsbrevlåda",
+      "url": "mailto:designsystem@arbetsformedlingen.se"
+    },
+    {
+      "text": "Arbetsförmedlingens designsystem (öppnas i egen flik)",
+      "url": "https://designsystem.arbetsformedlingen.se/",
+      "external": "true"
+    }
+  ],
+  "prefillRequirements": [
+    {
+      "id": "1",
+      "automatic": "false",
+      "heading": "Tjänsten använder designsystemet",
+      "description": "Har ni utvecklat tjänsten med komponenter, designmönster och designprinciper från designsystemet så godkänns flera krav.",
+      "activateText": "Är tjänsten utvecklad med Arbetsförmedlingens designsystem?",
+      "prefillRequirements": [
+        {
+          "ids": ["blin", "bite", "lofo", "kork", "ihof", "infg", "txst", "txml", "kote", "koti", "sela", "sekn", "seli", "seta", "roko", "plet"],
+          "status": "PASS",
+          "comment": "Kravet har förifyllts som godkänt eftersom tjänsten, enligt tidigare ifyllda uppgifter, använder designsystemets komponenter och riktlinjer."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "automatic": "true",
+      "activateText": "",
+      "prefillRequirements": [
+        {
+          "ids": ["suin", "suko", "sudo"],
+          "status": "IRRELEVANT",
+          "comment": "Kravet har förifyllts som irrelevant eftersom Arbetsförmedlingen har beslutat att krav rörande support ligger utanför ansvarsområdet för denna tjänst."
+        }
+      ]
+    }
+  ]
+};

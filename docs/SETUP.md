@@ -365,7 +365,7 @@ curl -X POST http://localhost:3000/api/reviews \
     "title": "Test Review",
     "excludedContentTypes": ["video"],
     "objectType": "web",
-    "regulatoryFramework": "WCAG 2.2 AA",
+    "regulatoryFramework": "dos",
     "selectedPrefillIds": ""
   }'
 ```

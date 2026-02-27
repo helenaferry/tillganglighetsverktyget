@@ -44,6 +44,7 @@ import {
   usePrefillRequirements,
   useUpsertReview,
 } from '~/hooks/useReviewData';
+import { envVars } from '~/helpers/helpers';
 
 type Props = {
   review?: Review;
@@ -51,7 +52,7 @@ type Props = {
 
 export function ReviewForm({ review }: Props) {
   const { t } = useTranslation();
-  const regulatoryFrameworkEnv = import.meta.env.VITE_REGULATORY_FRAMEWORK || '';
+  const regulatoryFrameworkEnv = envVars().regulatoryFramework || '';
   const [regulatoryFramework, setRegulatoryFramework] = useState<string>(regulatoryFrameworkEnv);
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
@@ -64,7 +65,7 @@ export function ReviewForm({ review }: Props) {
   const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingRegulatoryFrameworks;
   const allPrefillRequirements = useMemo(
     () =>
-      JSON.parse(import.meta.env.VITE_PREFILL_REQUIREMENTS || '{}') as PrefillRequirementSetting[],
+      envVars().prefillRequirements as PrefillRequirementSetting[],
     [],
   );
 

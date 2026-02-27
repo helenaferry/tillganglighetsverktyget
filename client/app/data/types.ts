@@ -33,7 +33,7 @@ export type Review = {
   title: string | null;
   excludedContentTypes: string | null;
   objectType: string | null;
-  regulatoryFramework: string | null;
+  regulatoryFramework: string | null; // kan bara vara dos eller lptt
   selectedPrefillIds: string | null;
 };
 

@@ -50,7 +50,7 @@ Hämta alla granskningar med sammanfattningsstatistik.
     "title": "Exempelgranskning",
     "excludedContentTypes": "video;audio",
     "objectType": "web",
-    "regulatoryFramework": "WCAG 2.2 AA",
+    "regulatoryFramework": "dos",
     "selectedPrefillIds": "prefill1;prefill2",
     "latestUpdate": "2026-01-23T12:00:00.000Z",
     "reviewedCount": 45,
@@ -76,7 +76,7 @@ Hämta en enskild granskning efter ID.
   "title": "Exempelgranskning",
   "excludedContentTypes": "video;audio",
   "objectType": "web",
-  "regulatoryFramework": "WCAG 2.2 AA",
+  "regulatoryFramework": "dos",
   "selectedPrefillIds": "prefill1;prefill2"
 }
 ```
@@ -91,7 +91,7 @@ Skapa en ny granskning.
   "title": "Min nya granskning",
   "excludedContentTypes": ["video", "audio"],
   "objectType": "web",
-  "regulatoryFramework": "WCAG 2.2 AA",
+  "regulatoryFramework": "dos",
   "selectedPrefillIds": "prefill1"
 }
 ```
@@ -104,7 +104,7 @@ Skapa en ny granskning.
   "title": "Min nya granskning",
   "excludedContentTypes": "video;audio",
   "objectType": "web",
-  "regulatoryFramework": "WCAG 2.2 AA",
+  "regulatoryFramework": "dos",
   "selectedPrefillIds": "prefill1"
 }
 ```
@@ -122,7 +122,7 @@ Uppdatera en befintlig granskning.
   "title": "Uppdaterad rubrik",
   "excludedContentTypes": ["video"],
   "objectType": "web",
-  "regulatoryFramework": "WCAG 2.2 AA",
+  "regulatoryFramework": "dos",
   "selectedPrefillIds": ""
 }
 ```
@@ -135,7 +135,7 @@ Uppdatera en befintlig granskning.
   "title": "Uppdaterad rubrik",
   "excludedContentTypes": "video",
   "objectType": "web",
-  "regulatoryFramework": "WCAG 2.2 AA",
+  "regulatoryFramework": "dos",
   "selectedPrefillIds": ""
 }
 ```

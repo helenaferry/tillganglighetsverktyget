@@ -1,5 +1,6 @@
 import { type LogoConfig, type RequirementWithCheck, Status } from '~/data/types';
 import i18n from '~/lang/i18n';
+import { organizationConfiguration } from '../../public/organization-configurations/organizationCofiguration.js';
 
 export function numberChecked(requirements: RequirementWithCheck[]) {
   return requirements.filter(
@@ -47,17 +48,16 @@ export function envVars() {
     },
   };
   const parseLogo = (): LogoConfig => {
-    const raw = import.meta.env.VITE_LOGO;
-    if (!raw) return defaultLogo;
+    const raw = organizationConfiguration.logo;
+    if (!organizationConfiguration.logo) return defaultLogo;
     try {
-      const parsed = JSON.parse(raw);
       if (
-        parsed?.header?.mobileUrl &&
-        parsed?.header?.desktopUrl &&
-        parsed?.footer?.mobileUrl &&
-        parsed?.footer?.desktopUrl
+        organizationConfiguration.logo?.header?.mobileUrl &&
+        organizationConfiguration.logo?.header?.desktopUrl &&
+        organizationConfiguration.logo?.footer?.mobileUrl &&
+        organizationConfiguration.logo?.footer?.desktopUrl
       ) {
-        return parsed as LogoConfig;
+        return organizationConfiguration.logo as LogoConfig;
       }
       return defaultLogo;
     } catch {
@@ -65,11 +65,13 @@ export function envVars() {
     }
   };
   return {
-    applicationTitle: import.meta.env.VITE_APPLICATION_TITLE || i18n.t('FallbackApplicationTitle'),
+    applicationTitle: organizationConfiguration.applicationTitle || i18n.t('FallbackApplicationTitle'),
     logo: parseLogo(),
-    footerLinks: import.meta.env.VITE_FOOTER_LINKS
-      ? JSON.parse(import.meta.env.VITE_FOOTER_LINKS)
+    footerLinks: organizationConfiguration.footerLinks
+      ? organizationConfiguration.footerLinks
       : [],
-    regulatoryFramework: import.meta.env.VITE_REGULATORY_FRAMEWORK || '',
+    regulatoryFramework: organizationConfiguration.regulatoryFramework || '',
+    requirementAdditions: organizationConfiguration.requirementAdditions,
+    prefillRequirements: organizationConfiguration.prefillRequirements
   };
 }

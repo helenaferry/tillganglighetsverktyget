@@ -426,7 +426,7 @@ Content-Type: application/json
   "title": "Min granskning",
   "excludedContentTypes": ["video", "audio"],
   "objectType": "web",
-  "regulatoryFramework": "WCAG 2.2 AA",
+  "regulatoryFramework": "dos",
   "selectedPrefillIds": ""
 }
 

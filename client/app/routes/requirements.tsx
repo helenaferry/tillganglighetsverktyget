@@ -57,9 +57,7 @@ export default function RequirementsPage() {
 
   const isLoading = requirementsAllLoading || isLoadingCategories;
 
-  const requirementAdditions = JSON.parse(
-    import.meta.env.VITE_REQUIREMENT_ADDITIONS || '{}',
-  ) as RequirementAdditionsSetting;
+  const requirementAdditions = envVars().requirementAdditions;
 
   const [showObjectType] = useState<ObjectType>(ObjectType.WEB);
   const [timesFiltered, setTimesFiltered] = useState(0);
