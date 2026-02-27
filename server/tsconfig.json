@@ -1,5 +1,4 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
     "target": "ES2020",
@@ -13,6 +12,6 @@
     "baseUrl": "src",
     "types": ["node"]
   },
-  "include": ["src", "../shared/types"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

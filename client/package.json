@@ -58,7 +58,6 @@
     "eslint-plugin-simple-import-sort": "12.1.1",
     "globals": "16.4.0",
     "happy-dom": "^20.3.7",
-    "husky": "9.1.7",
     "jsdom": "^27.0.1",
     "prettier": "3.6.2",
     "tailwindcss": "4.1.13",
@@ -66,14 +65,5 @@
     "vite": "7.1.7",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "^3.2.4"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{js,jsx,json,css,md}": [
-      "prettier --write"
-    ]
   }
 }
