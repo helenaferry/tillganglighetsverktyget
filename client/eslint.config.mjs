@@ -35,22 +35,18 @@ export default defineConfig([
       'plugin:react/recommended',
       'plugin:@typescript-eslint/recommended',
     ),
-
     plugins: {
       react,
       'react-hooks': fixupPluginRules(reactHooks),
       '@typescript-eslint': typescriptEslint,
       'simple-import-sort': simpleImportSort,
     },
-
     languageOptions: {
       globals: {
         ...globals.browser,
       },
-
       parser: tsParser,
     },
-
     settings: {
       react: {
         version: 'detect',
