@@ -4,15 +4,17 @@
 # Stage 1: Build
 FROM registry.access.redhat.com/ubi8/nodejs-22@sha256:6e340dc525ab46e195fc01369ce44bdb36a3a04412bb96e05d463bcd451fccd8 AS builder
 
+USER root
+
 # Install Oracle Instant Client dependencies and build tools
-RUN apt-get update && apt-get install -y \
-    libaio1 \
+
+RUN dnf update -y && dnf install -y \
+    libaio \
     wget \
     unzip \
     python3 \
     make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
+    gcc-c++
 
 # Download and install Oracle Instant Client
 WORKDIR /opt/oracle
@@ -31,11 +33,14 @@ ENV PATH=/opt/oracle/instantclient_21_13:$PATH
 WORKDIR /app
 
 # Copy package files
-COPY package.json ./
-COPY ../.npmrc ./
+COPY ./server/package.json ./
+COPY ./.npmrc ./
+
+# Kopiera in cert
+COPY ./ca-bundle.crt ./ca-bundle.crt
 
 # Ett måste för vissa paket som cypress
-ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
+ENV NODE_EXTRA_CA_CERTS=/app/ca-bundle.crt
 
 # Install dependencies (including dev dependencies for build)
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
@@ -43,8 +48,8 @@ ENV NODE_EXTRA_CA_CERTS=/af-ca/ca-bundle.crt
 RUN npm install
 
 # Copy source code and standalone tsconfig
-COPY tsconfig.container.json ./tsconfig.json
-COPY src ./src
+COPY ./server/tsconfig.json ./tsconfig.json
+COPY ./server/src ./src
 
 # Build TypeScript to JavaScript
 RUN npm run build
@@ -53,16 +58,22 @@ RUN npm run build
 RUN npm prune --production
 
 # Stage 2: Runtime
-FROM node:20-slim
+FROM registry.access.redhat.com/ubi8/nodejs-22
+
+USER root
 
 # Install Oracle Instant Client dependencies (runtime only)
-RUN apt-get update && apt-get install -y \
-    libaio1 \
-    && rm -rf /var/lib/apt/lists/*
+RUN dnf update -y && dnf install -y \
+    libaio \
+    && rm -rf /var/cache/dnf/*
 
 # Copy Oracle Instant Client from builder
 COPY --from=builder /opt/oracle/instantclient_21_13 /opt/oracle/instantclient_21_13
 COPY --from=builder /etc/ld.so.conf.d/oracle-instantclient.conf /etc/ld.so.conf.d/oracle-instantclient.conf
+
+COPY ./ldap.ora /opt/client/instantclient_21_13/network/admin
+COPY ./sqlnet.ora /opt/client/instantclient_21_13/network/admin
+
 RUN ldconfig
 
 # Set environment variables
@@ -77,12 +88,6 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
-
-# Create non-root user for security
-RUN useradd -m -u 1001 nodeuser && \
-    chown -R nodeuser:nodeuser /app
-
-USER nodeuser
 
 # Expose port
 EXPOSE 3000
