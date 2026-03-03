@@ -11,8 +11,6 @@ import {
 import { standaloneExampleData } from './standaloneExampleData';
 import type { Check, Requirement, Review, ReviewSummary } from './types';
 
-const requirementsPath =  import.meta.env.VITE_REQUIREMENTS_URL;
-
 // localStorage keys
 const STORAGE_KEY_REVIEWS = 'tillgang_reviews';
 const STORAGE_KEY_CHECKS = 'tillgang_checks';
@@ -183,8 +181,8 @@ export const standaloneClient = {
   // Requirements endpoints
   requirements: {
     getAllRequirements: async (): Promise<Requirement[]> => {
-      const standAloneRequirementsPath = '/krav.json';
-      const res = await fetch(standAloneRequirementsPath);
+      const urlToLocalFile = '/krav.json';
+      const res = await fetch(urlToLocalFile);
       if (!res.ok) {
         throw new Error(
           `Failed to load requirements from ${requirementsPath}: ${res.status} ${res.statusText}`,

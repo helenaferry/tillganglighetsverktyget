@@ -117,9 +117,6 @@ VITE_LOGO='{
 # Regulatory framework to use
 VITE_REGULATORY_FRAMEWORK="dos"
 
-# URL to requirements data
-VITE_REQUIREMENTS_URL="REQUIREMENTS_URL_HERE"
-
 # Additional requirements (JSON format)
 VITE_REQUIREMENT_ADDITIONS='{
     "heading": "Arbetsförmedlingens tillägg",

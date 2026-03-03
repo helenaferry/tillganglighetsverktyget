@@ -2,8 +2,6 @@ import { apiClient } from './apiClient';
 import { standaloneClient } from './standaloneClient';
 import { ObjectType, type Requirement } from './types';
 
-const requirementsPath = import.meta.env.VITE_REQUIREMENTS_URL;
-
 /**
  * Check if we're in standalone mode
  */
@@ -16,10 +14,11 @@ function isStandaloneMode(): boolean {
  * Shared helper function used by both standaloneClient and fallback logic
  */
 async function fetchLocalRequirements(): Promise<Requirement[]> {
-  const res = await fetch(requirementsPath);
+  const urlToLocalFile = '/krav.json';
+  const res = await fetch(urlToLocalFile);
   if (!res.ok) {
     throw new Error(
-      `Failed to load requirements from ${requirementsPath}: ${res.status} ${res.statusText}`,
+      `Failed to load requirements from ${urlToLocalFile}: ${res.status} ${res.statusText}`,
     );
   }
   const json: { data: Requirement[] } = await res.json();

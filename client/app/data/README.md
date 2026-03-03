@@ -16,8 +16,6 @@ Backend-API:et konfigureras via miljövariabeln `VITE_API_URL`:
 - Development: `http://localhost:3000/api` (standard)
 - Production: `/api` (nginx proxar till backend)
 
-Kravdata hämtas från URL:en i `VITE_REQUIREMENTS_URL` (extern JSON-fil).
-
 ## Service Layer
 
 Alla API-anrop ska gå genom service-lagret:

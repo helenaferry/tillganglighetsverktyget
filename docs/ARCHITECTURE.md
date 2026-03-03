@@ -36,7 +36,7 @@ Tillgänglighetsverktyget är en containeriserad webbapplikation för hantering 
 │  │    Database      │                                      │
 │  │   Container      │                                      │
 │  │                  │                                      │
-│  │  • Oracle Database Free 23ai │                                      │
+│  │  • Oracle Database Free 23ai │                          │
 │  │  • Port: 1521    │                                      │
 │  │  • Volume Mount  │                                      │
 │  └──────────────────┘                                      │
