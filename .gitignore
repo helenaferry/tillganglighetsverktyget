@@ -25,3 +25,4 @@
 
 # Docker
 .dockerignore
+/server/dist/
