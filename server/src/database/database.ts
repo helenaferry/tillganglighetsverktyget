@@ -1,6 +1,10 @@
 import { Sequelize } from 'sequelize';
 import { DB_CONFIG } from './CONFIG';
 
+import { getConnectionStringFromLDAP } from './getConnectionStringFromLDAP';
+import oracledb from 'oracledb';
+
+/*
 // Validate required environment variables
 if (!process.env.DB_PASSWORD) {
   if (process.env.NODE_ENV === 'production') {
@@ -12,25 +16,6 @@ if (!process.env.DB_PASSWORD) {
     '⚠️  WARNING: DB_PASSWORD not set. This is only acceptable in local development.',
   );
 }
-
-// Initialize Sequelize for Oracle database
-// For Oracle, we use connectString in dialectOptions as the primary connection method
-// The database field is kept for compatibility but connectString takes precedence
-export const sequelize = new Sequelize({
-  dialect: 'oracle',
-  host: DB_CONFIG.host,
-  port: DB_CONFIG.port,
-  username: DB_CONFIG.username,
-  password: DB_CONFIG.password,
-  database: DB_CONFIG.databaseName, // Used as fallback, but connectString takes precedence
-  pool: DB_CONFIG.pool,
-  logging: process.env.NODE_ENV === 'development' ? console.log : false,
-  dialectOptions: {
-    // Use Easy Connect format: host:port/service_name
-    // This is the recommended way for Oracle connections
-    connectString: `${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.databaseName}`,
-  },
-});
 
 // Validate that required config values are set
 if (
@@ -64,6 +49,16 @@ if (process.env.NODE_ENV === 'development') {
     `🔗 Database connectString: ${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.databaseName}`,
   );
 }
+*/
+
+export const sequelize = new Sequelize({
+  dialect: DB_CONFIG.dialect,
+  username: DB_CONFIG.username,
+  password: DB_CONFIG.password,
+  dialectOptions: {
+    connectString: 'mtstutvscan.arbetsformedlingen.se:1521/utvtillganglighetsrv'
+  },
+});
 
 /**
  * Connect to the database with exponential backoff retry logic.
@@ -85,11 +80,11 @@ export const connectDB = async (
 ) => {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
+      //const connectionString = await getConnectionStringFromLDAP()
+      // TODO: Kan detta bli problem för ?
+      oracledb.initOracleClient({ libDir: "C:\\Program Files\\instantclient_23_0"});
       await sequelize.authenticate();
       console.log('✅ Database connected successfully.');
-      console.log(
-        `   Connected to: ${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.databaseName}`,
-      );
       console.log(`   User: ${DB_CONFIG.username}`);
       return;
     } catch (error: any) {
