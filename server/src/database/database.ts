@@ -5,53 +5,6 @@ import { getConnectionStringFromLDAP } from './getConnectionStringFromLDAP';
 import oracledb from 'oracledb';
 import { logDatabaseError } from './databas-log-error';
 
-/*
-// Validate required environment variables
-if (!process.env.DB_PASSWORD) {
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error(
-      'CRITICAL: DB_PASSWORD environment variable is required in production',
-    );
-  }
-  console.warn(
-    '⚠️  WARNING: DB_PASSWORD not set. This is only acceptable in local development.',
-  );
-}
-
-// Validate that required config values are set
-if (
-  !DB_CONFIG.databaseName ||
-  DB_CONFIG.databaseName === 'Default' ||
-  DB_CONFIG.databaseName.trim() === ''
-) {
-  console.error('❌ Invalid database service name:', DB_CONFIG.databaseName);
-  console.error(
-    '   DB_SERVICE environment variable:',
-    process.env.DB_SERVICE || '(not set)',
-  );
-  console.error(
-    '   DB_HOST environment variable:',
-    process.env.DB_HOST || '(not set)',
-  );
-  console.error('   DB_CONFIG values:', {
-    host: DB_CONFIG.host,
-    port: DB_CONFIG.port,
-    databaseName: DB_CONFIG.databaseName,
-    username: DB_CONFIG.username,
-  });
-  throw new Error(
-    `Invalid database service name: "${DB_CONFIG.databaseName}". DB_SERVICE must be set to FREEPDB1`,
-  );
-}
-
-// Log the actual connectString being used (for debugging)
-if (process.env.NODE_ENV === 'development') {
-  console.log(
-    `🔗 Database connectString: ${DB_CONFIG.host}:${DB_CONFIG.port}/${DB_CONFIG.databaseName}`,
-  );
-}
-*/
-
 export const sequelize = new Sequelize({
   dialect: DB_CONFIG.dialect,
   username: DB_CONFIG.username,
