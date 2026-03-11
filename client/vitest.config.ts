@@ -45,11 +45,7 @@ export default defineConfig({
         'app/components/Process.tsx',
         'app/components/RequirementDetails.tsx',
         'app/components/RequirementLegal.tsx',
-        'app/components/SkipLink.tsx',
-        // Env var formatters
-        'minifyEnvAdd.cjs',
-        'minifyEnvFooterLinks.cjs',
-        'minifyEnvPrefill.cjs',
+        'app/components/SkipLink.tsx'
       ],
     },
   },

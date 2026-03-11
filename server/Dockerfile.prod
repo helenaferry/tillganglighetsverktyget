@@ -37,7 +37,7 @@ COPY ./server/package.json ./
 COPY ./.npmrc ./
 
 # Kopiera in cert
-COPY ./ca-bundle.crt ./ca-bundle.crt
+COPY ./prod-files/ca-bundle.crt ./ca-bundle.crt
 
 # Ett måste för vissa paket som cypress
 ENV NODE_EXTRA_CA_CERTS=/app/ca-bundle.crt
@@ -71,8 +71,8 @@ RUN dnf update -y && dnf install -y \
 COPY --from=builder /opt/oracle/instantclient_21_13 /opt/oracle/instantclient_21_13
 COPY --from=builder /etc/ld.so.conf.d/oracle-instantclient.conf /etc/ld.so.conf.d/oracle-instantclient.conf
 
-COPY ./ldap.ora /opt/client/instantclient_21_13/network/admin
-COPY ./sqlnet.ora /opt/client/instantclient_21_13/network/admin
+COPY ./prod-files/ldap.ora /opt/client/instantclient_21_13/network/admin
+COPY ./prod-files/sqlnet.ora /opt/client/instantclient_21_13/network/admin
 
 RUN ldconfig
 
