@@ -1,5 +1,6 @@
 import { type LogoConfig, type RequirementWithCheck, Status } from '~/data/types';
 import i18n from '~/lang/i18n';
+
 import { organizationConfiguration } from '../../public/organization-configurations/organizationCofiguration.js';
 
 export function numberChecked(requirements: RequirementWithCheck[]) {
@@ -48,7 +49,6 @@ export function envVars() {
     },
   };
   const parseLogo = (): LogoConfig => {
-    const raw = organizationConfiguration.logo;
     if (!organizationConfiguration.logo) return defaultLogo;
     try {
       if (

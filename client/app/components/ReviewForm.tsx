@@ -33,6 +33,7 @@ import {
   type Review,
 } from '~/data/types';
 import contentTypeTexts from '~/helpers/contentTypeTexts';
+import { envVars } from '~/helpers/helpers';
 import {
   useRegulatoryFrameworks,
   useRequirementContentTypes,
@@ -44,7 +45,6 @@ import {
   usePrefillRequirements,
   useUpsertReview,
 } from '~/hooks/useReviewData';
-import { envVars } from '~/helpers/helpers';
 
 type Props = {
   review?: Review;

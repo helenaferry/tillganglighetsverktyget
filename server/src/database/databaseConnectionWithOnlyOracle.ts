@@ -7,7 +7,7 @@ import { getConnectionStringFromLDAP } from './getConnectionStringFromLDAP';
 export const testDBConnecion = async()=>{
     console.log('in testDBConnecion ')
     // Starta Oracle i Thick-mode. Behövs detta fortfarande?
-    oracledb.initOracleClient({ libDir: "C:\\Program Files\\instantclient_23_0"});
+    oracledb.initOracleClient({ libDir: 'C:\\Program Files\\instantclient_23_0'});
     let conn;
 
     try {

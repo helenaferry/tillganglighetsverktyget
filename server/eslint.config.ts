@@ -7,6 +7,11 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
+    ignores: [
+      './dist/**/*'
+    ],
+  },
+  {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
     plugins: { js },
     extends: ['js/recommended'],
@@ -23,8 +28,7 @@ export default defineConfig([
     },
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     rules: {
-      quotes: 'off',
-      '@typescript-eslint/quotes': [
+      quotes: [
         'error',
         'single',
         {
@@ -32,7 +36,6 @@ export default defineConfig([
           allowTemplateLiterals: true,
         },
       ],
-
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { argsIgnorePattern: '^_' },
