@@ -1,0 +1,9 @@
+services:
+  ciam_sidecar:
+    container_name: accessibility_ciam_sidecar
+    image: ocp4-quay.arbetsformedlingen.se/cybersak/sidecar-httpd-proxy-ciam:1.3
+    volumes:
+      - ./modauthopenidc.conf:/etc/httpd/conf.d/modauthopenidc.conf
+    env_file:
+      - ./ciam-local.env
+    network_mode: host
