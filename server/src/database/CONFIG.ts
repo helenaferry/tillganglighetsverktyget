@@ -3,6 +3,7 @@
 
 // Validate DB_SERVICE is set and not empty
 import * as process from 'process';
+import { Dialect } from 'sequelize';
 
 /* TODO: ENV fungerera inte som förväntat nu. */
 
@@ -11,7 +12,8 @@ export const DB_CONFIG = {
   password: process.env.DB_PASSWORD || 'tillganglighet',
   databaseName: 'oracle',
   dbCn: process.env.DB_CN || 'tillganglighetdb-utv',
-  dialect: 'oracle',
+  dialect: 'oracle' as Dialect,
+  dbOraclePath: process.env.DB_ORACLE_PATH || 'C:\\Program Files\\instantclient_23_0',
   pool: {
     max: 5,
     min: 0,
