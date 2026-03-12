@@ -13,9 +13,7 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint-fix": "eslint --fix",
-    "db-create-user": "",
-    "db-setup-db": "",
-    "db-migrate": ""
+    "db-setup-db": "ts-node src/database/setup-db.ts"
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",
