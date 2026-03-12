@@ -2,8 +2,17 @@
 
 import type { Requirement } from './types';
 
-const API_BASE_URL = (window.location.hostname === 'localhost'|| '127.0.0.1') ? 'http://localhost:3000/api' : `https://${window.location.hostname}/api`
+const getBaseUrl =():string => {
+  if(window.location.hostname == 'localhost'){
+    return 'http://localhost:3000/api'
+  } else {
+    return `https://${window.location.hostname}/api`;
+  }
+}
+const API_BASE_URL = getBaseUrl();
+
 console.log('API_BASE_URL: ', API_BASE_URL, ' window.location.hostname: ', window.location.hostname);
+
 class ApiError extends Error {
   constructor(
     public status: number,
