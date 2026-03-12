@@ -7,14 +7,14 @@ import {
   type ReviewSummary,
   Status,
 } from './types';
+import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js';
 
 /**
  * Get the appropriate client based on standalone mode
  * This is called at runtime, allowing tests to override via environment variables
  */
 function getClient() {
-  const isStandalone = import.meta.env.VITE_STANDALONE === 'true';
-  return isStandalone ? standaloneClient : apiClient;
+  return STANDALONE_CLIENT ? standaloneClient : apiClient;
 }
 
 export const ReviewService = {

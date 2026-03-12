@@ -17,10 +17,10 @@ import { useTranslation } from 'react-i18next';
 
 import PageTitle from '~/components/PageTitle';
 import Process from '~/components/Process';
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 import i18n from '~/lang/i18n';
 
-const applicationTitle = envVars().applicationTitle;
+const applicationTitle = organizationConfigurations().applicationTitle;
 
 export function meta() {
   return [

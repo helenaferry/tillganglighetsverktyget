@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 
 import type { Requirement, RequirementAdditionsSetting } from '~/data/types';
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 
 export type Props = {
   requirement: Requirement;
@@ -18,7 +18,7 @@ export default function RequirementDetails({
   textSuggestions = [],
 }: Props) {
   const { t } = useTranslation();
-  const requirementAdditions = envVars().requirementAdditions || {} as RequirementAdditionsSetting;
+  const requirementAdditions = organizationConfigurations().requirementAdditions || {} as RequirementAdditionsSetting;
 
   const addition = requirementAdditions.items.find((item) => item.id === requirement.id);
   const HeadingTag = headingLevel;

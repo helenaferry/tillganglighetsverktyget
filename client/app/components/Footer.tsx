@@ -9,13 +9,13 @@ import {
 } from '@designsystem-se/af-react';
 import { useTranslation } from 'react-i18next';
 
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 
 import { InfoCard } from './InfoCard';
 
 export default function Footer() {
   const { t } = useTranslation();
-  const { applicationTitle, logo, footerLinks } = envVars();
+  const { applicationTitle, logo, footerLinks } = organizationConfigurations();
   return (
     <div>
       <InfoCard />

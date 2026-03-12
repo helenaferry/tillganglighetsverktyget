@@ -9,11 +9,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 
 export default function Header() {
   const { t } = useTranslation();
-  const { applicationTitle, logo } = envVars();
+  const { applicationTitle, logo } = organizationConfigurations();
   const location = useLocation();
 
   return (

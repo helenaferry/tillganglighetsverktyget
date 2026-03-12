@@ -1,9 +1,9 @@
 import { ReviewsList } from '~/components/ReviewsList';
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 import i18n from '~/lang/i18n';
 
 export function meta() {
-  const { applicationTitle } = envVars();
+  const { applicationTitle } = organizationConfigurations();
 
   return [
     { title: applicationTitle },

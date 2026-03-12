@@ -8,9 +8,9 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import PageTitle from '~/components/PageTitle';
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 
-const applicationTitle = envVars().applicationTitle;
+const applicationTitle = organizationConfigurations().applicationTitle;
 
 export function meta() {
   return [

@@ -5,11 +5,9 @@ Frontend-applikation för Tillgänglighetsverktyget.
 ## Snabbstart
 
 ### Standardläge (med API och databas)
-
+1. Verifiera att STANDALONE_CLIENT är satt till false i config-filen i public/standaloneClient.js
+2. Kör: 
 ```bash
-# Kopiera miljövariabler
-cp .env.example .env.local
-
 # Installera beroenden
 npm install
 
@@ -18,73 +16,18 @@ npm run dev
 ```
 
 ### Standalone-läge (endast frontend, ingen databas)
+I standalone-läge används localStorage istället för API/databas. Data sparas lokalt i webbläsaren och kräver ingen server eller databas. Perfekt för demo och enklare setup för mindre tekniska användare.
 
-För snabbare setup utan behov av Podman och databas:
-
+1. Verifiera att STANDALONE_CLIENT är satt till true i config-filen i public/standaloneClient.js
+2. Vill du starta klienten med ett par exempel-granskningar så sätt även USE_EXAMPLE_DATA till true
+3. Kör: 
 ```bash
-# Kopiera miljövariabler
-cp .env.example .env.local
-
-# Aktivera standalone-läge
-# Redigera .env.local och sätt:
-# VITE_STANDALONE=true
-
-# Installera beroenden
+ # Installera beroenden
 npm install
 
 # Starta utvecklingsserver
 npm run dev
 ```
-
-I standalone-läge används localStorage istället för API/databas. Data sparas lokalt i webbläsaren och kräver ingen server eller databas. Perfekt för demo och enklare setup för mindre tekniska användare.
-
-**Obs:** Data i standalone-läge är specifik för varje webbläsare och dator. Data delas inte mellan olika enheter.
-
-### Exempeldata i standalone-läge
-
-För att automatiskt importera exempeldata vid första körningen:
-
-```bash
-# Aktivera både standalone-läge och exempeldata
-# Redigera .env.local och sätt:
-# VITE_STANDALONE=true
-# VITE_USE_EXAMPLE_DATA=true
-```
-
-När båda variablerna är `true` och localStorage är tom, kommer applikationen automatiskt att importera två exempelgranskningar med förifyllda kontroller vid första användningen. Detta är användbart för demo och för att visa applikationens funktionalitet direkt.
-
-**Viktigt:**
-
-- Exempeldata importeras endast om localStorage är tom (överskriver inte befintlig data)
-- Fungerar endast när `VITE_STANDALONE=true`
-- Data importeras vid första användning av applikationen (lazy loading)
-
-## Miljövariabler
-
-Applikationen kräver att `.env.local` finns. Kopiera från `.env.example` och anpassa efter behov.
-
-```bash
-cp .env.example .env.local
-```
-
-Se `.env.example` för dokumentation om alla tillgängliga variabler.
-
-### Standalone-läge
-
-Sätt `VITE_STANDALONE=true` i `.env.local` för att köra applikationen utan server/databas. I detta läge:
-
-- Data sparas i webbläsarens localStorage
-- Ingen server eller databas krävs
-- Perfekt för demo och enklare setup
-- Data är lokal för varje webbläsare/enhet
-
-### Exempeldata
-
-Sätt `VITE_USE_EXAMPLE_DATA=true` i `.env.local` för att automatiskt importera exempeldata vid första körningen (kräver `VITE_STANDALONE=true`):
-
-- Importerar två exempelgranskningar med förifyllda kontroller
-- Fungerar endast om localStorage är tom (överskriver inte befintlig data)
-- Användbart för demo och snabb onboarding
 
 ## Scripts
 

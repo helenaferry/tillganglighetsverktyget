@@ -29,12 +29,12 @@ import RequirementLegal from '~/components/RequirementLegal';
 import ResetButton from '~/components/ResetButton';
 import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement } from '~/data/types';
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
 import i18n from '~/lang/i18n';
 
-const applicationTitle = envVars().applicationTitle;
-const regulatoryFrameworkEnv = envVars().regulatoryFramework;
+const applicationTitle = organizationConfigurations().applicationTitle;
+const regulatoryFrameworkEnv = organizationConfigurations().regulatoryFramework;
 
 export function meta() {
   return [
@@ -57,7 +57,7 @@ export default function RequirementsPage() {
 
   const isLoading = requirementsAllLoading || isLoadingCategories;
 
-  const requirementAdditions = envVars().requirementAdditions;
+  const requirementAdditions = organizationConfigurations().requirementAdditions;
 
   const [showObjectType] = useState<ObjectType>(ObjectType.WEB);
   const [timesFiltered, setTimesFiltered] = useState(0);

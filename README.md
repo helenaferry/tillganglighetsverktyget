@@ -49,32 +49,9 @@ Arbetsförmedlingen tillhandahåller kravdata baserat på tillgänglighetslagarn
 
 ## Kom igång
 
-### Snabbstart
-
-```bash
-# Kopiera och konfigurera miljövariabler
-cp .env.example .env
-cp client/.env.example client/.env.local
-# Redigera .env och sätt ORACLE_PWD och DB_PASSWORD
-
-# Starta alla tjänster (rekommenderat: väntar tills Database, API och Client är redo)
-./scripts/dev-up.sh
-
-# Öppna i webbläsaren
-open http://localhost:5173
-```
-
-**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) först.
-
-📖 **Fullständig guide:** [QUICKSTART.md](QUICKSTART.md)
-
-### Standalone-läge
-
-Det absolut enklaste sättet att komma igång och testa Tillgänglighetsverktyget lokalt, utan databas eller API. Se [QUICKSTART.md](QUICKSTART.md).
+📖 **Se:** [QUICKSTART.md](QUICKSTART.md)
 
 ## Tester
-
-Projektet inkluderar tester för både frontend och backend. Se [docs/TESTING.md](docs/TESTING.md) för fullständig dokumentation om hur du kör tester.
 
 **Snabbstart för tester:**
 

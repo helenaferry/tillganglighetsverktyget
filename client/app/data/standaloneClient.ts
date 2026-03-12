@@ -1,6 +1,3 @@
-// localStorage Client - Drop-in replacement for apiClient
-// Implements the same interface but uses localStorage instead of API calls
-
 import { ApiError } from './apiClient';
 import {
   computeReviewSummary,
@@ -10,6 +7,7 @@ import {
 } from './localStorageTransformers';
 import { standaloneExampleData } from './standaloneExampleData';
 import type { Check, Requirement, Review, ReviewSummary } from './types';
+import { STANDALONE_CLIENT, USE_EXAMPLE_DATA } from '../../public/standaloneConfiguration.js';
 
 // localStorage keys
 const STORAGE_KEY_REVIEWS = 'tillgang_reviews';
@@ -24,10 +22,7 @@ let initializationAttempted = false;
  * Check if example data should be initialized
  */
 function shouldInitializeExampleData(): boolean {
-  const isStandalone = import.meta.env.VITE_STANDALONE == 'true';
-  const useExampleData = import.meta.env.VITE_USE_EXAMPLE_DATA == 'true';
-
-  if (!isStandalone || !useExampleData) {
+  if (!STANDALONE_CLIENT || !USE_EXAMPLE_DATA) {
     return false;
   }
 

@@ -1,5 +1,5 @@
 // Example data for standalone mode
-// This data is imported when VITE_STANDALONE=true and VITE_USE_EXAMPLE_DATA=true
+// This data is imported when STANDALONE_CLIENT=true and USE_EXAMPLE_DATA=true
 // and localStorage is empty
 
 import type { Check, Review } from './types';

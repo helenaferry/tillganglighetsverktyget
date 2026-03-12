@@ -37,7 +37,7 @@ export function numberRemaining(requirements: RequirementWithCheck[]) {
     .length;
 }
 
-export function envVars() {
+export function organizationConfigurations() {
   const defaultLogo: LogoConfig = {
     header: {
       mobileUrl: '/logoHeaderMobile.svg',

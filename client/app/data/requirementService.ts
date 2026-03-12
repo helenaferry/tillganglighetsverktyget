@@ -1,12 +1,13 @@
 import { apiClient } from './apiClient';
 import { standaloneClient } from './standaloneClient';
 import { ObjectType, type Requirement } from './types';
+import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js'
 
 /**
  * Check if we're in standalone mode
  */
 function isStandaloneMode(): boolean {
-  return import.meta.env.VITE_STANDALONE === 'true';
+  return STANDALONE_CLIENT
 }
 
 /**

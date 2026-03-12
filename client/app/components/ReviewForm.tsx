@@ -33,7 +33,7 @@ import {
   type Review,
 } from '~/data/types';
 import contentTypeTexts from '~/helpers/contentTypeTexts';
-import { envVars } from '~/helpers/helpers';
+import { organizationConfigurations } from '~/helpers/helpers';
 import {
   useRegulatoryFrameworks,
   useRequirementContentTypes,
@@ -52,7 +52,7 @@ type Props = {
 
 export function ReviewForm({ review }: Props) {
   const { t } = useTranslation();
-  const regulatoryFrameworkEnv = envVars().regulatoryFramework || '';
+  const regulatoryFrameworkEnv = organizationConfigurations().regulatoryFramework || '';
   const [regulatoryFramework, setRegulatoryFramework] = useState<string>(regulatoryFrameworkEnv);
   const [objectType, setObjectType] = useState<ObjectType>(ObjectType.WEB);
 
@@ -65,7 +65,7 @@ export function ReviewForm({ review }: Props) {
   const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingRegulatoryFrameworks;
   const allPrefillRequirements = useMemo(
     () =>
-      envVars().prefillRequirements as PrefillRequirementSetting[],
+      organizationConfigurations().prefillRequirements as PrefillRequirementSetting[],
     [],
   );
 

@@ -1,11 +1,6 @@
 # Snabbstartsguide
 
-Få igång applikationen på två sätt: **Standalone-läge** (enklast, ingen databas) eller **Fullständigt läge** (med databas och server).
-
-## Snabbstart: Standalone-läge (rekommenderat för demo)
-
-Det enklaste sättet att komma igång - kräver ingen databas eller server!
-
+I standalone-läge används localStorage istället för API/databas. Data sparas lokalt i webbläsaren och kräver ingen server eller databas. Perfekt för demo och enklare setup för mindre tekniska användare.
 ### Förutsättningar
 
 - Node.js installerat
@@ -16,28 +11,20 @@ Det enklaste sättet att komma igång - kräver ingen databas eller server!
 ```bash
 # 1. Gå till client-katalogen
 cd client
-
-# 2. Kopiera miljövariabler
-cp .env.example .env.local
-
-# 3. Aktivera standalone-läge
-# Redigera .env.local och sätt:
-# VITE_STANDALONE=true
-
-# 4. Om du vill förpopulera localStorage med exempelgranskningar
-# Redigera .env.local och sätt:
-# VITE_USE_EXAMPLE_DATA=true
-
-# 5. Installera beroenden
+```
+1. Verifiera att STANDALONE_CLIENT är satt till true i config-filen i public/standaloneClient.js
+2. Vill du starta klienten med ett par exempel-granskningar så sätt även USE_EXAMPLE_DATA till true
+3. Kör:
+```bash
+ # Installera beroenden
 npm install
 
-# 6. Starta utvecklingsserver
+# Starta utvecklingsserver
 npm run dev
 ```
 
-Besök **http://localhost:5173** - klart! 🎉
 
-**Obs:** I standalone-läge sparas all data i webbläsarens localStorage. Data är lokal för varje webbläsare/enhet.
+Besök **http://localhost:5173** - klart! 🎉
 
 ---
 
@@ -77,16 +64,6 @@ DB_PASSWORD=MinSakraApp456!
 
 **Konfigurera frontend:**
 
-```bash
-# Kopiera frontend-konfiguration
-cp client/.env.example client/.env.local
-# Redigera client/.env.local för att anpassa logotyper, texter, länkar etc.
-# (Kan användas med standardvärden, men filen måste finnas)
-#
-# För standalone-läge: Sätt VITE_STANDALONE=true i client/.env.local
-# (Då behöver du inte starta podman-containers)
-```
-
 #### 2. Starta tjänster
 
 **Rekommenderat:** Använd dev-up-scriptet – det startar tjänsterna och väntar tills Database, API och Client är redo. Du får tydlig status (spinner medan tjänster startar, grön bock när redo) och slutligen URL:er samt kommandon för att stoppa.
@@ -97,11 +74,4 @@ cp client/.env.example client/.env.local
 
 Scriptet kräver att `curl` och `nc` (netcat) finns installerade. Vid första starten kan Oracle ta 2–3 minuter.
 
-**Standalone-läge:** Om `VITE_STANDALONE=true` är satt i `client/.env.local` kommer scriptet automatiskt att hoppa över podman-setup och bara starta frontend-servern.
-
 **Manuellt:** Om du föredrar att starta utan scriptet:
-
-```bash
-# Starta alla containers
-
-```

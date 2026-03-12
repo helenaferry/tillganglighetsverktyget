@@ -8,5 +8,4 @@
 # Test coverage
 /coverage/
 
-.env.local
 /.idea/*
