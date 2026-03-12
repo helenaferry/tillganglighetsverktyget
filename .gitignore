@@ -24,6 +24,5 @@
 /.idea/*
 
 # Docker
-.dockerignore
 /server/dist/
 /dev-ciam/ciam-local.env
