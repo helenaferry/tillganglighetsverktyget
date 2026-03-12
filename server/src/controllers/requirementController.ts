@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import logger from '../logger';
 
-const EXTERNAL_REQUIREMENTS_URL = process.env.EXTERNAL_REQUIREMENTS_URL || 
-  'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
+const EXTERNAL_REQUIREMENTS_URL = 'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
 
 /**
  * GET /api/requirements
