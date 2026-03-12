@@ -3,7 +3,7 @@
 import type { Requirement } from './types';
 
 const API_BASE_URL = window.location.hostname === 'localhost:3000'|| '127.0.0.1' ? 'http://localhost:3000/api' : 'api'
-
+console.log('API_BASE_URL: ', API_BASE_URL, ' window.location.hostname: ', window.location.hostname);
 class ApiError extends Error {
   constructor(
     public status: number,
