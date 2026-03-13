@@ -4,8 +4,10 @@ import type { Requirement } from './types';
 
 const getBaseUrl =():string => {
   if(window.location.hostname == 'localhost'){
+    console.log('localhost')
     return 'http://localhost:3000/api'
   } else {
+    console.log('not localhost ')
     return `https://${window.location.hostname}/api`;
   }
 }
