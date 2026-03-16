@@ -1,10 +1,13 @@
 import { sequelize } from './database';
 import '../models/Review';
 import '../models/Check';
+import oracledb from 'oracledb';
+import { DB_CONFIG } from './CONFIG';
 
 async function setupDatabase() {
   try {
     console.log('Connecting to database...');
+    oracledb.initOracleClient({ libDir: DB_CONFIG.dbOraclePath });
     await sequelize.authenticate();
     console.log('Connected successfully. Creating database schema...');
 
@@ -19,7 +22,7 @@ async function setupDatabase() {
     let verifyQuery: string;
 
     if (dialect === 'oracle') {
-      verifyQuery = `SELECT COUNT(*) as count FROM user_tables WHERE table_name IN ('reviews', 'checks')`;
+      verifyQuery = `SELECT COUNT(*) as count FROM user_tables WHERE table_name IN ('REVIEWS', 'CHECKS')`;
     } else if (dialect === 'postgres') {
       verifyQuery = `SELECT COUNT(*) as count FROM information_schema.tables WHERE table_schema = 'public' AND table_name IN ('reviews', 'checks')`;
     } else if (dialect === 'mysql' || dialect === 'mariadb') {

@@ -13,7 +13,7 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "lint-fix": "eslint --fix",
-    "db-setup-db": "ts-node src/database/setup-db.ts"
+    "setup-db": "ts-node src/database/setup-db.ts"
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",
