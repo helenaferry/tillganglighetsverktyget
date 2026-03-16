@@ -39,7 +39,7 @@ Check.init(
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: false, // Handled by Oracle sequence and trigger
+      autoIncrement: true,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -84,14 +84,31 @@ Check.init(
   {
     sequelize,
     tableName: 'checks',
-    timestamps: false, // We manage timestamps manually to match Oracle schema
+    timestamps: false,
     indexes: [
       {
         unique: true,
         fields: ['review', 'requirement'],
         name: 'uq_checks_review_req',
       },
+      {
+        fields: ['review'],
+        name: 'idx_checks_review',
+      },
+      {
+        fields: ['requirement'],
+        name: 'idx_checks_requirement',
+      },
+      {
+        fields: ['status'],
+        name: 'idx_checks_status',
+      },
     ],
+    hooks: {
+      beforeUpdate: (check: Check) => {
+        check.updated_at = new Date();
+      },
+    },
   }
 );
 
