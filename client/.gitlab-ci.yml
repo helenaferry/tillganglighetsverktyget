@@ -40,8 +40,10 @@ pages:
   image: node:22
   stage: deploy
   script:
+    - cd ./client
+    - rm -f public/standaloneConfiguration.js
+    - mv client/public/standaloneConfiguration-gitlab.js client/public/standaloneConfiguration.js
     - npm ci
-    - printenv | grep VITE_
     - npm run build
     - cp -r build/client/* public/
   artifacts:
