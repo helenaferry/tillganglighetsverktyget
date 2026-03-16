@@ -36,7 +36,7 @@ Review.init(
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: false, // Handled by Oracle sequence and trigger
+      autoIncrement: true,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -72,6 +72,12 @@ Review.init(
   {
     sequelize,
     tableName: 'reviews',
-    timestamps: false, // We manage timestamps manually to match Oracle schema
+    timestamps: false,
+    indexes: [
+      {
+        fields: ['created_at'],
+        name: 'idx_reviews_created_at',
+      },
+    ],
   }
 );
