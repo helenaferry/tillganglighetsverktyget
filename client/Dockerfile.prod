@@ -9,7 +9,7 @@ USER root
 WORKDIR /app
 
 # Använd .npmrc
-COPY ./.npmrc .
+COPY ./prod-files/.npmrc ./
 
 # Kopiera allt i client-katalogen
 COPY ./client .

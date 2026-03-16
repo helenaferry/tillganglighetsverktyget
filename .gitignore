@@ -26,6 +26,3 @@
 # Docker
 /server/dist/
 /dev-ciam/ciam-local.env
-
-# Vi behöver ha visst innehåll i vår npmrc-fil på AF, men det fungerar inte i GitLab-pipeliens
-.npmrc

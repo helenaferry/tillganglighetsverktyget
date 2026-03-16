@@ -34,7 +34,7 @@ WORKDIR /app
 
 # Copy package files
 COPY ./server/package.json ./
-COPY ./.npmrc ./
+COPY ./prod-files/.npmrc ./
 
 # Kopiera in cert
 COPY ./prod-files/ca-bundle.crt ./ca-bundle.crt
