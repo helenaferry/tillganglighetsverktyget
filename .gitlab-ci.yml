@@ -41,8 +41,9 @@ pages:
   stage: deploy
   script:
     - cd ./client
+    - rm -f public/standaloneConfiguration.js
+    - mv public/standaloneConfiguration-gitlab.js public/standaloneConfiguration.js
     - npm ci
-    - printenv | grep VITE_
     - npm run build
     - cd ../
     - mkdir public
