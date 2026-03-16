@@ -5,7 +5,8 @@ import { getConnectionStringFromLDAP } from './getConnectionStringFromLDAP';
 
 import oracledb from 'oracledb';
 import {
-  checkIsDatabaseNotOpen, checkIsDefaultServiceError,
+  checkIsDatabaseNotOpen,
+  checkIsDefaultServiceError,
   checkIsServiceNotRegistered,
   checkIsTransientConnectionError,
 } from './checkWhatTypeOfError';
@@ -15,7 +16,8 @@ export const sequelize = new Sequelize({
   username: DB_CONFIG.username,
   password: DB_CONFIG.password,
   dialectOptions: {
-    connectString: 'mtstutvscan.arbetsformedlingen.se:1521/utvtillganglighetsrv'
+    connectString:
+      'mtstutvscan.arbetsformedlingen.se:1521/utvtillganglighetsrv',
   },
 });
 
@@ -39,21 +41,21 @@ export const connectDB = async (
 ) => {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
+      // TODO: Hämta connection-string från LDAP istället för att hårdkoda den i DB_CONFIG
       //const connectionString = await getConnectionStringFromLDAP()
+      const connectionString = await getConnectionStringFromLDAP();
+      console.log('Using connection string from LDAP:', connectionString);
 
-      oracledb.initOracleClient({ libDir: DB_CONFIG.dbOraclePath});
+      oracledb.initOracleClient({ libDir: DB_CONFIG.dbOraclePath });
       await sequelize.authenticate();
 
       console.log('✅ Database connected successfully.');
       console.log(`   User: ${DB_CONFIG.username}`);
       return;
     } catch (error: any) {
-
-
       const isTransientConnectionError = checkIsTransientConnectionError(error);
 
       const isServiceNotRegistered = checkIsServiceNotRegistered(error);
-
 
       if (isServiceNotRegistered) {
         console.log(
@@ -92,7 +94,7 @@ export const connectDB = async (
         );
       }
 
-      const shouldRetry = (isTransientConnectionError) && attempt < maxRetries;
+      const shouldRetry = isTransientConnectionError && attempt < maxRetries;
       if (shouldRetry) {
         // Calculate exponential backoff delay with jitter
         const exponentialDelay = Math.min(
@@ -105,7 +107,7 @@ export const connectDB = async (
 
         console.log(
           `⏳ Database not ready yet (attempt ${attempt}/${maxRetries}). ` +
-          `Retrying in ${delay}ms...`,
+            `Retrying in ${delay}ms...`,
         );
         await new Promise((resolve) => setTimeout(resolve, delay));
         continue;
