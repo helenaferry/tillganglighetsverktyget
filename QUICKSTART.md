@@ -1,6 +1,8 @@
-# Snabbstartsguide
+# Kom igång
 
+## Snabbstart i standalone-läge för klienten
 I standalone-läge används localStorage istället för API/databas. Data sparas lokalt i webbläsaren och kräver ingen server eller databas. Perfekt för demo och enklare setup för mindre tekniska användare.
+
 ### Förutsättningar
 
 - Node.js installerat
@@ -23,24 +25,13 @@ npm install
 npm run dev
 ```
 
-
 Besök **http://localhost:5173** - klart! 🎉
 
 ---
 
-## Fullständigt läge (med databas och server) - TODO: behöver uppdatera denna efter alla ändringar 
+## Fullständigt läge för Arbetsförmedlingen (med databas och server)
 
-För produktionsliknande miljö med Oracle-databas och backend API.
-
-### Förutsättningar
-
-- Podman installerat
-- 8GB+ RAM tillgängligt
-- 20GB+ ledigt diskutrymme
-
-**💻 Windows-användare?** Se [docs/WINDOWS_WSL_SETUP.md](docs/WINDOWS_WSL_SETUP.md) för detaljerade instruktioner om Podman Desktop eller WSL2.
-
-**🍎 macOS-användare?** Efter installation av Podman måste du initiera och starta Podman Machine (eller starta Podman Desktop) innan du kör compose-kommandon. Se [docs/SETUP.md](docs/SETUP.md#macos-podman-desktop--podman-machine) för steg-för-steg (initiera, starta, resurser).
+Än så länge har vi endast en fullständig miljö med klient, server och databas för oss på Arbetsförmedlingen.
 
 ### Steg
 
@@ -50,26 +41,29 @@ För produktionsliknande miljö med Oracle-databas och backend API.
 # Kopiera miljövariabelmall
 cp .env.example .env
 
-# VIKTIGT: Redigera .env och sätt lösenord
-# För lokal utveckling, använd valfria säkra lösenord
 ```
-
-**⚠️ SÄKERHET:** Du MÅSTE sätta lösenord i `.env` innan du startar. Exempel:
-
-```bash
-DB_PASSWORD=MinSakraApp456!
-```
-
-**Konfigurera frontend:**
 
 #### 2. Starta tjänster
 
-**Rekommenderat:** Använd dev-up-scriptet – det startar tjänsterna och väntar tills Database, API och Client är redo. Du får tydlig status (spinner medan tjänster startar, grön bock när redo) och slutligen URL:er samt kommandon för att stoppa.
-
+**Alternativ 1**
 ```bash
-./scripts/dev-up.sh
+npm install
+npm run dev
 ```
 
-Scriptet kräver att `curl` och `nc` (netcat) finns installerade. Vid första starten kan Oracle ta 2–3 minuter.
+**Alternativ 2**
 
-**Manuellt:** Om du föredrar att starta utan scriptet:
+Starta två terminaler och kör följande kommandon i varje terminal:
+```bash
+npm install
+cd ./client
+npm run dev 
+```
+
+```bash
+npm install
+cd ./server
+npm run dev 
+```
+
+Obs! Lokal utvecklingsmiljö kopplar upp sig till utvecklings-databasen, så fungerar endast på AF:s nätverk. 

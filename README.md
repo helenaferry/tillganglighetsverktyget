@@ -41,7 +41,7 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 
 ### Användning och flexibilitet
 
-För att använda verktyget behöver du installera det i en driftmiljö och sätta upp en databas. Mer om detta kommer.
+För att använda verktyget behöver du installera det i en driftmiljö och sätta upp en databas.
 
 Du kan använda verktyget i sin grundversion, eller göra en egen fork och anpassa efter dina egna behov.
 
@@ -63,17 +63,23 @@ cd client && npm test
 cd server && npm test
 ```
 
-## Teknisk stack
+## Teknik 
+Tillgänglighetsverktyget har majoriteten av sin funktionalitet i sin klient. Det enda servern gör är att pratat med databasen där granskningarna sparas.
 
+- **Docker** - Både klient och server har varsin Docker-fil som kan användas för drift
+
+### Klienten
 - **React Router** – Routing och navigering
 - **TypeScript** – Typsäkerhet
 - **Vite** – Byggverktyg
 - **Arbetsförmedlingens designsystem** - Design och komponenter
 - **Tailwind CSS** – Styling
 - **i18next** – Internationalisering
-- **Oracle Database** – Databas
-- **Express.js** – REST API backend
-- **Podman** – Containerisering
+
+### Servern
+- **Express.js** – REST API backend för Node-miljö
+- **Sequalize** – Node ORM för flexibilitet kring val av databas
+- **Podman** – Kan användas för att bygga Docker-images
 
 ## Licens
 
