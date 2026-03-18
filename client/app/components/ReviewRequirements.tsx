@@ -58,8 +58,8 @@ export default function ReviewRequirements({ reviewId }: Props) {
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
   } = useRequirements(
-    shouldFetchRequirements ? review.regulatoryFramework ?? undefined : undefined,
-    { enabled: shouldFetchRequirements }
+    shouldFetchRequirements ? (review.regulatoryFramework ?? undefined) : undefined,
+    { enabled: shouldFetchRequirements },
   );
 
   const requirements = useMemo(() => {
@@ -74,15 +74,9 @@ export default function ReviewRequirements({ reviewId }: Props) {
     return Array.from(new Set(requirements.map((req) => req.category)));
   }, [requirements]);
 
-  const loading =
-    reviewLoading ||
-    checksLoading ||
-    requirementsAllLoading;
+  const loading = reviewLoading || checksLoading || requirementsAllLoading;
 
-  const fetched =
-    reviewFetched &&
-    checksFetched &&
-    requirementsAllFetched;
+  const fetched = reviewFetched && checksFetched && requirementsAllFetched;
 
   const requirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];

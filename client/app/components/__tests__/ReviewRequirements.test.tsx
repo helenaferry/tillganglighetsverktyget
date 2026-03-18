@@ -274,8 +274,6 @@ const mockRequirements: Requirement[] = [
   },
 ];
 
-const mockCategories = ['Lorem', 'Ipsum', 'Dolor', 'Sit'];
-
 const mockReview: Review = {
   id: 1,
   title: 'Test Review',

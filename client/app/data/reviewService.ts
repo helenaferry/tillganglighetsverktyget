@@ -1,3 +1,4 @@
+import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js';
 import { apiClient } from './apiClient';
 import { standaloneClient } from './standaloneClient';
 import {
@@ -7,7 +8,6 @@ import {
   type ReviewSummary,
   Status,
 } from './types';
-import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js';
 
 /**
  * Get the appropriate client based on standalone mode

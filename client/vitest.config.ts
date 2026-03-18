@@ -45,7 +45,7 @@ export default defineConfig({
         'app/components/Process.tsx',
         'app/components/RequirementDetails.tsx',
         'app/components/RequirementLegal.tsx',
-        'app/components/SkipLink.tsx'
+        'app/components/SkipLink.tsx',
       ],
     },
   },

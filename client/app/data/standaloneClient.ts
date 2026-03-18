@@ -1,3 +1,4 @@
+import { STANDALONE_CLIENT, USE_EXAMPLE_DATA } from '../../public/standaloneConfiguration.js';
 import { ApiError } from './apiClient';
 import {
   computeReviewSummary,
@@ -7,7 +8,6 @@ import {
 } from './localStorageTransformers';
 import { standaloneExampleData } from './standaloneExampleData';
 import type { Check, Requirement, Review, ReviewSummary } from './types';
-import { STANDALONE_CLIENT, USE_EXAMPLE_DATA } from '../../public/standaloneConfiguration.js';
 
 // localStorage keys
 const STORAGE_KEY_REVIEWS = 'tillgang_reviews';
@@ -180,7 +180,7 @@ export const standaloneClient = {
       const res = await fetch(urlToLocalFile);
       if (!res.ok) {
         throw new Error(
-          `Failed to load requirements from ${requirementsPath}: ${res.status} ${res.statusText}`,
+          `Failed to load requirements from ${urlToLocalFile}: ${res.status} ${res.statusText}`,
         );
       }
       const json: { data: Requirement[] } = await res.json();

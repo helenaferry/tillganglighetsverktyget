@@ -65,13 +65,12 @@ export function organizationConfigurations() {
     }
   };
   return {
-    applicationTitle: organizationConfiguration.applicationTitle || i18n.t('FallbackApplicationTitle'),
+    applicationTitle:
+      organizationConfiguration.applicationTitle || i18n.t('FallbackApplicationTitle'),
     logo: parseLogo(),
-    footerLinks: organizationConfiguration.footerLinks
-      ? organizationConfiguration.footerLinks
-      : [],
+    footerLinks: organizationConfiguration.footerLinks ? organizationConfiguration.footerLinks : [],
     regulatoryFramework: organizationConfiguration.regulatoryFramework || '',
     requirementAdditions: organizationConfiguration.requirementAdditions,
-    prefillRequirements: organizationConfiguration.prefillRequirements
+    prefillRequirements: organizationConfiguration.prefillRequirements,
   };
 }

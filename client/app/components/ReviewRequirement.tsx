@@ -80,8 +80,8 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
   } = useRequirements(
-    shouldFetchRequirements ? review.regulatoryFramework ?? undefined : undefined,
-    { enabled: shouldFetchRequirements }
+    shouldFetchRequirements ? (review.regulatoryFramework ?? undefined) : undefined,
+    { enabled: shouldFetchRequirements },
   );
 
   const requirements = useMemo(() => {
@@ -103,11 +103,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
     !reviewFetched ||
     !requirementsAllFetched;
 
-  const fetched =
-    reviewFetched &&
-    checkFetched &&
-    checksFetched &&
-    requirementsAllFetched;
+  const fetched = reviewFetched && checkFetched && checksFetched && requirementsAllFetched;
 
   const [showCategoryNav, setShowCategoryNav] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,

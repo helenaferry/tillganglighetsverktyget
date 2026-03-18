@@ -306,8 +306,6 @@ const mockRequirements: Requirement[] = [
 
 const mockContentTypes = ['images', 'video', 'general'];
 
-const mockRegulatoryFrameworks = ['dos', 'lptt'];
-
 const mockReview: Review = {
   id: 1,
   title: 'Test Review',
@@ -397,7 +395,10 @@ function setupDefaultMocks() {
   mockPrefillRequirements.mockReturnValue(createMutationResult());
   mockDeleteChecksForReview.mockReturnValue(createMutationResult());
   mockDeleteReview.mockReturnValue(createMutationResult());
-  mockOrganizationConfigurations.mockReturnValue({ regulatoryFramework: 'dos', prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }] });
+  mockOrganizationConfigurations.mockReturnValue({
+    regulatoryFramework: 'dos',
+    prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }],
+  });
 }
 
 // #endregion HELPER FUNCTIONS
@@ -414,7 +415,10 @@ describe('ReviewForm', () => {
    * --------------------------------------------------------------- */
   describe('Välja tillämpliga lagkrav', () => {
     it('shows regulatory framework section when env variable is not set', async () => {
-      mockOrganizationConfigurations.mockReturnValue({ regulatoryFramework: '', prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }] });
+      mockOrganizationConfigurations.mockReturnValue({
+        regulatoryFramework: '',
+        prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }],
+      });
 
       await renderReviewForm();
 

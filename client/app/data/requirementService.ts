@@ -1,13 +1,13 @@
+import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js';
 import { apiClient } from './apiClient';
 import { standaloneClient } from './standaloneClient';
 import type { Requirement } from './types';
-import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js'
 
 /**
  * Check if we're in standalone mode
  */
 function isStandaloneMode(): boolean {
-  return STANDALONE_CLIENT
+  return STANDALONE_CLIENT;
 }
 
 /**
@@ -34,30 +34,30 @@ export const RequirementService = {
   async getAllRequirements(regulatoryFramework: string = ''): Promise<Requirement[]> {
     let requirements: Requirement[] = [];
 
-      // In standalone mode, always use standaloneClient (no fallback)
-      if (isStandaloneMode()) {
+    // In standalone mode, always use standaloneClient (no fallback)
+    if (isStandaloneMode()) {
+      try {
+        requirements = await standaloneClient.requirements.getAllRequirements();
+      } catch (error) {
+        console.error(`Failed to load requirements in standalone mode: ${error}`);
+        throw new Error(`Failed to load requirements from local file: ${error}`);
+      }
+    } else {
+      // In non-standalone mode, try API first, then fallback to local file
+      try {
+        requirements = await apiClient.requirements.getAllRequirements();
+      } catch (error) {
+        console.warn(`Failed to load requirements from API: ${error}. Falling back to local file.`);
         try {
-          requirements = await standaloneClient.requirements.getAllRequirements();
-        } catch (error) {
-          console.error(`Failed to load requirements in standalone mode: ${error}`);
-          throw new Error(`Failed to load requirements from local file: ${error}`);
-        }
-      } else {
-        // In non-standalone mode, try API first, then fallback to local file
-        try {
-          requirements = await apiClient.requirements.getAllRequirements();
-        } catch (error) {
-          console.warn(`Failed to load requirements from API: ${error}. Falling back to local file.`);
-          try {
-            requirements = await fetchLocalRequirements();
-          } catch (fallbackError) {
-            console.error(`Failed to load requirements from local file: ${fallbackError}`);
-            throw new Error(
-              `Failed to load requirements from API or local file: ${error}. Fallback also failed: ${fallbackError}`,
-            );
-          }
+          requirements = await fetchLocalRequirements();
+        } catch (fallbackError) {
+          console.error(`Failed to load requirements from local file: ${fallbackError}`);
+          throw new Error(
+            `Failed to load requirements from API or local file: ${error}. Fallback also failed: ${fallbackError}`,
+          );
         }
       }
+    }
 
     // Filter by regulatory framework if specified
     if (regulatoryFramework) {

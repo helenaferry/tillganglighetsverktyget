@@ -34,9 +34,7 @@ import {
 } from '~/data/types';
 import contentTypeTexts from '~/helpers/contentTypeTexts';
 import { organizationConfigurations } from '~/helpers/helpers';
-import {
-  useRequirements,
-} from '~/hooks/useRequirementData';
+import { useRequirements } from '~/hooks/useRequirementData';
 import {
   useDeleteChecksForReview,
   useDeleteReview,
@@ -59,14 +57,15 @@ export function ReviewForm({ review }: Props) {
   const { data: allRequirementsBase } = useRequirements('');
   const loading = isLoadingRequirements;
 
-  const contentTypes = useMemo(() =>
-    Array.from(
-      new Set(
-        (allRequirementsBase ?? [])
-          .filter((req) => req.objectType === objectType)
-          .map((req) => req.contentType),
-      ),
-    ).filter((type): type is string => !!type && type.trim().length > 0),
+  const contentTypes = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          (allRequirementsBase ?? [])
+            .filter((req) => req.objectType === objectType)
+            .map((req) => req.contentType),
+        ),
+      ).filter((type): type is string => !!type && type.trim().length > 0),
     [allRequirementsBase, objectType],
   );
 
@@ -81,8 +80,7 @@ export function ReviewForm({ review }: Props) {
     return [...frameworks, 'none'];
   }, [allRequirementsBase, objectType]);
   const allPrefillRequirements = useMemo(
-    () =>
-      organizationConfigurations().prefillRequirements as PrefillRequirementSetting[],
+    () => organizationConfigurations().prefillRequirements as PrefillRequirementSetting[],
     [],
   );
 
