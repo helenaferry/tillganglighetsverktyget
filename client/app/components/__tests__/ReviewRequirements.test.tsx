@@ -21,7 +21,6 @@ import ReviewRequirements from '../ReviewRequirements';
 const mockUseReviewById = vi.fn();
 const mockUseChecksForReview = vi.fn();
 const mockUseRequirements = vi.fn();
-const mockUseRequirementCategories = vi.fn();
 const mockNavigate = vi.fn();
 
 // Mock react-router's useNavigate hook
@@ -40,7 +39,6 @@ vi.mock('../../hooks/useReviewData', () => ({
 
 vi.mock('../../hooks/useRequirementData', () => ({
   useRequirements: () => mockUseRequirements(),
-  useRequirementCategories: () => mockUseRequirementCategories(),
 }));
 
 // Mock Digi components
@@ -412,7 +410,6 @@ function setupDefaultMocks() {
     isFetched: true,
   });
   mockUseRequirements.mockReturnValue(createQueryResult(mockRequirements));
-  mockUseRequirementCategories.mockReturnValue(createQueryResult(mockCategories));
 }
 
 function getStatusText(status: Status, plural = false): string {

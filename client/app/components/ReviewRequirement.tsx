@@ -32,7 +32,7 @@ import CategoryNav from '~/components/CategoryNav';
 import { ObjectType, type RequirementWithCheck, Status } from '~/data/types';
 import { formatDate, formatPercentage } from '~/helpers/formattingHelpers';
 import { numberChecked, numberRemaining, percentageChecked } from '~/helpers/helpers';
-import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import { useRequirements } from '~/hooks/useRequirementData';
 import {
   useCheck,
   useChecksForReview,
@@ -74,21 +74,15 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
     isLoading: isCheckLoading,
     isFetched: checkFetched,
   } = useCheck(String(reviewId), String(requirementId));
+  const shouldFetchRequirements = reviewFetched && !!review;
   const {
     data: requirementsAll,
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
-  } = useRequirements(review?.regulatoryFramework || '');
-  const {
-    data: categoriesWeb,
-    isLoading: categoriesWebLoading,
-    isFetched: categoriesWebFetched,
-  } = useRequirementCategories(ObjectType.WEB);
-  const {
-    data: categoriesDoc,
-    isLoading: categoriesDocLoading,
-    isFetched: categoriesDocFetched,
-  } = useRequirementCategories(ObjectType.DOCUMENT);
+  } = useRequirements(
+    shouldFetchRequirements ? review.regulatoryFramework ?? undefined : undefined,
+    { enabled: shouldFetchRequirements }
+  );
 
   const requirements = useMemo(() => {
     const reqs = requirementsAll ?? [];
@@ -99,18 +93,13 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
   }, [review, requirementsAll]);
 
   const categories = useMemo(() => {
-    if (review?.objectType === ObjectType.DOCUMENT) {
-      return categoriesDoc ?? [];
-    }
-    return categoriesWeb ?? [];
-  }, [review, categoriesWeb, categoriesDoc]);
+    return Array.from(new Set(requirements.map((req) => req.category)));
+  }, [requirements]);
 
   const loading =
     reviewLoading ||
     checksLoading ||
     requirementsAllLoading ||
-    categoriesWebLoading ||
-    categoriesDocLoading ||
     !reviewFetched ||
     !requirementsAllFetched;
 
@@ -118,9 +107,7 @@ export default function ReviewRequirement({ reviewId, requirementId }: Props) {
     reviewFetched &&
     checkFetched &&
     checksFetched &&
-    requirementsAllFetched &&
-    categoriesWebFetched &&
-    categoriesDocFetched;
+    requirementsAllFetched;
 
   const [showCategoryNav, setShowCategoryNav] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : false,

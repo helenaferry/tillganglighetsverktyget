@@ -99,7 +99,8 @@ describe('useRegulatoryFrameworks', () => {
 
     expect(result.current.data).toContain('dos');
     expect(result.current.data).toContain('lptt');
-    expect(result.current.data?.length).toBe(2);
+    expect(result.current.data).toContain('none');
+    expect(result.current.data?.length).toBe(3);
   });
 
   it('trims whitespace from regulatory frameworks', async () => {

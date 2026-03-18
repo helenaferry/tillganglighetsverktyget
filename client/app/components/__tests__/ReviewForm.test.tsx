@@ -42,6 +42,7 @@ const mockUpsertReview = vi.fn();
 const mockPrefillRequirements = vi.fn();
 const mockDeleteChecksForReview = vi.fn();
 const mockDeleteReview = vi.fn();
+const mockOrganizationConfigurations = vi.fn();
 
 vi.mock('../../hooks/useRequirementData', () => ({
   useRequirements: () => mockUseRequirements(),
@@ -54,6 +55,10 @@ vi.mock('../../hooks/useReviewData', () => ({
   usePrefillRequirements: () => mockPrefillRequirements(),
   useDeleteChecksForReview: () => mockDeleteChecksForReview(),
   useDeleteReview: () => mockDeleteReview(),
+}));
+
+vi.mock('../../helpers/helpers', () => ({
+  organizationConfigurations: () => mockOrganizationConfigurations(),
 }));
 
 vi.stubGlobal('import', {
@@ -398,6 +403,7 @@ function setupDefaultMocks() {
   mockPrefillRequirements.mockReturnValue(createMutationResult());
   mockDeleteChecksForReview.mockReturnValue(createMutationResult());
   mockDeleteReview.mockReturnValue(createMutationResult());
+  mockOrganizationConfigurations.mockReturnValue({ regulatoryFramework: 'dos', prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }] });
 }
 
 // #endregion HELPER FUNCTIONS
@@ -414,8 +420,7 @@ describe('ReviewForm', () => {
    * --------------------------------------------------------------- */
   describe('Välja tillämpliga lagkrav', () => {
     it('shows regulatory framework section when env variable is not set', async () => {
-      // Clear the env variable for this test
-      vi.stubEnv('VITE_REGULATORY_FRAMEWORK', '');
+      mockOrganizationConfigurations.mockReturnValue({ regulatoryFramework: '', prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }] });
 
       await renderReviewForm();
 

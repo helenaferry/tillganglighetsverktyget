@@ -17,6 +17,7 @@ const REQUIREMENTS_CACHE_CONFIG = {
 // All requirements
 export function useRequirements(
   regulatoryFramework?: string,
+  options?: { enabled?: boolean },
 ): UseQueryResult<Requirement[], Error> {
   // Normalize undefined to empty string for consistent cache keys
   const normalizedFramework =
@@ -26,15 +27,7 @@ export function useRequirements(
     queryKey: ['requirements', normalizedFramework],
     queryFn: () => RequirementService.getAllRequirements(normalizedFramework),
     ...REQUIREMENTS_CACHE_CONFIG,
-  });
-}
-
-// All requirement categories
-export function useRequirementCategories(objectType: ObjectType): UseQueryResult<string[], Error> {
-  return useQuery<string[], Error>({
-    queryKey: ['requirementCategories', objectType],
-    queryFn: () => RequirementService.getAllRequirementCategories(objectType),
-    ...REQUIREMENTS_CACHE_CONFIG,
+    ...(options?.enabled !== undefined ? { enabled: options.enabled } : {}),
   });
 }
 

@@ -108,7 +108,6 @@ const mockUseReviewById = vi.fn();
 const mockUseChecksForReview = vi.fn();
 const mockUseCheck = vi.fn();
 const mockUseRequirements = vi.fn();
-const mockUseRequirementCategories = vi.fn();
 const mockToggleCheckFlagMutate = vi.fn();
 const mockNavigate = vi.fn();
 
@@ -154,7 +153,6 @@ vi.mock('~/hooks/useReviewData', () => ({
 
 vi.mock('~/hooks/useRequirementData', () => ({
   useRequirements: () => mockUseRequirements(),
-  useRequirementCategories: () => mockUseRequirementCategories(),
 }));
 
 // Component wrapper with necessary test contexts
@@ -265,12 +263,6 @@ describe('ReviewRequirement', () => {
 
     mockUseRequirements.mockReturnValue({
       data: requirementsWithReviewedAndUnreviewedAroundCurrent,
-      isLoading: false,
-      isFetched: true,
-    });
-
-    mockUseRequirementCategories.mockReturnValue({
-      data: ['category-1'],
       isLoading: false,
       isFetched: true,
     });
