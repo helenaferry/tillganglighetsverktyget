@@ -32,7 +32,7 @@ export default function PrevNextRequirement({ reviewId, nextUnhandled, previousU
               : ''}
             {!nextUnhandled && !previousUnhandled ? t('PrevNextRequirement.NoMoreUnhandled') : ''}
           </h4>
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <div className="flex flex-col lg:flex-row gap-4 mt-4">
             {previousUnhandled && (
               <DigiLinkButton
                 afVariation={LinkButtonVariation.SECONDARY}
