@@ -1,4 +1,4 @@
-import { sequelize } from './database';
+import { sequelizeInstance } from './database';
 import '../models/Review';
 import '../models/Check';
 import oracledb from 'oracledb';
@@ -8,17 +8,17 @@ async function setupDatabase() {
   try {
     console.log('Connecting to database...');
     oracledb.initOracleClient({ libDir: DB_CONFIG.dbOraclePath });
-    await sequelize.authenticate();
+    await sequelizeInstance.authenticate();
     console.log('Connected successfully. Creating database schema...');
 
     console.log('Creating tables using Sequelize models...');
-    await sequelize.sync({ alter: false });
+    await sequelizeInstance.sync({ alter: false });
     console.log('✓ All tables created successfully');
 
     console.log('Schema creation completed successfully');
 
     // Verify tables were created
-    const dialect = sequelize.getDialect();
+    const dialect = sequelizeInstance.getDialect();
     let verifyQuery: string;
 
     if (dialect === 'oracle') {
@@ -32,7 +32,7 @@ async function setupDatabase() {
       return;
     }
 
-    const [results] = await sequelize.query(verifyQuery);
+    const [results] = await sequelizeInstance.query(verifyQuery);
     const tablesCount = (results[0] as any)?.count || 0;
 
     if (tablesCount < 2) {
@@ -44,7 +44,7 @@ async function setupDatabase() {
     console.error('ERROR:', error);
     throw error;
   } finally {
-    await sequelize.close();
+    await sequelizeInstance.close();
   }
 }
 

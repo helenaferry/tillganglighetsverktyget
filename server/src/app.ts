@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import reviewRoutes from './routes/reviewRoutes';
 import requirementRoutes from './routes/requirementRoutes';
-import { sequelize } from './database/database';
+import { sequelizeInstance } from './database/database';
 import { requestContextMiddleware } from './middleware/requestContext';
 import logger from './logger';
 
@@ -41,7 +41,7 @@ app.use(requestContextMiddleware);
 app.get('/health', async (req, res) => {
   try {
     // Check database connection with a simple query
-    await sequelize.query('SELECT 1 FROM DUAL');
+    await sequelizeInstance.query('SELECT 1 FROM DUAL');
     
     res.json({ 
       status: 'ok', 

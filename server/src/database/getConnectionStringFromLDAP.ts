@@ -43,8 +43,6 @@ export const getConnectionStringFromLDAP = async()=>{
      const entry = searchEntries[0];
      const connStr = entry.orclNetDescString;
 
-     console.log('Oracle descriptor:', connStr);
-
      /*
       Det vi får tillbaks ser ut så här typ:
      //Oracle descriptor: (DESCRIPTION=(CONNECT_TIMEOUT=90)(RETRY_COUNT=30)(RETRY_DELAY=3)(TRANSPORT_CONNECT_TIMEOUT=3)(ADDRESS_LIST=(LOAD_BALANCE=ON)(ADDRESS=(PROTOCOL=tcp)(PORT=1521)(HOST=mtstutvscan.arbetsformedlingen.se)))(CONNECT_DATA=(SERVICE_NAME=utvtillganglighetsrv)))
@@ -54,9 +52,6 @@ export const getConnectionStringFromLDAP = async()=>{
      */
 
      const result = `${getValueFromString(connStr, 'HOST')}:${getValueFromString(connStr, 'PORT')}/${getValueFromString(connStr, 'SERVICE_NAME')}`
-
-     console.log('Formatterad connection-string', result)
-
      return result;
 
    } catch (err) {

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../database/database';
+import { sequelizeInstance } from '../database/database';
 
 export class Granskning extends Model {
   public id!: number;
@@ -20,6 +20,6 @@ Granskning.init(
   },
   {
     tableName: 'granskningar',
-    sequelize,
+    sequelize: sequelizeInstance,
   },
 );

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Review, Check } from '../models';
 import { Op, fn, col, literal, UniqueConstraintError } from 'sequelize';
-import { sequelize } from '../database/database';
+import { sequelizeInstance } from '../database/database';
 import logger, {
   logReviewCreated,
   logReviewDeleted,
@@ -430,7 +430,7 @@ export const deleteCheck = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-disable - Disable multiple checks
 export const disableChecks = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction();
+  const t = await sequelizeInstance.transaction();
   try {
     const reviewId = paramString(req.params.reviewId);
     const { requirements } = req.body; // Array of requirement IDs
@@ -477,7 +477,7 @@ export const disableChecks = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-enable - Enable (delete irrelevant) checks
 export const enableChecks = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction();
+  const t = await sequelizeInstance.transaction();
   try {
     const reviewId = paramString(req.params.reviewId);
     const { requirements } = req.body; // Array of requirement IDs
@@ -508,7 +508,7 @@ export const enableChecks = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-delete - Delete multiple checks
 export const deleteChecks = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction();
+  const t = await sequelizeInstance.transaction();
   try {
     const reviewId = paramString(req.params.reviewId);
     const { requirements } = req.body; // Array of requirement IDs
@@ -538,7 +538,7 @@ export const deleteChecks = async (req: Request, res: Response) => {
 
 // POST /api/reviews/:reviewId/checks/bulk-prefill - Bulk prefill checks
 export const prefillChecks = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction();
+  const t = await sequelizeInstance.transaction();
   try {
     const reviewId = paramString(req.params.reviewId);
     const { prefills } = req.body; // Array of { status, ids, comment }

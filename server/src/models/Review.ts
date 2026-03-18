@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../database/database';
+import { sequelizeInstance } from '../database/database';
 
 // Review attributes interface
 export interface ReviewAttributes {
@@ -13,10 +13,16 @@ export interface ReviewAttributes {
 }
 
 // Optional fields for creation (id and created_at are auto-generated)
-export interface ReviewCreationAttributes extends Optional<ReviewAttributes, 'id' | 'created_at'> {}
+export interface ReviewCreationAttributes extends Optional<
+  ReviewAttributes,
+  'id' | 'created_at'
+> {}
 
 // Review model class
-export class Review extends Model<ReviewAttributes, ReviewCreationAttributes> implements ReviewAttributes {
+export class Review
+  extends Model<ReviewAttributes, ReviewCreationAttributes>
+  implements ReviewAttributes
+{
   public id!: number;
   public created_at!: Date;
   public title!: string | null;
@@ -31,53 +37,55 @@ export class Review extends Model<ReviewAttributes, ReviewCreationAttributes> im
 }
 
 // Initialize Review model
-Review.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      field: 'created_at',
-    },
-    title: {
-      type: DataTypes.STRING(500),
-      allowNull: true,
-    },
-    excludedContentTypes: {
-      type: DataTypes.STRING(2000),
-      allowNull: true,
-      field: 'excluded_content_types',
-    },
-    objectType: {
-      type: DataTypes.STRING(50),
-      allowNull: true,
-      field: 'object_type',
-    },
-    regulatoryFramework: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-      field: 'regulatory_framework',
-    },
-    selectedPrefillIds: {
-      type: DataTypes.STRING(2000),
-      allowNull: true,
-      field: 'selected_prefill_ids',
-    },
-  },
-  {
-    sequelize,
-    tableName: 'reviews',
-    timestamps: false,
-    indexes: [
-      {
-        fields: ['created_at'],
-        name: 'idx_reviews_created_at',
+export const initReview = (sequelizeInstance: Sequelize) => {
+  Review.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
       },
-    ],
-  }
-);
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+        field: 'created_at',
+      },
+      title: {
+        type: DataTypes.STRING(500),
+        allowNull: true,
+      },
+      excludedContentTypes: {
+        type: DataTypes.STRING(2000),
+        allowNull: true,
+        field: 'excluded_content_types',
+      },
+      objectType: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        field: 'object_type',
+      },
+      regulatoryFramework: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+        field: 'regulatory_framework',
+      },
+      selectedPrefillIds: {
+        type: DataTypes.STRING(2000),
+        allowNull: true,
+        field: 'selected_prefill_ids',
+      },
+    },
+    {
+      sequelize: sequelizeInstance,
+      tableName: 'reviews',
+      timestamps: false,
+      indexes: [
+        {
+          fields: ['created_at'],
+          name: 'idx_reviews_created_at',
+        },
+      ],
+    },
+  );
+};
