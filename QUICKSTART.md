@@ -51,14 +51,12 @@ För produktionsliknande miljö med Oracle-databas och backend API.
 cp .env.example .env
 
 # VIKTIGT: Redigera .env och sätt lösenord
-# ORACLE_PWD och DB_PASSWORD MÅSTE sättas (inga standardvärden av säkerhetsskäl)
 # För lokal utveckling, använd valfria säkra lösenord
 ```
 
 **⚠️ SÄKERHET:** Du MÅSTE sätta lösenord i `.env` innan du startar. Exempel:
 
 ```bash
-ORACLE_PWD=MinSakraOracle123!
 DB_PASSWORD=MinSakraApp456!
 ```
 
