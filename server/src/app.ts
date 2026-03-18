@@ -71,7 +71,7 @@ app.use((req, res) => {
 });
 
 // Error handler
-app.use((err: express.Error, req: express.Request, res: express.Response) => {
+app.use((err: Error, req: express.Request, res: express.Response) => {
   logger.error('Unhandled error', {
     error: err.message,
     stack: err.stack,

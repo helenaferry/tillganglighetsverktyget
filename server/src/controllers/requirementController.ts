@@ -41,11 +41,10 @@ export const getAllRequirements = async (req: Request, res: Response) => {
 
     // Return the data as-is (maintaining the { data: Requirement[] } structure)
     res.json(data);
-  } catch (error: Error) {
+  } catch (error: Error | unknown) {
     logger.error('Error fetching requirements from external source', { error });
     res.status(500).json({
-      error: 'Failed to fetch requirements',
-      detail: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      error: 'Failed to fetch requirements'
     });
   }
 };

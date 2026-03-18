@@ -1,5 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelizeInstance } from '../database/database';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import { Review } from './Review';
 
 // Check attributes interface
@@ -41,6 +40,7 @@ export class Check
 
 // Initialize Check model
 export const initCheck = (sequelizeInstance: Sequelize) => {
+  // @ts-ignore
   Check.init(
     {
       id: {

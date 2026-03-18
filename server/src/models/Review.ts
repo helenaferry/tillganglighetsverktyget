@@ -1,5 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelizeInstance } from '../database/database';
+import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 
 // Review attributes interface
 export interface ReviewAttributes {
