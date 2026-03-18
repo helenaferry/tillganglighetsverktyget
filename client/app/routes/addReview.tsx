@@ -6,7 +6,8 @@ import { ReviewForm } from '~/components/ReviewForm';
 import { organizationConfigurations } from '~/helpers/helpers';
 import i18n from '~/lang/i18n';
 
-const applicationTitle = organizationConfigurations().applicationTitle || i18n.t('FallbackApplicationTitle');
+const applicationTitle =
+  organizationConfigurations().applicationTitle || i18n.t('FallbackApplicationTitle');
 
 export function meta() {
   return [

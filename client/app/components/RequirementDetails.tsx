@@ -18,9 +18,12 @@ export default function RequirementDetails({
   textSuggestions = [],
 }: Props) {
   const { t } = useTranslation();
-  const requirementAdditions = organizationConfigurations().requirementAdditions || {} as RequirementAdditionsSetting;
+  const requirementAdditions =
+    organizationConfigurations().requirementAdditions || ({} as RequirementAdditionsSetting);
 
-  const addition = requirementAdditions.items.find((item) => item.id === requirement.id);
+  const addition = requirementAdditions.items.find(
+    (item: { id: string; text: string }) => item.id === requirement.id,
+  );
   const HeadingTag = headingLevel;
   return (
     <DigiTypography>

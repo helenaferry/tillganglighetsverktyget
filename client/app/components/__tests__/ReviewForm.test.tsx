@@ -36,17 +36,14 @@ vi.mock('react-router', async () => {
 
 // Mock hooks - will be configured per test
 const mockUseRequirements = vi.fn();
-const mockUseRequirementContentTypes = vi.fn();
-const mockUseRegulatoryFrameworks = vi.fn();
 const mockUpsertReview = vi.fn();
 const mockPrefillRequirements = vi.fn();
 const mockDeleteChecksForReview = vi.fn();
 const mockDeleteReview = vi.fn();
+const mockOrganizationConfigurations = vi.fn();
 
 vi.mock('../../hooks/useRequirementData', () => ({
   useRequirements: () => mockUseRequirements(),
-  useRequirementContentTypes: () => mockUseRequirementContentTypes(),
-  useRegulatoryFrameworks: () => mockUseRegulatoryFrameworks(),
 }));
 
 vi.mock('../../hooks/useReviewData', () => ({
@@ -54,6 +51,10 @@ vi.mock('../../hooks/useReviewData', () => ({
   usePrefillRequirements: () => mockPrefillRequirements(),
   useDeleteChecksForReview: () => mockDeleteChecksForReview(),
   useDeleteReview: () => mockDeleteReview(),
+}));
+
+vi.mock('../../helpers/helpers', () => ({
+  organizationConfigurations: () => mockOrganizationConfigurations(),
 }));
 
 vi.stubGlobal('import', {
@@ -305,8 +306,6 @@ const mockRequirements: Requirement[] = [
 
 const mockContentTypes = ['images', 'video', 'general'];
 
-const mockRegulatoryFrameworks = ['dos', 'lptt'];
-
 const mockReview: Review = {
   id: 1,
   title: 'Test Review',
@@ -392,12 +391,14 @@ async function renderReviewForm(review?: Review) {
 
 function setupDefaultMocks() {
   mockUseRequirements.mockReturnValue(createQueryResult(mockRequirements));
-  mockUseRequirementContentTypes.mockReturnValue(createQueryResult(mockContentTypes));
-  mockUseRegulatoryFrameworks.mockReturnValue(createQueryResult(mockRegulatoryFrameworks));
   mockUpsertReview.mockReturnValue(createMutationResult());
   mockPrefillRequirements.mockReturnValue(createMutationResult());
   mockDeleteChecksForReview.mockReturnValue(createMutationResult());
   mockDeleteReview.mockReturnValue(createMutationResult());
+  mockOrganizationConfigurations.mockReturnValue({
+    regulatoryFramework: 'dos',
+    prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }],
+  });
 }
 
 // #endregion HELPER FUNCTIONS
@@ -414,8 +415,10 @@ describe('ReviewForm', () => {
    * --------------------------------------------------------------- */
   describe('Välja tillämpliga lagkrav', () => {
     it('shows regulatory framework section when env variable is not set', async () => {
-      // Clear the env variable for this test
-      vi.stubEnv('VITE_REGULATORY_FRAMEWORK', '');
+      mockOrganizationConfigurations.mockReturnValue({
+        regulatoryFramework: '',
+        prefillRequirements: [{ id: '1', automatic: 'false', prefillRequirements: [] }],
+      });
 
       await renderReviewForm();
 

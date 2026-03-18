@@ -24,7 +24,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { ObjectType, type Requirement, Status } from '~/data/types';
 import { numberChecked, numberPerStatus, percentageChecked } from '~/helpers/helpers';
-import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import { useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 
 import { CardsOrTable } from './CardsOrTable';
@@ -52,22 +52,15 @@ export default function ReviewRequirements({ reviewId }: Props) {
     isLoading: checksLoading,
     isFetched: checksFetched,
   } = useChecksForReview(reviewId);
+  const shouldFetchRequirements = reviewFetched && !!review;
   const {
     data: requirementsAll,
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
-  } = useRequirements(review?.regulatoryFramework || '');
-
-  const {
-    data: categoriesWeb,
-    isLoading: categoriesWebLoading,
-    isFetched: categoriesWebFetched,
-  } = useRequirementCategories(ObjectType.WEB);
-  const {
-    data: categoriesDoc,
-    isLoading: categoriesDocLoading,
-    isFetched: categoriesDocFetched,
-  } = useRequirementCategories(ObjectType.DOCUMENT);
+  } = useRequirements(
+    shouldFetchRequirements ? (review.regulatoryFramework ?? undefined) : undefined,
+    { enabled: shouldFetchRequirements },
+  );
 
   const requirements = useMemo(() => {
     const reqs = requirementsAll ?? [];
@@ -78,25 +71,12 @@ export default function ReviewRequirements({ reviewId }: Props) {
   }, [review, requirementsAll]);
 
   const categories = useMemo(() => {
-    if (review?.objectType === ObjectType.DOCUMENT) {
-      return categoriesDoc;
-    }
-    return categoriesWeb;
-  }, [review, categoriesWeb, categoriesDoc]);
+    return Array.from(new Set(requirements.map((req) => req.category)));
+  }, [requirements]);
 
-  const loading =
-    reviewLoading ||
-    checksLoading ||
-    requirementsAllLoading ||
-    categoriesWebLoading ||
-    categoriesDocLoading;
+  const loading = reviewLoading || checksLoading || requirementsAllLoading;
 
-  const fetched =
-    reviewFetched &&
-    checksFetched &&
-    requirementsAllFetched &&
-    categoriesWebFetched &&
-    categoriesDocFetched;
+  const fetched = reviewFetched && checksFetched && requirementsAllFetched;
 
   const requirementsWithChecks = useMemo(() => {
     if (!requirements || !checks) return [];

@@ -30,7 +30,7 @@ export default function Footer() {
                 </DigiLink>
               </li>
               {footerLinks.map(
-                (link: { url: string; external: string; text: string; icon: string }) => {
+                (link: { url: string; external?: string; text: string; icon?: string }) => {
                   return (
                     <li key={link.url}>
                       {link.external === 'true' ? (

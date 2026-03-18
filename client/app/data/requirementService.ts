@@ -1,13 +1,13 @@
+import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js';
 import { apiClient } from './apiClient';
 import { standaloneClient } from './standaloneClient';
-import { ObjectType, type Requirement } from './types';
-import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js'
+import type { Requirement } from './types';
 
 /**
  * Check if we're in standalone mode
  */
 function isStandaloneMode(): boolean {
-  return STANDALONE_CLIENT
+  return STANDALONE_CLIENT;
 }
 
 /**
@@ -74,42 +74,5 @@ export const RequirementService = {
    */
   async getLocalRequirements(): Promise<Requirement[]> {
     return fetchLocalRequirements();
-  },
-
-  async getAllRequirementCategories(objectType: ObjectType): Promise<string[]> {
-    let requirements: Requirement[] = [];
-    try {
-      requirements = await this.getAllRequirements();
-    } catch (error) {
-      throw new Error(`Failed to load requirement categories: ${error}`);
-    }
-
-    if (!Array.isArray(requirements)) {
-      throw new Error('Invalid requirement categories data format');
-    }
-    const categories = Array.from(
-      new Set(
-        requirements.filter((req) => req.objectType === objectType).map((req) => req.category),
-      ),
-    );
-    return categories;
-  },
-
-  async getAllRequirementContentTypes(objectType: ObjectType): Promise<string[]> {
-    let requirements: Requirement[] = [];
-    try {
-      requirements = await this.getAllRequirements();
-    } catch (error) {
-      throw new Error(`Failed to load requirement content types: ${error}`);
-    }
-    if (!Array.isArray(requirements)) {
-      throw new Error('Invalid requirement content types data format');
-    }
-    const contentTypes = Array.from(
-      new Set(
-        requirements.filter((req) => req.objectType === objectType).map((req) => req.contentType),
-      ),
-    ).filter((type) => type && type.trim().length > 0);
-    return contentTypes;
   },
 };

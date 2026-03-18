@@ -30,7 +30,7 @@ import ResetButton from '~/components/ResetButton';
 import ScreenReaderAlert from '~/components/ScreenReaderAlert';
 import { ObjectType, type Requirement } from '~/data/types';
 import { organizationConfigurations } from '~/helpers/helpers';
-import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import { useRequirements } from '~/hooks/useRequirementData';
 import i18n from '~/lang/i18n';
 
 const applicationTitle = organizationConfigurations().applicationTitle;
@@ -51,11 +51,17 @@ export default function RequirementsPage() {
   const { data: requirementsAll, isLoading: requirementsAllLoading } =
     useRequirements(regulatoryFrameworkEnv);
 
-  const { data: categories, isLoading: isLoadingCategories } = useRequirementCategories(
-    ObjectType.WEB,
-  );
+  const categories = useMemo(() => {
+    return Array.from(
+      new Set(
+        (requirementsAll ?? [])
+          .filter((req) => req.objectType === ObjectType.WEB)
+          .map((req) => req.category),
+      ),
+    );
+  }, [requirementsAll]);
 
-  const isLoading = requirementsAllLoading || isLoadingCategories;
+  const isLoading = requirementsAllLoading;
 
   const requirementAdditions = organizationConfigurations().requirementAdditions;
 

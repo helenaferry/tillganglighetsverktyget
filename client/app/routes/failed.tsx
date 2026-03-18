@@ -13,7 +13,7 @@ import Export from '~/components/Export';
 import PageTitle from '~/components/PageTitle';
 import { ObjectType } from '~/data/types';
 import { organizationConfigurations } from '~/helpers/helpers';
-import { useRequirementCategories, useRequirements } from '~/hooks/useRequirementData';
+import { useRequirements } from '~/hooks/useRequirementData';
 import { useChecksForReview, useReviewById } from '~/hooks/useReviewData';
 import i18n from '~/lang/i18n';
 
@@ -35,41 +35,25 @@ export default function FailedPage() {
     isLoading: checksLoading,
     isFetched: checksFetched,
   } = useChecksForReview(String(id));
+  const shouldFetchRequirements = reviewFetched && !!review;
   const {
     data: requirementsAll,
     isLoading: requirementsAllLoading,
     isFetched: requirementsAllFetched,
-  } = useRequirements(review?.regulatoryFramework || '');
-  const {
-    data: categoriesWeb,
-    isLoading: categoriesWebLoading,
-    isFetched: categoriesWebFetched,
-  } = useRequirementCategories(ObjectType.WEB);
-  const {
-    data: categoriesDoc,
-    isLoading: categoriesDocLoading,
-    isFetched: categoriesDocFetched,
-  } = useRequirementCategories(ObjectType.DOCUMENT);
+  } = useRequirements(
+    shouldFetchRequirements ? (review.regulatoryFramework ?? undefined) : undefined,
+    { enabled: shouldFetchRequirements },
+  );
   const requirements = useMemo(() => {
     return review?.objectType === (ObjectType.DOCUMENT as string)
       ? requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || []
       : requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
   }, [review, requirementsAll]);
   const categories = useMemo(() => {
-    return review?.objectType === (ObjectType.DOCUMENT as string) ? categoriesDoc : categoriesWeb;
-  }, [review, categoriesDoc, categoriesWeb]);
-  const loading =
-    reviewLoading ||
-    checksLoading ||
-    requirementsAllLoading ||
-    categoriesWebLoading ||
-    categoriesDocLoading;
-  const fetched =
-    reviewFetched &&
-    checksFetched &&
-    requirementsAllFetched &&
-    categoriesWebFetched &&
-    categoriesDocFetched;
+    return Array.from(new Set(requirements.map((req) => req.category)));
+  }, [requirements]);
+  const loading = reviewLoading || checksLoading || requirementsAllLoading;
+  const fetched = reviewFetched && checksFetched && requirementsAllFetched;
   return (
     <main>
       {loading && (
