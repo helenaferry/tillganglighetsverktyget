@@ -1,6 +1,6 @@
 import { apiClient } from './apiClient';
 import { standaloneClient } from './standaloneClient';
-import { ObjectType, type Requirement } from './types';
+import type { Requirement } from './types';
 import { STANDALONE_CLIENT } from '../../public/standaloneConfiguration.js'
 
 /**
@@ -74,23 +74,5 @@ export const RequirementService = {
    */
   async getLocalRequirements(): Promise<Requirement[]> {
     return fetchLocalRequirements();
-  },
-
-  async getAllRequirementContentTypes(objectType: ObjectType): Promise<string[]> {
-    let requirements: Requirement[] = [];
-    try {
-      requirements = await this.getAllRequirements();
-    } catch (error) {
-      throw new Error(`Failed to load requirement content types: ${error}`);
-    }
-    if (!Array.isArray(requirements)) {
-      throw new Error('Invalid requirement content types data format');
-    }
-    const contentTypes = Array.from(
-      new Set(
-        requirements.filter((req) => req.objectType === objectType).map((req) => req.contentType),
-      ),
-    ).filter((type) => type && type.trim().length > 0);
-    return contentTypes;
   },
 };

@@ -35,8 +35,6 @@ import {
 import contentTypeTexts from '~/helpers/contentTypeTexts';
 import { organizationConfigurations } from '~/helpers/helpers';
 import {
-  useRegulatoryFrameworks,
-  useRequirementContentTypes,
   useRequirements,
 } from '~/hooks/useRequirementData';
 import {
@@ -58,11 +56,30 @@ export function ReviewForm({ review }: Props) {
 
   const { data: allRequirements, isLoading: isLoadingRequirements } =
     useRequirements(regulatoryFramework);
-  const { data: contentTypes, isLoading: isLoadingContentTypes } =
-    useRequirementContentTypes(objectType);
-  const { data: regulatoryFrameworks, isLoading: isLoadingRegulatoryFrameworks } =
-    useRegulatoryFrameworks(objectType);
-  const loading = isLoadingRequirements || isLoadingContentTypes || isLoadingRegulatoryFrameworks;
+  const { data: allRequirementsBase } = useRequirements('');
+  const loading = isLoadingRequirements;
+
+  const contentTypes = useMemo(() =>
+    Array.from(
+      new Set(
+        (allRequirementsBase ?? [])
+          .filter((req) => req.objectType === objectType)
+          .map((req) => req.contentType),
+      ),
+    ).filter((type): type is string => !!type && type.trim().length > 0),
+    [allRequirementsBase, objectType],
+  );
+
+  const regulatoryFrameworks = useMemo(() => {
+    const frameworks = Array.from(
+      new Set(
+        (allRequirementsBase ?? [])
+          .filter((req) => req.objectType === objectType)
+          .flatMap((req) => req.regulatoryFramework.split(',').map((f) => f.trim())),
+      ),
+    );
+    return [...frameworks, 'none'];
+  }, [allRequirementsBase, objectType]);
   const allPrefillRequirements = useMemo(
     () =>
       organizationConfigurations().prefillRequirements as PrefillRequirementSetting[],

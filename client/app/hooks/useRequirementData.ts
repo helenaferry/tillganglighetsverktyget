@@ -1,7 +1,7 @@
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 
 import { RequirementService } from '~/data/requirementService';
-import type { ObjectType, Requirement } from '~/data/types';
+import type { Requirement } from '~/data/types';
 
 // Cache configuration for requirements queries
 // Requirements data is relatively static and doesn't change often,
@@ -28,35 +28,5 @@ export function useRequirements(
     queryFn: () => RequirementService.getAllRequirements(normalizedFramework),
     ...REQUIREMENTS_CACHE_CONFIG,
     ...(options?.enabled !== undefined ? { enabled: options.enabled } : {}),
-  });
-}
-
-// All requirement contentTypes
-export function useRequirementContentTypes(
-  objectType: ObjectType,
-): UseQueryResult<string[], Error> {
-  return useQuery<string[], Error>({
-    queryKey: ['requirementContentTypes', objectType],
-    queryFn: () => RequirementService.getAllRequirementContentTypes(objectType),
-    ...REQUIREMENTS_CACHE_CONFIG,
-  });
-}
-
-// All requirement regulatory frameworks
-export function useRegulatoryFrameworks(objectType?: ObjectType): UseQueryResult<string[], Error> {
-  return useQuery<string[], Error>({
-    queryKey: ['requirementRegulatoryFrameworks', objectType],
-    queryFn: async () => {
-      const requirements = await RequirementService.getAllRequirements('');
-      const frameworks = Array.from(
-        new Set(
-          requirements
-            .filter((req) => (objectType ? req.objectType === objectType : true))
-            .flatMap((req) => req.regulatoryFramework.split(',').map((f) => f.trim())),
-        ),
-      );
-      return [...frameworks, 'none'];
-    },
-    ...REQUIREMENTS_CACHE_CONFIG,
   });
 }

@@ -36,8 +36,6 @@ vi.mock('react-router', async () => {
 
 // Mock hooks - will be configured per test
 const mockUseRequirements = vi.fn();
-const mockUseRequirementContentTypes = vi.fn();
-const mockUseRegulatoryFrameworks = vi.fn();
 const mockUpsertReview = vi.fn();
 const mockPrefillRequirements = vi.fn();
 const mockDeleteChecksForReview = vi.fn();
@@ -46,8 +44,6 @@ const mockOrganizationConfigurations = vi.fn();
 
 vi.mock('../../hooks/useRequirementData', () => ({
   useRequirements: () => mockUseRequirements(),
-  useRequirementContentTypes: () => mockUseRequirementContentTypes(),
-  useRegulatoryFrameworks: () => mockUseRegulatoryFrameworks(),
 }));
 
 vi.mock('../../hooks/useReviewData', () => ({
@@ -397,8 +393,6 @@ async function renderReviewForm(review?: Review) {
 
 function setupDefaultMocks() {
   mockUseRequirements.mockReturnValue(createQueryResult(mockRequirements));
-  mockUseRequirementContentTypes.mockReturnValue(createQueryResult(mockContentTypes));
-  mockUseRegulatoryFrameworks.mockReturnValue(createQueryResult(mockRegulatoryFrameworks));
   mockUpsertReview.mockReturnValue(createMutationResult());
   mockPrefillRequirements.mockReturnValue(createMutationResult());
   mockDeleteChecksForReview.mockReturnValue(createMutationResult());
