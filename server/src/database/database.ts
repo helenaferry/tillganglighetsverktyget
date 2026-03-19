@@ -4,12 +4,7 @@ import { DB_CONFIG } from './CONFIG';
 import { getConnectionStringFromLDAP } from './getConnectionStringFromLDAP';
 
 import oracledb from 'oracledb';
-import {
-  checkIsDatabaseNotOpen,
-  checkIsDefaultServiceError,
-  checkIsServiceNotRegistered,
-  checkIsTransientConnectionError,
-} from './checkWhatTypeOfError';
+import { checkIsTransientConnectionError } from './checkWhatTypeOfError';
 import { initReview, initCheck } from '../models';
 
 export let sequelizeInstance: Sequelize;
@@ -52,56 +47,6 @@ export const connectDB = async (
       return;
     } catch (error: unknown) {
       const isTransientConnectionError = checkIsTransientConnectionError(error);
-
-      const isServiceNotRegistered = checkIsServiceNotRegistered(error);
-
-      if (isServiceNotRegistered) {
-        console.log(
-          `⏳ FREEPDB1 not registered with listener yet (attempt ${attempt}/${maxRetries})`,
-        );
-        console.log(
-          `   This is normal during Oracle initialization. Waiting for listener to register FREEPDB1...`,
-        );
-        console.log(
-          `   The IP address shown (e.g., 10.89.0.2) is the internal container network IP - this is correct.`,
-        );
-      }
-
-      const isDatabaseNotOpen = checkIsDatabaseNotOpen(error);
-
-      if (isDatabaseNotOpen) {
-        console.log(
-          `⏳ Database not open yet (attempt ${attempt}/${maxRetries})`,
-        );
-        console.log(
-          `   Waiting for FREEPDB1 to open and init scripts to complete...`,
-        );
-      }
-
-      // Check for "Service Default" error - indicates DB_SERVICE not set correctly
-      const isDefaultServiceError = checkIsDefaultServiceError(error);
-      if (isDefaultServiceError) {
-        console.error('❌ Configuration error: Service name is "Default"');
-        console.error(
-          'This usually means DB_SERVICE environment variable is not set correctly',
-        );
-        console.error(
-          'Current DB_CONFIG.databaseName:',
-          DB_CONFIG.databaseName,
-        );
-        console.error(
-          'process.env.DB_SERVICE:',
-          process.env.DB_SERVICE || '(not set)',
-        );
-        console.error('Expected: FREEPDB1');
-        console.error(
-          'Check that DB_SERVICE=FREEPDB1 is set in compose.dev.yml or .env',
-        );
-        throw new Error(
-          'Database service name is "Default". Set DB_SERVICE=FREEPDB1 in environment variables.',
-        );
-      }
-
       const shouldRetry = isTransientConnectionError && attempt < maxRetries;
       if (shouldRetry) {
         // Calculate exponential backoff delay with jitter

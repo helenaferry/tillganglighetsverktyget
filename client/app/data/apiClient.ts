@@ -4,21 +4,12 @@ import type { Requirement } from './types';
 
 const getBaseUrl = (): string => {
   if (window.location.hostname == 'localhost') {
-    console.log('localhost');
     return 'http://localhost:3000/api';
   } else {
-    console.log('not localhost ');
     return `https://${window.location.hostname}/api`;
   }
 };
 const API_BASE_URL = getBaseUrl();
-
-console.log(
-  'API_BASE_URL: ',
-  API_BASE_URL,
-  ' window.location.hostname: ',
-  window.location.hostname,
-);
 
 class ApiError extends Error {
   constructor(
