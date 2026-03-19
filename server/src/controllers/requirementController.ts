@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
 import logger from '../logger';
+import path from 'path';
+import fs from 'fs';
 
 // TODO: Fungerar inte att hämta kraven från podden på OCP- felsök senare
 // const EXTERNAL_REQUIREMENTS_URL = 'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
-import requirements from '../data/requirements.json' assert { type: 'json' };
+
+const dataPath = path.resolve(__dirname, '../data/requirements.json');
 
 /**
  * GET /api/requirements
@@ -12,6 +15,8 @@ import requirements from '../data/requirements.json' assert { type: 'json' };
  */
 export const getAllRequirements = async (req: Request, res: Response) => {
   try {
+    const jsonData = fs.readFileSync(dataPath, 'utf-8');
+    const requirements = JSON.parse(jsonData);
     res.json(requirements);
   } catch (error: Error | unknown) {
     logger.error('Error fetching requirements from external source', { error });
