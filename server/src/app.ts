@@ -10,9 +10,12 @@ import logger from './logger';
 const app = express();
 
 // Configure CORS based on environment
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['http://localhost:5173', 'http://localhost:3000'];
+const allowedOrigins =  ['http://localhost:5173',
+  'http://localhost:3000',
+  'https://tillganglighet-dev.apps.tocp4.arbetsformedlingen.se',
+  'https://tillganglighet-acc.apps.tocp4.arbetsformedlingen.se',
+  'https://tillganglighet.apps.tocp4.arbetsformedlingen.se',
+  'https://tillganglighet.arbetsformedlingen.se'];
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
