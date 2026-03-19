@@ -1,0 +1,2125 @@
+{
+  "data": [
+    {
+      "id": "sidt",
+      "name": "Sidans titel",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.2 (A)",
+      "en301549": "9.2.4.2",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Alla sidor har en titel som beskriver sidans syfte eller innehåll. Sidtiteln anges i elementet `<title>` i sidans `<head>`-element.\r\n\r\nTiteln ska innehålla sidans namn och gärna beskriva sidans ämne eller syfte. Den ska vara så unik som möjligt och vara specifik och innehålla den mest relevanta informationen först. ",
+      "why": "En beskrivande sidtitel hjälper användare att snabbt och enkelt avgöra om sidan är relevant utifrån deras behov. Beskrivande sidtitlar är också viktigt för sökmotoroptimering.",
+      "howToTest": "Välj ett av följande alternativ för att se sidans titel:\r\n\r\n- Gör en sökning på den aktuella webbsidan i en sökmotor. Den text som visas som sökträffens rubrik är sidans titel.\r\n\r\n- Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg. Nästan längst upp i sidans dokumentstruktur och inuti elementet `<head>` finns sidans titel i elementet `<title>`.\r\n\r\n- Granska texten som visas för den aktuella webbsidan i din webbläsares flikfält.\r\n",
+      "textSuggestions": [
+        "Sidan har ingen titel.",
+        "[Titel] beskriver inte sidans ämne eller syfte.",
+        "[Titel] är en generell titel som används på flera olika sidor."
+      ]
+    },
+    {
+      "id": "sids",
+      "name": "Sidans språk",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.1.1 (A),3.1.2 (AA)",
+      "en301549": "9.3.1.1,9.3.1.2",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "- Varje sidas huvudspråk är angivet i koden. Huvudsakligt språk anges med attributet lang i elementet `<html>`.\r\n\r\n- Ord, fraser och stycken som är på ett annat språk än sidans huvudspråk är uppmärkta med ett korrekt lang-attribut i koden.\r\n\r\nExempel:\r\n\r\n`<html lang=\"sv\">`\r\n\r\n`<p>Ordet hej på engelska är <span lang=”en”>Hello</span>.</p>`",
+      "why": "Rätt språkinställningar hjälper användare av uppläsande hjälpmedel att läsa upp innehållet med rätt uttal. Det underlättar även avstavning och automatisk översättning.",
+      "howToTest": "Välj ett av följande alternativ för att se sidans språk:\r\n\r\n- Granska koden på sidan genom att öppna webbläsarens utvecklingsverktyg. Längst upp i sidans dokumentstruktur finns elementet `<html>`. Kontrollera att elementet har attributet lang=\"sv\", om sidan är på svenska.\r\n\r\n- Om sidans huvudsakliga språk är ett annat språk än svenska behöver du använda ett korrekt värde för det språket. Hitta rätt språk på W3Docs. [ISO Language Codes på W3Docs](https://www.w3docs.com/learn-html/html-language-codes.html)\r\n\r\nKontrollera om det finns texter på andra språk än sidans huvudspråk. Granska texten på det andra språket i webbläsarens utvecklingsverktyg och kontrollera att den är korrekt uppmärkt med språket.",
+      "textSuggestions": [
+        "Sidans språk kan inte tolkas av hjälpmedel.",
+        "På [sidan] finns det ord och meningar på [språk]. Dessa är felaktigt kodade så att hjälpmedel inte kan tolka språkändringen."
+      ]
+    },
+    {
+      "id": "sems",
+      "name": "Semantisk sidstruktur",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Varje sida är strukturerad med HTML-element som `<main>`, `<nav>`, `<section>`, `<form>`, `<article>` och `<aside>` för att beskriva syftet med sidans olika informationsområden.\r\n\r\nEftersom det saknas ett semantiskt HTML-element för sökformulär används ARIA-attributet `role=”search”` för detta.",
+      "why": "Struktur är grunden för god tillgänglighet. Semantiska element skapar landmärken i koden som gör det lättare för hjälpmedelsanvändare att orientera sig på webbsidan.",
+      "howToTest": "Gå igenom sidan och kontrollera att den är korrekt uppmärkt med element från listan nedan:\r\n\r\n- `<header>` Webbplatsövergripande del. Innehåller vanligtvis logotyp, övergripande navigation och funktioner för sök och uppläsning. \r\n- `<nav>` Navigering exempelvis i toppen av sidan eller sidonavigering om sådan används.\r\n- `role=\"search\"` För sökfunktioner. \r\n- `<main>` Sidans huvudsakliga innehåll. Inleds med en h1-rubrik.\r\n- `<article>` Används om sidan innehåller en eller flera delar med redaktionellt material.\r\n- `<aside>` Används om sidan exempelvis innehåller information i en högerspalt.\r\n- `<section>` Används för en del av innehållet, som en del av <main>. Börjar vanligtvis med en rubrik.\r\n- `<form>` Används för formulär. Ska omsluta hela formuläret.\r\n- `<footer>` Sajtövergripande del. Innehåller ofta kontaktuppgifter, avsändare, generell information om webbplatsen, tillgänglighetsredogörelse med mera.",
+      "textSuggestions": [
+        "Koden innehåller generella element istället för specifika landmärken som underlättar för hjälpmedel att tolka sidans struktur."
+      ]
+    },
+    {
+      "id": "seru",
+      "name": "Rubriker",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A), 2.4.6 (AA)",
+      "en301549": "9.1.3.1, 9.2.4.6",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "- Alla rubriker på en webbsida är korrekt uppmärkta med rubrikelement `<h1>`, `<h2>` osv. Det finns inga tomma rubrikelement. Rubrikelement används enbart för sådant som är rubriker.\r\n- Sidans rubriknivåer skapar en logisk och korrekt hierarkisk ordning. Rubrikstrukturen hoppar inte över rubriknivåer.\r\n- Sidans rubriker är beskrivande och har en koppling till texten som följer.",
+      "why": "- Användare med uppläsande hjälpmedel kan navigera mellan rubriker och skumläsa sidans innehåll. \r\n- Korrekt kodade rubriker bidrar också till ökad sökmotoroptimering.\r\n- Beskrivande rubriker underlättar för alla att förstå och förutse vad sidans avsnitt handlar om. Det är extra viktigt för personer med lässvårigheter eller nedsatt korttidsminne.",
+      "howToTest": "Kontrollera att:\r\n\r\n- Alla rubriker är uppmärkta som rubriker i koden med elementen `<h1>` till `<h6>`.\r\n\r\n- Sidans huvudrubrik är uppmärkt med elementet `<h1>`.\r\n\r\n- Övriga rubriker strukturerar innehållet på ett logiskt sätt.\r\n\r\n- Alla rubriknivåer finns, exempelvis följer inte `<h3>` direkt på en `<h1>`.\r\n\r\n- Rubriker på lägre nivå hör ihop innehållsmässigt med dem på högre nivå.\r\n\r\n- Det som visuellt uppfattas som en rubrik är uppmärkt som en rubrik i koden.\r\n\r\n- Det finns inte några tomma rubriker, alltså rubrikelement som saknar textinnehåll.\r\n\r\n- Allt som är uppmärkt som rubrikelement fungerar som rubriker.\r\n\r\n- Du förstår vad rubrikerna representerar, helst utan att titta på innehållet på sidan.",
+      "textSuggestions": [
+        "Det finns innehåll som ser ut som rubriker men som inte har rubrikkodning.",
+        "Det finns brister i den hierarkiska rubrikstrukturen.",
+        "“[Rubriktexterna]“ är inte beskrivande, korta eller relevanta för innehållet som följer.",
+        "Det förekommer tomma rubrikelement utan textinnehåll."
+      ]
+    },
+    {
+      "id": "beto",
+      "name": "Betoningar och särskilt markerad text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Text med betoningar är uppmärkt i koden, med antingen elementet `<strong>` eller `<em>` beroende på om det visuellt ska vara fetstil eller kursivering. Elementen `<b>` och `<i>` är inte tillräckliga, då de enbart påverkar det visuella.",
+      "why": "Hjälpmedelsanvändare kan ta del av hur text utmärker sig. Att markera text visuellt är inte tillräckligt eftersom hjälpmedel inte kan återge det för användaren.",
+      "howToTest": "1. Gå igenom textinnehållet på sidan och kontrollera om det finns fetmarkerad text eller text som visuellt märks ut på något annat sätt.\r\n\r\n2. Högerklicka på den markerade texten och öppna utvecklarverktyget.\r\n\r\n3. Kontrollera att texten är uppmärkt med elementet `<strong>` för fetstil, eller elementet `<em>` för kursiv text.\r\n",
+      "textSuggestions": [
+        "Betoning är inte semantiskt uppmärkt med <strong> eller <em> utan med enbart visuell styling.",
+        "Betoning markeras med <b> eller <i> istället för <strong> eller <em>."
+      ]
+    },
+    {
+      "id": "inse",
+      "name": "Inte bara sensoriska kännetecken",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.3 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Hänvisningar till innehåll och komponenter förlitar sig inte endast på sensoriska kännetecken som form, storlek, färg eller placering. Istället för att det står \"Tryck på den gröna knappen\" bör det stå exempelvis \"Tryck på den gröna knappen med texten Skicka\".",
+      "why": "Användare som inte ser något alls, har nedsatt syn eller nedsatt färgseende kan ha svårt att ta till sig information som presenteras med bara form, storlek, färg eller placering på skärmen. Presentation av information i text underlättar för alla användare.",
+      "howToTest": "Läs igenom allt innehåll på sidan och kontrollera att det inte finns hänvisningar som enbart innehåller färg, form eller placering.",
+      "textSuggestions": [
+        "“[Text]” förutsätter att användaren har [funktionsförmåga]."
+      ]
+    },
+    {
+      "id": "laso",
+      "name": "Läsordning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.2 (A)",
+      "en301549": "9.1.3.2.",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Innehållets läsordning är logisk och korrekt för användare som navigerar med hjälpmedel. Innehållets ordning i koden ska överensstämma med den visuella presentationen och ska inte påverkas av responsiv design eller användarens skärmstorlek. CSS ska inte används för att ändra innehållets ordning.\r\n\r\n",
+      "why": "En meningsfull läsordning i innehållet underlättar för alla användare.",
+      "howToTest": "1. Läs igenom innehållet på sidan, med och utan skärmläsare, och på skärmar med olika storlekar.\r\n\r\n2. Kontrollera att läsordningen följer den visuella ordningen och att skärmläsaren läser upp all text på ett logiskt och intuitivt sätt. Var särskilt uppmärksam på faktarutor, tabeller och informationsområden som hänvisar till annat innehåll på samma sida.",
+      "textSuggestions": [
+        "Innehållets ordning på [sidan] är inte begriplig för hjälpmedelsanvändare.",
+        "Läsordningen blir ologisk på mindre eller större skärm."
+      ]
+    },
+    {
+      "id": "syla",
+      "name": "Länktexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.4 (A)",
+      "en301549": "9.2.4.4",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Syftet med varje länk framgår utan omgivande sammanhang, eller åtminstone tillsammans med texten som föregår länken (i samma stycke, lista, tabellcell eller liknande).",
+      "why": "Det behöver vara tydligt för användare vart en länk leder. Länkar där textbeskrivning är otydlig eller saknas försvårar för alla användare.",
+      "howToTest": "Kontrollera att alla länkar har synliga och tydliga länktexter.\r\n",
+      "textSuggestions": [
+        "Syftet med länken “[länk]” framgår varken i länktexten eller i texten som kommer innan länken."
+      ]
+    },
+    {
+      "id": "seli",
+      "name": "Semantiska listor",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Ordnade eller numrerade listor märks upp med elementet `<ol>`. Oordnade listor eller punktlistor märks upp med elementet `<ul>`. Varje listpunkt märks upp med elementet `<li>`.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur.",
+      "howToTest": "1. Kontrollera att numrerade listor inleds med elementet ol och att onumrerade listor inleds med elementet ul.\r\n\r\n2. Kontrollera att varje objekt i varje lista omsluts av ett li-element.",
+      "textSuggestions": [
+        "Det finns innehåll som ser ut som listor men saknar rätt kod."
+      ]
+    },
+    {
+      "id": "seta",
+      "name": "Semantiska tabeller",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Tabeller används endast för strukturerad data och är korrekt uppmärkta med elementen `<table>`, `<tr>` för tabellrad, `<th>` för tabellhuvud och `<td>` för dataceller.\r\n\r\nOm en tabellrubrik finns ligger den i elementet `<caption>` som är första elementet under `<table>`.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur.",
+      "howToTest": "Kontrollera att alla tabeller:\r\n- Omsluts av ett `<table>`-element.\r\n- Har rubriker som omsluts av elementet`<th>`.\r\n- Har rader som omsluts av elementet `<tr>`.\r\n- Har celler som omsluts av elementet `<td>`.\r\n- Har korrekt kodade tabellrubriker om sådana finns.\r\n\r\n\r\n",
+      "textSuggestions": [
+        "[Sidan] har information som presenteras likt en tabell men inte är uppmärkt som en tabell i koden.",
+        "Rubrikceller i tabellen [tabell] är inte korrekt uppmärkta.",
+        "Tabellrubriken för [tabell] är inte korrekt kopplad till tabellen.",
+        "Tabeller används för layout snarare än för att strukturera data."
+      ]
+    },
+    {
+      "id": "naif",
+      "name": "Namn för iframes",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.2 (A)",
+      "en301549": "9.4.1.2",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Om iframes används beskrivs dessa med text i attributet title. Iframes används ofta för att bädda in video eller annat externt innehåll och uppmärks med elementet `<iframe>`.",
+      "why": "Användare som navigerar med skärmläsare använder beskrivningen i title-attributet för att uppfatta vad iframe-element innehåller.",
+      "howToTest": "Kontrollera att alla `<iframe>`-element har en tydlig beskrivning av ramens innehåll i attributet title.",
+      "textSuggestions": [
+        "[Iframe] har inget namn som hjälpmedel kommer åt."
+      ]
+    },
+    {
+      "id": "beet",
+      "name": "Beskrivande etiketter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.6 (AA)",
+      "en301549": "9.2.4.6",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Etiketter är tydligt formulerade och beskriver den information som efterfrågas.",
+      "why": "Tydliga etiketter hjälper alla användare att fylla i formulär på rätt sätt. Det är extra viktigt för användare med nedsatt inlärningsförmåga eller andra kognitiva eller språkliga svårigheter.",
+      "howToTest": "Kontrollera att alla inmatningsfält har etiketter som gör det tydligt vad användaren ska fylla i.",
+      "textSuggestions": [
+        "[Etikett] beskriver inte syftet med det tillhörande fältet."
+      ]
+    },
+    {
+      "id": "osds",
+      "name": "Osynligt innehåll döljs även för skärmläsare",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.1.1 (A)",
+      "en301549": "9.1.1.1",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Innehåll som döljs för seende användare ska även döljas för skärmläsare. Exempel är innehåll som döljs i en utfällbar yta som enbart ska vara synligt när användaren valt att visa innehållet. Använd attributet `aria-hidden=\"true\"`.",
+      "why": "Innehåll ska presenteras på samma sätt för alla användare, oavsett om användaren kan se innehållet eller inte.",
+      "howToTest": "1. Kontrollera att innehåll som är dolt visuellt också är dolt i dokumentstrukturen.\r\n\r\n2. Testa med en skärmläsare och navigera dig fram till komponenten närmast före det dolda innehållet, exempelvis en menyknapp för en meny som är stängd.\r\n\r\n3. Navigera nedåt med piltangenterna eller tabbtangenten och kontrollera att skärmläsaren inte läser upp innehåll som är visuellt dolt på skärmen och att dessa delar inte heller går att komma åt med tabbtangenten.\r\n",
+      "textSuggestions": [
+        "[Innehåll] är dold för seende användare men inte för skärmläsaranvändare."
+      ]
+    },
+    {
+      "id": "koid",
+      "name": "Konsekvent identifiering i tjänsten",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.2.4 (A)",
+      "en301549": "9.3.2.4",
+      "contentType": "",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Funktioner som finns på flera sidor inom en tjänst identifieras på ett konsekvent sätt. Samma termer används för att beskriva funktioner som gör samma sak, exempelvis står det \"Skicka\" på alla inskickningsknappar.",
+      "why": "Användare kan lättare hitta och förstå webbplatsens funktioner.",
+      "howToTest": "Granska hur funktioner benämns i webbtjänsten och kontrollera att de benämns på samma sätt på tjänstens alla sidor.",
+      "textSuggestions": [
+        "[Ikon] används för [betydelse] på [sidan] men på andra sidor används den för [betydelse].",
+        "[Ikon] har namnet ”[namn]” som hjälpmedel kommer åt, men heter på andra sidor ”[namn]”.",
+        "[Ikon] har textalternativet ”[alt]” på [sidan], men på andra sidor har den ”[alt]”.",
+        "Länkar med samma länktext leder till olika ställen på olika sidor.",
+        "Länkar som leder till samma ställe har olika länktext på olika sidor.",
+        "Det finns knappar med samma text men som utför olika funktion på olika sidor.",
+        "Det finns knappar med samma funktion på flera sidor där knapptexterna är olika.",
+        "Det finns [inmatningsfält, vallistor, kryssrutor, radiogrupper] med samma funktion på flera sidor men där ledtexterna är olika."
+      ]
+    },
+    {
+      "id": "tilk",
+      "name": "Bevara tillgänglighet vid konverteringar",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "5.4",
+      "category": "Struktur och språk",
+      "objectType": "web",
+      "statement": "Om tjänsten har funktioner för att konvertera innehåll, exempelvis från html till pdf, ska information som ökar tillgängligheten finnas kvar i det nya formatet. Exempel kan vara rubrikstruktur eller alternativtexter till bilder. Detta gäller alla typer av dokumentformat, men endast om målformatet har stöd för motsvarande tillgänglighetsegenskaper som källformatet.",
+      "why": "Om viktiga tillgänglighetsegenskaper försvinner vid konvertering, kan det försvåra för personer med funktionsnedsättning att ta del av innehållet.",
+      "textSuggestions": [
+        "[Tillgänglighetsfunktion] bevaras inte vid omvandling till [format]."
+      ]
+    },
+    {
+      "id": "kote",
+      "name": "Kontrast för text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.3 (AA)",
+      "en301549": "9.1.4.3",
+      "contentType": "",
+      "category": "Visuell presentation",
+      "objectType": "web",
+      "statement": "All text har ett kontrastvärde på minst 4,5:1 mot bakgrunden.",
+      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende.",
+      "howToTest": "\r\n\r\n#### Text mot bakgrund\r\n1. Granska all brödtext, text i bilder och text i komponenter på sidan.\r\n\r\n2. Gör följande (kan med fördel granskas med automatiska verktyg):\r\n\t- Identifiera textens färg och färgen på bakgrunden där texten är placerad.\r\n    - Kontrollera att kontrasten mellan text och bakgrund är minst 4,5:1.\r\n\r\n#### Text i komponenter\r\nOm texten är i en interaktiv komponent:\r\n1. Kontrollera vilka olika tillstånd som komponenten kan befinna sig i.\r\n\r\n2. För varje tillstånd, gör följande (kan med fördel granskas med automatiska verktyg):\r\n\t- Identifiera textens färg\r\n    - Identifiera bakgrundens färg\r\n    - Kontrollera att kontrastförhållandet mellan text och bakgrund är minst 4,5:1.\r\n",
+      "textSuggestions": [
+        "Kontrasten för ”[text]” är otillräcklig mot bakgrunden.",
+        "Kontrasten för länken ”[text]” är otillräcklig mot bakgrunden."
+      ]
+    },
+    {
+      "id": "koti",
+      "name": "Kontrast för sådant som inte är text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.11 (AA)",
+      "en301549": "9.1.4.11",
+      "contentType": "",
+      "category": "Visuell presentation",
+      "objectType": "web",
+      "statement": "Allt som inte är text har ett kontrastvärde på minst 3:1 mot bakgrunden eller intilliggande objekt. Detta gäller exempelvis formulärkomponenter och grafiska objekt. Dessa bör också ha tydliga visuella gränser. Kravet på kontraster gäller såväl i standardtillstånd som i övriga tillstånd, exempelvis focus, hover, selected m.fl.\r\n",
+      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende.",
+      "howToTest": "1. Identifiera alla objekt som inte är text, och om dessa kan ha flera tillstånd.\r\n\r\n2. Kontrollera att objekten oavsett tillstånd är placerade mot bakgrunder med minst 3:1 i kontrastvärde gentemot ramar eller bakgrundsfärg. Detta kan med fördel granskas med automatiska verktyg.",
+      "textSuggestions": [
+        "Fokusmarkeringen för [beskrivning] har otillräcklig kontrast mot intilliggande färger.",
+        "[Ikon] har inte tillräcklig kontrast mot intilliggande färger.",
+        "[Del i diagram] har inte tillräcklig kontrast mot intilliggande färger.",
+        "Kontrasten för [komponent] är otillräcklig mot intilliggande färger."
+      ]
+    },
+    {
+      "id": "infg",
+      "name": "Inte bara färg",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.1 (A)",
+      "en301549": "9.1.4.1",
+      "contentType": "",
+      "category": "Visuell presentation",
+      "objectType": "web",
+      "statement": "Färg kompletteras med exempelvis text, ikoner eller annan visuell utformning för att förmedla information till användaren.\r\n\r\nExempel:\r\n- Ett felmeddelande har både röd text och en ikon.\r\n- En länk markeras med både färg och understykning.",
+      "why": "Användare med nedsatt färgseende ska kunna ta del av innehållet på en webbsida.",
+      "howToTest": "Säkerställ att ingen information förmedlas med enbart färg. Detta gör du enklast genom att testa hur sidan ser ut i gråskala. Säkerställ att all information och funktioner fortfarande är tydliga, även utan färger.\r\n",
+      "textSuggestions": [
+        "[Informationen] förmedlas enbart med färg.",
+        "Det finns länkar på [sidan] som enbart markeras med färg.",
+        "Statusmeddelandens status förmedlas enbart med färg."
+      ]
+    },
+    {
+      "id": "blin",
+      "name": "Max tre blinkningar per sekund",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.3.1 (A)",
+      "en301549": "9.2.3.1",
+      "contentType": "",
+      "category": "Visuell presentation",
+      "objectType": "web",
+      "statement": "Inget innehåll ska blinka eller flimra mer än tre gånger under en sekund.",
+      "why": "Vi vill inte riskera att orsaka epileptiska anfall eller fysiska reaktioner hos våra användare.",
+      "howToTest": "1. Kontrollera om det finns blinkningar eller flimmer. Om inte är punkten godkänd.\r\n2. Finns det flimmer kan du testa det med hjälp av olika verktyg.\r\n\r\nVar extra uppmärksam med att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger.",
+      "textSuggestions": [
+        "[Innehåll] flimrar mer än tre gånger per sekund. Det flimrande innehållet tar en större yta av synfältet än tillåtet."
+      ]
+    },
+    {
+      "id": "ljus",
+      "name": "Justerbart ljud",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.2 (A)",
+      "en301549": "9.1.4.2",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Ljud som spelas upp automatiskt på en webbplats kan pausas, stoppas eller sänkas. Ljudvolymen går att ändra oberoende av ljudvolymen på datorn eller enheten som används.",
+      "why": "Ljud som spelas upp automatiskt stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
+      "howToTest": "1. Börja med att kontrollera om det finns ljudfiler eller video med ljud som spelas automatiskt på sidan. \r\n2. Om det finns, kontrollera att ljudvolymen går att justera eller att ljudet går att pausa eller stänga av med särskilda kontroller för detta oberoende av systeminställningar.",
+      "textSuggestions": [
+        "Ljud som spelas upp automatiskt i mer än 3 sekunder går inte pausa, stoppa eller sänka."
+      ]
+    },
+    {
+      "id": "raut",
+      "name": "Justerbar uppspelning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.2.2 (A)",
+      "en301549": "9.2.2.2",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Det går att pausa, stoppa eller dölja innehåll som rör sig, blinkar eller scrollar automatiskt i mer än fem sekunder. Gäller exempelvis video, animationer och bildspel. \r\n\r\nUndantag är animationer eller indikationer som visar att en sida eller innehåll laddas, samt blinkande textmarkörer i aktiva inmatningsfält.",
+      "why": "Automatisk uppspelning stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
+      "howToTest": "- Kontrollera om det finns något innehåll som rör sig, blinkar eller scrollar automatiskt på sidan.\r\n- Kontrollera hur länge rörelsen pågår.\r\n- Om den pågår i mindre än fem sekunder är kravet godkänt.\r\n- Om det går att pausa, stoppa eller dölja innehållet är kravet godkänt.",
+      "textSuggestions": [
+        "Det går inte att pausa, stoppa eller dölja rörligt innehåll som spelas upp automatiskt i mer än 5 sekunder."
+      ]
+    },
+    {
+      "id": "jtin",
+      "name": "Justerbara tidsgränser",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.2.1 (A)",
+      "en301549": "9.2.2.1",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Om tidsgränser finns på webbsidan ska minst ett av följande krav vara uppfyllt:\r\n- Användaren blir meddelad innan tiden går ut och ges minst 20 sekunder för att utöka tidsgränsen, och användaren får förlänga tidsgränsen minst tio gånger.\r\n- Användaren får stänga av tidsgränsen innan den träder i kraft.\r\n- Användaren får justera tidsgränsen innan den träder i kraft över ett brett intervall som är minst tio gånger längre än standardinställningen.\r\n\r\nUndantag ges för följande scenarier:\r\n- Tidsgränsen är längre än 20 timmar.\r\n- Tidsgränsen är en nödvändig del av en händelse i realtid (till exempel en auktion) och inget alternativ till tidsgränsen är möjligt.\r\n- Tidsgränsen är väsentlig och att förlänga den skulle ogiltigförklara aktiviteten.",
+      "why": "Användare behöver olika lång tid på sig för att utföra en uppgift. Tidsgränser kan skapa stress och förvirring. De kan också göra att användaren går miste om information eller förlorar data.",
+      "howToTest": "1. Påbörja en uppgift, exempelvis genom att fylla i ett formulär.\r\n2. Överge uppgiften och låt sidan vara inaktiv tillräckligt länge för att den övre gränsen för inaktivitet ska inträffa.\r\n3. Om användaren loggas ut eller skickas vidare efter en viss tid, kontrollera om det visas en varning innan det sker.\r\n4. Kontrollera också om användaren har minst 20 sekunder på sig att förlänga tiden.",
+      "textSuggestions": [
+        "Det finns tidsgränser på [sidan] som inte går att stänga av, justera eller förlänga.",
+        "Sidan laddas om efter en viss tid."
+      ]
+    },
+    {
+      "id": "flla",
+      "name": "Flexibel layout",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.10 (AA),1.3.4 (AA)",
+      "en301549": "9.1.4.10,9.1.3.4",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Webbsidans layout är flexibel och responsiv, alltså följsam till storleken på användarens skärm.",
+      "why": "Webbsidor med en följsam layout underlättar för exempelvis användare som behöver förstora texten i ett gränssnitt och för alla användare som besöker en webbsida med en liten skärm. Användare med nedsatt motorik kan behöva montera fast sin dator, surfplatta eller telefon på exempelvis en rullstol eller ett stativ och därmed sakna möjlighet att vrida på skärmen. ",
+      "howToTest": "Kontrollera att:\r\n- Innehållet kan visas med en godtycklig skärmbredd, från 320 pixlar och uppåt, utan att innehåll eller funktionalitet försvinner.\r\n- Användaren behöver inte skrolla i mer än en riktning, om det inte finns särskilda skäl.\r\n- Gränssnittet fungerar oavsett om användaren visar det i porträtt- eller landskapsläge.\r\n",
+      "textSuggestions": [
+        "Vid vertikal skrollning blir [innehåll] oåtkomligt på en del skärmbredder.",
+        "Vid en del skärmbredder krävs skrollning både vertikalt och horisontellt."
+      ]
+    },
+    {
+      "id": "txst",
+      "name": "Ändra textstorlek",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.4 (AA)",
+      "en301549": "9.1.4.4",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Användare kan förstora texten på en webbsida upp till 200 procent utan att använda hjälpmedel. Innehåll ska inte försvinna och funktionalitet ska inte försämras. Textstorlek ska normalt användas med relativa enheter som em, rem eller %.",
+      "why": "Användare med nedsatt syn ska kunna förstora innehållet på en webbsida.",
+      "howToTest": "1. Förstora texten till 200%. Detta kan göras i webbläsarens inställningar eller i en särskild bookmarklet. Det finns flera sådana bookmarklets, sök på \"bookmarklet 200% text size\" och följ instruktioner för installation och användning.\r\n\r\n2. Kontrollera att texten verkligen har förstorats.\r\n\r\n3. Kontrollera att texten inte klipps av, trunkeras eller döljs jämfört med när texten inte är förstorad.",
+      "textSuggestions": [
+        "Texten på [sidan] går inte att förstora till 200 procent.",
+        "Texten i [inmatningsfält] går inte att förstora till 200 procent.",
+        "När text förstoras till 200 procent försvinner information från sidan."
+      ]
+    },
+    {
+      "id": "txml",
+      "name": "Ändra textmellanrum",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.12 (AA)",
+      "en301549": "9.1.4.12",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Det går att öka avståndet mellan tecken, rader, stycken och ord utan att innehåll försvinner eller att funktionaliteten försämras. Följande minimikrav gäller:\r\n \r\n- teckenavstånd till minst 0,12 gånger teckensnittets storlek\r\n- avstånd mellan ord till minst 0,16 gånger teckensnittets storlek\r\n- radavstånd till minst 1,5 gånger teckensnittets storlek\r\n- avstånd mellan stycken till minst 2 gånger teckensnittets storlek",
+      "why": "Det är särskilt viktigt för användare med dyslexi eller nedsatt syn att kunna justera avstånd i text.",
+      "howToTest": "Det enklaste sättet att testa dessa textförändringar är att använda ett så kallat bokmärke, eller bookmarklet. Använd exempelvis bokmärket “Text spacing bookmarklet” som finns på att hämta på Codepen.\r\n\r\nKontrollera följande och jämför hur texten ser ut utan några ändringar av textavståndet:\r\n- Radavståndet har ökat.\r\n\r\n- Avståndet mellan textstycken har ökat.\r\n\r\n- Avståndet mellan tecken har ökat.\r\n\r\n- Avståndet mellan två ord har ökat.\r\n\r\n- Inga objekt på sidan, exempelvis texter, bilder eller knappar, överlappar eller hamnar bakom något annat objekt på sidan.\r\n\r\n- Text klipps inte av eller trunkeras.",
+      "textSuggestions": [
+        "Innehållet i [element] lägger sig över [innehåll] vid utökade textavstånd.",
+        "Det går inte att öka mellanrummet mellan stycken, avståndet mellan rader, ord eller tecken på [sidan].",
+        "Delar av innehållet på [sidan] klipps av vid utökat textavstånd."
+      ]
+    },
+    {
+      "id": "futi",
+      "name": "Funktioner för tillgänglighet",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "5.2",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "En webbplats kan ha funktioner för att öka tillgängligheten, exempelvis lättläst eller lyssna. Dessa ska vara lätta för alla användare att hitta och aktivera.",
+      "why": "Dessa funktioner blir meningslösa om användaren inte kan hitta och aktivera dem.",
+      "howToTest": "",
+      "textSuggestions": [
+        "[Tillgänglighetsfunktion] går inte att aktivera utan [funktionsförmåga]."
+      ]
+    },
+    {
+      "id": "biom",
+      "name": "Flera biometriska egenskaper",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "5.3",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Om tjänsten använder biometriska egenskaper för identifiering, exempelvis fingeravtryck, röstigenkänning eller ansiktsigenkänning, ska det finnas möjlighet att identifiera sig på fler än ett sätt.",
+      "why": "Alla användare har inte samma fysiska förutsättningar. Därför behöver det finnas flera sätt att identifiera sig på.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Identifiering är bara möjlig med [biometrisk metod]."
+      ]
+    },
+    {
+      "id": "rain",
+      "name": "Respektera användarens inställningar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "11.7",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "web",
+      "statement": "Användargränssnittet ska följa användarens inställningar för: mått, färg, kontrast, typsnitt, textstorlek och fokusmarkör.\r\n\r\nDet är möjligt att ha egna inställningar för att styra dessa egenskaper på webbplatsen, så länge det också finns ett läge där webbplatsen följer systeminställningarna.",
+      "why": "Det finns systeminställningar som underlättar för en del användare och det är viktigt att dessa respekteras.",
+      "howToTest": "Ändra elementen som nämns i beskrivningen i systeminställningarna och kontrollera att tjänsten följer inställningarna. Byt till exempel mellan mörkt och ljust läge, ändra textstorlek m.m.\r\n",
+      "textSuggestions": [
+        "[Tjänsten] respekterar inte användarinställningarna för ljust/mörkt läge.",
+        "[Tjänsten] respekterar inte användarinställningarna för kontrast.",
+        "[Tjänsten] respekterar inte användarinställningarna för teckenstorlek."
+      ]
+    },
+    {
+      "id": "bite",
+      "name": "Undvik bilder av text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.5 (AA)",
+      "en301549": "9.1.4.5",
+      "contentType": "Bilder, ikoner & grafik",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "Om möjligt ska text alltid återges som text och inte bilder av text. Logotyper är undantag.",
+      "why": "Användare behöver kunna anpassa text utifrån sina behov. Text i bild kan inte läsas av hjälpmedel och är svårare att anpassa visuellt.",
+      "howToTest": "1. Identifiera alla bilder som innehåller text.\r\n2. Kontrollera att bilder som innehåller text har alt-texter som återger bildens text.",
+      "textSuggestions": [
+        "“[Text]” förmedlas som en bild i stället för som text."
+      ]
+    },
+    {
+      "id": "tebi",
+      "name": "Textalternativ för bilder",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.1.1 (A)",
+      "en301549": "9.1.1.1",
+      "contentType": "Bilder, ikoner & grafik",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "Bilder och ikoner som förmedlar information har ett textalternativ som beskriver bilden eller ikonens budskap. Det textbaserade alternativet ska vara kortfattat och likvärdigt med bilden. Det textbaserade alternativet anges i attributet alt.\r\n\r\nDekorativa eller redundanta bilder och ikoner döljs för hjälpmedel. Med redundanta menas att bilden förmedlar samma information till användaren som en intilliggande text. Dekorativa bilder har tomma alt-attribut vilket får hjälpmedel att ignorera bilderna. Redundanta ikoner som är baserade på vektorgrafik döljs med attributet aria-hidden. Om alt-attributet saknas, och bilden inte döljs på något annat sätt, kan skärmläsare läsa upp bildens filnamn eller sökväg istället, vilket kan uppfattas som störande.",
+      "why": "Användare som navigerar med skärmläsare ska kunna ta del av innehåll som förmedlas med grafik.",
+      "howToTest": "1. Kontrollera att alla meningsbärande bilder har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Sekretess, sökning och tjänster > Webbplatsbehörigheter > Alla behörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, eller granska HTML-koden. \r\n\r\n2. Kontrollera att bildernas alt-texter är begripliga och att de beskriver syftet med bilderna på webbsidan.\r\n\r\n3. Kontrollera att alla bilder som inte är meningsbärande har tomma alt-attribut.\r\n",
+      "textSuggestions": [
+        "[Bilden] är en bakgrundsbild trots att den förmedlar relevant information.",
+        "[Bilden] saknar textalternativ.",
+        "[Bilden] har ett textalternativ som inte förmedlar samma information som bilden.",
+        "[Bilden] har ett textalternativ som beskriver motivet i stället för att ge samma information som bilden förmedlar i sammanhanget.",
+        "[Bilden] är dekorativ men är inte dold för hjälpmedel.",
+        "Textalternativet för CAPTCHA-funktionen beskriver inte dess syfte.",
+        "CAPTCHA-funktionen har inget alternativ för personer som saknar synförmåga."
+      ]
+    },
+    {
+      "id": "tekb",
+      "name": "Textalternativ för komplexa bilder",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.1.1 (A)",
+      "en301549": "9.1.1.1",
+      "contentType": "Bilder, ikoner & grafik",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "Komplexa bilder, exempelvis kartor eller diagram, har ett textbaserat alternativ i attributet alt som övergripande beskriver innehållet. Det finns även en mer utförlig beskrivning som vanlig text, antingen på samma sida och i direkt anslutning till bilden eller som en länk till en annan sida. \r\n\r\nExempel på övergripande alt-text: \r\n\"Graf 4: Grafen visar utvecklingen av nystartade företag under det senaste året med en ökning på 10 procent i jämförelse med föregående år.\"",
+      "why": "Användare tar till sig information på olika sätt. Därför är det viktigt att ha informationen både som bild och text.",
+      "howToTest": "1. Kontrollera att alla komplexa meningsbärande bilder på webbplatsen eller webbsidan har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Sekretess, sökning och tjänster > Webbplatsbehörigheter > Alla behörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, eller granska HTML-koden. \r\n\r\n2. Kontrollera att komplexa bilder som diagram, kartor och organisationsscheman har beskrivningar i text med samma information som framgår av bilden. \r\n ",
+      "textSuggestions": [
+        "Det saknas förklaring till [bild]."
+      ]
+    },
+    {
+      "id": "telj",
+      "name": "Text som beskriver ljud",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.1.1 (A),1.2.1 (A)",
+      "en301549": "9.1.1.1,9.1.2.1",
+      "contentType": "Mediaspelare Ljud",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "För alla ljudklipp finns en text som kortfattat beskriver innehållet. DOS-lagen gör undantag för direktsänd media.\r\n\r\nUtöver den kortfattade beskrivningen har förinspelade ljudklipp också ett textalternativ som innehåller motsvarande information som ljudinspelningen. Exempel på förinspelade ljudklipp kan vara poddar och nyhetsinslag. Textalternativet finns på samma sida som ljudklippet eller går att nå från en länk i direkt anslutning till ljudklippet.",
+      "why": "Användare med nedsatt hörsel eller som av andra anledningar har svårt att ta till sig information som presenteras med ljud kan istället läsa texten. Användare som navigerar med hjälpmedel ska kunna uppfatta när det finns ett ljudklipp och övergripande förstå vad innehåll i ljudklipp handlar om.",
+      "howToTest": "Kontrollera att det för varje ljudklipp finns:\r\n- en text som kortfatttat beskriver innehållet, exempelvis att ett ljudklipp är en podd och vad den handlar om.\r\n- en text som motsvarar innehållet, exempelvis en transkribering.",
+      "textSuggestions": [
+        "[Ljud] saknar en kort beskrivande text.",
+        "[Ljud] saknar ett textalternativ motsvarande innehållet."
+      ]
+    },
+    {
+      "id": "tevi",
+      "name": "Text som beskriver video",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.1.1 (A),1.2.1 (A)",
+      "en301549": "9.1.1.1,9.1.2.1",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "För alla videoklipp eller filmer finns en text som kortfattat beskriver innehållet. DOS-lagen gör undantag för direktsänd media. \r\n\r\nUtöver den kortfattade beskrivningen har förinspelad video, med eller utan ljud, ett textalternativ som innehåller motsvarande information som videon. Textalternativet finns på samma sida som videoklippet/ filmen eller går att nå från en länk i direkt anslutning till videoklippet.",
+      "why": "Användare med nedsatt syn eller som av andra anledningar har svårt att ta till sig information som presenteras visuellt i videoklipp eller film kan istället läsa texten. Användare som navigerar med hjälpmedel ska kunna uppfatta när det finns videoklipp och övergripande förstå vad innehållet handlar om.",
+      "howToTest": "Kontrollera att det för varje video finns:\r\n- en text som kortfattat beskriver innehållet, exempelvis att innehållet är ett videoklipp och vad det handlar om.\r\n- en text som motsvarar innehållet, exempelvis en transkribering.",
+      "textSuggestions": [
+        "[Video] saknar en kort beskrivande text.",
+        "[Video] saknar ett textalternativ motsvarande innehållet."
+      ]
+    },
+    {
+      "id": "unvi",
+      "name": "Undertexter till förinspelad video",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.2.2 (A)",
+      "en301549": "9.1.2.2",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "All förinspelad video har undertexter, som beskriver dialogen, samt  andra relevanta ljud om det behövs för att användaren ska kunna ta till sig innehållet. Exempel på andra relevanta ljud är ”en telefon ringer”, ”hunden skäller” eller ”musik spelas”.\r\n\r\nUndantag:\r\n- Undertexter krävs inte för videoinspelningar som är publicerade före 23 september 2020.\r\n- Om inspelningen i sig är ett mediealternativ till text så behöver du inte texta ljudet eftersom innehållet redan finns presenterat i text. Om inspelningen är ett mediealternativ till text måste det framgå tydligt.",
+      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i filmer. Undertexter är även bra för användare med svenska som andraspråk, eller användare som behöver titta på filmen med ljudet avstängt.",
+      "howToTest": "- Kontrollera att det finns undertexter för varje film.\r\n- Kontrollera att undertexterna är synkroniserade med ljudet.\r\n- Kontrollera att undertexterna stämmer med filmens innehåll samt att allt relevant ljud är beskrivet.",
+      "textSuggestions": [
+        "[Film] saknar undertexter.",
+        "Undertexterna i [film] förmedlar inte allt ljud.",
+        "Undertexterna i [film] är inte synkroniserat med ljudet i filmen."
+      ]
+    },
+    {
+      "id": "syvi",
+      "name": "Syntolkning till video",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.2.5 (AA)",
+      "en301549": "9.1.2.5",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "All förinspelad video har ett extra ljudspår som förklarar det visuella innehållet, så kallad syntolkning. \r\n\r\nUndantag:\r\n- Syntolkning krävs inte för inspelad video som är publicerad före 23 september 2020.\r\n- Video där syntolkning inte behövs eftersom allt som visas visuellt redan beskrivs av de som pratar.",
+      "why": "Användare med nedsatt syn kan med hjälp av syntolkning uppfatta innehåll som presenteras visuellt i filmer.",
+      "howToTest": "- Kontrollera att det finns syntolkning för varje film.\r\n- Kontrollera att syntolkningen är synkroniserad med det visuella innehållet.\r\n- Kontrollera att syntolkningen stämmer med filmens innehåll samt att allt relevant som visas visuellt är beskrivet.\r\n",
+      "textSuggestions": [
+        "[Film] har inslag som personer utan synförmåga inte kan uppfatta. Filmen saknar syntolkning."
+      ]
+    },
+    {
+      "id": "tuvt",
+      "name": "Undertexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.1.1",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst visar video med synkroniserat ljud ska videospelaren kunna visa tillgängliga undertexter. Innehåller undertexterna information om färg, timing och placering så ska tjänsten ta med denna information.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "[Film] har inslag som personer utan synförmåga inte kan uppfatta. Filmen saknar syntolkning."
+      ]
+    },
+    {
+      "id": "tusl",
+      "name": "Synkronisera ljud och undertexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.1.2",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst visar undertexter ska metoden för att visa undertext bevara synkroniseringen mellan ljudet och de motsvarande undertexterna. Undertexterna ska visas inom 100 millisekunder från undertextens tidsstämpel.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Undertexterna i [film] är inte synkroniserat med ljudet i filmen.",
+        "[Film] saknar undertexter."
+      ]
+    },
+    {
+      "id": "tubu",
+      "name": "Bevara undertextdata",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.1.3",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst sänder, omvandlar eller spelar in video med synkroniserat ljud ska tjänsten bevara undertextdata så att den kan visas i enlighet med punkterna 7.1.1 och 7.1.2. Ytterligare presentationsegenskaper hos texten, som skärmposition, textfärger, textstil och teckensnitt, kan förmedla betydelse baserat på regionala konventioner. Förändringar av dessa egenskaper kan ändra betydelsen och bör undvikas så mycket som möjligt.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Funktionen för att [omvandling] video bevarar inte undertexter.",
+        "[Film] saknar undertexter."
+      ]
+    },
+    {
+      "id": "tuau",
+      "name": "Anpassa undertexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.1.4",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst visar undertexter ska tjänsten göra det möjligt för personen att anpassa undertexternas visningsegenskaper efter hens egna behov. Detta gäller förutom när undertexterna visas som ”inbränd text” (så kallade open captions). För att bidra till att uppfylla detta krav ska det vara möjligt för personen själv att ställa in: \r\n- bakgrund och förgrundsfärg för undertexter \r\n- typsnitt \r\n- storlek \r\n- genomskinlighet för undertexternas bakgrundsruta \r\n- kontur eller kant för teckensnitten",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det finns ingen möjlighet att anpassa utseendet på undertexter.",
+        "[Film] saknar undertexter."
+      ]
+    },
+    {
+      "id": "tuml",
+      "name": "Möjlighet att läsa upp undertexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.1.5",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst visar video med synkroniserat ljud ska tjänsten erbjuda möjligheten att tillgängliga undertexter läses upp. Detta gäller förutom när innehållet i de visade undertexterna inte är maskinläsbara.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det finns ingen möjlighet att få undertexter upplästa.",
+        "[Film] saknar undertexter."
+      ]
+    },
+    {
+      "id": "tuas",
+      "name": "Aktivering av undertextning och syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.3",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "Där en tjänst huvudsakligen visar video med synkroniserat ljud ska det finnas användarkontroller för att aktivera undertextning och syntolkning. Dessa kontroller ska ha samma interaktionsnivå (det vill säga samma antal steg för att slutföra uppgiften) som de primära mediakontrollerna (play, paus och så vidare).",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det är fler steg för att aktivera undertexter och syntolkning i mediespelaren än för att starta eller pausa filmen.",
+        "[Film] saknar undertexter."
+      ]
+    },
+    {
+      "id": "tulj",
+      "name": "Spela upp ljudspår",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.2.1",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst visar video med synkroniserat ljud ska det finnas en funktion för att spela upp syntolkning på det primära ljudspåret. När en funktion saknas kan en tjänst ändå uppfylla detta krav, om tjänsten ger användaren möjlighet att välja och spela upp flera ljudspår. I sådana fall kan videoinnehållet inkludera syntolkningen som ett av de tillgängliga ljudspåren.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det finns ingen möjlighet att spela upp syntolkning."
+      ]
+    },
+    {
+      "id": "tusi",
+      "name": "Synkronisera innehåll och syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.2.2",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst innehåller en funktion för att spela upp syntolkning ska funktionen bevara synkroniseringen mellan ljud- och bildinnehållet och den tillhörande syntolkningen.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Syntolkningen i [film] är inte synkroniserad med det audiovisuella innehållet."
+      ]
+    },
+    {
+      "id": "tubd",
+      "name": "Bevara data för syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "7.2.3",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "När en tjänst sänder, konverterar eller spelar in video med synkroniserat ljud ska tjänsten bevara data för syntolkning. Då kan syntolkningen spelas upp på ett sätt som är i linje med punkterna 7.2.1 och 7.2.2.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Funktionen för att [omvandla] video bevarar inte syntolkning."
+      ]
+    },
+    {
+      "id": "unvl",
+      "name": "Undertexter till livevideo",
+      "regulatoryFramework": "lptt",
+      "wcag": "1.2.4 (AA)",
+      "en301549": "9.1.2.4",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "web",
+      "statement": "Live-video har undertexter som inkluderar all dialog, men också information om andra signifikanta ljud.",
+      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i filmer. Undertexter är även bra för användare med svenska som andraspråk, eller användare som behöver titta på filmen med ljudet avstängt.",
+      "howToTest": "Kontrollera att det på webbsidor som innehåller livevideo finns undertexter.",
+      "textSuggestions": [
+        "[Film] har inslag som personer utan hörselförmåga inte kan uppfatta. Filmen saknar undertexter."
+      ]
+    },
+    {
+      "id": "flna",
+      "name": "Flera olika sätt att navigera",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.5 (AA)",
+      "en301549": "9.2.4.5",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Det finns minst två olika sätt att hitta till en sida på en webbplats. Till exempel genom menyer, länkar, sökfunktion eller webbplatskarta. Sidor för bekräftelser eller som utgör ett steg i en process är undantag.",
+      "why": "Användare behöver kunna hitta innehåll på det sätt som passar dem bäst.",
+      "howToTest": "Kontrollera att sidan kan nås på minst två sätt, om den inte utgör ett steg i en process.",
+      "textSuggestions": [
+        "Det finns bara ett sätt, [sätt] att hitta en sida."
+      ]
+    },
+    {
+      "id": "kona",
+      "name": "Konsekvent navigering i tjänsten",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.2.3 (A)",
+      "en301549": "9.3.2.3",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Navigeringsfunktioner som upprepas på flera sidor inom en tjänst presenteras på samma sätt och i samma inbördes ordning. Exempel är länkar mellan sidor, paginering i sökresultat eller val i menyer.",
+      "why": "När navigeringsfunktioner placeras på samma plats och i samma ordning på varje sida hjälper det användare att snabbt hitta vad de söker.",
+      "howToTest": "Granska navigationsfunktioner i webbtjänsten och kontrollera att de är placerade på samma plats och sorteras på samma sätt på tjänstens alla sidor.",
+      "textSuggestions": [
+        "Det finns navigeringsfunktioner som återkommer på flera sidor men som inte kommer i samma ordning.",
+        "Länkarna i [navigeringsfunktion] kommer i olika ordning på olika sidor."
+      ]
+    },
+    {
+      "id": "nata",
+      "name": "Navigera med tangentbord",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.1.1 (A),2.1.2 (A)",
+      "en301549": "9.2.1.1, 9.2.1.2",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "- Det går att navigera på sidan och interagera med alla komponenter genom att enbart använda tangentbordet. \r\n- När användaren flyttar fokus till en komponent med tangentbordet kan fokus också flyttas bort från komponenten. Användaren fastnar aldrig med fokus på eller inuti en komponent.",
+      "why": "Användare med nedsatt motorik kan ha svårt att använda mus och navigerar därför med tangentbord eller med andra hjälpmedel som bygger på samma mekanismer. Hjälpmedel som exempelvis skärmläsare är utvecklade för att styras med endast tangentbord.",
+      "howToTest": "1. Ställ markören i webbläsarens adressfält och använd därefter varken mus eller touchpad. Navigera dig igenom hela sidan med tabbtangenten.\r\n\t- Tryck på Tabb för att navigera framåt.\r\n\t\r\n    - Tryck på Shift + Tabb för att navigera bakåt.\r\n    \r\n2. Kontrollera att det går att navigera till alla interaktiva objekt på sidan som länkar, knappar och formulärsfält. Du ska inte kunna navigera med tabbtangenten till rubriker eller brödtext.\r\n\r\n3. För varje interaktivt objekt, kontrollera att det går att aktivera komponenten.\r\n\t- Tryck på Enter för att aktivera en länk.\r\n    \r\n    - Tryck på Enter eller Mellanslag för att aktivera en knapp.\r\n\t\r\n    - Tryck på Mellanslag för att välja en kryssruta eller radioknapp.\r\n\t\r\n    - Tryck på Piltangenterna för att navigera mellan radioknappar, mellan valen i en dropdown-meny eller autocomplete-lista.\r\n\r\n4. Säkerställ att fokus aldrig fastnar någonstans.\r\n\r\n    - Öppna en komponent. Kontrollera att det går att navigera ut ur komponenten och vidare till nästa komponent.\r\n\r\n    - Öppna ett modalt fönster. Kontrollera att det går att avbryta eller stänga modalen med tangentbordet och att du inte fastnar i den.\r\n",
+      "textSuggestions": [
+        "På [sidan] går det inte att nå [funktion] med tangetbordet.",
+        "[Funktion] på [sidan] går inte att hantera med tangentbordet.",
+        "För att aktivera [funktion] på [sidan] måste man trycka ner flera tangenter i snabb följd.",
+        "För att aktivera [funktion] på [sidan] måste man trycka ner en tangent under längre tid.",
+        "Det går inte att använda pil- eller tabtangenten för navigera från [element]. Istället ska man använda [beskrivning], men det finns ingen information om detta."
+      ]
+    },
+    {
+      "id": "lofo",
+      "name": "Synlig fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.7 (AA)",
+      "en301549": "9.2.4.7",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "När en användare navigerar med tangentbord ska det tydligt framgå vilket element som har fokus. Fokusmarkeringen ska vara visuellt tydlig och synlig på alla interaktiva element.",
+      "why": "Användare som navigerar med tangentbord behöver kunna se vilket element som är aktivt för att veta var nästa interaktion sker. Utan en tydlig fokusmarkering blir det svårt att använda tjänsten, vilket kan leda till frustration och felaktiga val.",
+      "howToTest": "- Navigera genom sidan med tabbtangenten och kontrollera att det element som har fokus är tydligt markerat visuellt.\r\n- Fokus ska visas först när tangentbord används och förbli synlig tills fokus flyttas.\r\n- Testa olika typer av element (knappar, länkar, formulärfält) och se att fokusmarkeringen är synlig.\r\n- Kontrollera att fokusmarkeringen är synlig även vid hög kontrast eller när anpassade färgteman används.",
+      "textSuggestions": [
+        "Det förekommer att element saknar synlig fokusmarkering, vilket gör det svårt för användare som navigerar med tangentbord att veta var på sidan de befinner sig."
+      ]
+    },
+    {
+      "id": "ffis",
+      "name": "Fokus får inte skymmas",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.11 (AA)",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Element med tangentbordsfokus får inte vara helt skymda av annat innehåll. Fokusmarkeringen ska alltid vara synlig, även om det finns överlappande ytor som fast sidhuvud eller dialogrutor. \r\n\r\nUndantag gäller halvtransparenta ytor med en opacitet lägre än 1, förutsatt att kontrasten mot bakgrunden uppfyller kravet på minst 3:1.",
+      "why": "Användare som navigerar med tangentbord måste kunna se vilket element som har fokus. Om fokus döljs kan användaren tappa orienteringen och tro att sidan inte fungerar.",
+      "howToTest": "- Navigera med tabbtangenten och kontrollera att fokus alltid är synligt.\r\n- Testa scenarier med fast sidhuvud, kakmeddelanden och dialogrutor.\r\n- Säkerställ att innehåll som går att öppna inte blockerar fokus och att det går att stänga.",
+      "textSuggestions": [
+        "Det förekommer att element med fokusmarkering är dolda av överlappande innehåll."
+      ]
+    },
+    {
+      "id": "lofa",
+      "name": "Logisk fokusordning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.3 (A)",
+      "en301549": "9.2.4.3",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Alla interaktiva element på en webbsida ska ha en fokusordning som är logisk och förutsägbar för användare som navigerar med tangentbord. Fokusordningen bör följa sidans visuella och semantiska struktur så långt det är möjligt.",
+      "why": "En meningsfull fokusordning gör att användare som navigerar med tangentbord kan förutse hur fokus flyttas mellan element. Detta skapar en intuitiv upplevelse och minskar risken för att användaren tappar orienteringen. Om fokusordningen inte är logisk kan det bli svårt att förstå hur innehållet hänger ihop.",
+      "howToTest": "- Navigera genom hela sidan med tabbtangenten. Kontrollera att fokusordningen följer sidans läsordning och känns intuitiv.\r\n- Testa även med Shift + Tab för att gå bakåt.\r\n- Öppna modala fönster och kontrollera att fokus hamnar inne i modalen. Fokus ska inte lämna modalen förrän användaren aktivt stänger den.\r\n- Stäng modalen genom att trycka på Stäng-knappen eller Esc-tangenten och kontrollera att fokus återgår till ett logiskt ställe, t.ex. knappen som öppnade modalen.",
+      "textSuggestions": [
+        "Vid navigering med tangentbord får [element] fokus efter [element], vilket gör fokusordningen ologisk.",
+        "I [menyn/dialogrutan] sätts inte fokuset automatiskt till det öppnade [element] när det visas. [Innehåll] kommer inte heller som nästa steg i fokusordningen."
+      ]
+    },
+    {
+      "id": "tgbg",
+      "name": "Hoppa över grupperat innehåll",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.1 (A)",
+      "en301549": "9.2.4.1",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Överst på webbsidan finns en länk som låter användare som navigerar med tangentbord hoppa över innehåll som upprepas på flera sidor, exempelvis menyer.",
+      "why": "Användare som navigerar med tangentbord når huvudinnehållet på en webbsida snabbt och slipper navigera förbi samma navigationsområden varje gång användaren öppnar en ny sida.",
+      "howToTest": "- Se till att du är högst upp på sidan. Tryck en gång på tabbtangenten.\r\n- Kontrollera att en länk med länktexten 'Gå till sidans innehåll' eller liknande visas längst upp på sidan. Länken ska alltså vara det första interaktiva objektet på sidan och ligga före sidans logotyp. Den ska bara vara synlig när den har fokus.\r\n- Tryck på Enter för att aktivera länken. Du ska nu hoppa till sidans huvudinnehåll, oftast dess första H1-rubrik. Beroende på hur stort sidhuvudet är kan sidan kan scrolla ner lite så att huvudrubriken hamnar högst upp på den synliga delen av sidan.\r\n- Navigera till nästa interaktiva objekt genom att trycka på tabbtangenten en gång till. Kontrollera att fokus då hamnar på nästa interaktiva objekt efter huvudrubriken.",
+      "textSuggestions": [
+        "Det finns ingen länk för att hoppa förbi sidhuvudet och komma direkt till huvudinnehållet.",
+        "Det finns inget sätt att hoppa förbi innehåll som återkommer på flera sidor."
+      ]
+    },
+    {
+      "id": "kork",
+      "name": "Kortkommandon",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.1.4 (A)",
+      "en301549": "9.2.1.4",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Webbsidan innehåller inga kortkommandon som aktiveras med enbart en tangent. Om det finns kortkommandon krävs en modifieringstangent, exempelvis Ctrl, Alt eller Caps-lock.",
+      "why": "Vi vill undvika att användare aktiverar kortkommandon av misstag. Detta är särskilt viktigt för användare med nedsatt motorik eller användare som navigerar med röststyrning.",
+      "howToTest": "Tryck ner alla tangenter i tur och ordning. Notera om det sker något i gränssnittet.",
+      "textSuggestions": [
+        "[Tangent] används som snabbtangent och det går inte att stänga av eller byta ut den."
+      ]
+    },
+    {
+      "id": "fbfo",
+      "name": "Inga oväntade förändringar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.2.1 (A),3.2.2 (A)",
+      "en301549": "9.3.2.1,9.3.2.2",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Inga oväntade förändringar sker när användaren:\r\n- flyttar fokus till en komponent\r\n- ändrar en komponent, exempelvis skriver något i ett textfält eller markerar en kryssruta\r\n\r\nExempel på oväntade förändringar är att nya fönster öppnas, fokus flyttas, att användaren skickas till en annan sida, att formulär skickas automatiskt eller att innehållet på sidan förändras.",
+      "why": "Ett gränssnitt uppfattas som mer förutsägbart av användare när vi undviker oväntade förändringar. Det underlättar särskilt för användare med nedsatt syn, kognition eller motorik.",
+      "howToTest": "Kontrollera att ingen förändring sker på sidan när en komponent får fokus eller ändras.\r\n",
+      "textSuggestions": [
+        "När värdet ändras i [komponent] sker en [oväntad förändring]."
+      ]
+    },
+    {
+      "id": "ihof",
+      "name": "Innehåll som visas vid hover eller fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.13 (AA)",
+      "en301549": "9.1.4.13",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Innehåll som visas vid hover kan också visas med fokus och tvärtom. Det finns minst ett tydligt sätt för användaren att sluta visa innehållet. Innehållet slutar inte visas förrän användaren själv väljer att sluta visa det.",
+      "why": "Användaren ska oavsett om hen använder mus eller tangentbord kunna kontrollera om innehållet ska visas och hur länge för att kunna ta del av det utifrån sina förutsättningar.",
+      "howToTest": "1. Navigera igenom sidan med tabbtangenten och kontrollera om ny information visas i anslutning till interaktiva objekt när de får fokus.\r\n\r\n2. Använd musmarkören och hovra över interaktiva objekt. Kontrollera om ny information visas i anslutning till objekten vid hover.\r\n\r\n3. Jämför och kontrollera att information som läggs till vid interaktiva objekt vid fokus eller hover är möjlig att få fram med båda navigationssätten.",
+      "textSuggestions": [
+        "[Innehåll] visas när [element] får fokus och går inte att dölja utan att flytta fokus eller pekare.",
+        "[Innehåll] visas när [element] får fokus, men försvinner utan att användaren kan påverka det.",
+        "[Innehåll] visas när [element] får fokus och går inte att dölja utan att flytta fokus vid 200 % zoom.",
+        "[Innehåll] visas vid hovring och går inte att dölja utan att flytta pekaren vid 200 % zoom."
+      ]
+    },
+    {
+      "id": "ngkl",
+      "name": "Ångra klick eller tryck",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.2 (A)",
+      "en301549": "9.2.5.2",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Användaren kan alltid ångra ett påbörjat klick eller ett tryck på en touchskärm genom att flytta musmarkören eller att dra fingret bort från ett objekt. Handlingen slutförs inte förrän användaren lyfter sitt finger från sitt pekdon eller från skärmen.",
+      "why": "Möjligheten att ångra ett påbörjat klick eller tryck på en touchskärm underlättar för alla användare som har råkat klicka eller trycka på fel objekt.",
+      "howToTest": "1. Klicka på ett interaktivt objekt, exempelvis en knapp eller en länk, men håll nere vänster musknapp.\r\n\r\n2. Flytta markören bort från det interaktiva objektet. \r\n\r\n3. Släpp vänster musknapp.\r\n\r\n4. Om testet lyckas ska objektets funktion inte aktiveras. ",
+      "textSuggestions": [
+        "På [sidan] finns funktionen [funktion] som aktiveras när musknappen eller fingret trycks ned som inte går att avbryta eller ångra."
+      ]
+    },
+    {
+      "id": "alfi",
+      "name": "Alternativ till komplexa fingerrörelser",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.1 (A)",
+      "en301549": "9.2.5.1",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Det finns alternativ till komplexa fingerrörelser. Funktioner som kräver flera fingrar eller sveprörelser är också möjliga att utföra på enklare sätt med endast ett finger. \r\nPå kartor kan det till exempel finnas knappar med samma funktion som nyp-zoom.",
+      "why": "Alla har inte möjlighet att använda flera fingrar samtidigt till exempel på grund av motoriska nedsättningar. Komplexa rörelser är även svårt för ovana användare.",
+      "howToTest": "Kontrollera att funktioner som bygger på gester kan aktiveras på ett alternativt sätt. Exempel på sådana funktioner är dra-och-släpp, zoomfunktioner och objekt som kan flyttas i sidled för att visa fler funktioner.",
+      "textSuggestions": [
+        "[Funktion] kräver att man använder flera fingrar samtidigt och saknar alternativ för den som inte kan utföra gesten."
+      ]
+    },
+    {
+      "id": "atds",
+      "name": "Alternativ till dra och släpp-funktioner",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.7 (AA) ",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Funktioner som kräver att användaren drar och släpper ett objekt (drag-and-drop) ska kunna utföras med ett alternativ som inte kräver dragning, till exempel genom klick. \r\n\r\nUndantag görs för funktioner som styr webbläsaren eller hjälpmedel.",
+      "why": "Det finns användare med nedsatt finmotorik eller styrka som gör att de inte kan dra objekt med mus eller fingrar. Ett alternativ gör att personer med motoriska svårigheter eller som använder alternativa styrsätt kan utföra samma funktion.",
+      "howToTest": "- Identifiera funktioner som kräver dragning, t.ex. sortering av listor eller flytt av objekt.\r\n- Kontrollera att det finns ett alternativ som fungerar med enstaka klick eller tryck (t.ex. pilar, menyval eller textfält).\r\n- Säkerställ att alternativet ger samma resultat som dragningen.",
+      "textSuggestions": [
+        "[Funktion] saknar tillgängligt alternativ för dra- och släpp-funktionen."
+      ]
+    },
+    {
+      "id": "alro",
+      "name": "Alternativ till rörelsestyrning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.4 (A)",
+      "en301549": "9.2.5.4",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Det finns alternativ till styrning med handrörelser som aktiverar funktioner genom att användaren skakar, vrider eller rör vid enheten eller viftar framför den. Funktioner kan aktiveras på något annat sätt, exempelvis genom knappar i gränssnittet. Rörelsestyrning ska gå att stänga av för att undvika oavsiktlig aktivering.",
+      "why": "Användare kan ha sin enhet monterad på ett stativ eller ha nedsatt motorik vilket hindrar dem från att aktivera funktioner med rörelser. Styrning som bygger på rörelser kan också vara svåra för användare med ofrivilliga rörelser, spasmer eller ryckningar.",
+      "howToTest": "Kontrollera att:\r\n- Funktioner som bygger på rörelser kan aktiveras på ett alternativt sätt.\r\n- Rörelsestyrning går stänga av för att undvika oavsiktlig aktivering.",
+      "textSuggestions": [
+        "[Funktion] kräver rörelsestyrning och det finns inget tillgängligt alternativ för den som inte kan utföra det.",
+        "Rörelsestyrningen för [funktion] går inte att stänga av."
+      ]
+    },
+    {
+      "id": "sela",
+      "name": "Semantiska länkar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Alla länkar är korrekt uppmärkta med elementet `<a>` och har ett href-attribut. En länk förflyttar användaren till en ny plats på samma sida eller till en annan sida.",
+      "why": "Korrekt uppmärkta länkar behövs för att användaren ska kunna navigera på webbplatsen, oavsett navigeringsmetod.",
+      "howToTest": "- Kontrollera med webbläsarens utvecklarverktyg att alla länkar utgörs av `<a>`-element med attributet href.\r\n- Kontrollera att länken tar användaren till URL:en som anges i href-attributet.",
+      "textSuggestions": [
+        "[Länk] är felaktigt uppmärkt i koden vilket gör den svår att använda med hjälpmedel."
+      ]
+    },
+    {
+      "id": "sekn",
+      "name": "Semantiska knappar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1.",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Knappar är uppmärkta med elementet `<button>`. En knapp används för att aktivera en funktion.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur. ",
+      "howToTest": "Kontrollera att alla knappar är kodade med `<button>`-element.",
+      "textSuggestions": [
+        "[Knapp] är felaktigt uppmärkt i koden vilket gör den svår att använda med hjälpmedel."
+      ]
+    },
+    {
+      "id": "knut",
+      "name": "Namn för knappar utan text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.2 (A)",
+      "en301549": "9.4.1.2",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Om det finns knappar som saknar en synlig knapptext beskrivs knappens funktion med text i ett attribut som hjälpmedel kommer åt. Exempel: `aria-label=\"Sök på webbplatsen\"`.",
+      "why": "Användare som inte uppfattar knappar visuellt, behöver förstå vad dessa har för funktion.",
+      "howToTest": "Kontrollera att knappar utan synlig text har ett textalternativ som hjälpmedel kan tolka.",
+      "textSuggestions": [
+        "[Knapp] har inget namn som hjälpmedel kommer åt."
+      ]
+    },
+    {
+      "id": "syko",
+      "name": "Synligt och kodat namn överensstämmer",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.3 (A)",
+      "en301549": "9.2.5.3",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Den synliga texten som beskriver en komponent överensstämmer med det namn som komponenten har i koden och som hjälpmedel kommer åt. I de fall då dessa namn inte kan ha samma innehåll börjar namnet i koden med den synliga texten.",
+      "why": "Användare som navigerar med röststyrning kan interagera med knappar och funktioner genom att exempelvis säga 'Klicka på Sök'. Om den synliga beskrivningen av en knapp inte motsvarar knappens beskrivning i koden fungerar inte kommandon med röststyrning.",
+      "howToTest": "1. Gå igenom sidans alla komponenter som har synliga etiketter.\r\n\r\n2. Jämför komponenternas synliga etiketter med de namn som komponenterna har i koden och säkerställ att dessa är samma, eller inleds på samma sätt.",
+      "textSuggestions": [
+        "Den synliga texten på [komponent] stämmer inte överens med namnet som hjälpmedel kommer åt."
+      ]
+    },
+    {
+      "id": "roko",
+      "name": "Komponenters roll och tillstånd",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.2 (A)",
+      "en301549": "9.4.1.2",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "- Komponenter är antingen baserade på standardelement i html eller förses med attributet role som gör det möjligt för hjälpmedel att tolka komponenter på rätt sätt.\r\n- Om en användare kan ändra tillstånd, egenskap eller värde i en komponent ska det värdet även återges på ett sätt som hjälpmedel kan plocka upp. Ett exempel är att en komponent kan fällas ut och ihop. En sådan komponent ska ha attributet aria-expanded satt till `true` eller `false` samt aria-controls med hänvisning till den expanderbara ytan.",
+      "why": "Om en komponent varken är ett standardelement eller har attributet role förstår inte hjälpmedel vad komponenten är, vilket försvårar interaktionen för användaren.",
+      "howToTest": "- Kontrollera att komponenter antingen använder standardelement i HTML eller har attributet role angivet.\t\r\n- Kontrollera att tillstånd och egenskaper uppdateras och visar det aktuella tillståndet när komponenten ändras.",
+      "textSuggestions": [
+        "[Komponent] saknar, eller har en felaktig, roll i koden. Därför blir den svår att förmedla till hjälpmedel.",
+        "Det finns fält som kontrolleras av andra fält. Dessa har fel uppmärkning i koden."
+      ]
+    },
+    {
+      "id": "indy",
+      "name": "Statusmeddelanden",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.3 (A)",
+      "en301549": "9.4.1.3",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Statusmeddelanden ger information om dynamiska uppdateringar på sidan. Exempel:\r\n- Någonting sparas.\r\n- Antalet träffar i ett sökresultat eller i en filtering.\r\n- Ett formulär har skickats in.\r\n\r\nSkärmläsare läser upp denna typ av meddelanden utan att fokus flyttas.",
+      "why": "Information som förmedlas till seende användare ska skärmläsaranvändare också få ta del av.",
+      "howToTest": "Testa antingen genom att använda en skärmläsare eller genom att granska koden.\r\n\r\nGranska koden:\r\n- För varje förändring, kontrollera att det element i koden som innehåller information om sidans status har antingen attributet `role=“status”` eller `aria-live=”polite”` (inte båda).\r\n\r\nSkärmläsare: \r\n- Kontrollera att skärmläsaren läser upp informationen, inklusive förändringen, för användaren utan att avbryta en pågående uppläsning av innehåll. Skärmläsaren ska läsa meddelandet när den pågående uppläsningen är klar.\r\n- Kontrollera också att användaren får ta del av all relevant information. Exempel: “3 sparade annonser” istället för enbart “3”.\r\n- Kontrollera att fokus är kvar vid den komponent där användaren hade fokus då uppgiften utfördes och inte flyttas till meddelandet om sidans status.",
+      "textSuggestions": [
+        "[Statusmeddelande] är inte korrekt uppmärkt i koden. Detta gör att de inte förmedlas till hjälpmedel."
+      ]
+    },
+    {
+      "id": "uppt",
+      "name": "Meddelande om upptaget system",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.3 (A)",
+      "en301549": "9.4.1.3",
+      "contentType": "",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Om det finns meddelanden om upptaget system, exempelvis laddningsindikatorer, ska användare som navigerar med skärmläsare få samma information som en seende användare. Detta ska ske utan att meddelandet får fokus.",
+      "why": "Information som förmedlas till seende användare ska skärmläsaranvändare också få ta del av.",
+      "howToTest": "1. Kontrollera att meddelanden om att systemet är upptaget läses upp av skärmläsare. Detta ska ske utan att avbryta en pågående uppläsning och utan att fokus flyttas till meddelandet om att systemet arbetar.\r\n\r\n2. När systemet inte längre är upptaget eller när innehåll har laddats in på sidan, kontrollera att information om vad som har skett kan uppfattas av skärmläsare.",
+      "textSuggestions": [
+        "När systemet är upptaget, förmedlas inte detta till hjälpmedelsanvändare."
+      ]
+    },
+    {
+      "id": "plet",
+      "name": "Synliga etiketter kopplade till formulärfält",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.2 (A),1.3.1 (A)",
+      "en301549": "9.3.3.2,9.1.3.1",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "- Alla interaktiva formulärkomponenter har synliga etiketter i elementet `<label>`. Placeholdertexter är inte tillräckliga för att beskriva formulärobjekt eftersom de försvinner när användaren börjar skriva i ett fält.\r\n- Etiketter är placerade så att det är tydligt vilket fält etiketten beskriver.\r\n- Varje `<label>` är kopplad i koden till det formulärobjekt som etiketten beskriver. Att klicka på etiketten ger samma resultat som att klicka i eller på formulärobjektet. Exempel: att klicka på etiketten till höger om en kryssruta markerar också själva kryssrutan.",
+      "why": "Synliga etiketter som är placerade där användaren förväntar sig underlättar för alla användare men är särskilt viktigt för användare med kognitiva funktionsnedsättningar, nedsatt minnesförmåga eller inlärningssvårigheter.\r\n\r\nKorrekt koppling mellan etikett och formulärkomponent underlättar för användare med hjälpmedel, samt gör klickytor större och lättare att interagera med.",
+      "howToTest": "- Kontrollera att samtliga formulärkomponenter har synliga etiketter som beskriver syftet och är placerade i direkt anslutning till respektive komponent.\r\n- Kontrollera att samtliga etiketter är kopplade till den aktuella komponenten i koden. Ett `<label>`-element ska ha ett for-attribut som refererar till den aktuella formulärkomponentens id-värde.",
+      "textSuggestions": [
+        "[Fältet/komponenten] saknar synlig ledtext eller instruktion för ifyllnad."
+      ]
+    },
+    {
+      "id": "info",
+      "name": "Information om format",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.2 (A)",
+      "en301549": "9.3.3.2",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "Det framgår tydligt för användaren när det krävs ett särskilt format på den information som ska matas in i ett inmatningsfält.",
+      "why": "Tydlig information om särskilda format hjälper användaren att förstå hur information ska fyllas i vilket också hjälper användaren att undvika att göra fel.",
+      "howToTest": "1. Granska inmatningsfält som kräver att användaren matar in information i ett specifikt format. Det kan vara exempelvis person- eller organisationsnummer, kontonummer, postnummer eller telefonnummer.\r\n\r\n2. Kontrollera att det finns information som beskriver det förväntade formatet på ett tydligt sätt.\r\n",
+      "textSuggestions": [
+        "Det saknas information om vilket format som ska användas i [komponent]."
+      ]
+    },
+    {
+      "id": "auin",
+      "name": "Autoifyllnad i inmatningsfält",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.5 (AA)",
+      "en301549": "9.1.3.5",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "Inmatningsfält för personlig information kan kompletteras automatiskt för att hjälpa användaren att fylla i fälten snabbare. Fält som kan fyllas i automatiskt är uppmärkta med attributet autocomplete med ett värde som anger vilken typ av information det handlar om.\r\n\r\nSamtliga giltiga värden för attributet autocomplete finns under kapitel 7 i Web Content Accessibility Guidelines (WCAG) 2.1. \r\n\r\nExempel:\r\n- name\r\n- username\r\n- organization\r\n- street-address\r\n- postal-code\r\n- country",
+      "why": "Automatisk ifyllnad av formulär underlättar för alla användare.",
+      "howToTest": "För samtliga formulärfält där användaren kan mata in personlig information kan du antingen:\r\n\r\n- Kontrollera att fälten har attributet autocomplete med ett värde som motsvarar det innehåll som användaren kan ange.\r\n- Testa att fylla i fälten och verifiera att information kan fyllas i automatiskt.\r\n",
+      "textSuggestions": [
+        "[Fält] kan fyllas i automatiskt med [uppgift], men syftet saknas helt eller förmedlas felaktigt till hjälpmedel."
+      ]
+    },
+    {
+      "id": "obft",
+      "name": "Obligatoriska fält",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.2 (A)",
+      "en301549": "9.3.3.2",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "I formulär framgår det tydligt vilka fält som är obligatoriska.\r\n\r\nHelst ska det markeras i klartext vilka fält som är obligatoriska eller frivilliga, men behöver detta göras med en symbol ska formuläret inledas med en text som informerar användaren om hur fälten är uppmärkta.\r\n\r\nObligatoriska fält har även attributet `required`.",
+      "why": "Tydlig information om obligatoriska eller frivilliga fält hjälper användaren att uppfatta vilka fält som behöver fyllas i för att komma vidare.",
+      "howToTest": "1. Kontrollera att obligatoriska formulärkomponenter både är visuellt uppmärkta och har attributet required. Attributet ska inte ha något värde. \r\n2. Om formulärkomponenterna är uppmärkta med en symbol snarare än text, kontrollera att det finns en inledande förklaring till hur komponenterna är uppmärkta.",
+      "textSuggestions": [
+        "Det framgår inte i text vilka fält som är obligatoriska eller frivilliga."
+      ]
+    },
+    {
+      "id": "msko",
+      "name": "Minimistorlek för klickbara objekt",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.8 (AA)",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Klickbara element ska vara minst 24 × 24 CSS-pixlar. Om elementet är mindre måste det finnas tillräckligt avstånd (minst 1 CSS-pixel) mellan klickbara ytor så att de inte överlappar vid förstoring. \r\n\r\nUndantag görs för länkar i löpande text och juridisk text.",
+      "why": "Större klickytor gör det lättare att träffa rätt, särskilt för användare med nedsatt finmotorik eller som använder pekskärm där precisionen är lägre än med mus.",
+      "howToTest": "- Kontrollera storleken på klickbara element så att de är minst 24 × 24 CSS-pixlar.\r\n- Om element är mindre, kontrollera att avståndet mellan klickbara ytor är minst 1 CSS-pixel.\r\n- Testa med förstoring för att säkerställa att ytor inte överlappar varandra.",
+      "textSuggestions": [
+        "[Objekt] har otillräcklig storlek på klickytan."
+      ]
+    },
+    {
+      "id": "grrk",
+      "name": "Grupper av radioknappar eller kryssrutor",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "9.1.3.1",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "Formulärobjekt, särskilt radioknappar och kryssrutor, som hör ihop grupperas med elementet `<fieldset>`. Varje `<fieldset>` inleds med elementet `<legend>` som beskriver gruppens syfte.",
+      "why": "Saknas denna gruppering för radioknappar eller kryssrutor framgår inte för användare med hjälpmedel vilken fråga som besvaras.",
+      "howToTest": "Kontrollera att grupperingar av formulärobjekt omsluts av elementet fieldset och att det elementet inleds med ett legend-element som beskriver gruppen.",
+      "textSuggestions": [
+        "[Radioknappar/kryssrutor] är inte grupperade på rätt sätt i koden."
+      ]
+    },
+    {
+      "id": "taut",
+      "name": "Tillgänglig autentisering",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.8 (AA)",
+      "category": "Navigation och interaktion",
+      "objectType": "web",
+      "statement": "Autentisering får inte kräva att användaren utför kognitiva tester, t.ex. minnas lösenord, lösa gåtor, tolka CAPTCHA eller göra beräkningar. Det ska finnas alternativ som inte bygger på minne eller problemlösning, och det ska gå att klistra in användarnamn och lösenord. \r\n\r\nUndantag gäller om det finns ett annat tillgängligt sätt att autentisera sig på.",
+      "why": "Kognitiva tester kan utesluta personer med minnessvårigheter, dyslexi eller andra kognitiva utmaningar. Tillgängliga alternativ gör autentisering enklare och mer inkluderande.",
+      "howToTest": "- Kontrollera att autentisering inte kräver att användaren löser gåtor, tolkar bilder eller minns komplex information.\r\n- Säkerställ att det går att klistra in användarnamn och lösenord.\r\n- Om kognitiva tester används, kontrollera att det finns ett tillgängligt alternativ (t.ex. e-postlänk eller biometrisk inloggning).",
+      "textSuggestions": [
+        "Autentiseringen kräver att användaren kan genomföra [test]."
+      ]
+    },
+    {
+      "id": "fedi",
+      "name": "Felhantering",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.1 (A),4.1.3 (A)",
+      "en301549": "9.3.3.1,9.4.1.3",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "- Vid validering av inmatningsfält markeras fält med felaktigt innehåll och felet beskrivs med text för användaren. \r\n- Inmatningsfält som innehåller fel har attributet `aria-invalid=”true”`. \r\n- Användare med skärmläsare får information om fel utan att felmeddelandet får fokus.",
+      "why": "- Det är viktigt att användare får information om att ett fel uppstått och var felet uppstått så att hen kan åtgärda det.\r\n- Användare som är fullt seende kan uppfatta felmeddelanden i andra områden än den plats där mus- eller textmarkör befinner sig, och utan att det felmeddelandet stör användaren. Det är viktigt att ge samma möjlighet till användare med nedsatt syn som navigerar med skärmläsare.",
+      "howToTest": "1. Fyll i formuläret på ett felaktigt sätt. Mata in felaktiga format och hoppa över obligatoriska fält.\r\n2. Kontrollera att felmeddelanden visas antingen direkt eller vid inskick.\r\n\r\nFör varje fel som uppstår:\r\n1. Kontrollera att fältet markeras visuellt och att ett felmeddelande visas i text.\r\n2. Kontrollera att felmeddelandet läses upp av en skärmläsare utan att fokus flyttas.\r\n3. Granska koden för fältet och kontrollera att fältet har attributet aria-invalid=”true”.\r\n4. Kontrollera i koden att felmeddelandet som visas är kopplat till fältet, exempelvis med attributet aria-describedby.\r\n",
+      "textSuggestions": [
+        "Valideringsfel vid [fält] visas inte som text.",
+        "Det framgår varken i text eller på ett sätt som kan tolkas av hjälpmedel vilka fält som har fel vid validering."
+      ]
+    },
+    {
+      "id": "fibg",
+      "name": "Fyll i information bara en gång",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.7 (A)",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "Användaren ska bara behöva fylla i samma information en gång i en process. Uppgifter som redan har angetts ska återanvändas automatiskt eller erbjudas som förslag. \r\n\r\nUndantag görs för sekretessinformation, lösenord och e-postbekräftelser.",
+      "why": "Det minskar belastningen för användare med motoriska svårigheter, dyslexi eller kognitiva utmaningar. Det gör processen enklare och minskar risken för fel.",
+      "howToTest": "- Gå igenom en process där samma uppgifter används flera gånger.\r\n- Kontrollera att tidigare inmatad information fylls i automatiskt eller erbjuds som förslag.\r\n- Säkerställ att undantag (lösenord, sekretessinfo) hanteras korrekt.",
+      "textSuggestions": [
+        "Användaren uppmanas att fylla i [information] [x] gånger i [formulär]."
+      ]
+    },
+    {
+      "id": "fgfe",
+      "name": "Förslag vid fel",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.3 (AA)",
+      "en301549": "9.3.3.3.",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "När fel upptäcks automatiskt bör förslag på korrekt inmatning presenteras om det är möjligt.\r\n\r\nExempel:\r\n- Fyll i endast siffror.\r\n- Välj ett datum i framtiden.\r\n\r\nUndantag:\r\n- Detta behöver inte ske om det på något vis äventyrar säkerheten på webbplatsen.",
+      "why": "Tydliga förslag vid felhantering hjälper alla användare att förstå hur de ska korrigera fel som uppstår.",
+      "howToTest": "1. Försök att skicka in ett formulär som innehåller fel, exempelvis fel format eller tomma obligatoriska fält.\r\n\r\n2. Kontrollera att felmeddelanden som visas tydligt informerar om hur felet ska korrigeras.",
+      "textSuggestions": [
+        "[Felmeddelande] informerar inte användaren om hur fel kan rättas till."
+      ]
+    },
+    {
+      "id": "fbfe",
+      "name": "Användarkontroll vid viktiga transaktioner",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.4 (AA)",
+      "en301549": "9.3.3.4",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "web",
+      "statement": "För webbsidor som leder till att användare ingår rättsliga åtaganden eller utför ekonomiska transaktioner, eller som ändrar eller raderar användarstyrd data i datalagringssystem eller tar emot användarens provsvar, så ska minst en av följande punkter gälla:\r\n\r\n- Möjlig att ångra: Åtgärder kan ångras.\r\n- Kontrollerad: Data som matats in av användaren kontrolleras, och om inmatningsfel hittas ges användaren möjlighet att rätta till dem.\r\n- Bekräftad: Det finns en metod/funktion för att förhandsgranska, bekräfta och rätta till information innan åtgärden slutförs.",
+      "why": "Det är viktigt att skydda användarna från allvarliga konsekvenser som orsakats av att de råkat göra ett misstag.",
+      "howToTest": "För tjänster eller webbsidor där användaren kan fylla i och skicka information, gör följande:\r\n\r\n1. Utför alla steg i tjänsten för att simulera att en användare utför en uppgift. För att undvika eventuella fel i bakomliggande system bör testdata användas här.\r\n2. Kontrollera om den aktuella tjänsten eller formulären på webbsidan avslutas med en knapp för att granska informationen i formuläret.\r\n3. Kontrollera att nästa steg i tjänsten tar användaren till en sida där användaren kan granska den information som den har angett i formuläret.\r\n4. Kontrollera att det finns en möjlighet för användaren att gå tillbaka och korrigera information som har blivit fel.\r\n",
+      "textSuggestions": [
+        "[Åtgärden] går inte att ångra. Det finns heller ingen förhandgranskning eller möjlighet att rätta felaktig inmatning."
+      ]
+    },
+    {
+      "id": "fvlj",
+      "name": "Ljudkvalitet i video- och röstsamtal",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.1",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Om tjänsten erbjuder möjlighet för användaren att prata med någon annan ska tjänsten kunna hantera ljud upp till 7 kHz för att erbjuda tillräckligt bra ljudkvalitet.",
+      "why": "I ett digitalt möte ska ljudet vara så pass bra att deltagarna i mötet kan höra skillnad på konsonanterna f och s.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Frekvensomfånget för ljudet uppnår inte gränsvärdet."
+      ]
+    },
+    {
+      "id": "fvre",
+      "name": "Realtidstext i video- och röstsamtal",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.1.1",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Om en tjänst erbjuder användaren möjlighet att prata med någon annan ska tjänsten erbjuda realtidstext (RTT).",
+      "why": "En döv deltagare i ett digitalt möte ska kunna följa samtalet.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Tjänsten har tvåvägs röstkommunikation men saknar stöd för kommunikation genom realtidstext."
+      ]
+    },
+    {
+      "id": "fvan",
+      "name": "Samma anslutning för tal och realtidstext",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.1.2",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Det går att kommunicera både med tal och med realtidstext (RTT) samtidigt via en och samma anslutning. Det betyder att det inte ska krävas två olika uppkopplingar för att prata och skicka realtidstext.",
+      "why": "Vi vill underlätta för användare att kommunicera på det sätt som passar dem bäst.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det går inte att kommunicera med tal och realtidstext samtidigt via samma anslutning."
+      ]
+    },
+    {
+      "id": "fvvs",
+      "name": "Skilj på egna och andras meddelanden",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.2.1,6.2.2.2",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "När en tjänst kan skicka och ta emot realtidstext (RTT) ska skickade och mottagna meddelanden gå att särskilja både visuellt och maskinläsbart.",
+      "why": "En användare som har behov av realtidstext behöver kunna skilja på skickade och mottagna meddelanden för att lättare kunna följa samtalet i ett digitalt möte.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det går inte att se skillnad på skickad och mottagen realtidstext och skillnaden förmedlas inte heller till hjälpmedel."
+      ]
+    },
+    {
+      "id": "fvvv",
+      "name": "Visa vem som skriver realtidstext",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.2.3",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Om det visuellt markeras vem som talar ska det också markeras visuellt vem som skriver realtidstext (RTT).",
+      "why": "Det är viktigt för användaren att veta vem som pratar eller skriver.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det saknas visuell indikering av vem som kommunicerar med realtidstext."
+      ]
+    },
+    {
+      "id": "fvvi",
+      "name": "Visuell ljudindikator",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.2.4",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "När en tjänst har stöd för röstkommunikation och realtidstext (RTT) ska det finnas en visuell indikator som visar när någon talar. Denna indikator ska även vara tillgänglig för användare med hjälpmedel.",
+      "why": "En döv deltagare i ett digitalt möte behöver få information om vad som händer i mötet.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det saknas en visuell ljudindikering vid kommunikation via realtidstext."
+      ]
+    },
+    {
+      "id": "fvko",
+      "name": "Interoperabilitet",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.3",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "När en tjänst tillhandahåller realtidstext (RTT) ska den kunna kommunicera med liknande tjänster.",
+      "why": "Användare använder olika tjänster och ska ändå kunna kommunicera med varandra.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Tjänsten har inte [full] interoperabilitet med ITU-T V.18: [konsekvens]."
+      ]
+    },
+    {
+      "id": "fvin",
+      "name": "Inmatning av realtidstext",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.2.4",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "När tjänst använder inmatning med realtidstext (RTT) ska denna inmatning skickas till systemets nätverk eller plattform inom 500 millisekunder från det ögonblick då den minsta enheten av pålitligt skapad text är redo för sändning. Eventuella fördröjningar på grund av nätverkets eller plattformens prestanda räknas inte in i dessa 500 millisekunder.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det tar för lång tid innan inmatad text skickas via nätverket. Det försvårar för personer med nedsatt hörsel att följa samtalet."
+      ]
+    },
+    {
+      "id": "fvna",
+      "name": "Namn och/eller nummerpresentation",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.3",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Om det, innan ett röst- eller videosamtal börjar, visas i text vem som ringer (caller ID), ska informationen vara maskinläsbar.",
+      "why": "Alla användare, oavsett förutsättning ska få samma information.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Information om uppringaren visas inte som text."
+      ]
+    },
+    {
+      "id": "allv",
+      "name": "Alternativ till ljudbaserade tjänster",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.4",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Tjänster som innehåller röstmeddelanden eller telefonsvarare, automatisk telefonist eller interaktiva svarsfunktioner, ska erbjuda sätt att komma åt informationen och använda funktionerna utan att använda hörsel eller tal.",
+      "why": "Personer med nedsatt hörsel- eller talförmåga ska ges möjlighet att använda dessa tjänster.",
+      "howToTest": "Kontrollera att det finns alternativ till talsvar och liknande.\r\n",
+      "textSuggestions": [
+        "Den som inte har talförmåga kan inte lämna meddelanden i röstbrevlådan."
+      ]
+    },
+    {
+      "id": "fvup",
+      "name": "Upplösning i videosamtal",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.5.2",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Videosamtal ska ha en upplösning på minst 320 x 240 pixlar (QVGA), men bör ha minst 640 x 480 pixlar (VGA).",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Bildupplösningen vid videokommunikation är inte tillräcklig, vilket kan göra det svårt att se."
+      ]
+    },
+    {
+      "id": "fvbi",
+      "name": "Bildfrekvens",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.5.3",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Videosamtal ska ha en bildfrekvens på minst 20 bilder per sekund, men bör ha en lägsta bildfrekvens på 30 bilder per sekund.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Bildväxlingsfrekvensen vid videokommunikation är för långsam."
+      ]
+    },
+    {
+      "id": "fvfd",
+      "name": "Fördröjning mellan ljud och bild",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.5.4",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "I ett videosamtal ska fördröjningen mellan ljud och bild vara högst 100 millisekunder.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Tidsförskjutningen mellan ljud och bild är för stor."
+      ]
+    },
+    {
+      "id": "fvsi",
+      "name": "Synlig indikator när någon talar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.5.5",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Videosamtal ska ha en synlig indikator som visar när någon talar.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det saknas en visuell ljudindikering när någon talar i ett videosamtal."
+      ]
+    },
+    {
+      "id": "fvit",
+      "name": "Indikator för teckenspråkstolk",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.5.6",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "När ett videosamtal innehåller en funktion som indikerar vem det är som pratar så ska det finnas en motsvarande indikator som visar vem av parterna i videosamtalet som är teckenspråkstolk.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det finns ingen visuell indikering av vem som kommunicerar med teckenspråk i ett videosamtal."
+      ]
+    },
+    {
+      "id": "alvt",
+      "name": "Alternativ till videobaserade tjänster",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "6.6",
+      "contentType": "Videosamtal",
+      "category": "Röst-/videokommunikation",
+      "objectType": "web",
+      "statement": "Tjänster som innehåller videobaserad realtidskommunikation bör även erbjuda en lösning som gör det möjligt för personen att ta del av informationen och använda dessa funktioner utan att använda hörsel, tal eller syn.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det finns ingen lösning för den som saknar syn- eller hörselförmåga att ta till sig informationen i ett videosamtal"
+      ]
+    },
+    {
+      "id": "frti",
+      "name": "Tillgängligt innehållsskapande",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "11.8.2",
+      "contentType": "Innehållsskapande",
+      "category": "Innehållsskapande",
+      "objectType": "web",
+      "statement": "Verktyg för innehållsskapande ska hjälpa till att skapa innehåll som följer riktlinjerna för webb eller för dokument.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "[Redigeringsverktyg] har inte stöd för att skapa innehåll som uppfyller tillgänglighetskraven.",
+        "[Redigeringsverktyg] hjälper inte användaren att skapa innehåll som uppfyller tillgänglighetskraven."
+      ]
+    },
+    {
+      "id": "frbt",
+      "name": "Bevarande av tillgänglighet vid omvandling",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "11.8.3",
+      "contentType": "Innehållsskapande",
+      "category": "Innehållsskapande",
+      "objectType": "web",
+      "statement": "När verktyg för innehållskapande erbjuder funktioner för att ändra informationens struktur eller den teknik som används för att presentera innehållet ska tillgänglighetsinformation bevaras efter denna förändring, förutsatt att målformatet har stöd för samma eller motsvarande tillgänglighetsinformation.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "Vid omstrukturering i [redigeringsverktyg] bevaras inte [tillgänglighetsinformation].",
+        "Vid omvandling till [format] i [redigeringsverktyg] bevaras inte [tillgänglighetsinformation]."
+      ]
+    },
+    {
+      "id": "frhr",
+      "name": "Hjälp med rättelse",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "11.8.4",
+      "contentType": "Innehållsskapande",
+      "category": "Innehållsskapande",
+      "objectType": "web",
+      "statement": "Om tillgänglighetskontrollen i ett publiceringsverktyg kan upptäcka att innehållet inte möter ett eller flera av kriterierna för digital tillgänglighet som förkommer i EN 301 549 kap 9 (webb) eller kapitel 10 (dokument) så ska publiceringsverktyget lämna förslag på hur dessa brister kan rättas. Denna funktion kan innehålla hel- eller halvautomatiska möjligheter att rätta identifierade brister.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "[Redigeringsverktyg] ger inga förslag på hur upptäckta brister ska åtgärdas."
+      ]
+    },
+    {
+      "id": "frma",
+      "name": "Mallar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "11.8.5",
+      "contentType": "Innehållsskapande",
+      "category": "Innehållsskapande",
+      "objectType": "web",
+      "statement": "När ett verktyg för innehållsskapande tillhandahåller mallar ska minst en mall som stöder skapandet av innehåll som uppfyller kraven i klausulerna 9 (webb) eller 10 (dokument) och vara åtkomlig i publiceringsverktyget samt kunna identifieras som en sådan typ av mall.",
+      "why": "",
+      "howToTest": "",
+      "textSuggestions": [
+        "[Redigeringsverktyg] erbjuder ingen mall som skapar innehåll som uppfyller tillgänglighetskraven. Det visar inte heller om mallarna är tillgängliga eller inte."
+      ]
+    },
+    {
+      "id": "hjfu",
+      "name": "Hjälpfunktioner",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.2.6 (A)",
+      "category": "Dokumentation och support",
+      "objectType": "web",
+      "statement": "Hjälpfunktioner som finns på flera sidor, t.ex. kontaktuppgifter, FAQ, support eller chatt, ska placeras på samma plats i förhållande till annat innehåll. Det är inget krav att ha hjälpfunktioner, men om de finns ska de vara konsekventa.",
+      "why": "Konsekvent placering gör det lättare för användare att snabbt hitta hjälp, särskilt vid stress eller kognitiva svårigheter. Variation kan skapa förvirring och öka belastningen.",
+      "howToTest": "- Kontrollera att hjälpfunktioner (kontakt, FAQ, chatt) finns på samma plats på alla sidor där de förekommer.\r\n- Säkerställ att ordningen mellan olika hjälpfunktioner är konsekvent.",
+      "textSuggestions": [
+        "Hjälpfunktioner placeras på olika sätt på olika sidor."
+      ]
+    },
+    {
+      "id": "prdo",
+      "name": "Tillgänglig dokumentation",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "12.1",
+      "contentType": "",
+      "category": "Dokumentation och support",
+      "objectType": "web",
+      "statement": "Produktdokumentation, till exempel tillgänglighetsredogörelse eller hjälpsidor, ska ha en lista med funktioner för tillgänglighet. Den ska också förklara för användaren hur hen kan använda funktionerna. Detta gäller både inbyggda funktioner och funktioner som är avsedda för hjälpmedelsteknik. Produktdokumentation ska vara i ett elektroniskt format som uppfyller tillgänglighetskraven. ",
+      "why": "Användaren ska lätt kunna ta reda på vilka funktioner som finns och hur de används.",
+      "howToTest": "Kontrollera att produktdokumentationen beskriver hur man använder eventuella tillgänglighets- och kompatibilitetsfunktioner.",
+      "textSuggestions": [
+        "[Dokumentation] finns varken som en tillgänglig webbplats eller ett tillgängligt dokument.",
+        "Produktdokumentationen finns inte i något tillgängligt format."
+      ]
+    },
+    {
+      "id": "sudo",
+      "name": "Tillgänglig dokumentation från supporttjänst",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "12.2.4",
+      "contentType": "",
+      "category": "Dokumentation och support",
+      "objectType": "web",
+      "statement": "Dokumentation som tillhandahålls av en supporttjänst ska erbjudas antingen i form av en tillgänglig webbsida eller som ett tillgängligt dokument.",
+      "why": "Vi vill att alla användare ska kunna ta del av dokumentationen.",
+      "howToTest": "Granska dokumentationen och kontrollera att den uppfyller alla relevanta tillgänglighetskrav.",
+      "textSuggestions": [
+        "Dokumentation från [supporttjänst] tillhandahålls inte i ett tillgängligt format."
+      ]
+    },
+    {
+      "id": "suin",
+      "name": "Information om tillgänglighet",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "12.2.2",
+      "contentType": "",
+      "category": "Dokumentation och support",
+      "objectType": "web",
+      "statement": "Supporttjänster ska kunna informera om deras produkt eller tjänst uppfyller tillgänglighetskrav, om detta finns dokumenterat, samt ge vägledning till mer tillgängliga alternativ för personer som upplever problem.\r\n\r\nMed supporttjänster avses till exempel, men inte enbart:\r\n\r\n- kundservice\r\n- helpdesk\r\n- callcenter\r\n- teknisk support\r\n- tjänster för utbildning/självhjälp",
+      "why": "Vi behöver underlätta för användare att hitta tillgängliga alternativ.",
+      "howToTest": "Kontrollera att supportpersonal har tillgång till relevant material.",
+      "textSuggestions": [
+        "[Supporttjänst] kan inte ge information om hur pass väl tjänsten uppfyller tillgänglighetskraven."
+      ]
+    },
+    {
+      "id": "suko",
+      "name": "Kommunikation utifrån den enskildes behov",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "",
+      "en301549": "12.2.3",
+      "contentType": "",
+      "category": "Dokumentation och support",
+      "objectType": "web",
+      "statement": "Supporttjänster ska göra det möjligt för personer med funktionsnedsättning att kommunicera utifrån sina egna behov. Kommunikationen kan ske antingen direkt med supporten, eller via en tredjepartstjänst som exempelvis teckentolkning. ",
+      "why": "Vi vill inte exkludera användare från våra supporttjänster.",
+      "howToTest": "Kontrollera att det går att kommunicera med supporttjänsten på olika sätt, exempelvis röstsamtal eller texttelefon.",
+      "textSuggestions": [
+        "[Supporttjänst] erbjuder inte möjlighet att [kommunikationssätt] för den som har behov av det."
+      ]
+    },
+    {
+      "id": "doctxt",
+      "name": "Beskriv med text allt innehåll som inte är text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.1.1 (A)",
+      "en301549": "10.1.1.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.1.1."
+    },
+    {
+      "id": "docalt",
+      "name": "Erbjud alternativ till inspelningar som består av enbart ljud eller enbart video (förinspelat)",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.2.1 (A)",
+      "en301549": "10.1.2.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.1 Endast ljud och endast video (förinspelat)."
+    },
+    {
+      "id": "doctlju",
+      "name": "Texta ljudet i inspelade filmer",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.2.2 (A)",
+      "en301549": "10.1.2.2",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.2 Undertexter (förinspelat)."
+    },
+    {
+      "id": "docsyn",
+      "name": "Syntolka eller erbjud alternativ till videoinspelningar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.2.3 (A)",
+      "en301549": "10.1.2.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.3  Ljudbeskrivning eller mediealternativ (Förinspelat)"
+    },
+    {
+      "id": "doctel",
+      "name": "Texta ljudet (live)",
+      "regulatoryFramework": "lptt",
+      "wcag": "1.2.4 (AA)",
+      "en301549": "10.1.2.4",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.4 undertextning (live)."
+    },
+    {
+      "id": "docsvi",
+      "name": "Syntolka videoinspelning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.2.5 (AA)",
+      "en301549": "10.1.2.5",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.5 Ljudbeskrivning (förinspelad)."
+    },
+    {
+      "id": "docinr",
+      "name": "Information och relationer",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.1 (A)",
+      "en301549": "10.1.3.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.1 information och rlationer."
+    },
+    {
+      "id": "docord",
+      "name": "Presentera innehållet i en meningsfull ordning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.2 (A)",
+      "en301549": "10.1.3.2",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.2 meningsfull ordning."
+    },
+    {
+      "id": "docsen",
+      "name": "Sensoriska kännetecken",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.3 (A)",
+      "en301549": "10.1.3.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.3 sensoriska kännetecken."
+    },
+    {
+      "id": "docanp",
+      "name": "Se till att skärmen anpassar sig efter skärmens riktning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.4 (AA)",
+      "en301549": "10.1.3.4",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.4 Orientering."
+    },
+    {
+      "id": "docsyf",
+      "name": "Ange syfte för formulärfält i koden",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.5 (AA)",
+      "en301549": "10.1.3.5",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.5 Identifiera syfte med inmatning."
+    },
+    {
+      "id": "docktr",
+      "name": "Använd tillräckliga kontraster i komponenter och grafik",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.1 (A)",
+      "en301549": "10.1.4.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla: WCAG 1.4.1 Användning av färger."
+    },
+    {
+      "id": "docepi",
+      "name": "Max tre blinkningar per sekund",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.3.1 (A)",
+      "en301549": "10.2.3.1",
+      "category": "Visuell presentation",
+      "objectType": "doc",
+      "statement": "Inget innehåll ska blinka eller flimra mer än tre gånger under en sekund.",
+      "why": "Vi vill inte riskera att orsaka epileptiska anfall eller fysiska reaktioner hos våra användare.",
+      "howToTest": "1. Kontrollera om det finns blinkningar eller flimmer. Om inte är punkten godkänd.\r\n2. Finns det flimmer kan du testa det med hjälp av olika verktyg.\r\n\r\nVar extra uppmärksam med att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger."
+    },
+    {
+      "id": "doctid",
+      "name": "Gör det möjligt att justera tidsbegränsningar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.2.1 (A)",
+      "en301549": "10.2.2.1",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "doc",
+      "statement": "Om tidsgränser finns på webbsidan ska minst ett av följande krav vara uppfyllt:\r\n\r\n- Användaren blir meddelad innan tiden går ut och ges minst 20 sekunder för att utöka tidsgränsen, och användaren får förlänga tidsgränsen minst tio gånger.\r\n- Användaren får stänga av tidsgränsen innan den träder i kraft.\r\n- Användaren får justera tidsgränsen innan den träder i kraft över ett brett intervall som är minst tio gånger längre än standardinställningen.\r\n\r\nUndantag ges för följande scenarier:\r\n- Tidsgränsen är längre än 20 timmar.\r\n- Tidsgränsen är en nödvändig del av en händelse i realtid (till exempel en auktion) och inget alternativ till tidsgränsen är möjligt.\r\n- Tidsgränsen är väsentlig och att förlänga den skulle ogiltigförklara aktiviteten.",
+      "why": "Användare behöver olika lång tid på sig för att utföra en uppgift. Tidsgränser kan skapa stress och förvirring. De kan också göra att användaren går miste om information eller förlorar data.",
+      "howToTest": "1. Påbörja en uppgift, exempelvis genom att fylla i ett formulär.\r\n2. Överge uppgiften och låt sidan vara inaktiv tillräckligt länge för att den övre gränsen för inaktivitet ska inträffa.\r\n3. Om användaren loggas ut eller skickas vidare efter en viss tid, kontrollera om det visas en varning innan det sker.\r\n4. Kontrollera också om användaren har minst 20 sekunder på sig att förlänga tiden."
+    },
+    {
+      "id": "docrps",
+      "name": "Gör det möjligt att pausa eller stänga av automatisk uppspelning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.2.2 (A)",
+      "en301549": "10.2.2.2",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "doc",
+      "statement": "Det går att pausa, stoppa eller dölja innehåll som rör sig, blinkar eller scrollar automatiskt i mer än fem sekunder. Gäller exempelvis video, animationer och bildspel. Undantag är animationer eller indikationer som visar att innehåll laddas, samt blinkande textmarkörer i aktiva inmatningsfält.",
+      "why": "Automatisk uppspelning stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
+      "howToTest": "- Kontrollera om det finns något innehåll som rör sig, blinkar eller scrollar automatiskt på sidan.\r\n- Kontrollera hur länge rörelsen pågår.\r\n- Om den pågår i mindre än fem sekunder är kravet godkänt.\r\n- Om det går att pausa, stoppa eller dölja innehållet är kravet godkänt."
+    },
+    {
+      "id": "docpau",
+      "name": "Gör det möjligt att pausa, stänga av eller sänka ljud",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.2 (A)",
+      "en301549": "10.1.4.2",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "doc",
+      "statement": "Ljud som spelas upp automatiskt i ett dokument kan pausas, stoppas eller sänkas.",
+      "why": "Ljud som spelas upp automatiskt stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
+      "howToTest": "1. Börja med att kontrollera om det finns ljudfiler eller video med ljud som spelas automatiskt i dokumentet.\r\n2. Om det finns, kontrollera att ljudvolymen går att justera eller att ljudet går att pausa eller stänga av."
+    },
+    {
+      "id": "docktb",
+      "name": "Använd tillräcklig kontrast mellan text och bakgrund",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.3 (AA)",
+      "en301549": "10.1.4.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.3 Kontrast (minimum)."
+    },
+    {
+      "id": "doctsto",
+      "name": "Se till att text går att förstora",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.4 (AA)",
+      "en301549": "10.1.4.4",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.4  Förändring av textstorlek."
+    },
+    {
+      "id": "doctib",
+      "name": "Undvik bilder av text",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.5 (AA)",
+      "en301549": "10.1.4.5",
+      "contentType": "Bilder, ikoner & grafik",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "Om möjligt ska text alltid återges som text och inte bilder av text. Logotyper är undantag.",
+      "why": "Användare behöver kunna anpassa text utifrån sina behov. Text i bild kan inte läsas av hjälpmedel och är svårare att anpassa visuellt.",
+      "howToTest": "1. Identifiera alla bilder som innehåller text.\r\n2. Kontrollera att bilder som innehåller text har alt-texter som återger bildens text."
+    },
+    {
+      "id": "docflx",
+      "name": "Skapa en flexibel layout som fungerar vid förstoring eller på liten skärm",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.10 (AA)",
+      "en301549": "10.1.4.10",
+      "contentType": "",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.10  Skapa en flexibel layout som fungerar vid förstoring eller liten skärm."
+    },
+    {
+      "id": "dockkg",
+      "name": "Använd tillräckliga kontraster i komponenter och grafik",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.11 (AA)",
+      "en301549": "10.1.4.11",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.11 Användning av färger."
+    },
+    {
+      "id": "docavs",
+      "name": "Se till att de går att öka avstånd mellan tecken, rader, stycken och ord",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.12 (AA)",
+      "en301549": "10.4.12",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.12  Utökade textavstånd."
+    },
+    {
+      "id": "dochfo",
+      "name": "Innehåll som visas vid hover eller fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.13 (AA)",
+      "en301549": "10.1.4.13",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.13  Innehåll vid hover eller fokus."
+    },
+    {
+      "id": "doctgt",
+      "name": "Alla funktioner ska kunna användas med tangentbord",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.1.1 (A)",
+      "en301549": "10.2.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.1.1 Tangentbord."
+    },
+    {
+      "id": "doctgf",
+      "name": "Ingen tangentbordsfälla",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.1.2 (A)",
+      "en301549": "10.1.2.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.1.2 Ingen tangentbordsfälla."
+    },
+    {
+      "id": "dockrk",
+      "name": "Var försiktig med kortkommandon",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.1.4 (A)",
+      "en301549": "10.2.1.4",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.1.4 Snabbtangenter."
+    },
+    {
+      "id": "doctit",
+      "name": "Skriv beskrivande dokumenttitlar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.2 (A)",
+      "en301549": "10.2.4.2",
+      "objectType": "doc",
+      "statement": "Alla dokument har en titel som beskriver dokumentets syfte och innehåll.",
+      "why": "En beskrivande dokumenttitel hjälper användaren att snabbt och enkelt avgöra vilket dokument hen hanterar."
+    },
+    {
+      "id": "docfkn",
+      "name": "Ha en meningsfull fokusordning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.3 (A)",
+      "en301549": "10.2.4.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.3 Fokusordning."
+    },
+    {
+      "id": "doclan",
+      "name": "Skriv tydliga länkar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.4 (A)",
+      "en301549": "10.2.4.4",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.4 Tydliga länkar."
+    },
+    {
+      "id": "docrub",
+      "name": "Beskrivande rubriker och ledtexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.6 (AA)",
+      "en301549": "10.2.4.6",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.6 Rubriker och ledtexter/etiketter."
+    },
+    {
+      "id": "docfok",
+      "name": "Gör det synligt vad som är i fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.7 (AA)",
+      "en301549": "10.2.4.7",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.7 Synligt fokus."
+    },
+    {
+      "id": "docfip",
+      "name": "Erbjud alternativ till komplexa finger- eller pekarrörelser",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.1 (A)",
+      "en301549": "10.2.5.1",
+      "objectType": "doc",
+      "statement": "Detta krav motsvarar WCAG 2.5.1 pekarrörelser."
+    },
+    {
+      "id": "docgrk",
+      "name": "Gör det möjligt att ångra klick",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.2 (A)",
+      "en301549": "10.2.5.2",
+      "objectType": "doc",
+      "statement": "Detta krav motsvarar WCAG 2.5.2 Ångra klick."
+    },
+    {
+      "id": "docmas",
+      "name": "Se till att text på knappar och kontroller överensstämmer med maskinläsbara namn",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.3 (A)",
+      "en301549": "10.2.5.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2..5.3 Etiketter i namn."
+    },
+    {
+      "id": "docaro",
+      "name": "Erbjud alternativ till rörelsestyrning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.4 (A)",
+      "en301549": "10.2.5.4",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.5.4 Rörelsestyrning."
+    },
+    {
+      "id": "docspr",
+      "name": "Dokumentets språk",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.1.1 (A)",
+      "en301549": "10.3.1.1",
+      "objectType": "doc",
+      "statement": "Detta krav motsvarar WCAG 3..1.1 Sidans språk."
+    },
+    {
+      "id": "docspd",
+      "name": "Språk för del av dokument",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.1.2 (AA)",
+      "en301549": "10.3.1.2",
+      "objectType": "doc",
+      "statement": "Detta krav motsvarar WCAG 3.1.2 Språkförändring för del av sida."
+    },
+    {
+      "id": "dockof",
+      "name": "Ingen kontextförändring vid fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.2.1 (A)",
+      "en301549": "10.3.2.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.2.1 Vid fokus."
+    },
+    {
+      "id": "docfin",
+      "name": "Utför inga oväntade förändringar vid inmatning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.2.2 (A)",
+      "en301549": "10.3.2.2",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.2.2 Vid inmatning."
+    },
+    {
+      "id": "docfel",
+      "name": "Visa var ett fel uppstått och beskriv det tydligt",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.1 (A)",
+      "en301549": "10.3.3.1",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.3.1 Identifiering av fel."
+    },
+    {
+      "id": "doceti",
+      "name": "Skapa tydliga etiketter/ledtexter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.2 (A)",
+      "en301549": "10.3.3.2",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.3.2 Ledtexter/etiketter och instruktioner."
+    },
+    {
+      "id": "docffe",
+      "name": "Ge förslag på hur fel kan rättas till",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.3 (AA)",
+      "en301549": "10.3.3.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.3.3 Identifiering av fel."
+    },
+    {
+      "id": "dockor",
+      "name": "Ge möjlighet att ångra, korrigera eller bekräfta vid viktiga transaktioner",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "3.3.4 (AA)",
+      "en301549": "10.3.3.4",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
+      "objectType": "doc",
+      "statement": "För webbsidor som leder till att användare ingår rättsliga åtaganden eller utför ekonomiska transaktioner, eller som ändrar eller raderar användarstyrd data i datalagringssystem eller tar emot användarens provsvar, så ska minst en av följande punkter gälla:\r\n\r\n- Möjlig att ångra: Åtgärder kan ångras.\r\n- Kontrollerad: Data som matats in av användaren kontrolleras, och om inmatningsfel hittas ges användaren möjlighet att rätta till dem.\r\n- Bekräftad: Det finns en metod/funktion för att förhandsgranska, bekräfta och rätta till information innan åtgärden slutförs.",
+      "why": "Det är viktigt att skydda användarna från allvarliga konsekvenser som orsakats av att de råkat göra ett misstag.",
+      "howToTest": "För tjänster eller webbsidor där användaren kan fylla i och skicka information, gör följande:\r\n\r\n1. Utför alla steg i tjänsten för att simulera att en användare utför en uppgift. För att undvika eventuella fel i bakomliggande system bör testdata användas här.\r\n2. Kontrollera om den aktuella tjänsten eller formulären på webbsidan avslutas med en knapp för att granska informationen i formuläret.\r\n3. Kontrollera att nästa steg i tjänsten tar användaren till en sida där användaren kan granska den information som den har angett i formuläret.\r\n4. Kontrollera att det finns en möjlighet för användaren att gå tillbaka och korrigera information som har blivit fel."
+    },
+    {
+      "id": "dockom",
+      "name": "Se till att komponenter fungerar i hjälpmedel",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.2 (A)",
+      "en301549": "10.4.1.2",
+      "objectType": "doc",
+      "statement": "Detta krav motsvarar WCAG 4.1.2 Namn, roll, värde."
+    },
+    {
+      "id": "docmed",
+      "name": "Se till att hjälpmedel kan presentera meddelanden som inte är i fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.3 (AA)",
+      "en301549": "10.4.1.3",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 4.1.3 Statusmeddelande."
+    },
+    {
+      "id": "docund",
+      "name": "Position av undertexter",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "10.5",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument som innehåller synkroniserad media med undertexter, ska undertexterna inte täcka relevant information i det synkroniserade mediet."
+    },
+    {
+      "id": "doctim",
+      "name": "Timing i syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "10.6",
+      "objectType": "doc",
+      "statement": "Om en tjänst är ett dokument som innehåller synkroniserad media med syntolkning, ska ljudet från syntokningen inte blandas in i den hörbara relevanta informationen i det synkroniserade mediet."
+    }
+  ]
+}

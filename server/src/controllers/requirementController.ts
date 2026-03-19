@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import logger from '../logger';
 
-const EXTERNAL_REQUIREMENTS_URL = 'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
+// TODO: Fungerar inte att hämta kraven från podden på OCP- felsök senare
+// const EXTERNAL_REQUIREMENTS_URL = 'https://data.arbetsformedlingen.se/accessibility/latest/accessibility-requirements.json';
+import requirements from '../data/requirements.json' assert { type: 'json' };
 
 /**
  * GET /api/requirements
@@ -10,37 +12,7 @@ const EXTERNAL_REQUIREMENTS_URL = 'https://data.arbetsformedlingen.se/accessibil
  */
 export const getAllRequirements = async (req: Request, res: Response) => {
   try {
-    const response = await fetch(EXTERNAL_REQUIREMENTS_URL, {
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'Tillganglighetsverktyget/1.0',
-      },
-    });
-
-    if (!response.ok) {
-      logger.error('External requirements URL returned error', {
-        status: response.status,
-        statusText: response.statusText,
-      });
-      return res.status(response.status).json({
-        error: `Failed to fetch requirements from external source`,
-        status: response.status,
-        statusText: response.statusText,
-      });
-    }
-
-    const data = await response.json();
-    
-    // Validate response structure
-    if (!data || !data.data || !Array.isArray(data.data)) {
-      logger.error('Invalid response format from external requirements source');
-      return res.status(500).json({
-        error: 'Invalid response format from external requirements source',
-      });
-    }
-
-    // Return the data as-is (maintaining the { data: Requirement[] } structure)
-    res.json(data);
+    res.json(requirements);
   } catch (error: Error | unknown) {
     logger.error('Error fetching requirements from external source', { error });
     res.status(500).json({
