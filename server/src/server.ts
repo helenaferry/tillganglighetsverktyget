@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
     // Import models to ensure associations are registered
     await import('./models');
 
-    const hostname = os.hostname();
+    const hostname = !process.env.NODE_ENV || process.env.NODE_ENV ===  'development' ? 'https://localhost' :  os.hostname();
     // Start server
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
