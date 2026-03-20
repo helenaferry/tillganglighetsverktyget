@@ -40,7 +40,6 @@ export class Check
 
 // Initialize Check model
 export const initCheck = (sequelizeInstance: Sequelize) => {
-  // @ts-ignore
   Check.init(
     {
       id: {
