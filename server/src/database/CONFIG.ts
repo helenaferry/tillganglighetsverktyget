@@ -9,9 +9,10 @@ export const DB_CONFIG = {
   username: process.env.DB_USER || 'tillganglighet',
   password: process.env.DB_PASSWORD || 'tillganglighet',
   databaseName: 'oracle',
-  dbCn: process.env.DB_CN || 'tillganglighetdb-utv',
+  dbServiceName: process.env.DB_SERVICE_NAME || 'tillganglighetdb-utv',
   dialect: 'oracle' as Dialect,
   dbOraclePath: process.env.DB_ORACLE_PATH || 'C:\\Program Files\\instantclient_23_0',
+  ldapUrl: process.env.LDAP_URL || 'ldap://afkatalog-acc.arbetsformedlingen.se:389',
   pool: {
     max: 5,
     min: 0,
