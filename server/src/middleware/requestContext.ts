@@ -21,20 +21,16 @@ export const requestContextMiddleware = (
   // since the proxy might send CIAM_Sub, CIAM-Sub, or similar variations
   let userId: string | undefined;
 
-  console.log('req.headers: ', req.headers);
-
+  // First, try to extract from actual header
   // First, try to extract from actual header
   const headerKeys = Object.keys(req.headers);
   const ciamHeaderKey = headerKeys.find(
     (key) => key.toLowerCase().replace(/[-_]/g, '') === 'ciamsub',
   );
-  console.log('ciamHeaderKey: ', ciamHeaderKey);
   if (ciamHeaderKey) {
     const headerValue = req.headers[ciamHeaderKey];
-    console.log('headerValue: ', headerValue);
     // Handle both string and string[] (Express can return arrays for headers)
     userId = Array.isArray(headerValue) ? headerValue[0] : headerValue;
-    console.log('userId: ', userId);
   }
 
   // Generate request ID for correlation

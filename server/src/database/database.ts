@@ -42,7 +42,7 @@ export const connectDB = async (
       oracledb.initOracleClient({ libDir: DB_CONFIG.dbOraclePath });
       await sequelizeInstance.authenticate();
 
-      console.log('✅ Database connected successfully.');
+      console.log('✅ Database connected successfully; ', DB_CONFIG.dbServiceName);
 
       return;
     } catch (error: unknown) {
