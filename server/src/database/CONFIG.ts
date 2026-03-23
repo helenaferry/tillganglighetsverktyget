@@ -6,6 +6,7 @@ import * as process from 'process';
 import { Dialect } from 'sequelize';
 
 export const DB_CONFIG = {
+  nodeEnv: process.env.NODE_ENV || 'development',
   username: process.env.DB_USER || 'tillganglighet',
   password: process.env.DB_PASSWORD || 'tillganglighet',
   databaseName: 'oracle',

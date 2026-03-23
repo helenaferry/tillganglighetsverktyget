@@ -23,11 +23,14 @@ export const connectDB = async (
   maxDelay = 10000,
   backoffMultiplier = 2,
 ) => {
+
+  const logging = DB_CONFIG.nodeEnv === 'development' ? console.log : false;
   const connectionString = await getConnectionStringFromLDAP();
   sequelizeInstance = new Sequelize({
     dialect: DB_CONFIG.dialect,
     username: DB_CONFIG.username,
     password: DB_CONFIG.password,
+    logging: logging,
     dialectOptions: {
       connectString: connectionString,
     },
