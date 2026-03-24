@@ -94,6 +94,12 @@ export function CardsOrTable({
     return rows.slice(start, end);
   }, [rows, pageSize, currentPage]);
 
+  useMemo(() => {
+    if (pageSize > rows.length) {
+      setPageSize(0); // "Alla"
+    }
+  }, [rows]);
+
   const reset = () => {
     setSearchTerm('');
     setFilterKey(filterKey + 1);
