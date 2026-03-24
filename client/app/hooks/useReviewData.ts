@@ -218,10 +218,10 @@ export function useDeleteReview() {
       await ReviewService.deleteReview(reviewId);
     },
     onSuccess: (_, reviewId) => {
-      queryClient.invalidateQueries({ queryKey: ['check'] });
+      queryClient.removeQueries({ queryKey: ['review', String(reviewId)] });
+      queryClient.removeQueries({ queryKey: ['checks', String(reviewId)] });
+      queryClient.removeQueries({ queryKey: ['check'] });
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
-      queryClient.invalidateQueries({ queryKey: ['review', String(reviewId)] });
-      queryClient.invalidateQueries({ queryKey: ['checks', String(reviewId)] });
     },
   });
 }
