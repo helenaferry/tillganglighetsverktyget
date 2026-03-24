@@ -207,13 +207,13 @@ export default function ReviewRequirements({ reviewId }: Props) {
     if (sortBy !== undefined) {
       result = [...result].sort((a, b) => {
         if (sortBy === SortBy.REQUIREMENT && sortDirection === 'stigande') {
-          return a.name.localeCompare(b.name);
+          return a.name.localeCompare(b.name, 'sv');
         } else if (sortBy === SortBy.REQUIREMENT && sortDirection === 'fallande') {
-          return b.name.localeCompare(a.name);
+          return b.name.localeCompare(a.name, 'sv');
         } else if (sortBy === SortBy.CATEGORY && sortDirection === 'stigande') {
-          return a.category.localeCompare(b.category);
+          return a.category.localeCompare(b.category, 'sv');
         } else if (sortBy === SortBy.CATEGORY && sortDirection === 'fallande') {
-          return b.category.localeCompare(a.category);
+          return b.category.localeCompare(a.category, 'sv');
         } else if (sortBy === SortBy.STATUS && sortDirection === 'stigande') {
           return (
             (a.check?.status ?? Status.NOT_ASSESSED) - (b.check?.status ?? Status.NOT_ASSESSED)

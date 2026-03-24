@@ -166,9 +166,9 @@ export function ReviewsList() {
       } else if (sortBy === SortBy.REVIEWED && sortDirection === 'fallande') {
         return b.reviewedCount - a.reviewedCount;
       } else if (sortBy === SortBy.REVIEW && sortDirection === 'stigande') {
-        return a.title && b.title ? a.title.localeCompare(b.title) : 0;
+        return a.title && b.title ? a.title.localeCompare(b.title, 'sv') : 0;
       } else if (sortBy === SortBy.REVIEW && sortDirection === 'fallande') {
-        return a.title && b.title ? b.title.localeCompare(a.title) : 0;
+        return a.title && b.title ? b.title.localeCompare(a.title, 'sv') : 0;
       }
       return 0;
     });

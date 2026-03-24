@@ -8,5 +8,5 @@
 * ett par granskningar vid uppstart
 * */
 
-export const STANDALONE_CLIENT = false;
-export const USE_EXAMPLE_DATA = false;
+export const STANDALONE_CLIENT = true;
+export const USE_EXAMPLE_DATA = true;
