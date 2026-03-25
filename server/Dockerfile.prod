@@ -4,7 +4,8 @@
 # Stage 1: Build
 ENV HTTPS_PROXY="http://testproxy.admz.ams.se:8080"
 ENV HTTP_PROXY="http://testproxy.admz.ams.se:8080"
-ENV NO_PROXY="ams.se,.ams.se,arbetsformedlingen.se,.arbetsformedlingen.se,cluster.local,.cluster.local,svc,.svc,localhost,10.0.0.0/8,127.0.0.1,164.135.0.0/16,172.30.0.0/25"
+ENV
+NO_PROXY="ams.se,.ams.se,arbetsformedlingen.se,.arbetsformedlingen.se,cluster.local,.cluster.local,svc,.svc,localhost,10.0.0.0/8,127.0.0.1,164.135.0.0/16,172.30.0.0/25"
 
 FROM registry.access.redhat.com/ubi8/nodejs-22@sha256:6e340dc525ab46e195fc01369ce44bdb36a3a04412bb96e05d463bcd451fccd8 AS builder
 
