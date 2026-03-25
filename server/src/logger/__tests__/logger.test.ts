@@ -88,7 +88,7 @@ describe('Logger audit functions', () => {
           'source.ip': '192.168.1.1',
           'object.type': 'review',
           'object.id': 1,
-          'audit.log': 'true',
+          'security.log': 'true',
           'audit.spu': 'false',
         }),
       );
