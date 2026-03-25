@@ -9,13 +9,13 @@ USER root
 WORKDIR /app
 
 # Använd .npmrc
-COPY ./prod-files/.npmrc ./
+COPY ./prod-files-for-af/.npmrc ./
 
 # Kopiera allt i client-katalogen
 COPY ./client .
 
 # Kopiera in cert
-COPY ./prod-files/ca-bundle.crt ./ca-bundle.crt
+COPY ./prod-files-for-af/ca-bundle.crt ./ca-bundle.crt
 
 # Install dependencies
 # Note: Using npm install instead of npm ci because this is part of a monorepo workspace
