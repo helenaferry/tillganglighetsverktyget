@@ -64,9 +64,9 @@ cd server && npm test
 ```
 
 ## Teknik 
-Tillgänglighetsverktyget har majoriteten av sin funktionalitet i sin klient. Det enda servern gör är att pratat med databasen där granskningarna sparas.
+Tillgänglighetsverktyget har majoriteten av sin funktionalitet i sin klient. Det enda servern gör är att prata med databasen där granskningarna sparas.
 
-- **Docker** - Både klient och server har varsin Docker-fil som kan användas för drift
+- **Docker** - Både klient och server har varsin Docker-fil som kan användas för drift. Det finns lite AF-specifika delar i Docker-imagearna. Dessa kan behöva göras om beroende på val av databas och andra drift-krav. 
 
 ### Klienten
 - **React Router** – Routing och navigering

@@ -145,6 +145,7 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
               <DigiExpandableAccordion
                 afHeading={t('RequirementForm.SuggestionsHeading')}
                 afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+                afFullWidth={true}
               >
                 <div>
                   <p>{t('RequirementForm.SuggestionsDescription')}</p>
