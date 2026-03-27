@@ -39,6 +39,9 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 </tbody>
 </table>
 
+### Demo
+<img src="https://gitlab.com/arbetsformedlingen/designsystem/tillganglighetsverktyget/-/raw/9c33df6613eaef8d07a5d8cd8361a7bec2e51cd9/client/public/screenshots/demo.gif" alt="demo i gif-format"></img>
+
 ### Användning och flexibilitet
 
 För att använda verktyget behöver du installera det i en driftmiljö och sätta upp en databas.
