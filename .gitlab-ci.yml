@@ -40,10 +40,10 @@ pages:
   image: node:22
   stage: deploy
   script:
+    - npm ci
     - cd ./client
     - rm -f public/standaloneConfiguration.js
     - mv public/standaloneConfiguration-gitlab.js public/standaloneConfiguration.js
-    - npm ci
     - npm run build
     - cd ../
     - mkdir public
