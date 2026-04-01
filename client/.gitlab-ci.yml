@@ -41,6 +41,8 @@ pages:
   stage: deploy
   script:
     - npm ci
+    - cp package-lock.json client/package-lock.json
+    - cp ./node_modules/* client/node_modules/
     - cd ./client
     - rm -f public/standaloneConfiguration.js
     - mv client/public/standaloneConfiguration-gitlab.js client/public/standaloneConfiguration.js
