@@ -26,6 +26,9 @@ RUN dnf update -y && dnf install -y \
 
 # Download and install Oracle Instant Client
 WORKDIR /opt/oracle
+COPY ./prod-files-for-af/ca-bundle.crt /etc/pki/ca-trust/source/anchors/ca-bundle.crt
+RUN update-ca-trust
+
 RUN wget https://download.oracle.com/otn_software/linux/instantclient/2113000/instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
     unzip instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
     rm instantclient-basic-linux.x64-21.13.0.0.0dbru.zip && \
