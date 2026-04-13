@@ -11,7 +11,10 @@ import {
 import {
   DigiButton,
   DigiFormCategoryFilter,
+  DigiFormFieldset,
   DigiFormInputSearch,
+  DigiFormRadiobutton,
+  DigiFormRadiogroup,
   DigiFormValidationMessage,
   DigiIconShareAlt,
   DigiLayoutBlock,
@@ -47,6 +50,7 @@ export default function RequirementsPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const id = searchParams.get('id');
+  const [showObjectType, setShowObjectType] = useState<ObjectType>(ObjectType.WEB);
 
   const { data: requirementsAll, isLoading: requirementsAllLoading } =
     useRequirements(regulatoryFrameworkEnv);
@@ -55,17 +59,16 @@ export default function RequirementsPage() {
     return Array.from(
       new Set(
         (requirementsAll ?? [])
-          .filter((req) => req.objectType === ObjectType.WEB)
+          .filter((req) => req.objectType === showObjectType)
           .map((req) => req.category),
       ),
     );
-  }, [requirementsAll]);
+  }, [requirementsAll, showObjectType]);
 
   const isLoading = requirementsAllLoading;
 
   const requirementAdditions = organizationConfigurations().requirementAdditions;
 
-  const [showObjectType] = useState<ObjectType>(ObjectType.WEB);
   const [timesFiltered, setTimesFiltered] = useState(0);
   const [filterFreeText, setFilterFreeText] = useState('');
   const [filterSpecific, setFilterSpecific] = useState<Requirement>();
@@ -99,7 +102,7 @@ export default function RequirementsPage() {
       if (filterFreeText && !searchMatches(req, filterFreeText)) return false;
       return true;
     });
-  }, [requirementsAll, filterSpecific, filterCategories, filterFreeText, requirementAdditions]);
+  }, [selectedRequirements, filterSpecific, filterCategories, filterFreeText, requirementAdditions]);
 
   const categoryFilterOptions = useMemo(() => {
     return categories?.map((category) => {
@@ -126,12 +129,14 @@ export default function RequirementsPage() {
     if (id) {
       const requirement = requirementsAll?.find((req) => String(req.id) === String(id));
       if (requirement) setFilterSpecific(requirement);
+      setShowObjectType(requirement?.objectType ?? ObjectType.WEB);
     }
   }, [id, requirementsAll]);
 
   useEffect(() => {
     const categoriesSearchParam = searchParams.get('kategorier');
     const searchSearchParam = searchParams.get('sok');
+    const typeSearchParam = searchParams.get('type');
     if (!categoriesSearchParam) {
       setFilterCategories([]);
     } else {
@@ -141,6 +146,11 @@ export default function RequirementsPage() {
       setFilterFreeText('');
     } else {
       setFilterFreeText(searchSearchParam);
+    }
+    if (typeSearchParam === ObjectType.DOCUMENT) {
+      setShowObjectType(ObjectType.DOCUMENT);
+    } else {
+      setShowObjectType(ObjectType.WEB);
     }
   }, [searchParams]);
 
@@ -152,10 +162,11 @@ export default function RequirementsPage() {
     }
   }, [filterCategories, categories]);
 
-  const setUrlParams = (search: string, categories: string[]) => {
+  const setUrlParams = (search: string, categories: string[], objectType: ObjectType) => {
     const params: Record<string, string> = {};
     if (search) params.sok = search;
     if (categories.length > 0) params.kategorier = categories.join(',');
+    if (objectType !== ObjectType.WEB) params.type = objectType;
     window.history.replaceState(
       {},
       '',
@@ -172,24 +183,34 @@ export default function RequirementsPage() {
               {isLoading && <DigiLoaderSkeleton afVariation={LoaderSkeletonVariation.SECTION} />}
               {!isLoading && categories && (
                 <>
-                  {/* Hide type filter for now <p>
-              <DigiFormFieldset afForm="requirement-filters" afLegend="Visa krav för" afName="typ">
-                <DigiFormRadiogroup afName="type">
-                  <DigiFormRadiobutton
-                    afLabel="Webbsida eller webbtjänst"
-                    afValue="web"
-                    afChecked={showObjectType === ObjectType.WEB}
-                    onAfOnChange={() => setShowObjectType(ObjectType.WEB)}
-                  ></DigiFormRadiobutton>
-                  <DigiFormRadiobutton
-                    afLabel="Dokument"
-                    afValue="doc"
-                    afChecked={showObjectType === ObjectType.DOCUMENT}
-                    onAfOnChange={() => setShowObjectType(ObjectType.DOCUMENT)}
-                  ></DigiFormRadiobutton>
-                </DigiFormRadiogroup>
-              </DigiFormFieldset>
-            </p>*/}
+                  <p>
+                    <DigiFormFieldset
+                      afForm="requirement-filters"
+                      afLegend="Visa krav för"
+                      afName="typ"
+                    >
+                      <DigiFormRadiogroup afName="type">
+                        <DigiFormRadiobutton
+                          afLabel="Webbsida eller webbtjänst"
+                          afValue="web"
+                          afChecked={showObjectType === ObjectType.WEB}
+                          onAfOnChange={() => {
+                            setShowObjectType(ObjectType.WEB);
+                            setUrlParams(filterFreeText, filterCategories, ObjectType.WEB);
+                          }}
+                        ></DigiFormRadiobutton>
+                        <DigiFormRadiobutton
+                          afLabel="Dokument"
+                          afValue="doc"
+                          afChecked={showObjectType === ObjectType.DOCUMENT}
+                          onAfOnChange={() => {
+                            setShowObjectType(ObjectType.DOCUMENT);
+                            setUrlParams(filterFreeText, filterCategories, ObjectType.DOCUMENT);
+                          }}
+                        ></DigiFormRadiobutton>
+                      </DigiFormRadiogroup>
+                    </DigiFormFieldset>
+                  </p>
                   <p>
                     <DigiFormInputSearch
                       afId="requirement-search"
@@ -201,7 +222,7 @@ export default function RequirementsPage() {
                       afButtonType={ButtonType.BUTTON}
                       onAfOnSubmitSearch={(e) => {
                         setFilterFreeText(e.detail);
-                        setUrlParams(e.detail, filterCategories);
+                        setUrlParams(e.detail, filterCategories, showObjectType);
                         setTimesFiltered(timesFiltered + 1);
                       }}
                     ></DigiFormInputSearch>
@@ -217,12 +238,12 @@ export default function RequirementsPage() {
                         if (e.detail.length === 0 || e.detail.length === categories?.length) {
                           setShowAllCategories(true);
                           setFilterCategories([]);
-                          setUrlParams(filterFreeText, []);
+                          setUrlParams(filterFreeText, [], showObjectType);
                           return;
                         }
                         setShowAllCategories(false);
                         setFilterCategories(e.detail);
-                        setUrlParams(filterFreeText, e.detail);
+                        setUrlParams(filterFreeText, e.detail, showObjectType);
                         setTimesFiltered(timesFiltered + 1);
                       }}
                     ></DigiFormCategoryFilter>

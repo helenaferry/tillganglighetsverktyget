@@ -1679,67 +1679,57 @@
       ]
     },
     {
-      "id": "doctxt",
-      "name": "Beskriv med text allt innehåll som inte är text",
+      "id": "doctit",
+      "name": "Skriv beskrivande dokumenttitlar",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.1.1 (A)",
-      "en301549": "10.1.1.1",
+      "wcag": "2.4.2 (A)",
+      "en301549": "10.2.4.2",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.1.1."
+      "statement": "Dokument har en titel som beskriver dokumentets syfte och innehåll.",
+      "why": "En beskrivande dokumenttitel hjälper användaren att snabbt och enkelt avgöra vilket dokument hen hanterar."
     },
     {
-      "id": "docalt",
-      "name": "Erbjud alternativ till inspelningar som består av enbart ljud eller enbart video (förinspelat)",
+      "id": "docspr",
+      "name": "Dokumentets språk",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.2.1 (A)",
-      "en301549": "10.1.2.1",
+      "wcag": "3.1.1 (A),3.1.2 (AA)",
+      "en301549": "10.3.1.1,10.3.1.2",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.1 Endast ljud och endast video (förinspelat)."
-    },
-    {
-      "id": "doctlju",
-      "name": "Texta ljudet i inspelade filmer",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "1.2.2 (A)",
-      "en301549": "10.1.2.2",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.2 Undertexter (förinspelat)."
-    },
-    {
-      "id": "docsyn",
-      "name": "Syntolka eller erbjud alternativ till videoinspelningar",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "1.2.3 (A)",
-      "en301549": "10.1.2.3",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.3  Ljudbeskrivning eller mediealternativ (Förinspelat)"
-    },
-    {
-      "id": "doctel",
-      "name": "Texta ljudet (live)",
-      "regulatoryFramework": "lptt",
-      "wcag": "1.2.4 (AA)",
-      "en301549": "10.1.2.4",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.4 undertextning (live)."
-    },
-    {
-      "id": "docsvi",
-      "name": "Syntolka videoinspelning",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "1.2.5 (AA)",
-      "en301549": "10.1.2.5",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.5 Ljudbeskrivning (förinspelad)."
+      "statement": "Dokumentets huvudsakliga språk kan tolkas av hjälpmedel. Om det finns ord eller delar av text som är på ett annat språk än dokumentets huvudspråk är dessa språkförändringar maskinläsbart angivna.",
+      "why": "Rätt språkinställningar hjälper användare av uppläsande hjälpmedel att läsa upp innehållet med rätt uttal. Det underlättar även avstavning och automatisk översättning."
     },
     {
       "id": "docinr",
       "name": "Information och relationer",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.3.1 (A)",
-      "en301549": "10.1.3.1",
+      "wcag": "1.3.1 (A),2.4.6 (AA)",
+      "en301549": "10.1.3.1,10.2.4.6",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.1 information och rlationer."
+      "statement": "- Alla rubriker i ett dokument är korrekt uppmärkta med korrekt rubriknivå. Det finns inga tomma rubrikelement. Rubrikelement används enbart för sådant som är rubriker.\r\n- Dokumentets rubriknivåer skapar en logisk och korrekt hierarkisk ordning. Rubrikstrukturen hoppar inte över rubriknivåer.\r\n- Dokumentets rubriker är beskrivande och har en koppling till texten som följer.",
+      "why": "- Användare med uppläsande hjälpmedel kan navigera mellan rubriker och skumläsa dokumentets innehåll. \r\n\r\n- Beskrivande rubriker underlättar för alla att förstå och förutse vad sidans avsnitt handlar om. Det är extra viktigt för personer med lässvårigheter eller nedsatt korttidsminne."
+    },
+    {
+      "id": "docseh",
+      "name": "Sensoriska hänvisningar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.3 (A)",
+      "en301549": "10.1.3.3",
+      "category": "Struktur och språk",
+      "objectType": "doc",
+      "statement": "Hänvisningar till innehåll och komponenter förlitar sig inte endast på sensoriska kännetecken som form, storlek, färg eller placering. Istället för att det står \"Tryck på den gröna knappen\" bör det stå exempelvis \"Tryck på den gröna knappen med texten Skicka\"."
+    },
+    {
+      "id": "docsen",
+      "name": "Sensoriska kännetecken för ikon och symbollänkar",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.3.3 (A)",
+      "en301549": "10.1.3.3",
+      "category": "Struktur och språk",
+      "objectType": "doc",
+      "statement": "Länkar och knappar som markeras med enbart symboler har namn som hjälpmedel kan tolka."
     },
     {
       "id": "docord",
@@ -1747,44 +1737,123 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.3.2 (A)",
       "en301549": "10.1.3.2",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.2 meningsfull ordning."
+      "statement": "Dokumentets läsordning stämmer överens med hur innehållet presenteras visuellt.",
+      "why": "En meningsfull läsordning i innehållet underlättar för alla användare."
     },
     {
-      "id": "docsen",
-      "name": "Sensoriska kännetecken",
+      "id": "doclan",
+      "name": "Skriv tydliga länkar",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.3.3 (A)",
-      "en301549": "10.1.3.3",
+      "wcag": "2.4.4 (A)",
+      "en301549": "10.2.4.4",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.3 sensoriska kännetecken."
+      "statement": "Alla länkars syfte framgår antingen utan omgivande sammanhang eller i texten som föregår länken. Alla länktexter är bara så långa som krävs för att beskriva länkens syfte. Länkade bilder har textalternativ som beskriver länkens syfte.",
+      "why": "Det behöver vara tydligt för användare vart en länk leder. Länkar där textbeskrivning är otydlig eller saknas försvårar för alla användare."
     },
     {
-      "id": "docanp",
-      "name": "Se till att skärmen anpassar sig efter skärmens riktning",
+      "id": "docsel",
+      "name": "Semantiska listor",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.3.4 (AA)",
-      "en301549": "10.1.3.4",
+      "wcag": "1.3.1 (A)",
+      "en301549": "10.1.3.1",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.4 Orientering."
+      "statement": "Om dokumentformatet stödjer listor, kan listor tolkas av hjälpmedel. Allt som är angivet som listor är listinformation."
     },
     {
-      "id": "docsyf",
-      "name": "Ange syfte för formulärfält i koden",
+      "id": "docset",
+      "name": "Semantiska tabeller",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.3.5 (AA)",
-      "en301549": "10.1.3.5",
+      "wcag": "1.3.1 (A)",
+      "en301549": "10.1.3.1",
+      "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.3.5 Identifiera syfte med inmatning."
+      "statement": "Tabeller används endast för strukturerad data och är uppmärkta så att de kan tolkas av hjälpmedel. Om tabell används i layoutsyfte, döljs tabellen för hjälpmedel om dokumentformatet har stöd för det."
+    },
+    {
+      "id": "docbee",
+      "name": "Beskrivande etiketter",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.6 (AA)",
+      "en301549": "10.2.4.6",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Struktur och språk",
+      "objectType": "doc",
+      "statement": "Etiketter är tydligt formulerade och beskriver den information som efterfrågas.",
+      "why": "Tydliga etiketter hjälper alla användare att fylla i formulär på rätt sätt. Det är extra viktigt för användare med nedsatt inlärningsförmåga eller andra kognitiva eller språkliga svårigheter.",
+      "howToTest": "För tjänster eller webbsidor där användaren kan fylla i och skicka information, gör följande:\r\n\r\n1. Utför alla steg i tjänsten för att simulera att en användare utför en uppgift. För att undvika eventuella fel i bakomliggande system bör testdata användas här.\r\n2. Kontrollera om den aktuella tjänsten eller formulären på webbsidan avslutas med en knapp för att granska informationen i formuläret.\r\n3. Kontrollera att nästa steg i tjänsten tar användaren till en sida där användaren kan granska den information som den har angett i formuläret.\r\n4. Kontrollera att det finns en möjlighet för användaren att gå tillbaka och korrigera information som har blivit fel."
+    },
+    {
+      "id": "doctol",
+      "name": "Tolkningsbart",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.1 (A)",
+      "en301549": "10.4.1.1",
+      "category": "Struktur och språk",
+      "objectType": "doc",
+      "statement": "Dokumentet går att öppna och läsa antingen i webbläsaren eller i ett program som är avsett för dokumentformatet. Allt innehåll i dokumentet ska visas på ettkorrekt sätt.",
+      "why": "Alla användare behöver ha samma möjlighet att läsa ett dokument."
+    },
+    {
+      "id": "docbtk",
+      "name": "Bevara tillgänglighet vid konverteringar",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "5.4",
+      "category": "Struktur och språk",
+      "objectType": "doc",
+      "statement": "Om dokumentet har funktioner för att konvertera innehåll, exempelvis från html till pdf, ska information som ökar tillgängligheten finnas kvar i det nya formatet. Exempel kan vara rubrikstruktur eller alternativtexter till bilder. Detta gäller alla typer av dokumentformat, men endast om målformatet har stöd för motsvarande tillgänglighetsegenskaper som källformatet.",
+      "why": "Om viktiga tillgänglighetsegenskaper försvinner vid konvertering, kan det försvåra för personer med funktionsnedsättning att ta del av innehållet.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Det går inte att kommunicera med tal och realtidstext samtidigt via samma anslutning."
+      ]
+    },
+    {
+      "id": "docktb",
+      "name": "Använd tillräcklig kontrast mellan text och bakgrund",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.3 (AA)",
+      "en301549": "10.1.4.3",
+      "category": "Visuell presentation",
+      "objectType": "doc",
+      "statement": "All text, även bilder av text, har ett kontrastvärde på minst 4,5:1 mot bakgrunden.",
+      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner på en webbsida, även användare med nedsatt syn eller kontrastseende."
+    },
+    {
+      "id": "dockkg",
+      "name": "Använd tillräckliga kontraster i komponenter och grafik",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.11 (AA)",
+      "en301549": "10.1.4.11",
+      "category": "Visuell presentation",
+      "objectType": "doc",
+      "statement": "Allt som inte är text har ett kontrastvärde på minst 3:1 mot bakgrunden eller intilliggande färger. Detta gäller exempelvis fokusmarkering, formulärkomponenter och grafiska objekt. Dessa bör också ha tydliga visuella gränser. Kravet på kontraster gäller såväl i standardtillstånd som i övriga tillstånd.",
+      "why": "Tillräckliga kontraster är viktiga för att alla användare ska kunna ta del av information och funktioner i ett dokument, även användare med nedsatt syn eller kontrastseende."
     },
     {
       "id": "docktr",
-      "name": "Använd tillräckliga kontraster i komponenter och grafik",
+      "name": "Färganvändning",
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.4.1 (A)",
       "en301549": "10.1.4.1",
+      "category": "Visuell presentation",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla: WCAG 1.4.1 Användning av färger."
+      "statement": "Färg är inte det enda sättet att särskilja felmeddelanden och andra visuella element.",
+      "why": "Användare med nedsatt färgseende ska kunna ta del av innehållet."
+    },
+    {
+      "id": "doclaf",
+      "name": "Länkars färg",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.1 (A)",
+      "en301549": "10.1.4.1",
+      "category": "Visuell presentation",
+      "objectType": "doc",
+      "statement": "Länkar markeras på fler sätt en bara med färg. Till exempel med understrykning. Undantag är områden med bara länkar eller om länken har ett kontrastförhållande på minst 3:1 mot omgivande text.",
+      "why": "Användare med nedsatt färgseende ska kunna ta del av innehållet."
     },
     {
       "id": "docepi",
@@ -1806,7 +1875,7 @@
       "en301549": "10.2.2.1",
       "category": "Flexibilitet och anpassning",
       "objectType": "doc",
-      "statement": "Om tidsgränser finns på webbsidan ska minst ett av följande krav vara uppfyllt:\r\n\r\n- Användaren blir meddelad innan tiden går ut och ges minst 20 sekunder för att utöka tidsgränsen, och användaren får förlänga tidsgränsen minst tio gånger.\r\n- Användaren får stänga av tidsgränsen innan den träder i kraft.\r\n- Användaren får justera tidsgränsen innan den träder i kraft över ett brett intervall som är minst tio gånger längre än standardinställningen.\r\n\r\nUndantag ges för följande scenarier:\r\n- Tidsgränsen är längre än 20 timmar.\r\n- Tidsgränsen är en nödvändig del av en händelse i realtid (till exempel en auktion) och inget alternativ till tidsgränsen är möjligt.\r\n- Tidsgränsen är väsentlig och att förlänga den skulle ogiltigförklara aktiviteten.",
+      "statement": "Om tidsgränser finns i dokumentet ska minst ett av följande krav vara uppfyllt:\r\n\r\n- Användaren blir meddelad innan tiden går ut och ges minst 20 sekunder för att utöka tidsgränsen, och användaren får förlänga tidsgränsen minst tio gånger.\r\n- Användaren får stänga av tidsgränsen innan den träder i kraft.\r\n- Användaren får justera tidsgränsen innan den träder i kraft över ett brett intervall som är minst tio gånger längre än standardinställningen.\r\n\r\nUndantag ges för följande scenarier:\r\n- Tidsgränsen är längre än 20 timmar.\r\n- Tidsgränsen är en nödvändig del av en händelse i realtid (till exempel en auktion) och inget alternativ till tidsgränsen är möjligt.\r\n- Tidsgränsen är väsentlig och att förlänga den skulle ogiltigförklara aktiviteten.",
       "why": "Användare behöver olika lång tid på sig för att utföra en uppgift. Tidsgränser kan skapa stress och förvirring. De kan också göra att användaren går miste om information eller förlorar data.",
       "howToTest": "1. Påbörja en uppgift, exempelvis genom att fylla i ett formulär.\r\n2. Överge uppgiften och låt sidan vara inaktiv tillräckligt länge för att den övre gränsen för inaktivitet ska inträffa.\r\n3. Om användaren loggas ut eller skickas vidare efter en viss tid, kontrollera om det visas en varning innan det sker.\r\n4. Kontrollera också om användaren har minst 20 sekunder på sig att förlänga tiden."
     },
@@ -1818,7 +1887,7 @@
       "en301549": "10.2.2.2",
       "category": "Flexibilitet och anpassning",
       "objectType": "doc",
-      "statement": "Det går att pausa, stoppa eller dölja innehåll som rör sig, blinkar eller scrollar automatiskt i mer än fem sekunder. Gäller exempelvis video, animationer och bildspel. Undantag är animationer eller indikationer som visar att innehåll laddas, samt blinkande textmarkörer i aktiva inmatningsfält.",
+      "statement": "Det går att pausa, stoppa eller dölja innehåll som rör sig, blinkar eller scrollar automatiskt i mer än fem sekunder. Gäller exempelvis video, animationer och bildspel. Undantag är förloppsindikatorer eller indikationer som visar att innehåll laddas, samt blinkande textmarkörer i aktiva inmatningsfält.",
       "why": "Automatisk uppspelning stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
       "howToTest": "- Kontrollera om det finns något innehåll som rör sig, blinkar eller scrollar automatiskt på sidan.\r\n- Kontrollera hur länge rörelsen pågår.\r\n- Om den pågår i mindre än fem sekunder är kravet godkänt.\r\n- Om det går att pausa, stoppa eller dölja innehållet är kravet godkänt."
     },
@@ -1830,27 +1899,68 @@
       "en301549": "10.1.4.2",
       "category": "Flexibilitet och anpassning",
       "objectType": "doc",
-      "statement": "Ljud som spelas upp automatiskt i ett dokument kan pausas, stoppas eller sänkas.",
+      "statement": "Det går att pausa, stoppa eller sänka volymen på ljud som spelas upp automatiskt i mer än tre sekunder.",
       "why": "Ljud som spelas upp automatiskt stör och kan försvåra för användaren att fokusera. Det är extra viktigt för personer med koncentrationssvårigheter och kognitiva svårigheter.",
       "howToTest": "1. Börja med att kontrollera om det finns ljudfiler eller video med ljud som spelas automatiskt i dokumentet.\r\n2. Om det finns, kontrollera att ljudvolymen går att justera eller att ljudet går att pausa eller stänga av."
     },
     {
-      "id": "docktb",
-      "name": "Använd tillräcklig kontrast mellan text och bakgrund",
+      "id": "docflx",
+      "name": "Skapa en flexibel layout som fungerar vid förstoring eller på liten skärm",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.4.3 (AA)",
-      "en301549": "10.1.4.3",
+      "wcag": "1.3.4 (AA),1.4.10 (AA)",
+      "en301549": "10.1.3.4,10.1.4.10",
+      "contentType": "",
+      "category": "Flexibilitet och anpassning",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.3 Kontrast (minimum)."
+      "statement": "Dokumentets layout är flexibel och responsiv, alltså följsam till storleken på användarens skärm utan att det krävs skrollning i två ledder eller att information och funktioner försvinner.",
+      "why": "En följsam layout underlättar för exempelvis användare som behöver förstora texten i ett gränssnitt och för alla användare som använder en liten skärm. Användare med nedsatt motorik kan behöva montera fast sin dator, surfplatta eller telefon på exempelvis en rullstol eller ett stativ och saknar därmed möjlighet att vrida på skärmen. "
     },
     {
-      "id": "doctsto",
+      "id": "doctst",
       "name": "Se till att text går att förstora",
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.4.4 (AA)",
       "en301549": "10.1.4.4",
+      "category": "Flexibilitet och anpassning",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.4  Förändring av textstorlek."
+      "statement": "Användare kan förstora texten i ett dokument upp till 200 procent utan att använda hjälpmedel. Innehåll ska inte försvinna och funktionalitet ska inte försämras. Textstorlek ska normalt användas med relativa enheter som em, rem eller %.",
+      "why": "Användare med nedsatt syn ska kunna förstora innehållet i ett dokument."
+    },
+    {
+      "id": "docavs",
+      "name": "Se till att det går att öka avstånd mellan tecken, rader, stycken och ord",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.12 (AA)",
+      "en301549": "10.1.4.12",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "doc",
+      "statement": "Det går att öka avståndet mellan tecken, rader, stycken och ord utan att innehåll försvinner eller att funktionaliteten försämras. Följande minimikrav gäller:\r\n \r\n- teckenavstånd till minst 0,12 gånger teckensnittets storlek\r\n- avstånd mellan ord till minst 0.16 gånger teckensnittets storlek -Radavstånd till minst 1,5 gånger teckensnittets storlek - Avståndet mellan stycken till minst 2 gånger teckensnittets storlek",
+      "why": "Det är särskilt viktigt för användare med dyslexi eller nedsatt syn att kunna justera avstånd i text.",
+      "howToTest": "",
+      "textSuggestions": [
+        "Vid omstrukturering i [redigeringsverktyg] bevaras inte [tillgänglighetsinformation].",
+        "Vid omvandling till [format] i [redigeringsverktyg] bevaras inte [tillgänglighetsinformation]."
+      ]
+    },
+    {
+      "id": "docfft",
+      "name": "Funktioner för tillgänglighet",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "5.2",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "doc",
+      "statement": "Ett dokument kan ha funktioner för att öka tillgängligheten, exempelvis lättläst eller lyssna. Dessa ska vara lätta för alla användare att hitta och aktivera.",
+      "why": "Dessa funktioner blir meningslösa om användaren inte kan hitta och aktivera dem."
+    },
+    {
+      "id": "docfbe",
+      "name": "Flera biometriska egenskaper",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "5.3",
+      "category": "Flexibilitet och anpassning",
+      "objectType": "doc",
+      "statement": "Om dokumentet använder biometriska egenskaper för identifiering, exempelvis fingeravtryck, röstigenkänning eller ansiktsigenkänning, ska det finnas möjlighet att identifiera sig på fler än ett sätt.",
+      "why": "Alla användare har inte samma fysiska förutsättningar. Därför behöver det finnas flera sätt att identifiera sig på."
     },
     {
       "id": "doctib",
@@ -1866,105 +1976,199 @@
       "howToTest": "1. Identifiera alla bilder som innehåller text.\r\n2. Kontrollera att bilder som innehåller text har alt-texter som återger bildens text."
     },
     {
-      "id": "docflx",
-      "name": "Skapa en flexibel layout som fungerar vid förstoring eller på liten skärm",
+      "id": "doctxt",
+      "name": "Beskriv med text allt innehåll som inte är text",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.4.10 (AA)",
-      "en301549": "10.1.4.10",
-      "contentType": "",
+      "wcag": "1.1.1 (A)",
+      "en301549": "10.1.1.1",
+      "contentType": "Bilder, ikoner & grafik",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.10  Skapa en flexibel layout som fungerar vid förstoring eller liten skärm."
+      "statement": "Bilder och ikoner som förmedlar information har ett textalternativ som beskriver bilden eller ikonens budskap. Det textbaserade alternativet ska vara kortfattat och likvärdigt med bilden. Det textbaserade alternativet anges på det sätt som dokumentformatet föreskriver.\r\n\r\nDekorativa eller redundanta bilder döljs för hjälpmedel.",
+      "why": "Användare som navigerar med skärmläsare ska kunna ta del av innehåll som förmedlas med grafik."
     },
     {
-      "id": "dockkg",
-      "name": "Använd tillräckliga kontraster i komponenter och grafik",
+      "id": "docatl",
+      "name": "Text som beskriver ljud",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.4.11 (AA)",
-      "en301549": "10.1.4.11",
+      "wcag": "1.1.1 (A),1.2.1 (A)",
+      "en301549": "10.1.1.1,10.1.2.1",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.11 Användning av färger."
+      "statement": "För alla ljudklipp finns en text som kortfattat beskriver innehållet. DOS-lagen gör undantag för direktsänd media.\r\n\r\nUtöver den kortfattade beskrivningen har förinspelade ljudklipp också ett textalternativ som innehåller motsvarande information som ljudinspelningen. Exempel på förinspelade ljudklipp kan vara poddar och nyhetsinslag. Textalternativet finns på samma sida som ljudklippet eller går att nå från en länk i direkt anslutning till ljudklippet.",
+      "why": "Användare med nedsatt hörsel eller som av andra anledningar har svårt att ta till sig information som presenteras med ljud i ljudklipp kan istället läsa texten. Användare som navigerar med hjälpmedel ska kunna uppfatta när det finns ljudklipp och övergripande förstå vad innehållet handlar om."
     },
     {
-      "id": "docavs",
-      "name": "Se till att de går att öka avstånd mellan tecken, rader, stycken och ord",
+      "id": "docatv",
+      "name": "Text som beskriver video",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.4.12 (AA)",
-      "en301549": "10.4.12",
+      "wcag": "1.1.1 (A),1.2.1 (A)",
+      "en301549": "10.1.1.1,10.1.2.1",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.12  Utökade textavstånd."
+      "statement": "För alla videoklipp eller filmer finns en text som kortfattat beskriver innehållet. DOS-lagen gör undantag för direktsänd media. \r\n\r\nUtöver den kortfattade beskrivningen har förinspelad video, med eller utan ljud, ett textalternativ som innehåller motsvarande information som videon. Textalternativet finns på samma sida som videoklippet/ filmen eller går att nå från en länk i direkt anslutning till videoklippet.",
+      "why": "Användare med nedsatt syn eller som av andra anledningar har svårt att ta till sig information som presenteras visuellt i videoklipp eller film kan istället läsa texten. Användare som navigerar med hjälpmedel ska kunna uppfatta när det finns videoklipp och övergripande förstå vad innehållet handlar om."
     },
     {
-      "id": "dochfo",
-      "name": "Innehåll som visas vid hover eller fokus",
+      "id": "doctlj",
+      "name": "Texta ljudet i inspelade filmer",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "1.4.13 (AA)",
-      "en301549": "10.1.4.13",
+      "wcag": "1.2.2 (A)",
+      "en301549": "10.1.2.2",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.4.13  Innehåll vid hover eller fokus."
+      "statement": "All förinspelad video har undertexter, som beskriver dialogen, samt  andra relevanta ljud om det behövs för att användaren ska kunna ta till sig innehållet. Exempel på andra relevanta ljud är ”en telefon ringer”, ”hunden skäller” eller ”musik spelas”.\r\n\r\nUndantag:\r\n- Undertexter krävs inte för videoinspelningar som är publicerade före 23 september 2020.\r\n- Om inspelningen i sig är ett mediealternativ till text så behöver du inte texta ljudet eftersom innehållet redan finns presenterat i text. Om inspelningen är ett mediealternativ till text måste det framgå tydligt.",
+      "why": "Användare med nedsatt hörsel kan med hjälp av undertexter uppfatta innehåll som presenteras med ljud i filmer. Undertexter är även bra för användare med svenska som andraspråk, eller användare som behöver titta på filmen med ljudet avstängt."
     },
     {
-      "id": "doctgt",
-      "name": "Alla funktioner ska kunna användas med tangentbord",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "2.1.1 (A)",
-      "en301549": "10.2.1",
+      "id": "doctel",
+      "name": "Texta ljudet (live)",
+      "regulatoryFramework": "lptt",
+      "wcag": "1.2.4 (AA)",
+      "en301549": "10.1.2.4",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.1.1 Tangentbord."
+      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.4 undertextning (live)."
     },
     {
-      "id": "doctgf",
-      "name": "Ingen tangentbordsfälla",
+      "id": "docsvi",
+      "name": "Syntolka videoinspelning",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "2.1.2 (A)",
-      "en301549": "10.1.2.1",
+      "wcag": "1.2.5 (AA),1.2.3 (A)",
+      "en301549": "10.1.2.5,10.1.2.3",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.1.2 Ingen tangentbordsfälla."
+      "statement": "All förinspelad video har ett extra ljudspår som förklarar det visuella innehållet, så kallad syntolkning. All förinspelad vidio har också ett textalternativ som beskriver både det visuella och ljudet.\r\n\r\nUndantag:\r\n- Syntolkning krävs inte för inspelad video som är publicerad före 23 september 2020.\r\n- Video där syntolkning inte behövs eftersom allt som visas visuellt redan beskrivs av de som pratar.",
+      "why": "Användare med nedsatt syn kan med hjälp av syntolkning uppfatta innehåll som presenteras visuellt i filmer."
     },
     {
-      "id": "dockrk",
-      "name": "Var försiktig med kortkommandon",
+      "id": "doctim",
+      "name": "Timing i syntolkning",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "2.1.4 (A)",
-      "en301549": "10.2.1.4",
+      "en301549": "10.6",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.1.4 Snabbtangenter."
+      "statement": "Om ett dokument innehåller synkroniserad media med syntolkning, ska ljudet från syntokningen inte blandas in i den hörbara relevanta informationen i det synkroniserade mediet.",
+      "why": "Användare ska inte gå miste om innehåll för att syntolkningen stör."
     },
     {
-      "id": "doctit",
-      "name": "Skriv beskrivande dokumenttitlar",
+      "id": "docunt",
+      "name": "Undertexter",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "2.4.2 (A)",
-      "en301549": "10.2.4.2",
+      "en301549": "7.1.1",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Alla dokument har en titel som beskriver dokumentets syfte och innehåll.",
-      "why": "En beskrivande dokumenttitel hjälper användaren att snabbt och enkelt avgöra vilket dokument hen hanterar."
+      "statement": "När ett dokument visar video med synkroniserat ljud ska videospelaren kunna visa tillgängliga undertexter. Innehåller undertexterna information om färg, timing och placering så ska dokumentetta med denna information."
     },
     {
-      "id": "docfkn",
-      "name": "Ha en meningsfull fokusordning",
+      "id": "docund",
+      "name": "Position av undertexter",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "2.4.3 (A)",
-      "en301549": "10.2.4.3",
+      "en301549": "10.5",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.3 Fokusordning."
+      "statement": "Om ett dokument innehåller synkroniserad media med undertexter, ska undertexterna inte täcka relevant information i det synkroniserade mediet.",
+      "why": "Användare ska inte gå miste om innehåll för att undertexterna är ivägen."
     },
     {
-      "id": "doclan",
-      "name": "Skriv tydliga länkar",
+      "id": "docaut",
+      "name": "Anpassa undertexter",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "2.4.4 (A)",
-      "en301549": "10.2.4.4",
+      "en301549": "7.1.4",
+      "contentType": "Mediaspelara video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.4 Tydliga länkar."
+      "statement": "När ett dokument visar undertexter ska det vara möjligt för personen att anpassa undertexternas visningsegenskaper efter hens egna behov. Detta gäller förutom när undertexterna visas som ”inbränd text” (så kallade open captions). För att bidra till att uppfylla detta krav ska det vara möjligt för personen själv att ställa in: \r\n- bakgrund och förgrundsfärg för undertexter \r\n- typsnitt \r\n- storlek \r\n- genomskinlighet för undertexternas bakgrundsruta \r\n- kontur eller kant för teckensnitten",
+      "why": "Användare kan behöva anpassa undertexternas utseende för att lättare kunna läsa dem."
     },
     {
-      "id": "docrub",
-      "name": "Beskrivande rubriker och ledtexter",
+      "id": "docslu",
+      "name": "Sykronisera ljud och undertexter",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "2.4.6 (AA)",
-      "en301549": "10.2.4.6",
+      "en301549": "7.1.2",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.6 Rubriker och ledtexter/etiketter."
+      "statement": "När ett dokument visar undertexter ska metoden för att visa undertext bevara synkroniseringen mellan ljudet och de motsvarande undertexterna. Undertexterna ska visas inom 100 millisekunder från undertextens tidsstämpel."
+    },
+    {
+      "id": "docbud",
+      "name": "Bevara undertextdata",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "7.1.3",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "När ett dokument sänder, omvandlar eller spelar in video med synkroniserat ljud ska tjänsten bevara undertextdata så att den kan visas i enlighet med punkterna 7.1.1 och 7.1.2. Ytterligare presentationsegenskaper hos texten, som skärmposition, textfärger, textstil och teckensnitt, kan förmedla betydelse baserat på regionala konventioner. Förändringar av dessa egenskaper kan ändra betydelsen och bör undvikas så mycket som möjligt."
+    },
+    {
+      "id": "docmlu",
+      "name": "Möjlighet att läsa upp undertexter",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "7.1.5",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "När ett dokument visar video med synkroniserat ljud ska möjligheten finnas att tillgängliga undertexter läses upp. Detta gäller förutom när innehållet i de visade undertexterna inte är maskinläsbara.",
+      "why": "Avändare av uppläsande hjälpmedel ska också kunna ta del av undertexter."
+    },
+    {
+      "id": "docsul",
+      "name": "Spela upp ljudspår",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "7.2.1",
+      "contentType": "Mediaspelare video",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "När ett dokument visar video med synkroniserat ljud ska det finnas en funktion för att spela upp syntolkning på det primära ljudspåret. När en funktion saknas kan dokumentet ändå uppfylla detta krav, om användaren ges möjlighet att välja och spela upp flera ljudspår. I sådana fall kan videoinnehållet inkludera syntolkningen som ett av de tillgängliga ljudspåren.",
+      "why": "Användare med synnedsättning ska ges möjlighet att ta del av innehållet i en video."
+    },
+    {
+      "id": "docsis",
+      "name": "Synkronisera innehåll och syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "7.2.2",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "När ett dokument innehåller en funktion för att spela upp syntolkning ska funktionen bevara synkroniseringen mellan ljud- och bildinnehållet och den tillhörande syntolkningen."
+    },
+    {
+      "id": "docaus",
+      "name": "Aktivering av undertextning och syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "7.3",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "Där en tjänst huvudsakligen visar video med synkroniserat ljud ska det finnas användarkontroller för att aktivera undertextning och syntolkning. Dessa kontroller ska ha samma interaktionsnivå (det vill säga samma antal steg för att slutföra uppgiften) som de primära mediakontrollerna (play, paus och så vidare).",
+      "howToTest": "1. Kontrollera att alla meningsbärande bilder har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Sekretess, sökning och tjänster > Webbplatsbehörigheter > Alla behörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, eller granska HTML-koden. \r\n\r\n2. Kontrollera att bildernas alt-texter är begripliga och att de beskriver syftet med bilderna på webbsidan.\r\n\r\n3. Kontrollera att alla bilder som inte är meningsbärande har tomma alt-attribut.\r\n",
+      "textSuggestions": [
+        "[Bilden] är en bakgrundsbild trots att den förmedlar relevant information.",
+        "[Bilden] saknar textalternativ.",
+        "[Bilden] har ett textalternativ som inte förmedlar samma information som bilden.",
+        "[Bilden] har ett textalternativ som beskriver motivet i stället för att ge samma information som bilden förmedlar i sammanhanget.",
+        "[Bilden] är dekorativ men är inte dold för hjälpmedel.",
+        "Textalternativet för CAPTCHA-funktionen beskriver inte dess syfte.",
+        "CAPTCHA-funktionen har inget alternativ för personer som saknar synförmåga."
+      ]
+    },
+    {
+      "id": "docbts",
+      "name": "Bevara data för syntolkning",
+      "regulatoryFramework": "dos,lptt",
+      "en301549": "7.2.3",
+      "contentType": "Mediaspelare Video",
+      "category": "Alternativ till media",
+      "objectType": "doc",
+      "statement": "När ett dokument sänder, konverterar eller spelar in video med synkroniserat ljud ska dokumentet bevara data för syntolkning. Då kan syntolkningen spelas upp på ett sätt som är i linje med punkterna 7.2.1 och 7.2.2."
     },
     {
       "id": "docfok",
@@ -1972,8 +2176,43 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "2.4.7 (AA)",
       "en301549": "10.2.4.7",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.4.7 Synligt fokus."
+      "statement": "Alla fokuserbara element har en synlig fokusmarkering vid navigering med tangentbord. Fokusmarkeringen behöver inte synas förrän tangentbordet börjar användas men sedan måste den synas hela tiden.",
+      "why": "Användare som navigerar med tangentbord behöver kunna se vilket element som är aktivt för att veta var nästa interaktion sker. en otydlig fokusmarkering kan leda till frustration och felaktiga val."
+    },
+    {
+      "id": "docfkn",
+      "name": "Ha en meningsfull fokusordning",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.4.3 (A)",
+      "en301549": "10.2.4.3",
+      "category": "Navigation och interaktion",
+      "objectType": "doc",
+      "statement": "Vid navigering med tangentbord följer fokusordningen den visuella ordningen så att innehållet blir begripligt. Om ett element öppnas ska antingen fokuset flyttas till det öppnade elementet eller så ska det ligga direkt efter det aktiverande elementet.",
+      "why": "En meningsfull fokusordning gör att användare som navigerar med tangentbord kan förutse hur fokus flyttas mellan element. Detta skapar en intuitiv upplevelse och minskar risken för att användaren tappar orienteringen. Om fokusordningen inte är logisk kan det bli svårt att förstå hur innehållet hänger ihop."
+    },
+    {
+      "id": "dockrk",
+      "name": "Var försiktig med kortkommandon",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.1.4 (A)",
+      "en301549": "10.2.1.4",
+      "category": "Navigation och interaktion",
+      "objectType": "doc",
+      "statement": "Dokumentet innehåller inga kortkommandon som aktiveras med enbart en tangent. Om det finns kortkommandon krävs en modifieringstangent, exempelvis Ctrl, Alt eller Caps-lock. Kortkommandon med enbart en tangent ska antingen gå att stänga av eller byta ut.",
+      "why": "Vi vill undvika att användare aktiverar kortkommandon av misstag. Detta är särskilt viktigt för användare med nedsatt motorik eller användare som navigerar med röststyrning."
+    },
+    {
+      "id": "dochfo",
+      "name": "Innehåll som visas vid hover eller fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "1.4.13 (AA)",
+      "en301549": "10.1.4.13",
+      "category": "Navigation och interaktion",
+      "objectType": "doc",
+      "statement": "Innehåll som visas vid hover kan också visas med fokus och tvärtom. Det finns minst ett tydligt sätt för användaren att sluta visa innehållet. Innehållet slutar inte visas förrän användaren själv väljer att sluta visa det.",
+      "why": "Användaren ska oavsett om hen använder mus eller tangentbord kunna kontrollera om innehållet ska visas och hur länge för att kunna ta del av det utifrån sina förutsättningar."
     },
     {
       "id": "docfip",
@@ -1981,26 +2220,10 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "2.5.1 (A)",
       "en301549": "10.2.5.1",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Detta krav motsvarar WCAG 2.5.1 pekarrörelser."
-    },
-    {
-      "id": "docgrk",
-      "name": "Gör det möjligt att ångra klick",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "2.5.2 (A)",
-      "en301549": "10.2.5.2",
-      "objectType": "doc",
-      "statement": "Detta krav motsvarar WCAG 2.5.2 Ångra klick."
-    },
-    {
-      "id": "docmas",
-      "name": "Se till att text på knappar och kontroller överensstämmer med maskinläsbara namn",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "2.5.3 (A)",
-      "en301549": "10.2.5.3",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2..5.3 Etiketter i namn."
+      "statement": "Det finns alternativ till komplexa fingerrörelser. Funktioner som kräver flera fingrar eller sveprörelser är också möjliga att utföra på enklare sätt med endast ett finger. \r\nPå kartor kan det till exempel finnas knappar med samma funktion som nyp-zoom.",
+      "why": "Alla har inte möjlighet att använda flera fingrar samtidigt till exempel på grund av motoriska nedsättningar. Komplexa rörelser är även svårt för ovana användare."
     },
     {
       "id": "docaro",
@@ -2008,44 +2231,81 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "2.5.4 (A)",
       "en301549": "10.2.5.4",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 2.5.4 Rörelsestyrning."
+      "statement": "Det finns alternativ till styrning med handrörelser som aktiverar funktioner genom att användaren skakar, vrider eller rör vid enheten eller viftar framför den. Funktioner kan aktiveras på något annat sätt, exempelvis genom knappar i gränssnittet. Rörelsestyrning ska gå att stänga av för att undvika oavsiktlig aktivering.",
+      "why": "Användare kan ha sin enhet monterad på ett stativ eller ha nedsatt motorik vilket hindrar dem från att aktivera funktioner med rörelser. Styrning som bygger på rörelser kan också vara svåra för användare med ofrivilliga rörelser, spasmer eller ryckningar."
     },
     {
-      "id": "docspr",
-      "name": "Dokumentets språk",
+      "id": "docmas",
+      "name": "Se till att text på knappar och kontroller överensstämmer med maskinläsbara namn",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "3.1.1 (A)",
-      "en301549": "10.3.1.1",
+      "wcag": "2.5.3 (A)",
+      "en301549": "10.2.5.3",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Detta krav motsvarar WCAG 3..1.1 Sidans språk."
+      "statement": "Den synliga texten som beskriver en komponent överensstämmer med det namn som hjälpmedel kommer åt. I de fall då dessa namn inte kan ha samma innehåll börjar namnet som hjälpmedel kommer åt med den synliga texten.",
+      "why": "Användare som navigerar med röststyrning kan interagera med knappar och funktioner genom att exempelvis säga 'Klicka på Sök'. Om den synliga beskrivningen av en knapp inte motsvarar knappens beskrivning i koden fungerar inte kommandon med röststyrning."
     },
     {
-      "id": "docspd",
-      "name": "Språk för del av dokument",
+      "id": "doctgt",
+      "name": "Alla funktioner ska kunna användas med tangentbord",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "3.1.2 (AA)",
-      "en301549": "10.3.1.2",
+      "wcag": "2.1.1 (A),2.1.2 (A)",
+      "en301549": "10.2.1.1,10.2.1.2",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Detta krav motsvarar WCAG 3.1.2 Språkförändring för del av sida."
+      "statement": "- Det går att navigera i dokumentet och interagera med alla komponenter genom att enbart använda tangentbordet. \r\n- När användaren flyttar fokus till en komponent med tangentbordet kan fokus också flyttas bort från komponenten. Användaren fastnar aldrig med fokus på eller inuti en komponent.",
+      "why": "Användare med nedsatt motorik kan ha svårt att använda mus och navigerar därför med tangentbord eller med andra hjälpmedel som bygger på samma mekanismer. Hjälpmedel som exempelvis skärmläsare är utvecklade för att styras med endast tangentbord."
+    },
+    {
+      "id": "docgrk",
+      "name": "Gör det möjligt att ångra klick",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "2.5.2 (A)",
+      "en301549": "10.2.5.2",
+      "category": "Navigation och interaktion",
+      "objectType": "doc",
+      "statement": "Användaren kan alltid ångra ett påbörjat klick eller ett tryck på en touchskärm genom att flytta musmarkören eller att dra fingret bort från ett objekt. Handlingen slutförs inte förrän användaren lyfter sitt finger från sitt pekdon eller från skärmen.",
+      "why": "Möjligheten att ångra ett påbörjat klick eller tryck på en touchskärm underlättar för alla användare som har råkat klicka eller trycka på fel objekt."
     },
     {
       "id": "dockof",
       "name": "Ingen kontextförändring vid fokus",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "3.2.1 (A)",
-      "en301549": "10.3.2.1",
+      "wcag": "3.2.1 (A),3.2.2 (A)",
+      "en301549": "10.3.2.1, 10.3.2.2",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.2.1 Vid fokus."
+      "statement": "Inga oväntade förändringar sker när användaren: - Flyttar fokus till en kompnent - Ändrar en kompnent, exempelvis skriver i ett textfält. Exempel på oväntade förädnringar är att fokus flyttas eller att dokumentet förändras.",
+      "why": "Ett dokument uppfattas som mer förutsägbart av användare när vi undviker oväntade förändringar. Det underlättar särskilt för användare med nedsatt syn, kognition eller motorik."
     },
     {
-      "id": "docfin",
-      "name": "Utför inga oväntade förändringar vid inmatning",
+      "id": "dockom",
+      "name": "Se till att komponenter fungerar i hjälpmedel",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "3.2.2 (A)",
-      "en301549": "10.3.2.2",
+      "wcag": "4.1.2 (A)",
+      "en301549": "10.4.1.2",
+      "category": "Navigation och interaktion",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.2.2 Vid inmatning."
+      "statement": "Alla interaktiva komponenter har en korrekt angiven roll och ett namn som hjälpmedel kan tolka. Komponenternas värde och tillstånd förmedlas till hjälpmedel.",
+      "why": "Om en komponent är felaktigt uppmärkt förstår inte hjälpmedel vad komponenten är, vilket försvårar interaktionen för användaren."
+    },
+    {
+      "id": "docmed",
+      "name": "Se till att hjälpmedel kan presentera meddelanden som inte är i fokus",
+      "regulatoryFramework": "dos,lptt",
+      "wcag": "4.1.3 (A)",
+      "en301549": "10.4.1.3",
+      "category": "Navigation och interaktion",
+      "objectType": "doc",
+      "statement": "Om dokumentformatet har stöd för det, presenteras statusmeddelande för hjälpmedel utan att meddelandet får fokus.",
+      "why": "Information som förmedlas till seende användare ska skärmläsaranvändare också få ta del av.",
+      "howToTest": "",
+      "textSuggestions": [
+        "[Redigeringsverktyg] har inte stöd för att skapa innehåll som uppfyller tillgänglighetskraven.",
+        "[Redigeringsverktyg] hjälper inte användaren att skapa innehåll som uppfyller tillgänglighetskraven."
+      ]
     },
     {
       "id": "docfel",
@@ -2053,17 +2313,23 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "3.3.1 (A)",
       "en301549": "10.3.3.1",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.3.1 Identifiering av fel."
+      "statement": "- Vid validering av inmatningsfält markeras fält med felaktigt innehåll och felet beskrivs i text för användaren - Användare med skärmläsare får information om felet utan att meddelandet får fokus",
+      "why": "- Det är viktigt att användare får information om att ett fel uppstått och var felet uppstått så att hen kan åtgärda det.\r\n- Användare som är fullt seende kan uppfatta felmeddelanden i andra områden än den plats där mus- eller textmarkör befinner sig, och utan att det felmeddelandet stör användaren. Det är viktigt att ge samma möjlighet till användare med nedsatt syn som navigerar med skärmläsare."
     },
     {
       "id": "doceti",
       "name": "Skapa tydliga etiketter/ledtexter",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "3.3.2 (A)",
-      "en301549": "10.3.3.2",
+      "wcag": "3.3.2 (A),1.3.1 (A)",
+      "en301549": "10.3.3.2,10.1.3.1",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.3.2 Ledtexter/etiketter och instruktioner."
+      "statement": "- Alla interaktiva formulärkomponenter har synliga etiketter. Placeholdertexter är inte tillräckliga för att beskriva formulärobjekt eftersom de försvinner när användaren börjar skriva i ett fält.\r\n- Etiketter är placerade så att det är tydligt vilket fält etiketten beskriver.\r\n- Varje etikett är kopplad till det formulärobjekt som etiketten beskriver på ett maskinläsbart sätt. Att klicka på etiketten ger samma resultat som att klicka i eller på formulärobjektet. Exempel: att klicka på etiketten till höger om en kryssruta markerar också själva kryssrutan.",
+      "why": "Synliga etiketter som är placerade där användaren förväntar sig underlättar för alla användare men är särskilt viktigt för användare med kognitiva funktionsnedsättningar, nedsatt minnesförmåga eller inlärningssvårigheter.\r\n\r\nKorrekt koppling mellan etikett och formulärkomponent underlättar för användare med hjälpmedel, samt gör klickytor större och lättare att interagera med."
     },
     {
       "id": "docffe",
@@ -2071,8 +2337,11 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "3.3.3 (AA)",
       "en301549": "10.3.3.3",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
       "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 3.3.3 Identifiering av fel."
+      "statement": "När fel upptäcks automatiskt bör förslag på korrekt inmatning presenteras om det är möjligt.\r\n\r\nExempel:\r\n- Fyll i endast siffror.\r\n- Välj ett datum i framtiden.\r\n\r\nUndantag:\r\n- Detta behöver inte ske om det på något vis förfelar fältets syfte.",
+      "why": "Tydliga förslag vid felhantering hjälper alla användare att förstå hur de ska korrigera fel som uppstår."
     },
     {
       "id": "dockor",
@@ -2083,43 +2352,19 @@
       "contentType": "Formulär & inmatningsfält",
       "category": "Inmatning och felhantering",
       "objectType": "doc",
-      "statement": "För webbsidor som leder till att användare ingår rättsliga åtaganden eller utför ekonomiska transaktioner, eller som ändrar eller raderar användarstyrd data i datalagringssystem eller tar emot användarens provsvar, så ska minst en av följande punkter gälla:\r\n\r\n- Möjlig att ångra: Åtgärder kan ångras.\r\n- Kontrollerad: Data som matats in av användaren kontrolleras, och om inmatningsfel hittas ges användaren möjlighet att rätta till dem.\r\n- Bekräftad: Det finns en metod/funktion för att förhandsgranska, bekräfta och rätta till information innan åtgärden slutförs.",
-      "why": "Det är viktigt att skydda användarna från allvarliga konsekvenser som orsakats av att de råkat göra ett misstag.",
-      "howToTest": "För tjänster eller webbsidor där användaren kan fylla i och skicka information, gör följande:\r\n\r\n1. Utför alla steg i tjänsten för att simulera att en användare utför en uppgift. För att undvika eventuella fel i bakomliggande system bör testdata användas här.\r\n2. Kontrollera om den aktuella tjänsten eller formulären på webbsidan avslutas med en knapp för att granska informationen i formuläret.\r\n3. Kontrollera att nästa steg i tjänsten tar användaren till en sida där användaren kan granska den information som den har angett i formuläret.\r\n4. Kontrollera att det finns en möjlighet för användaren att gå tillbaka och korrigera information som har blivit fel."
+      "statement": "För dokument som leder till att användare ingår rättsliga åtaganden eller utför ekonomiska transaktioner, eller som ändrar eller raderar användarstyrd data i datalagringssystem eller tar emot användarens provsvar, så ska minst en av följande punkter gälla:\r\n\r\n- Möjlig att ångra: Åtgärder kan ångras.\r\n- Kontrollerad: Data som matats in av användaren kontrolleras, och om inmatningsfel hittas ges användaren möjlighet att rätta till dem.\r\n- Bekräftad: Det finns en metod/funktion för att förhandsgranska, bekräfta och rätta till information innan åtgärden slutförs.",
+      "why": "Det är viktigt att skydda användarna från allvarliga konsekvenser som orsakats av att de råkat göra ett misstag."
     },
     {
-      "id": "dockom",
-      "name": "Se till att komponenter fungerar i hjälpmedel",
+      "id": "docsyf",
+      "name": "Ange syfte för formulärfält i koden",
       "regulatoryFramework": "dos,lptt",
-      "wcag": "4.1.2 (A)",
-      "en301549": "10.4.1.2",
+      "wcag": "1.3.5 (AA)",
+      "en301549": "10.1.3.5",
+      "contentType": "Formulär & inmatningsfält",
+      "category": "Inmatning och felhantering",
       "objectType": "doc",
-      "statement": "Detta krav motsvarar WCAG 4.1.2 Namn, roll, värde."
-    },
-    {
-      "id": "docmed",
-      "name": "Se till att hjälpmedel kan presentera meddelanden som inte är i fokus",
-      "regulatoryFramework": "dos,lptt",
-      "wcag": "4.1.3 (AA)",
-      "en301549": "10.4.1.3",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 4.1.3 Statusmeddelande."
-    },
-    {
-      "id": "docund",
-      "name": "Position av undertexter",
-      "regulatoryFramework": "dos,lptt",
-      "en301549": "10.5",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument som innehåller synkroniserad media med undertexter, ska undertexterna inte täcka relevant information i det synkroniserade mediet."
-    },
-    {
-      "id": "doctim",
-      "name": "Timing i syntolkning",
-      "regulatoryFramework": "dos,lptt",
-      "en301549": "10.6",
-      "objectType": "doc",
-      "statement": "Om en tjänst är ett dokument som innehåller synkroniserad media med syntolkning, ska ljudet från syntokningen inte blandas in i den hörbara relevanta informationen i det synkroniserade mediet."
+      "statement": "Inmatningsfält för personlig information kan kompletteras automatiskt för att hjälpa användaren att fylla i fälten snabbare. Förutsatt att dokumentformatet har stöd för det. Det ska framgå, även på ett sätt som hjälpmedel kan tolka, vilken information som efterfrågas."
     }
   ]
 }
