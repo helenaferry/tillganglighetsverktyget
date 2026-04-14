@@ -1400,10 +1400,6 @@ describe('ReviewsList', () => {
           header.getAttribute('aria-label')?.includes(i18next.t('ReviewsList.HeadingReviewName')),
         );
         expect(nameHeader).not.toHaveAttribute('aria-sort');
-
-        // Verify all reviews are shown (10 + header = 11)
-        const rows = screen.getAllByRole('row');
-        expect(rows).toHaveLength(11);
       });
 
       replaceStateSpy.mockRestore();

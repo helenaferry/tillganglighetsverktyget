@@ -74,7 +74,7 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
               <DigiFormRadiogroup
                 afName="fulfillment"
                 onAfOnGroupChange={(e: CustomEvent) => {
-                  const status = Number(e.detail.target.value);
+                  const status = Number(e.detail);
                   setLocalStatus(status);
                   if (status === Status.NOT_ASSESSED && check && !check.comment) {
                     deleteCheck.mutate(String(check.id));
@@ -82,8 +82,8 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
                   const input: UpsertCheckInput = {
                     reviewId: Number(reviewId),
                     requirement: requirementId,
-                    status,
                     comment: check?.comment ?? '',
+                    status
                   };
                   upsertCheck.mutate(input, {
                     onError: (err) => {
@@ -93,22 +93,22 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
                 }}
               >
                 <DigiFormRadiobutton
-                  value={Status.NOT_ASSESSED.toString()}
+                  afValue={Status.NOT_ASSESSED.toString()}
                   afLabel={t('Status.notAssessed')}
                   afChecked={!check || check.status === Status.NOT_ASSESSED}
                 />
                 <DigiFormRadiobutton
-                  value={Status.PASS.toString()}
+                  afValue={Status.PASS.toString()}
                   afLabel={t('Status.pass')}
                   afChecked={check?.status === Status.PASS}
                 />
                 <DigiFormRadiobutton
-                  value={Status.FAIL.toString()}
+                  afValue={Status.FAIL.toString()}
                   afLabel={t('Status.fail')}
                   afChecked={check?.status === Status.FAIL}
                 />
                 <DigiFormRadiobutton
-                  value={Status.IRRELEVANT.toString()}
+                  afValue={Status.IRRELEVANT.toString()}
                   afLabel={t('Status.irrelevant')}
                   afChecked={check?.status === Status.IRRELEVANT}
                 />

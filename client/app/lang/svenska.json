@@ -179,7 +179,7 @@
     "Only": "BARA",
     "Remaining": "KVAR",
     "PercentDone": "{{percent}} klart",
-    "Showing": "Krav {{number}} av {{total}}",
+    "Showing": "Krav {{number}} av {{total}} krav",
     "Skip": "Hoppa till krav: {{requirementName}}",
     "ReviewView": "Granskningsvy"
   },

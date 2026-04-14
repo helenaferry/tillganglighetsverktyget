@@ -552,7 +552,7 @@ export function ReviewForm({ review }: Props) {
                           afName={`radiogroup-${contentType}`}
                           key={contentType}
                           onAfOnGroupChange={(e) => {
-                            const value = (e.target as HTMLInputElement)?.value;
+                            const value = e.detail;
                             handleContentChange(contentType, value);
                           }}
                         >
@@ -604,7 +604,7 @@ export function ReviewForm({ review }: Props) {
                     key={prefill.id}
                     onAfOnGroupChange={(e) => {
                       setConfigPrefillsUpdated(true);
-                      const value = (e.target as HTMLInputElement)?.value;
+                      const value = e.detail;
                       setShowRemovePrefillConfirmationYes(
                         value === 'true' &&
                           Boolean(!review?.selectedPrefillIds?.includes(prefill.id)),

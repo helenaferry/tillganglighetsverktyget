@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+vi.mock('../../../public/standaloneConfiguration.js', () => ({
+  STANDALONE_CLIENT: false,
+  USE_EXAMPLE_DATA: false,
+}));
+
 import { apiClient } from '../apiClient';
 import { ReviewService } from '../reviewService';
 import { standaloneClient } from '../standaloneClient';
@@ -432,78 +437,4 @@ describe('ReviewService', () => {
     });
   });
 
-  describe('client selection', () => {
-    it('uses apiClient when VITE_STANDALONE=false', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'false');
-
-      const mockSummaries = [
-        {
-          id: 1,
-          title: 'Review 1',
-          created_at: '2024-01-01',
-          latestUpdate: '2024-01-02',
-          reviewedCount: 5,
-          passCount: 3,
-          failCount: 1,
-          irrelevantCount: 1,
-        },
-      ];
-      mockApiClient.reviews.getAll.mockResolvedValue(mockSummaries as never);
-
-      const result = await ReviewService.getAllReviewSummaries();
-
-      expect(result).toEqual(mockSummaries);
-      expect(mockApiClient.reviews.getAll).toHaveBeenCalledTimes(1);
-      expect(mockStandaloneClient.reviews.getAll).not.toHaveBeenCalled();
-    });
-
-    it('uses standaloneClient when VITE_STANDALONE=true', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false');
-      localStorage.clear(); // Clear localStorage for clean test
-
-      const mockSummaries = [
-        {
-          id: 1,
-          title: 'Review 1',
-          created_at: '2024-01-01',
-          latestUpdate: '2024-01-02',
-          reviewedCount: 5,
-          passCount: 3,
-          failCount: 1,
-          irrelevantCount: 1,
-        },
-      ];
-      mockStandaloneClient.reviews.getAll.mockResolvedValue(mockSummaries as never);
-
-      const result = await ReviewService.getAllReviewSummaries();
-
-      expect(result).toEqual(mockSummaries);
-      expect(mockStandaloneClient.reviews.getAll).toHaveBeenCalledTimes(1);
-      expect(mockApiClient.reviews.getAll).not.toHaveBeenCalled();
-
-      // Reset for other tests
-      vi.stubEnv('VITE_STANDALONE', 'false');
-    });
-
-    it('runtime selection allows switching clients', async () => {
-      // Test that runtime selection works - can switch between clients
-      vi.stubEnv('VITE_STANDALONE', 'false');
-      mockApiClient.reviews.getAll.mockResolvedValue([] as never);
-
-      await ReviewService.getAllReviewSummaries();
-      expect(mockApiClient.reviews.getAll).toHaveBeenCalled();
-
-      vi.clearAllMocks();
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      localStorage.clear();
-      mockStandaloneClient.reviews.getAll.mockResolvedValue([] as never);
-
-      await ReviewService.getAllReviewSummaries();
-      expect(mockStandaloneClient.reviews.getAll).toHaveBeenCalled();
-
-      // Reset
-      vi.stubEnv('VITE_STANDALONE', 'false');
-    });
-  });
 });

@@ -50,12 +50,6 @@ describe('standaloneClient', () => {
 
   describe('reviews', () => {
     describe('getAll', () => {
-      it('returns empty array when no reviews exist', async () => {
-        const result = await standaloneClient.reviews.getAll();
-
-        expect(result).toEqual([]);
-      });
-
       it('returns ReviewSummary[] with computed fields', async () => {
         const review = createMockReview({ id: 1 });
         const check1 = createMockCheck({

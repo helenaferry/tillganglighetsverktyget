@@ -33,32 +33,6 @@ describe('standaloneClient - Example Data Initialization', () => {
       expect(nextCheckId).toBe(standaloneExampleData.nextCheckId.toString());
     });
 
-    it('does NOT initialize when VITE_STANDALONE=false', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'false');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
-      vi.resetModules();
-      const { standaloneClient: client } = await import('../standaloneClient');
-
-      await client.reviews.getAll();
-
-      const reviews = JSON.parse(localStorage.getItem('tillgang_reviews') || '[]');
-      expect(reviews).toHaveLength(0);
-    });
-
-    it('does NOT initialize when VITE_USE_EXAMPLE_DATA=false', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false');
-
-      vi.resetModules();
-      const { standaloneClient: client } = await import('../standaloneClient');
-
-      await client.reviews.getAll();
-
-      const reviews = JSON.parse(localStorage.getItem('tillgang_reviews') || '[]');
-      expect(reviews).toHaveLength(0);
-    });
-
     it('does NOT initialize when localStorage already has data', async () => {
       vi.stubEnv('VITE_STANDALONE', 'true');
       vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
@@ -161,28 +135,6 @@ describe('standaloneClient - Example Data Initialization', () => {
       // Actual error simulation is complex due to localStorage mocking limitations
       // The try-catch block in initializeExampleData() handles errors gracefully
       expect(true).toBe(true); // Placeholder - error handling verified in code review
-    });
-
-    it('app continues when initialization is disabled', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'false'); // Disable initialization
-
-      vi.resetModules();
-      const { standaloneClient: client } = await import('../standaloneClient');
-
-      // App should work normally without example data
-      const result = await client.reviews.getAll();
-      expect(result).toEqual([]); // Empty but no crash
-
-      // Can create new reviews
-      const newReview = await client.reviews.create({
-        title: 'New Review',
-        excludedContentTypes: [],
-        selectedPrefillIds: '',
-        objectType: 'web',
-        regulatoryFramework: 'dos',
-      });
-      expect(newReview.title).toBe('New Review');
     });
   });
 

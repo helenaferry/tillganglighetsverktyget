@@ -207,14 +207,15 @@ vi.mock('@designsystem-se/af-react', async () => {
       afName,
     }: React.PropsWithChildren<{
       afName?: string;
-      onAfOnGroupChange?: (e: Event) => void;
+      onAfOnGroupChange?: (e: CustomEvent<string>) => void;
     }>) => (
       <div
         role="radiogroup"
         data-name={afName}
         onChange={(e) => {
           if (onAfOnGroupChange) {
-            onAfOnGroupChange(e.nativeEvent);
+            const value = (e.target as HTMLInputElement).value;
+            onAfOnGroupChange(new CustomEvent('groupchange', { detail: value }) as CustomEvent<string>);
           }
         }}
       >
@@ -538,13 +539,13 @@ describe('ReviewForm', () => {
     it('shows radiobuttons for each content type', async () => {
       await renderReviewForm();
 
-      expect(screen.getByText(i18n.t('ReviewForm.ContentTypes.Question'))).toBeInTheDocument();
+      expect(screen.getByText(i18n.t('ReviewForm.ContentTypes.Question', { yourObjectType: i18n.t('ReviewForm.ContentTypes.YourWeb') }))).toBeInTheDocument();
 
       const fieldsets = screen.getAllByRole('group');
-      expect(fieldsets).toHaveLength(mockContentTypes.length);
+      expect(fieldsets).toHaveLength(mockContentTypes.length + 1); // +1 for the WEB/DOCUMENT type fieldset
 
       const radioButtons = screen.getAllByRole('radio');
-      expect(radioButtons).toHaveLength(mockContentTypes.length * 2);
+      expect(radioButtons).toHaveLength(mockContentTypes.length * 2 + 2); // +2 for the WEB/DOCUMENT type radio buttons
     });
 
     it('lets user change content type from Yes to No', async () => {

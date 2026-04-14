@@ -72,10 +72,9 @@ vi.mock('@designsystem-se/af-react', () => ({
           aria-describedby={afAriaDescribedby}
           onClick={() => {
             if (currentOnGroupChange) {
-              const target = { value: String(radioValue) };
               const customEvent = new CustomEvent('change', {
-                detail: { target },
-              }) as CustomEvent<{ target: { value: string } }>;
+                detail: String(radioValue),
+              }) as CustomEvent<string>;
               currentOnGroupChange(customEvent);
             }
           }}
@@ -91,7 +90,7 @@ vi.mock('@designsystem-se/af-react', () => ({
     afName,
   }: {
     children?: React.ReactNode;
-    onAfOnGroupChange?: (e: CustomEvent<{ target: { value: string } }>) => void;
+    onAfOnGroupChange?: (e: CustomEvent<string>) => void;
     afName?: string;
   }) => {
     currentOnGroupChange = onAfOnGroupChange ?? null;
