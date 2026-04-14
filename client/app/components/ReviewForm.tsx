@@ -61,12 +61,12 @@ export function ReviewForm({ review }: Props) {
     () =>
       Array.from(
         new Set(
-          (allRequirementsBase ?? [])
+          (allRequirements ?? [])
             .filter((req) => req.objectType === objectType)
             .map((req) => req.contentType),
         ),
       ).filter((type): type is string => !!type && type.trim().length > 0),
-    [allRequirementsBase, objectType],
+    [allRequirements, objectType],
   );
 
   const regulatoryFrameworks = useMemo(() => {
@@ -103,6 +103,7 @@ export function ReviewForm({ review }: Props) {
   const [contentTypePrefillsUpdatedYes, setContentTypePrefillsUpdatedYes] = useState<string[]>([]);
   const [contentTypePrefillsUpdatedNo, setContentTypePrefillsUpdatedNo] = useState<string[]>([]);
   const [saving, setSaving] = useState<boolean>(false);
+  const [showDocumentInfo, setShowDocumentInfo] = useState<boolean>(false);
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
   );
@@ -126,8 +127,20 @@ export function ReviewForm({ review }: Props) {
             ids: req.map((r) => r.id),
             status: 'IRRELEVANT',
             comment:
-              contentTypeTexts.find((q) => q.contentType === contentType)?.prefillComment ||
-              t('ReviewForm.ContentTypes.FallbackPrefillComment') + contentType,
+              contentTypeTexts
+                .find((q) => q.contentType === contentType)
+                ?.prefillComment.replace(
+                  '{{theObjectType}}',
+                  objectType === ObjectType.WEB
+                    ? t('ReviewForm.ContentTypes.TheWeb')
+                    : t('ReviewForm.ContentTypes.TheDocument'),
+                ) ||
+              t('ReviewForm.ContentTypes.FallbackPrefillComment', {
+                theObjectType:
+                  objectType === ObjectType.WEB
+                    ? t('ReviewForm.ContentTypes.TheWeb')
+                    : t('ReviewForm.ContentTypes.TheDocument'),
+              }) + contentType,
           };
         }
         return undefined;
@@ -395,33 +408,36 @@ export function ReviewForm({ review }: Props) {
       )}
       {!loading && (
         <form id="review-form" onSubmit={handleSubmit} noValidate>
-          {/* Disable option to choose between web and document for now 
-          <DigiFormFieldset afForm="review-form" afLegend="Typ av granskningsobjekt" afName="typ">
+          <DigiFormFieldset
+            afForm="review-form"
+            afLegend={t('ReviewForm.ContentTypes.Legend')}
+            afName="typ"
+          >
             <DigiFormRadiogroup afName="type">
               <DigiFormRadiobutton
-                afLabel="Webbsida eller webbtjänst"
+                afLabel={t('ReviewForm.ContentTypes.WebLabel')}
                 afValue={ObjectType.WEB}
                 onAfOnInput={() => {
-                  console.log('web');
                   setObjectType(ObjectType.WEB);
                 }}
                 afChecked={objectType === ObjectType.WEB}
               ></DigiFormRadiobutton>
               <DigiFormRadiobutton
-                afLabel="Dokument"
+                afLabel={t('ReviewForm.ContentTypes.DocumentLabel')}
                 afValue={ObjectType.DOCUMENT}
                 onAfOnInput={() => {
-                  console.log('doc');
                   setObjectType(ObjectType.DOCUMENT);
                 }}
                 afChecked={objectType === ObjectType.DOCUMENT}
               ></DigiFormRadiobutton>
             </DigiFormRadiogroup>
           </DigiFormFieldset>
-          <DigiButton afType="button" onClick={() => setShowDocumentInfo(true)}>
-            Vad menas med dokument?
-          </DigiButton>
-         <DigiDialog
+          {/* TODO: vill vi ha nåt sånt här? i18n på det? <div className="mb-4">
+            <DigiButton afType="button" onClick={() => setShowDocumentInfo(true)}>
+              Vad menas med dokument?
+            </DigiButton>
+          </div>
+          <DigiDialog
             afSize={DialogSize.MEDIUM}
             afShowDialog={showDocumentInfo}
             afHeading="Dokument som inte är webb, enligt avsnitt 10 i EN 301 549"
@@ -452,7 +468,8 @@ export function ReviewForm({ review }: Props) {
               signaturer, kryptering, lösenordsskydd och vattenstämplar när de presenteras för
               användaren.
             </p>
-          </DigiDialog>*/}
+          </DigiDialog>
+          */}
           <div className="max-w-[25rem] mb-6">
             <DigiFormInput
               afId="reviewName"
@@ -494,16 +511,36 @@ export function ReviewForm({ review }: Props) {
               </DigiFormFieldset>
             </div>
           )}
-          {objectType === ObjectType.WEB && (
+          {contentTypes && contentTypes.length > 0 && (
             <div>
-              <h2>{t('ReviewForm.ContentTypes.Question')}</h2>
-              <p>{t('ReviewForm.ContentTypes.Description')}</p>
+              <h2>
+                {t('ReviewForm.ContentTypes.Question', {
+                  yourObjectType:
+                    objectType === ObjectType.WEB
+                      ? t('ReviewForm.ContentTypes.YourWeb')
+                      : t('ReviewForm.ContentTypes.YourDocument'),
+                })}
+              </h2>
+              <p>
+                {t('ReviewForm.ContentTypes.Description', {
+                  yourObjectType:
+                    objectType === ObjectType.WEB
+                      ? t('ReviewForm.ContentTypes.YourWeb')
+                      : t('ReviewForm.ContentTypes.YourDocument'),
+                })}
+              </p>
 
               {contentTypes &&
                 contentTypes.map((contentType) => {
                   const questionText =
-                    contentTypeTexts.find((q) => q.contentType === contentType)?.question ||
-                    contentType;
+                    contentTypeTexts
+                      .find((q) => q.contentType === contentType)
+                      ?.question.replace(
+                        '{{theObjectType}}',
+                        objectType === ObjectType.WEB
+                          ? t('ReviewForm.ContentTypes.TheWeb')
+                          : t('ReviewForm.ContentTypes.TheDocument'),
+                      ) || contentType;
                   return (
                     <div className="content-type mb-4" key={`fieldset-${contentType}`}>
                       <DigiFormFieldset

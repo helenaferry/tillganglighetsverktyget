@@ -103,13 +103,22 @@
       "None": "Vet ej (alla krav inkluderas)"
     },
     "ContentTypes": {
-      "Question": "Vad innehåller din tjänst?",
-      "Description": "Svara nej på det innehåll som inte finns i din tjänst. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
+      "Legend": "Typ av granskningsobjekt",
+      "WebLabel": "Webbsida eller webbtjänst",
+      "DocumentLabel": "Dokument",
+      "Web": "tjänst",
+      "Document": "dokument",
+      "YourWeb": "din tjänst",
+      "YourDocument": "ditt dokument",
+      "TheWeb": "tjänsten",
+      "TheDocument": "dokumentet",
+      "Question": "Vad innehåller {{yourObjectType}}?",
+      "Description": "Svara nej på det innehåll som inte finns i {{yourObjectType}}. Relaterade krav markeras då som irrelevanta, men du kan fortfarande se och ändra kraven under granskningen.",
       "ContentChangeWarningYes": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare nollställs bedömningen för alla krav relaterade till detta val.",
       "ContentChangeWarningNo": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare markeras alla krav relaterade till detta val som irrelevanta.",
       "PrefillWarningYes": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare kommer bedömningen för alla krav relaterade till detta val att följa inställningen.",
       "PrefillWarningNo": "Denna ändring kan påverka krav som redan har bedömts. Om du går vidare kommer bedömningen för alla krav relaterade till detta val att nollställas.",
-      "FallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom tjänsten, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
+      "FallbackPrefillComment": "Kravet har förifyllts som irrelevant eftersom {{theObjectType}}, enligt tidigare ifyllda uppgifter, saknar följande innehåll: "
     },
     "RequirementsToReview": "krav att granska",
     "AutomaticPrefillInfo": "{{number}} krav hanteras automatiskt av din organisation.",

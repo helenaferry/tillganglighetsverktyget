@@ -92,7 +92,7 @@
       "name": "Inte bara sensoriska kännetecken",
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.3.3 (A)",
-      "en301549": "9.1.3.1",
+      "en301549": "9.1.3.3",
       "contentType": "",
       "category": "Struktur och språk",
       "objectType": "web",
@@ -319,7 +319,7 @@
       "objectType": "web",
       "statement": "Inget innehåll ska blinka eller flimra mer än tre gånger under en sekund.",
       "why": "Vi vill inte riskera att orsaka epileptiska anfall eller fysiska reaktioner hos våra användare.",
-      "howToTest": "1. Kontrollera om det finns blinkningar eller flimmer. Om inte är punkten godkänd.\r\n2. Finns det flimmer kan du testa det med hjälp av olika verktyg.\r\n\r\nVar extra uppmärksam med att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger.",
+      "howToTest": "1. Kontrollera om det finns blinkningar eller flimmer. Om inte är punkten godkänd.\r\n2. Finns det flimmer kan du testa det med hjälp av olika verktyg.\r\n\r\nVar extra uppmärksam på att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger.",
       "textSuggestions": [
         "[Innehåll] flimrar mer än tre gånger per sekund. Det flimrande innehållet tar en större yta av synfältet än tillåtet."
       ]
@@ -1702,7 +1702,7 @@
     },
     {
       "id": "docinr",
-      "name": "Information och relationer",
+      "name": "Rubriker",
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.3.1 (A),2.4.6 (AA)",
       "en301549": "10.1.3.1,10.2.4.6",
@@ -1719,7 +1719,8 @@
       "en301549": "10.1.3.3",
       "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Hänvisningar till innehåll och komponenter förlitar sig inte endast på sensoriska kännetecken som form, storlek, färg eller placering. Istället för att det står \"Tryck på den gröna knappen\" bör det stå exempelvis \"Tryck på den gröna knappen med texten Skicka\"."
+      "statement": "Hänvisningar till innehåll och komponenter förlitar sig inte endast på sensoriska kännetecken som form, storlek, färg eller placering. Istället för att det står \"Tryck på den gröna knappen\" bör det stå exempelvis \"Tryck på den gröna knappen med texten Skicka\".",
+      "why": "Användare som inte ser något alls, har nedsatt syn eller nedsatt färgseende kan ha svårt att ta till sig information som presenteras med bara form, storlek, färg eller placering på skärmen. Presentation av information i text underlättar för alla användare."
     },
     {
       "id": "docsen",
@@ -1729,7 +1730,8 @@
       "en301549": "10.1.3.3",
       "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Länkar och knappar som markeras med enbart symboler har namn som hjälpmedel kan tolka."
+      "statement": "Länkar och knappar som markeras med enbart symboler har namn som hjälpmedel kan tolka.",
+      "why": "Användare som inte ser något alls, har nedsatt syn eller nedsatt färgseende kan ha svårt att ta till sig information som presenteras med bara form, storlek, färg eller placering på skärmen. Presentation av information i text underlättar för alla användare."
     },
     {
       "id": "docord",
@@ -1761,7 +1763,8 @@
       "en301549": "10.1.3.1",
       "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Om dokumentformatet stödjer listor, kan listor tolkas av hjälpmedel. Allt som är angivet som listor är listinformation."
+      "statement": "Om dokumentformatet stödjer listor, kan listor tolkas av hjälpmedel. Allt som är angivet som listor är listinformation.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur."
     },
     {
       "id": "docset",
@@ -1771,7 +1774,8 @@
       "en301549": "10.1.3.1",
       "category": "Struktur och språk",
       "objectType": "doc",
-      "statement": "Tabeller används endast för strukturerad data och är uppmärkta så att de kan tolkas av hjälpmedel. Om tabell används i layoutsyfte, döljs tabellen för hjälpmedel om dokumentformatet har stöd för det."
+      "statement": "Tabeller används endast för strukturerad data och är uppmärkta så att de kan tolkas av hjälpmedel. Om tabell används i layoutsyfte, döljs tabellen för hjälpmedel om dokumentformatet har stöd för det.",
+      "why": "Korrekt användning av element hjälper personer som använder skärmläsare eller andra hjälpmedel att uppfatta information och struktur."
     },
     {
       "id": "docbee",
@@ -1783,8 +1787,7 @@
       "category": "Struktur och språk",
       "objectType": "doc",
       "statement": "Etiketter är tydligt formulerade och beskriver den information som efterfrågas.",
-      "why": "Tydliga etiketter hjälper alla användare att fylla i formulär på rätt sätt. Det är extra viktigt för användare med nedsatt inlärningsförmåga eller andra kognitiva eller språkliga svårigheter.",
-      "howToTest": "För tjänster eller webbsidor där användaren kan fylla i och skicka information, gör följande:\r\n\r\n1. Utför alla steg i tjänsten för att simulera att en användare utför en uppgift. För att undvika eventuella fel i bakomliggande system bör testdata användas här.\r\n2. Kontrollera om den aktuella tjänsten eller formulären på webbsidan avslutas med en knapp för att granska informationen i formuläret.\r\n3. Kontrollera att nästa steg i tjänsten tar användaren till en sida där användaren kan granska den information som den har angett i formuläret.\r\n4. Kontrollera att det finns en möjlighet för användaren att gå tillbaka och korrigera information som har blivit fel."
+      "why": "Tydliga etiketter hjälper alla användare att fylla i formulär på rätt sätt. Det är extra viktigt för användare med nedsatt inlärningsförmåga eller andra kognitiva eller språkliga svårigheter."
     },
     {
       "id": "doctol",
@@ -1806,10 +1809,7 @@
       "objectType": "doc",
       "statement": "Om dokumentet har funktioner för att konvertera innehåll, exempelvis från html till pdf, ska information som ökar tillgängligheten finnas kvar i det nya formatet. Exempel kan vara rubrikstruktur eller alternativtexter till bilder. Detta gäller alla typer av dokumentformat, men endast om målformatet har stöd för motsvarande tillgänglighetsegenskaper som källformatet.",
       "why": "Om viktiga tillgänglighetsegenskaper försvinner vid konvertering, kan det försvåra för personer med funktionsnedsättning att ta del av innehållet.",
-      "howToTest": "",
-      "textSuggestions": [
-        "Det går inte att kommunicera med tal och realtidstext samtidigt via samma anslutning."
-      ]
+      "howToTest": ""
     },
     {
       "id": "docktb",
@@ -1865,7 +1865,7 @@
       "objectType": "doc",
       "statement": "Inget innehåll ska blinka eller flimra mer än tre gånger under en sekund.",
       "why": "Vi vill inte riskera att orsaka epileptiska anfall eller fysiska reaktioner hos våra användare.",
-      "howToTest": "1. Kontrollera om det finns blinkningar eller flimmer. Om inte är punkten godkänd.\r\n2. Finns det flimmer kan du testa det med hjälp av olika verktyg.\r\n\r\nVar extra uppmärksam med att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger."
+      "howToTest": "1. Kontrollera om det finns blinkningar eller flimmer. Om inte är punkten godkänd.\r\n2. Finns det flimmer kan du testa det med hjälp av olika verktyg.\r\n\r\nVar extra uppmärksam på att visa video som innehåller diskotekslampor, pyroteknik, explosioner eller andra snabba hopp mellan ljus och mörker eller ljus i olika färger."
     },
     {
       "id": "doctid",
@@ -1936,11 +1936,7 @@
       "objectType": "doc",
       "statement": "Det går att öka avståndet mellan tecken, rader, stycken och ord utan att innehåll försvinner eller att funktionaliteten försämras. Följande minimikrav gäller:\r\n \r\n- teckenavstånd till minst 0,12 gånger teckensnittets storlek\r\n- avstånd mellan ord till minst 0.16 gånger teckensnittets storlek -Radavstånd till minst 1,5 gånger teckensnittets storlek - Avståndet mellan stycken till minst 2 gånger teckensnittets storlek",
       "why": "Det är särskilt viktigt för användare med dyslexi eller nedsatt syn att kunna justera avstånd i text.",
-      "howToTest": "",
-      "textSuggestions": [
-        "Vid omstrukturering i [redigeringsverktyg] bevaras inte [tillgänglighetsinformation].",
-        "Vid omvandling till [format] i [redigeringsverktyg] bevaras inte [tillgänglighetsinformation]."
-      ]
+      "howToTest": ""
     },
     {
       "id": "docfft",
@@ -1993,7 +1989,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.1.1 (A),1.2.1 (A)",
       "en301549": "10.1.1.1,10.1.2.1",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "För alla ljudklipp finns en text som kortfattat beskriver innehållet. DOS-lagen gör undantag för direktsänd media.\r\n\r\nUtöver den kortfattade beskrivningen har förinspelade ljudklipp också ett textalternativ som innehåller motsvarande information som ljudinspelningen. Exempel på förinspelade ljudklipp kan vara poddar och nyhetsinslag. Textalternativet finns på samma sida som ljudklippet eller går att nå från en länk i direkt anslutning till ljudklippet.",
@@ -2005,7 +2001,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.1.1 (A),1.2.1 (A)",
       "en301549": "10.1.1.1,10.1.2.1",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "För alla videoklipp eller filmer finns en text som kortfattat beskriver innehållet. DOS-lagen gör undantag för direktsänd media. \r\n\r\nUtöver den kortfattade beskrivningen har förinspelad video, med eller utan ljud, ett textalternativ som innehåller motsvarande information som videon. Textalternativet finns på samma sida som videoklippet/ filmen eller går att nå från en länk i direkt anslutning till videoklippet.",
@@ -2017,7 +2013,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.2.2 (A)",
       "en301549": "10.1.2.2",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "All förinspelad video har undertexter, som beskriver dialogen, samt  andra relevanta ljud om det behövs för att användaren ska kunna ta till sig innehållet. Exempel på andra relevanta ljud är ”en telefon ringer”, ”hunden skäller” eller ”musik spelas”.\r\n\r\nUndantag:\r\n- Undertexter krävs inte för videoinspelningar som är publicerade före 23 september 2020.\r\n- Om inspelningen i sig är ett mediealternativ till text så behöver du inte texta ljudet eftersom innehållet redan finns presenterat i text. Om inspelningen är ett mediealternativ till text måste det framgå tydligt.",
@@ -2029,6 +2025,7 @@
       "regulatoryFramework": "lptt",
       "wcag": "1.2.4 (AA)",
       "en301549": "10.1.2.4",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "Om en tjänst är ett dokument ska det uppfylla WCAG 1.2.4 undertextning (live)."
@@ -2039,7 +2036,7 @@
       "regulatoryFramework": "dos,lptt",
       "wcag": "1.2.5 (AA),1.2.3 (A)",
       "en301549": "10.1.2.5,10.1.2.3",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "All förinspelad video har ett extra ljudspår som förklarar det visuella innehållet, så kallad syntolkning. All förinspelad vidio har också ett textalternativ som beskriver både det visuella och ljudet.\r\n\r\nUndantag:\r\n- Syntolkning krävs inte för inspelad video som är publicerad före 23 september 2020.\r\n- Video där syntolkning inte behövs eftersom allt som visas visuellt redan beskrivs av de som pratar.",
@@ -2050,7 +2047,7 @@
       "name": "Timing i syntolkning",
       "regulatoryFramework": "dos,lptt",
       "en301549": "10.6",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "Om ett dokument innehåller synkroniserad media med syntolkning, ska ljudet från syntokningen inte blandas in i den hörbara relevanta informationen i det synkroniserade mediet.",
@@ -2071,7 +2068,7 @@
       "name": "Position av undertexter",
       "regulatoryFramework": "dos,lptt",
       "en301549": "10.5",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "Om ett dokument innehåller synkroniserad media med undertexter, ska undertexterna inte täcka relevant information i det synkroniserade mediet.",
@@ -2082,7 +2079,7 @@
       "name": "Anpassa undertexter",
       "regulatoryFramework": "dos,lptt",
       "en301549": "7.1.4",
-      "contentType": "Mediaspelara video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "När ett dokument visar undertexter ska det vara möjligt för personen att anpassa undertexternas visningsegenskaper efter hens egna behov. Detta gäller förutom när undertexterna visas som ”inbränd text” (så kallade open captions). För att bidra till att uppfylla detta krav ska det vara möjligt för personen själv att ställa in: \r\n- bakgrund och förgrundsfärg för undertexter \r\n- typsnitt \r\n- storlek \r\n- genomskinlighet för undertexternas bakgrundsruta \r\n- kontur eller kant för teckensnitten",
@@ -2124,7 +2121,7 @@
       "name": "Spela upp ljudspår",
       "regulatoryFramework": "dos,lptt",
       "en301549": "7.2.1",
-      "contentType": "Mediaspelare video",
+      "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
       "statement": "När ett dokument visar video med synkroniserat ljud ska det finnas en funktion för att spela upp syntolkning på det primära ljudspåret. När en funktion saknas kan dokumentet ändå uppfylla detta krav, om användaren ges möjlighet att välja och spela upp flera ljudspår. I sådana fall kan videoinnehållet inkludera syntolkningen som ett av de tillgängliga ljudspåren.",
@@ -2148,17 +2145,7 @@
       "contentType": "Mediaspelare Video",
       "category": "Alternativ till media",
       "objectType": "doc",
-      "statement": "Där en tjänst huvudsakligen visar video med synkroniserat ljud ska det finnas användarkontroller för att aktivera undertextning och syntolkning. Dessa kontroller ska ha samma interaktionsnivå (det vill säga samma antal steg för att slutföra uppgiften) som de primära mediakontrollerna (play, paus och så vidare).",
-      "howToTest": "1. Kontrollera att alla meningsbärande bilder har textbaserade alternativ, alltså en förklarande beskrivning i text i attributet alt. Ett sätt att testa alt-texter är att inaktivera visning av bilder i webbläsaren.\r\n\r\n\t- Google Chrome: Inställningar > Integritet och säkerhet > Webbplatsinställningar > Bilder > Tillåt inte att webbplatser visar bilder\r\n    \r\n    - Microsoft Edge: Inställningar > Sekretess, sökning och tjänster > Webbplatsbehörigheter > Alla behörigheter > Bilder > Inaktivera Visa alla.\r\n    \r\n    - Alternativ är att använda ett insticksprogram i webbläsaren för att inaktivera bilder, eller granska HTML-koden. \r\n\r\n2. Kontrollera att bildernas alt-texter är begripliga och att de beskriver syftet med bilderna på webbsidan.\r\n\r\n3. Kontrollera att alla bilder som inte är meningsbärande har tomma alt-attribut.\r\n",
-      "textSuggestions": [
-        "[Bilden] är en bakgrundsbild trots att den förmedlar relevant information.",
-        "[Bilden] saknar textalternativ.",
-        "[Bilden] har ett textalternativ som inte förmedlar samma information som bilden.",
-        "[Bilden] har ett textalternativ som beskriver motivet i stället för att ge samma information som bilden förmedlar i sammanhanget.",
-        "[Bilden] är dekorativ men är inte dold för hjälpmedel.",
-        "Textalternativet för CAPTCHA-funktionen beskriver inte dess syfte.",
-        "CAPTCHA-funktionen har inget alternativ för personer som saknar synförmåga."
-      ]
+      "statement": "Där en tjänst huvudsakligen visar video med synkroniserat ljud ska det finnas användarkontroller för att aktivera undertextning och syntolkning. Dessa kontroller ska ha samma interaktionsnivå (det vill säga samma antal steg för att slutföra uppgiften) som de primära mediakontrollerna (play, paus och så vidare)."
     },
     {
       "id": "docbts",
@@ -2301,11 +2288,7 @@
       "objectType": "doc",
       "statement": "Om dokumentformatet har stöd för det, presenteras statusmeddelande för hjälpmedel utan att meddelandet får fokus.",
       "why": "Information som förmedlas till seende användare ska skärmläsaranvändare också få ta del av.",
-      "howToTest": "",
-      "textSuggestions": [
-        "[Redigeringsverktyg] har inte stöd för att skapa innehåll som uppfyller tillgänglighetskraven.",
-        "[Redigeringsverktyg] hjälper inte användaren att skapa innehåll som uppfyller tillgänglighetskraven."
-      ]
+      "howToTest": ""
     },
     {
       "id": "docfel",
