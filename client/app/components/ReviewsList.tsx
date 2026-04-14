@@ -135,9 +135,7 @@ export function ReviewsList() {
   };
 
   const reviews = useMemo(() => {
-    return reviewsAll
-      ?.filter((review) => review.objectType !== ObjectType.DOCUMENT)
-      .sort((a, b) => {
+    return reviewsAll?.sort((a, b) => {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       });
   }, [reviewsAll]);
@@ -174,11 +172,16 @@ export function ReviewsList() {
     });
   }, [reviews, filterFreeText, sortBy, sortDirection, filterFaves, favoriteReviews]);
 
-  const requirements = useMemo(() => {
+  const requirementsWeb = useMemo(() => {
     return requirementsAll?.filter((r) => r.objectType === ObjectType.WEB) || [];
   }, [requirementsAll]);
 
-  const requirementsCount = (regulatoryFramework: string) => {
+  const requirementsDoc = useMemo(() => {
+    return requirementsAll?.filter((r) => r.objectType === ObjectType.DOCUMENT) || [];
+  }, [requirementsAll]);
+
+  const requirementsCount = (regulatoryFramework: string, objectType: ObjectType) => {
+    const requirements = objectType === ObjectType.WEB ? requirementsWeb : requirementsDoc;
     if (regulatoryFrameworkEnv && regulatoryFrameworkEnv !== '') {
       return requirements.filter((r) =>
         r.regulatoryFramework.split(',').includes(regulatoryFrameworkEnv),
@@ -334,11 +337,10 @@ export function ReviewsList() {
                         <p className="whitespace-nowrap" key={`updated-${review.id}`}>
                           {formatDate(review.latestUpdate)}
                         </p>,
-                        <p className="whitespace-nowrap" key={`status-${review.id}`}>
-                          {review.reviewedCount < 10 && <span className="inline-block w-2"></span>}
+                        <p className="whitespace-nowrap text-left" key={`status-${review.id}`}>
                           {t('ReviewsList.ReviewedOf', {
                             reviewed: review.reviewedCount,
-                            total: requirementsCount(review.regulatoryFramework || ''),
+                            total: requirementsCount(review.regulatoryFramework || '', (review.objectType as ObjectType) || ObjectType.WEB),
                           })}
                         </p>,
                         <DigiButton

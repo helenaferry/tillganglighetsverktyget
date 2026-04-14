@@ -70,7 +70,7 @@
     "FavoriteRemove": "Avmarkera favorit {{reviewName}}",
     "FavoriteAdd": "Favoritmarkera {{reviewName}}",
     "ReviewFallback": "Granskning",
-    "ReviewedOf": "{{reviewed}} av {{total}} krav",
+    "ReviewedOf": "{{reviewed}} av {{total}}",
     "EditReviewDetails": "Ändra uppgifter för granskning: {{title}}",
     "EditDetailsButton": "Ändra uppgifter",
     "ItemsName": "granskningar",
