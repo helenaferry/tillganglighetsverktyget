@@ -39,6 +39,9 @@ Granska tillgänglighet är skapat för att vägleda användare utan expertkunsk
 </tbody>
 </table>
 
+### Demo
+<img src="https://gitlab.com/arbetsformedlingen/designsystem/tillganglighetsverktyget/-/raw/9c33df6613eaef8d07a5d8cd8361a7bec2e51cd9/client/public/screenshots/demo.gif" alt="demo i gif-format"></img>
+
 ### Användning och flexibilitet
 
 För att använda verktyget behöver du installera det i en driftmiljö och sätta upp en databas.
@@ -64,9 +67,9 @@ cd server && npm test
 ```
 
 ## Teknik 
-Tillgänglighetsverktyget har majoriteten av sin funktionalitet i sin klient. Det enda servern gör är att pratat med databasen där granskningarna sparas.
+Tillgänglighetsverktyget har majoriteten av sin funktionalitet i sin klient. Det enda servern gör är att prata med databasen där granskningarna sparas.
 
-- **Docker** - Både klient och server har varsin Docker-fil som kan användas för drift
+- **Docker** - Både klient och server har varsin Docker-fil som kan användas för drift. Det finns lite AF-specifika delar i Docker-imagearna. Dessa kan behöva göras om beroende på val av databas och andra drift-krav. 
 
 ### Klienten
 - **React Router** – Routing och navigering
