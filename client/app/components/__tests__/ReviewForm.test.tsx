@@ -215,7 +215,9 @@ vi.mock('@designsystem-se/af-react', async () => {
         onChange={(e) => {
           if (onAfOnGroupChange) {
             const value = (e.target as HTMLInputElement).value;
-            onAfOnGroupChange(new CustomEvent('groupchange', { detail: value }) as CustomEvent<string>);
+            onAfOnGroupChange(
+              new CustomEvent('groupchange', { detail: value }) as CustomEvent<string>,
+            );
           }
         }}
       >
@@ -539,7 +541,13 @@ describe('ReviewForm', () => {
     it('shows radiobuttons for each content type', async () => {
       await renderReviewForm();
 
-      expect(screen.getByText(i18n.t('ReviewForm.ContentTypes.Question', { yourObjectType: i18n.t('ReviewForm.ContentTypes.YourWeb') }))).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          i18n.t('ReviewForm.ContentTypes.Question', {
+            yourObjectType: i18n.t('ReviewForm.ContentTypes.YourWeb'),
+          }),
+        ),
+      ).toBeInTheDocument();
 
       const fieldsets = screen.getAllByRole('group');
       expect(fieldsets).toHaveLength(mockContentTypes.length + 1); // +1 for the WEB/DOCUMENT type fieldset

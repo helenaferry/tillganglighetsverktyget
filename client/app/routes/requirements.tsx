@@ -102,7 +102,13 @@ export default function RequirementsPage() {
       if (filterFreeText && !searchMatches(req, filterFreeText)) return false;
       return true;
     });
-  }, [selectedRequirements, filterSpecific, filterCategories, filterFreeText, requirementAdditions]);
+  }, [
+    selectedRequirements,
+    filterSpecific,
+    filterCategories,
+    filterFreeText,
+    requirementAdditions,
+  ]);
 
   const categoryFilterOptions = useMemo(() => {
     return categories?.map((category) => {

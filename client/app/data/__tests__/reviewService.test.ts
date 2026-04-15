@@ -7,7 +7,6 @@ vi.mock('../../../public/standaloneConfiguration.js', () => ({
 
 import { apiClient } from '../apiClient';
 import { ReviewService } from '../reviewService';
-import { standaloneClient } from '../standaloneClient';
 import { ObjectType, Status } from '../types';
 
 vi.mock('../apiClient', () => ({
@@ -80,7 +79,6 @@ type MockClient = {
 
 // Type-safe mocks
 const mockApiClient = apiClient as unknown as MockClient;
-const mockStandaloneClient = standaloneClient as unknown as MockClient;
 
 describe('ReviewService', () => {
   beforeEach(() => {
@@ -436,5 +434,4 @@ describe('ReviewService', () => {
       expect(mockApiClient.checks.toggleFlag).toHaveBeenCalledWith(1, 'req1', true);
     });
   });
-
 });

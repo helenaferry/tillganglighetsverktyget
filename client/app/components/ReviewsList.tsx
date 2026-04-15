@@ -136,8 +136,8 @@ export function ReviewsList() {
 
   const reviews = useMemo(() => {
     return reviewsAll?.sort((a, b) => {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      });
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
   }, [reviewsAll]);
 
   const filteredReviews = useMemo(() => {
@@ -340,7 +340,10 @@ export function ReviewsList() {
                         <p className="whitespace-nowrap text-left" key={`status-${review.id}`}>
                           {t('ReviewsList.ReviewedOf', {
                             reviewed: review.reviewedCount,
-                            total: requirementsCount(review.regulatoryFramework || '', (review.objectType as ObjectType) || ObjectType.WEB),
+                            total: requirementsCount(
+                              review.regulatoryFramework || '',
+                              (review.objectType as ObjectType) || ObjectType.WEB,
+                            ),
                           })}
                         </p>,
                         <DigiButton

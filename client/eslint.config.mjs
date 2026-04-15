@@ -22,7 +22,7 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
-    ignores: ['.react-router/**/*'],
+    ignores: ['.react-router/**/*', 'build/**/*', 'coverage/**/*'],
   },
   {
     extends: compat.extends(

@@ -31,7 +31,8 @@ const contentTypeTexts = [
   },
   {
     contentType: 'Innehållsskapande',
-    question: 'Innehåller {{theObjectType}} möjlighet att publicera innehåll eller lämna kommentar?',
+    question:
+      'Innehåller {{theObjectType}} möjlighet att publicera innehåll eller lämna kommentar?',
     prefillComment:
       'Kravet har förifyllts som irrelevant eftersom {{theObjectType}}, enligt tidigare ifyllda uppgifter, saknar möjlighet att publicera innehåll eller lämna kommentar.',
   },

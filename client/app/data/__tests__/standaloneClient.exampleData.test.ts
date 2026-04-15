@@ -2,6 +2,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { standaloneExampleData } from '../standaloneExampleData';
 
+vi.mock('../../../public/standaloneConfiguration.js', () => ({
+  STANDALONE_CLIENT: true,
+  USE_EXAMPLE_DATA: true,
+}));
+
 describe('standaloneClient - Example Data Initialization', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -11,11 +16,6 @@ describe('standaloneClient - Example Data Initialization', () => {
 
   describe('shouldInitializeExampleData conditions', () => {
     it('initializes when VITE_STANDALONE=true and VITE_USE_EXAMPLE_DATA=true and localStorage is empty', async () => {
-      // Mock environment variables
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
-      // Reset module to pick up new env vars
       vi.resetModules();
       const { standaloneClient: client } = await import('../standaloneClient');
 
@@ -34,9 +34,6 @@ describe('standaloneClient - Example Data Initialization', () => {
     });
 
     it('does NOT initialize when localStorage already has data', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
       // Pre-populate localStorage with existing data
       localStorage.setItem(
         'tillgang_reviews',
@@ -65,9 +62,6 @@ describe('standaloneClient - Example Data Initialization', () => {
     });
 
     it('does NOT initialize when localStorage has empty array', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
       // Set empty array (different from no data)
       // Empty array '[]' should be treated as existing data
       localStorage.setItem('tillgang_reviews', '[]');
@@ -87,9 +81,6 @@ describe('standaloneClient - Example Data Initialization', () => {
 
   describe('idempotent initialization', () => {
     it('does NOT initialize twice', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
       vi.resetModules();
       const { standaloneClient: client } = await import('../standaloneClient');
 
@@ -111,9 +102,6 @@ describe('standaloneClient - Example Data Initialization', () => {
 
   describe('initialization timing', () => {
     it('initializes on first access to getReviews', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
       vi.resetModules();
       const { standaloneClient: client } = await import('../standaloneClient');
 
@@ -140,9 +128,6 @@ describe('standaloneClient - Example Data Initialization', () => {
 
   describe('data integrity', () => {
     it('sets ID counters correctly after initialization', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
       vi.resetModules();
       const { standaloneClient: client } = await import('../standaloneClient');
 
@@ -156,9 +141,6 @@ describe('standaloneClient - Example Data Initialization', () => {
     });
 
     it('imports all example reviews and checks', async () => {
-      vi.stubEnv('VITE_STANDALONE', 'true');
-      vi.stubEnv('VITE_USE_EXAMPLE_DATA', 'true');
-
       vi.resetModules();
       const { standaloneClient: client } = await import('../standaloneClient');
 
