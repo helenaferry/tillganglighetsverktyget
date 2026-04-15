@@ -50,6 +50,7 @@ export default function RequirementDetails({
           {requirement.howToTest && (
             <DigiExpandableAccordion
               afHeading={t('RequirementDetails.HowToTest')}
+              afFullWidth={true}
               afHeadingLevel={
                 ExpandableAccordionHeaderLevel[
                   HeadingTag.toUpperCase() as keyof typeof ExpandableAccordionHeaderLevel
@@ -65,6 +66,7 @@ export default function RequirementDetails({
             <DigiExpandableAccordion
               afHeading={t('RequirementForm.SuggestionsHeading')}
               afHeadingLevel={ExpandableAccordionHeaderLevel.H3}
+              afFullWidth={true}
             >
               <ul>
                 {textSuggestions.map((text) => (
