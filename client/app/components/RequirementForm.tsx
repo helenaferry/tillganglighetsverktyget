@@ -32,18 +32,45 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
   const upsertCheck = useUpsertCheck();
   const deleteCheck = useDeleteCheck();
   const { check } = useCheck(reviewId, requirementId);
+
   const [localStatus, setLocalStatus] = useState<number | undefined>(check?.status ?? undefined);
   const [localComment, setLocalComment] = useState<string>(check?.comment ?? '');
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     setLocalStatus(check?.status ?? undefined);
     setLocalComment(check?.comment ?? '');
+    setIsDirty(false);
   }, [check]);
+
+  // Debounce autosave
+  useEffect(() => {
+    if (!isDirty) return;
+
+    const timeout = setTimeout(() => {
+      const input: UpsertCheckInput = {
+        reviewId: Number(reviewId),
+        requirement: String(requirementId),
+        status: localStatus ?? Status.NOT_ASSESSED,
+        comment: localComment,
+      };
+
+      upsertCheck.mutate(input, {
+        onError: (err) => console.error('Fel vid sparande:', err),
+      });
+
+      setIsDirty(false);
+    }, 800);
+
+    return () => clearTimeout(timeout);
+  }, [localComment, localStatus, isDirty]);
+
   const useText = (text: string) => () => {
     const currentValue = localComment.trim();
     const newComment = currentValue + (currentValue.length > 0 ? '\n\n' + text : text);
 
     setLocalComment(newComment);
+    setIsDirty(true);
 
     const textArea = document.getElementById('motivation') as HTMLTextAreaElement | null;
     textArea?.focus();
@@ -54,6 +81,7 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
       status: localStatus ?? check?.status ?? Status.NOT_ASSESSED,
       comment: newComment,
     };
+
     upsertCheck.mutate(input, {
       onError: (err) => {
         console.error('Fel vid sparande:', err);
@@ -75,16 +103,20 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
                 afName="fulfillment"
                 onAfOnGroupChange={(e: CustomEvent) => {
                   const status = Number(e.detail.target.value);
+
                   setLocalStatus(status);
+
                   if (status === Status.NOT_ASSESSED && check && !check.comment) {
                     deleteCheck.mutate(String(check.id));
                   }
+
                   const input: UpsertCheckInput = {
                     reviewId: Number(reviewId),
                     requirement: requirementId,
                     status,
-                    comment: check?.comment ?? '',
+                    comment: localComment,
                   };
+
                   upsertCheck.mutate(input, {
                     onError: (err) => {
                       console.error('Fel vid sparande:', err);
@@ -115,6 +147,7 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
               </DigiFormRadiogroup>
             </DigiFormFieldset>
           </div>
+
           <div>
             <DigiFormTextarea
               afId="motivation"
@@ -124,21 +157,28 @@ export default function RequirementForm({ requirementId, reviewId, textSuggestio
               afVariation={FormTextareaVariation.LARGE}
               onAfOnInput={(event) => {
                 setLocalComment(event.detail.target.value);
+                setIsDirty(true);
               }}
               onBlur={() => {
+                if (!isDirty) return;
+
                 const input: UpsertCheckInput = {
                   reviewId: Number(reviewId),
                   requirement: String(requirementId),
                   status: localStatus ?? Status.NOT_ASSESSED,
                   comment: localComment,
                 };
+
                 upsertCheck.mutate(input, {
                   onError: (err) => {
                     console.error('Fel vid sparande:', err);
                   },
                 });
+
+                setIsDirty(false);
               }}
             />
+
             {upsertCheck.isError ? t('RequirementForm.SaveError') : ''}
 
             {textSuggestions && textSuggestions.length > 0 && (
