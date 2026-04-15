@@ -103,7 +103,7 @@ export function ReviewForm({ review }: Props) {
   const [contentTypePrefillsUpdatedYes, setContentTypePrefillsUpdatedYes] = useState<string[]>([]);
   const [contentTypePrefillsUpdatedNo, setContentTypePrefillsUpdatedNo] = useState<string[]>([]);
   const [saving, setSaving] = useState<boolean>(false);
-  const [showDocumentInfo, setShowDocumentInfo] = useState<boolean>(false);
+  // const [showDocumentInfo, setShowDocumentInfo] = useState<boolean>(false);
   const [nameValidation, setNameValidation] = useState<FormInputValidation>(
     FormInputValidation.NEUTRAL,
   );
@@ -408,30 +408,52 @@ export function ReviewForm({ review }: Props) {
       )}
       {!loading && (
         <form id="review-form" onSubmit={handleSubmit} noValidate>
-          <DigiFormFieldset
-            afForm="review-form"
-            afLegend={t('ReviewForm.ContentTypes.Legend')}
-            afName="typ"
-          >
-            <DigiFormRadiogroup afName="type">
-              <DigiFormRadiobutton
-                afLabel={t('ReviewForm.ContentTypes.WebLabel')}
-                afValue={ObjectType.WEB}
-                onAfOnInput={() => {
-                  setObjectType(ObjectType.WEB);
-                }}
-                afChecked={objectType === ObjectType.WEB}
-              ></DigiFormRadiobutton>
-              <DigiFormRadiobutton
-                afLabel={t('ReviewForm.ContentTypes.DocumentLabel')}
-                afValue={ObjectType.DOCUMENT}
-                onAfOnInput={() => {
-                  setObjectType(ObjectType.DOCUMENT);
-                }}
-                afChecked={objectType === ObjectType.DOCUMENT}
-              ></DigiFormRadiobutton>
-            </DigiFormRadiogroup>
-          </DigiFormFieldset>
+          <div className="max-w-[25rem] mb-6">
+            <DigiFormInput
+              afId="reviewName"
+              afLabel={t('ReviewForm.ReviewName.Label')}
+              afLabelDescription={t('ReviewForm.ReviewName.Description')}
+              afValue={title}
+              onAfOnInput={(e) => {
+                const value = e.detail.target.value;
+                if (value.trim().length > 0) {
+                  setNameValidation(FormInputValidation.NEUTRAL);
+                }
+                setTitle(value);
+              }}
+              afRequired={true}
+              afValidationText={t('ReviewForm.ReviewName.Validation')}
+              afValidation={nameValidation}
+            />
+          </div>
+          {!review && (
+            <div className="mb-6">
+              <DigiFormFieldset
+                afForm="review-form"
+                afLegend={t('ReviewForm.ContentTypes.Legend')}
+                afName="typ"
+              >
+                <DigiFormRadiogroup afName="type">
+                  <DigiFormRadiobutton
+                    afLabel={t('ReviewForm.ContentTypes.WebLabel')}
+                    afValue={ObjectType.WEB}
+                    onAfOnInput={() => {
+                      setObjectType(ObjectType.WEB);
+                    }}
+                    afChecked={objectType === ObjectType.WEB}
+                  ></DigiFormRadiobutton>
+                  <DigiFormRadiobutton
+                    afLabel={t('ReviewForm.ContentTypes.DocumentLabel')}
+                    afValue={ObjectType.DOCUMENT}
+                    onAfOnInput={() => {
+                      setObjectType(ObjectType.DOCUMENT);
+                    }}
+                    afChecked={objectType === ObjectType.DOCUMENT}
+                  ></DigiFormRadiobutton>
+                </DigiFormRadiogroup>
+              </DigiFormFieldset>
+            </div>
+          )}
           {/* TODO: vill vi ha nåt sånt här? i18n på det? <div className="mb-4">
             <DigiButton afType="button" onClick={() => setShowDocumentInfo(true)}>
               Vad menas med dokument?
@@ -470,24 +492,6 @@ export function ReviewForm({ review }: Props) {
             </p>
           </DigiDialog>
           */}
-          <div className="max-w-[25rem] mb-6">
-            <DigiFormInput
-              afId="reviewName"
-              afLabel={t('ReviewForm.ReviewName.Label')}
-              afLabelDescription={t('ReviewForm.ReviewName.Description')}
-              afValue={title}
-              onAfOnInput={(e) => {
-                const value = e.detail.target.value;
-                if (value.trim().length > 0) {
-                  setNameValidation(FormInputValidation.NEUTRAL);
-                }
-                setTitle(value);
-              }}
-              afRequired={true}
-              afValidationText={t('ReviewForm.ReviewName.Validation')}
-              afValidation={nameValidation}
-            />
-          </div>
           {!regulatoryFrameworkEnv && (
             <div className="mb-6">
               <DigiFormFieldset
