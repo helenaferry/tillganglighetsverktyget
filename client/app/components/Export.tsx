@@ -107,12 +107,14 @@ export default function Export({ review, checks, requirements, categories }: Pro
           {failedChecks.length > 0 && (
             <div ref={summaryRef}>
               {categories.map((cat) => {
-                const failedInCategory = failedChecks.filter((check) => {
-                  const requirement = requirements.find(
-                    (req) => String(req.id) === String(check.requirement),
-                  );
-                  return requirement?.category === cat;
-                });
+                const failedInCategory = requirements
+                  .filter((req) => req.category === cat)
+                  .flatMap((req) => {
+                    const check = failedChecks.find(
+                      (c) => String(c.requirement) === String(req.id),
+                    );
+                    return check ? [check] : [];
+                  });
 
                 if (failedInCategory.length === 0) return null;
 
